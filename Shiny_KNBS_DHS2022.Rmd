@@ -28,6 +28,7 @@ p_load(tidyverse)
 p_load(ggiraph)
 p_load(scales)
 p_load(sf)
+p_load(reshape2)
 # import all the tables
 dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
 
@@ -82,22 +83,23 @@ valueBox(
 
 <br>
 
-## Column {data-width="200"}
 
-### Choose type of questionnaire to see the number of women and men interviewed:
+
+Column {data-width="600"}
+---------------------------------
+
+##### Choose the characteristics to display:
 
 ```{r}
-selectInput("quest", "",
+radioButtons("quest", "",
              c("Households interviewed"="All",
                "Participants: Men"="Male",
                "Participants: Women"="Female"))
 
 ```
 
-<br>
 
-Column
--------------------------------------
+### Respondendents
 
 ```{r, fig.height=10,fig.height=22}
 kdhshouseholdinterviews <- read_csv("table1_dhshhinterviews.csv") %>%
@@ -128,7 +130,7 @@ renderPlot({
   facet_grid(residence~selection) +
   theme(text= element_text(size = 20, colour = "black", face = "bold")) +
   theme(strip.background =element_rect(fill="grey80"))
-        }, width = 1600, height=600) 
+        }, width = 1350, height=800) 
   
 
 
@@ -170,6 +172,9 @@ Inputs {.sidebar}
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
+
+[House ownership](#home_ownership)</br>
+
 [Agricultural land ownership](#agric_land_ownership)</br>
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
@@ -210,6 +215,8 @@ Inputs {.sidebar}
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
+[House ownership](#home_ownership)</br>
+
 [Agricultural land ownership](#agric_land_ownership)</br>
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
@@ -243,12 +250,14 @@ valueBox(
 )
 ```
 
-Row
----------------------------------
+Column {data-width="600"}
+-----------------------
+
+#### Choose the characteristics to display:
 
 ```{r}
 
-selectInput("char", "Choose type of characteristics to make comparisons between women and men interviewed:",
+selectInput("char", "",
              c("Age"="Age",
                "Reported health status"="Health_Status",
                "Religion"="Religion",
@@ -258,7 +267,10 @@ selectInput("char", "Choose type of characteristics to make comparisons between 
                "Wealth Quintile"="Wealth_Quintile",
                "By County"="County"))
 
+```
 
+
+```{r}
 
 respondentsbyage <- read_csv("table2_ageparticipants.csv")%>%
   mutate(Indicator="Age")%>%
@@ -322,7 +334,7 @@ renderPlot({
     ggplot(aes(x=Grouping, y=Weighted_percent, color = Participants)) + 
   geom_point(stat = "identity", size= 20) + 
   theme_bw() +
-  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust=-1.0, size=4, color="black")+
+  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust=-0.5, size=4, color="black")+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_color_manual(values=c("darkgreen", "red"))+
   theme(text=element_text(size=18, face="bold"))}
     else {
@@ -335,7 +347,7 @@ renderPlot({
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("darkgreen", "red"))+
   theme(text=element_text(size=20, face="bold")) 
     }
-  }, width = 1300, height=800)
+  }, width = 1420, height=700)
   
 
 
@@ -374,6 +386,8 @@ Inputs {.sidebar}
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
+[House ownership](#home_ownership)</br>
+
 [Agricultural land ownership](#agric_land_ownership)</br>
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
@@ -408,16 +422,21 @@ value = paste("26%"),
  
 ```
 
-Row
+Column {data-width="600"}
 ------------------------------- 
+
+#### Choose characteristics to display:
 
 ```{r}
 
-selectInput("health", "Choose sub-indicators to make comparisons between women and men interviewed:",
+radioButtons("health", "",
               c("Age"="Age_category", 
                 "Residence"="Residence", 
                 "Wealth quintile"="Wealth_quintile"))
 
+```
+
+```{r }
 # health insurance data by age
 healthinsurancebyage <- read_csv("table3_healthinsurancebyage.csv") %>%
   tidyr::gather(Insurance,Coverage,2:7) %>%
@@ -452,7 +471,7 @@ renderPlot({
   facet_grid(.~Insurance)+
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=20, face = "bold"))
-},width = 1500, height=800)
+},width = 1420, height=650)
 
 
 ```
@@ -490,6 +509,8 @@ Inputs {.sidebar}
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
+[House ownership](#home_ownership)</br>
+
 [Agricultural land ownership](#agric_land_ownership)</br>
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
@@ -498,7 +519,6 @@ Inputs {.sidebar}
 
 ## Row {data-width="200"}
 
-<br>
 
 ### {.value-box}
 
@@ -527,20 +547,16 @@ valueBox(
 
 valueBox(
   value = paste("0.5%"),
-  caption = "Cannot do at all",
+  caption = "Cannot do anything at all",
   color = "darkgreen"
 )
 ```
 
-<br>
 
-<br>
-
-
-
-Row
+Column {data-width="600"}
 -----------------------
 
+##### Choose characteristics to display
 
 ```{r}
 
@@ -559,6 +575,11 @@ selectInput("disability_domain", "Choose  a sub-indicator:",
                 "Remembering/Concentrating"="Remembering_concentrating","Walking/ClimbingSteps"="Walking_ClimbingSteps",
                 "Washing all over/Dressing"="washingAllOver_dressing"))
 
+```
+
+
+
+```{r }
 # disability by age
 disabilitybyage <- read_csv( "table4_disabilitybyage.csv") %>%
   mutate(Indicator1 ="Age_category") %>%
@@ -602,7 +623,7 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
      scale_fill_brewer(palette="Set1") 
-},width = 1500, height=800)
+},width = 1420, height=600)
 ```
 
 fertility {.hidden}
@@ -637,6 +658,8 @@ Inputs {.sidebar}
 [Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
 
 [Agricultural land ownership](#agric_land_ownership)</br>
 
@@ -682,10 +705,9 @@ valueBox(
 
 <br>
 
-<br>
 
-Row
----------------------------------
+Column {data-width="600"}
+--------------------------
 
 <!-- ### Fertility trends -->
 
@@ -752,6 +774,8 @@ Inputs {.sidebar}
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
+[House ownership](#home_ownership)</br>
+
 [Agricultural land ownership](#agric_land_ownership)</br>
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
@@ -798,8 +822,8 @@ valueBox(
 
 <br>
 
-Row
-----------------------------------
+Column {data-width="600"}
+--------------------------
 
 ```{r, fig.width=15, fig.height=8}
 teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
@@ -815,7 +839,7 @@ teenpregnancybycountyvisuals <- teenpregnancybycountyvisual %>%
   coord_flip() +
   ylab("Percent (%)") + xlab("County") +
   theme(text=element_text(size=20, face="bold")) +
-  theme(strip.background =element_rect(fill="gray80")) +scale_fill_manual(values=c("darkblue", "darkgreen", "black", "red"))
+  theme(strip.background =element_rect(fill="gray80")) +scale_fill_brewer(palette="Set1")
 teenpregnancybycountyvisuals
   
 ```
@@ -853,6 +877,8 @@ Inputs {.sidebar}
 [Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
 
 [Agricultural land ownership](#agric_land_ownership)</br>
 
@@ -898,12 +924,13 @@ valueBox(
 
 <br>
 
-<br>
+Row {data-width="800"}
+-------------------------------------
 
-
-## Row {data-height="100"}
+### Choose characteristics to display
 
 ```{r}
+
 selectInput("nutr", "Choose background indicators to display:",
               c("Sex"="Sex", 
                 "Residence"="Residence",
@@ -912,10 +939,6 @@ selectInput("nutr", "Choose background indicators to display:",
 
 ```
 
-Row
------------------------
-
-### Child nutrition by background characteristics
 
 ```{r}
 #nut_age <- read_csv("table14_nutr_status_by_age.csv")%>%
@@ -956,26 +979,28 @@ renderPlot({
   theme_bw()+
   labs( y="% below -2 SD^2 (Moderate)", title="", x="Nutritional measure", fill="Residence")+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
-  theme(text=element_text(size=12))
+  theme(text=element_text(size=20, face="bold"))
   } else{
   ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=Indicator, y=perc_below2sd, fill=measure))+
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
   theme_bw()+
   labs( y="% below -2 SD^2 (Moderate)", title="", x="Indicator", fill="")+
   scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
-  theme(text=element_text(size=12))+
+  theme(text=element_text(size=20, face="bold"))+
   geom_text(aes(label = lab), hjust=-1.0, size=4) 
 }
-},width = 1500, height=800)
+},width = 1300, height=400)
 
 ```
 
+Row {data-width="600"}
+-------------------------------------
 
+### Choose characteristics to display
 
-## Row {data-height="200"}
 
 ```{r}
-selectInput("nutr2", "Choose nutritional measure to display:",
+selectInput("nutr2", "",
               c("HFA"="HFA",
                 "WFA"="WFA",
                 "WFH"="WFH"))
@@ -993,10 +1018,9 @@ county <- st_read("./Kenya County shapefiles/County.shp")%>%
   rename(County=Name)
 ```
 
-Row
------------------------
 
-### Child nutrition by county
+
+
 
 ```{r}
 nutc1 <- full_join(county, nutc, by="County")%>%
@@ -1015,14 +1039,14 @@ renderGirafe({
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 9)))
+                     opts_zoom(max = 4)))
   print(nut_map2x)
 })#,width = 1500, height=800)
 
 ```
 
-Column
------------------------
+
+### Nutritional status
 
 ```{r}
 nutc1 <- full_join(county, nutc, by="County")%>%
@@ -1041,7 +1065,7 @@ renderGirafe({
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 9)))
+                     opts_zoom(max = 4)))
   print(nut_map1x)
 })#,width = 1500, height=800)
 ```
@@ -1080,6 +1104,8 @@ Inputs {.sidebar}
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
+[House ownership](#home_ownership)</br>
+
 [Agricultural land ownership](#agric_land_ownership)</br>
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
@@ -1096,7 +1122,7 @@ Inputs {.sidebar}
 
 valueBox(
   value = paste("54.2%"),
-  caption = "Households with at least 1 ITN",
+  caption = "Households with at least 1 insecticide treated net",
   color = "black"
 )
 ```
@@ -1106,7 +1132,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("1.2"),
-  caption = "Average number of ITNs per household",
+  caption = "Average number of insecticide treated nets per household",
   color = "red"
 )
 ```
@@ -1117,17 +1143,14 @@ valueBox(
 
 valueBox(
   value = paste("37.1%"),
-  caption = "Households with at least 1 ITN\n per 2 persons who stayed last night",
+  caption = "Households with at least 1 insecticide treated net\n per 2 persons who stayed last night",
   color = "darkgreen"
 )
 ```
 
 <br>
 
-<br>
 
-
-## Row {data-height="200"}
 
 ### Choose indicators to display
 
@@ -1135,6 +1158,516 @@ valueBox(
 
 ```
 
+
+home_ownership {.hidden}
+==================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("4.5%"),
+  caption = "Of women own a house alone",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("36.3%"),
+  caption = "Of men own a house alone",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("9.4%"),
+  caption = "Of women who own houses have their names on the title deed",
+  color = "darkgreen"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("12.2%"),
+  caption = "Of men who own houses have their names on the title deed",
+  color = "darkblue"
+)
+```
+
+<br>
+
+Row {data.width=600}
+-------------------------------------
+
+
+#### House ownership
+
+```{r}
+
+selectInput("home_own", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Residence"="residence",
+                "Wealth quintile"="wealth"))
+
+men_title_deed <- read_csv('table_27.2_house_has_a_title_deed.csv') %>%
+  mutate(Participant = 'Male')
+men_title_deed <- subset (men_title_deed, select = -Number)
+names(men_title_deed) <- gsub("\\.", " ", names(men_title_deed))
+
+
+
+percentage_own_house_men <- read_csv('table_27.2_percentage_who_own_a_house.csv')%>%
+  mutate(Participant = 'Male')
+percentage_own_house_men <- subset (percentage_own_house_men, select = -Number)
+names(percentage_own_house_men) <- gsub("\\.", " ", names(percentage_own_house_men))
+
+
+women_title_deed <- read_csv('table_27.1_house_has_a_title_deed.csv')%>%
+  mutate(Participant = 'Female')
+women_title_deed <- subset (women_title_deed, select = -Number)
+names(women_title_deed) <- gsub("\\.", " ", names(women_title_deed))
+
+percentage_own_house_women <- read_csv('table_27.1_percentage_who_own_a_house.csv')%>%
+  mutate(Participant = 'Female')
+percentage_own_house_women <- subset (percentage_own_house_women, select = -Number)
+names(percentage_own_house_women) <- gsub("\\.", " ", names(percentage_own_house_women))
+
+
+#-----age starts here
+men_title_deed_age <- men_title_deed [c(2:8),c(0:6)]
+women_title_deed_age <- women_title_deed[c(2:8),c(0:6)]
+
+
+title_deed_age <-rbind(men_title_deed_age, women_title_deed_age)
+
+title_deed_age <-melt(title_deed_age, id =c("Background Characteristic","Participant")) %>%
+  mutate(indicator="Age")
+
+## education
+
+men_title_deed_education <- men_title_deed[c(15:18),c(0:6)]
+women_title_deed_education <- women_title_deed[c(15:18),c(0:6)]
+
+
+title_deed_education <-rbind(men_title_deed_education, women_title_deed_education)
+
+title_deed_education  <-melt(title_deed_education,id =c("Background Characteristic","Participant")) %>%
+  mutate(indicator="Education")
+
+## residence
+men_title_deed_residence <- men_title_deed[c(11:12),c(0:6)]
+women_title_deed_residence <- women_title_deed[c(11:12),c(0:6)]
+
+
+title_deed_residence <-rbind(men_title_deed_residence, women_title_deed_residence)
+
+title_deed_residence  <-melt(title_deed_residence,id =c("Background Characteristic","Participant")) %>%
+  mutate(indicator="residence")
+
+# wealth
+
+men_title_deed_wealth <- men_title_deed[c(21:25),c(0:6)]
+women_title_deed_wealth <- women_title_deed[c(21:25),c(0:6)]
+
+
+title_deed_wealth <-rbind(men_title_deed_wealth, women_title_deed_wealth)
+
+title_deed_wealth  <-melt(title_deed_wealth,id =c("Background Characteristic","Participant")) %>%
+  mutate(indicator="wealth")
+
+# combine the data
+title_deed_data <- rbind(title_deed_age, title_deed_education, title_deed_residence, title_deed_wealth)
+
+renderPlot({ggplot(title_deed_data[title_deed_data$indicator%in%input$home_own,]) + 
+  geom_col(mapping = aes(y = `Background Characteristic`, x=value, fill = Participant), position = 'dodge')+
+  scale_colour_discrete(name="Own Title Deed")+
+  xlim(0,100)+
+  theme_bw()+
+  labs(x ='Percentage (%)', y =paste0(title_deed_data[title_deed_data$indicator%in%input$home_own,]$indicator, " of respondents"), fill="Own Title Deed")+
+  facet_grid(.~variable) +
+  coord_flip()+theme(text = element_text(size=16, face="bold"))}, width=1500, height=800)
+
+```
+
+
+
+
+agric_land_ownership {.hidden}
+==================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("3.1%"),
+  caption = "Of women own agricultural land alone",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("26.2%"),
+  caption = "Of men own agricultural land alone",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("13.4%"),
+  caption = "Of women who own agricultural land /n have their names on the title deed",
+  color = "darkgreen"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("23.3%"),
+  caption = "Of men who own agricultural land /n have their names on the title deed",
+  color = "darkblue"
+)
+```
+
+<br>
+
+Column {data.height=800}
+-------------------------
+
+#### Agricultural land ownership
+
+```{r, message=F}
+
+selectInput("agric_own", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth quintile"="wealth quintile"))
+
+```
+
+```{r, include=F}
+# agricultural land ownership
+
+# load data
+table28.1a <- read.csv('table_28.1_percentage_who_own_land.csv', encoding="UTF-8")  %>% 
+  mutate(Participants='Women')
+table28.1b<- read.csv('table_28.1_land_has_title_deed.csv', encoding="UTF-8") %>% 
+  mutate(Participants='Women')
+table28.2a <- read.csv('table_28.2_percentage_who_own_land.csv', encoding="UTF-8") %>% 
+  mutate(Participants='Men')
+table28.2b <- read.csv('table_28.2_land_has_title_deed.csv', encoding="UTF-8")  %>% 
+  mutate(Participants='Men')
+table28.3a <- read.csv('table_28.3_percentage_who_own_land.csv', encoding="UTF-8") %>% 
+  mutate(Participants='Women')
+table28.3b <- read.csv('table_28.3_land_has_a_title_deed.csv', encoding="UTF-8")%>%   
+  mutate(Participants='Women')
+table28.4a <- read.csv('table_28.4_percentage_who_own_land.csv', encoding="UTF-8") %>% 
+  mutate(Participants='Men')
+table28.4b <- read.csv('table_28.4_land_has_title_deed.csv', encoding="UTF-8")  %>% 
+  mutate(Participants='Men')
+
+county <- st_read("Kenya County shapefiles/County.shp")
+
+
+table28a <- dplyr::bind_rows(table28.1a, table28.2a) 
+table28b <- dplyr::bind_rows(table28.1b, table28.2b) 
+table28c <- dplyr::bind_rows(table28.3a, table28.4a) 
+table28d <- dplyr::bind_rows(table28.3b, table28.4b) 
+
+table28a <- table28a %>%
+  melt(id = c("Background.characteristic", "Indicator", "Participants")) %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(variable=recode(variable, "Both.alone.and.jointly"="Both alone & jointly", "Percentage.who.do.not.own.land"="Percentage who do not own land")) %>%
+  filter(variable!=c("Total", "Number"))
+
+```
+
+```{r}
+renderPlot({ggplot(table28a[table28a$Background.characteristic%in%input$agric_own,],mapping=aes(y=value, x=Indicator, fill=Participants)) +
+  geom_col(position="dodge") + 
+  facet_wrap(~variable) + 
+  theme_bw() +
+  labs( x = paste0(unique(table28a[table28b$variable!=c("Total", "Number") &table28a$Background.characteristic%in%input$agric_own,]$Background.characteristic), " of respondents"), y="%", fill="Land Ownership")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=400)
+
+```
+
+##### Agricultural land documentation
+
+```{r}
+selectInput("agric_doc", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth quintile"="wealth quintile"))
+
+
+table28b <- table28b %>%
+  melt(id = c("Background.characteristic", "Indicator", "Participants")) %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(variable=recode(variable, "name.is.on.title.deed"="Name is on title deed", "name.is.not.on.title.deed"="Name is not on title deed", "Does.not.have.a.title.deed"="Does not have a title deed", "Don.t.know"="Don't know")) %>%
+  dplyr::filter(!variable%in%c("Total", "Number"))
+
+
+renderPlot({ggplot(table28b[table28b$variable!=c("Total", "Number") &table28b$Background.characteristic%in%input$agric_doc,], mapping=aes(y=value, x=Indicator, fill=Participants)) +
+  geom_col(position="dodge") +
+  facet_wrap(~variable) +
+  theme_bw() +
+  labs( x = paste0(unique(table28b[table28b$Background.characteristic%in%input$agric_doc,]$Background.characteristic), " of respondents"), y="%", fill="")+theme(text=element_text(size=16, face="bold"))
+},width=1500, height=400)
+```
+
+nonagric_land_ownership {.hidden}
+==================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("1.4%"),
+  caption = "Of women own non-agricultural land alone",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("7.0%"),
+  caption = "Of men own non-agricultural land alone",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("30.8%"),
+  caption = "Of women who own non-agricultural land /n have their names on the title deed",
+  color = "darkgreen"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("47.9%"),
+  caption = "Of men who own non-agricultural land /n have their names on the title deed",
+  color = "darkblue"
+)
+```
+
+Column {data.height=800}
+-------------------------
+
+
+#### Non-agricultural land ownership 
+
+```{r}
+selectInput("nonagric_doc", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth quintile"="wealth quintile"))
+
+
+
+table28c<-table28c %>%
+  melt(id = c("Background.characteristic", "Indicator", "Participants")) %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(variable=recode(variable, "Both.alone.and.jointly"="Both alone & jointly", "Percentage.who.do.not.own.land"="Do not own land")) %>%
+  filter(variable!=c("Total", "Number"))
+ 
+renderPlot({ggplot(table28c[table28c$variable!=c("Total", "Number") &table28c$Background.characteristic%in%input$nonagric_doc,], mapping=aes(y=value, x=Indicator, fill=Participants)) +
+  geom_col(position="dodge") +
+  facet_wrap(~variable) +
+  theme_bw() +
+  labs( x = paste0(unique(table28c[table28c$Background.characteristic%in%input$nonagric_doc,]$Background.characteristic), " of respondents"), y="%", fill="")+theme(text=element_text(size=16, face="bold"))
+},width=1500, height=400)
+
+```
+
+##### Non-agricultural land documentation
+
+```{r}
+selectInput("nonagric_doc1", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth quintile"="wealth quintile"))
+
+table28d <-table28d %>%
+  melt(id = c("Background.characteristic", "Indicator", "Participants")) %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(variable=recode(variable, "Both.alone.and.jointly"="Both alone & jointly", "Percentage.who.do.not.own.land"="Do not own land")) %>%
+  dplyr::filter(!variable%in%c("Total", "Number"))
+
+
+renderPlot({ggplot(table28d[table28d$variable!=c("Total", "Number") &table28d$Background.characteristic%in%input$nonagric_doc1,], mapping=aes(y=value, x=Indicator, fill=Participants)) +
+  geom_col(position="dodge") +
+  facet_wrap(~variable) +
+  theme_bw() +
+  labs( x = paste0(unique(table28d[table28d$Background.characteristic%in%input$nonagric_doc1,]$Background.characteristic), " of respondents"), y="%", fill="")+theme(text=element_text(size=16, face="bold"))
+},width=1500, height=400)
+```
+
+<br>
+
+Column {data.height=800}
+-------------------------
 
 Compare indicators by county
 ============
