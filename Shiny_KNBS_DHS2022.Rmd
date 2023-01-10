@@ -144,7 +144,7 @@ Inputs {.sidebar}
 
 [Disability among the household population](#disability_pop)</br>
 
-[Household population](#household_pop)</br>
+[Fertility rates](#fertility)</br>
 
 [Teenage pregnancy](#teenage_pregnancy)</br>
 
@@ -184,7 +184,7 @@ Inputs {.sidebar}
 
 [Disability among the household population](#disability_pop)</br>
 
-[Household population](#household_pop)</br>
+[Fertility rates](#fertility)</br>
 
 [Teenage pregnancy](#teenage_pregnancy)</br>
 
@@ -348,7 +348,7 @@ Inputs {.sidebar}
 
 [Disability among the household population](#disability_pop)</br>
 
-[Household population](#household_pop)</br>
+[Fertility rates](#fertility)</br>
 
 [Teenage pregnancy](#teenage_pregnancy)</br>
 
@@ -383,8 +383,8 @@ Inputs {.sidebar}
 ```{r}
 
 valueBox(
-value = paste("32,156"),
-   caption = "Number of women interviewed",
+value = paste("26%"),
+   caption = "Of women have a form of health insurance",
    color = "red", 
    icon='fa-female,' 
  ) 
@@ -394,8 +394,8 @@ value = paste("32,156"),
 
 ```{r}
  valueBox( 
-   value = paste("14,453"), 
-   caption = "Number of men interviewed", 
+   value = paste("26.5%"), 
+   caption = "Of men have a form of health insurance", 
    color = "darkgreen", 
    icon='fa-male' 
  )
@@ -465,7 +465,7 @@ Inputs {.sidebar}
 
 [Disability among the household population](#disability_pop)</br>
 
-[Household population](#household_pop)</br>
+[Fertility rates](#fertility)</br>
 
 [Teenage pregnancy](#teenage_pregnancy)</br>
 
@@ -536,7 +536,6 @@ valueBox(
 Row
 -----------------------
 
-## Disability by characteristics
 
 ```{r}
 
@@ -601,6 +600,120 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Fou
 },width = 1500, height=800)
 ```
 
+fertility {.hidden}
+==================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("3.4"),
+  caption = "Total Fertility Rate per woman (15-49)",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("122"),
+  caption = "General fertility rate, expressed per 1,000 women age 15–44",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("27.7"),
+  caption = "Crude birth rate, expressed per 1,000 population",
+  color = "darkgreen"
+)
+```
+
+<br>
+
+<br>
+
+Row
+---------------------------------
+
+<!-- ### Fertility trends -->
+
+<!-- ```{r} -->
+
+<!-- trendstotalfertilityrate <- read_csv( "figure1_trendstotalfertilityrate.csv")%>% -->
+
+
+<!-- renderPlot({ -->
+<!--   ggplot(trendstotalfertilityrate, aes(x=Years, y=`Total Fertility Rate`, group=Residence, fill=Residence, color=Residence))+geom_line(size=1.5)+geom_point(size=1.7)+theme_bw()+labs(x="Age category", y="Rate per 1,000 women")+theme(text=element_text(size=20, face="bold"))+scale_fill_brewer(palette = "Set1")+scale_color_brewer(palette = "Set1") -->
+<!-- }) -->
+<!-- ``` -->
+
+### Current fertility rates
+
+```{r, fig.width=15, fig.height=8}
+
+
+
+agespecificfertilityrate <- read_csv( "table5_agespecificfertilityrate.csv") %>%
+  pivot_longer(c(Urban, Rural, Total), names_to="Residence", values_to="Residenceprop")%>%
+  filter(Residence!="Total")%>%
+  mutate(Residenceprop=recode(Residenceprop, "[0]"="0", "[2]"="2", "[3]"="3", "[7]"="7")) %>%
+  mutate(Residenceprop=as.numeric(Residenceprop))
+
+
+  ggplot(agespecificfertilityrate, aes(x=Age_category, y=Residenceprop))+geom_col(fill="#4C97C8")+facet_grid(Residence~.)+
+    theme_bw()+labs(x="Age category", y="Rate per 1,000 women")+theme(text=element_text(size=20, face="bold"))
+
+
+
+```
+
 
 
 nutr_status {.hidden}
@@ -616,7 +729,7 @@ Inputs {.sidebar}
 
 [Disability among the household population](#disability_pop)</br>
 
-[Household population](#household_pop)</br>
+[Fertility rates](#fertility)</br>
 
 [Teenage pregnancy](#teenage_pregnancy)</br>
 
