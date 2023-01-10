@@ -1,13 +1,18 @@
 ---
 title: "Kenya DHS 2022"
-output: 
+output:
   flexdashboard::flex_dashboard:
-    #theme:
-    #  navbar-bg: "#A6674A"
     orientation: rows
     vertical_layout: scroll
 runtime: shiny
-    
+resource_files:
+- County.cpg
+- County.dbf
+- County.prj
+- County.qpj
+- County.sbn
+- County.sbx
+- County.shx
 ---
 <!-- <style>                      -->
 <!-- .navbar { -->
@@ -18,8 +23,9 @@ runtime: shiny
 <!-- </style>    -->
 
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 
+setwd("~/")
 # load all the required packages
 library(pacman)
 p_load(docxtractr)
@@ -30,11 +36,12 @@ p_load(scales)
 p_load(sf)
 p_load(reshape2)
 # import all the tables
-dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
+#dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
 
 # number of tables in the report
-docx_tbl_count(dhs2022report)
-tbls <- docx_extract_all_tbls(dhs2022report, trim = T, guess_header = T)
+
+#docx_tbl_count(dhs2022report)
+#tbls <- docx_extract_all_tbls(dhs2022report, trim = T, guess_header = T)
 
 ```
 
@@ -1012,7 +1019,7 @@ nutc <- read_csv("table14C_nutr_status_by_county.csv")%>%
   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
                        "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
 
-county <- st_read("./Kenya County shapefiles/County.shp")%>%
+county <- st_read("County.shp")%>%
   mutate(region=ifelse(Name%in%c("Kilifi","Kwale","Lamu", "Mombasa", "Taita Taveta", "Tana River"),"Coast", ifelse(Name%in%c("Garissa", "Mandera", "Wajir"),"North Eastern", ifelse(Name%in%c("Marsabit","Isiolo","Meru","Tharaka Nithi","Embu","Kitui","Machakos","Makueni"),"Eastern", ifelse(Name%in%c("Kiambu", "Kirinyaga","Muranga","Nyandarua", "Nyeri"),"Central", ifelse(Name%in%c("Bungoma",
  "Busia","Kakamega","Vihiga"),"Western", ifelse(Name%in%c("Kisumu", "Siaya","Homa Bay","Kisii", "Migori","Nyamira"),"Nyanza", ifelse(Name%in%"Nairobi","Nairobi", "Rift Valley"))))))))%>%
   rename(County=Name)
@@ -1150,11 +1157,107 @@ valueBox(
 
 <br>
 
+Column {data-height="800"}
+------------------------------- 
 
 
-### Choose indicators to display
+#### Choose characteristics to display
 
 ```{r}
+
+selectInput("itn", "",
+              c("Residence"="Residence",
+                "Endemicity zone"="Endemicity zone",
+                "Wealth quintile"="Wealth quintile", "By County"="County"))
+```
+
+```{r, include=F}
+# import data
+
+# by residence
+itn_res <- read_csv("table18_ITN_by_residence.csv")%>%
+  mutate(lab1 = str_c(perc_atleast_1itn,"%"))%>%
+  mutate(lab2 = str_c(perc_atleast_1itn_2pple,"%"))
+
+itn_res_x <- itn_res%>%
+  pivot_longer(cols=c(perc_atleast_1itn,perc_atleast_1itn_2pple), names_to = "classification", values_to = "proportions")%>%
+  mutate(classification=recode(classification,"perc_atleast_1itn"="Households with\n at least 1 ITN","perc_atleast_1itn_2pple"="Households with\n at least 1 ITN per 2 persons\n who stayed last night")) %>%
+  mutate(indicator1="Residence") %>%
+  rename(indicator=Residence)
+
+
+# by endemicity zone
+itn_endem <- read_csv("table18_ITN_by_endemicity_zone.csv")%>%
+  mutate(lab1 = str_c(perc_atleast_1itn,"%"))%>%
+  mutate(lab2 = str_c(perc_atleast_1itn_2pple,"%"))
+
+itn_endem_x <- itn_endem%>%
+  pivot_longer(cols=c(perc_atleast_1itn,perc_atleast_1itn_2pple), names_to = "classification", values_to = "proportions")%>%
+  mutate(classification=recode(classification,"perc_atleast_1itn"="Households with\n at least 1 ITN","perc_atleast_1itn_2pple"="Households with\n at least 1 ITN per 2 persons\n who stayed last night")) %>%
+  mutate(indicator1="Endemicity zone") %>%
+  rename(indicator=`Endemicity zone`)
+
+# by wealth
+itn_wealth <- read_csv("table18_ITN_by_wealth_quintile.csv")%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))%>%
+  mutate(lab1 = str_c(perc_atleast_1itn,"%"))%>%
+  mutate(lab2 = str_c(perc_atleast_1itn_2pple,"%"))
+
+itn_wealth_x <- itn_wealth%>%
+  pivot_longer(cols=c(perc_atleast_1itn,perc_atleast_1itn_2pple), names_to = "classification", values_to = "proportions")%>%
+  mutate(classification=recode(classification,"perc_atleast_1itn"="Households with\n at least 1 ITN","perc_atleast_1itn_2pple"="Households with\n at least 1 ITN per 2 persons\n who stayed last night")) %>%
+  mutate(indicator1="Wealth quintile") %>%
+  rename(indicator=`Wealth quintile`)
+
+# combine all the data
+itn_data <- rbind(itn_res_x, itn_endem_x, itn_wealth_x)
+# by county
+itnc <- read_csv("table18C_ITN_by_county.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
+                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
+  pivot_longer(cols=c(perc_atleast_1itn,perc_atleast_1itn_2pple), names_to = "classification", values_to = "proportions") %>%
+  mutate(classification=recode(classification,"perc_atleast_1itn"="Households with\n at least 1 ITN","perc_atleast_1itn_2pple"="Households with\n at least 1 ITN per 2 persons\n who stayed last night")) %>%
+  mutate(indicator1="County") %>%
+  rename(indicator=County)
+  
+
+itn_data$indicator <- fct_relevel(itn_data$indicator, "Lowest","Second", "Middle", "Fourth", "Highest")
+
+## by county
+
+county <- st_read("County.shp")
+
+itnc1 <- full_join(county, itnc[itnc$classification%in%"Households with\n at least 1 ITN",], by=c("Name"="indicator"))
+
+itnc2 <- full_join(county, itnc[itnc$classification%in%"Households with\n at least 1 ITN per 2 persons\n who stayed last night",], by=c("Name"="indicator"))
+
+itn_county <- rbind(itnc1, itnc2)
+```
+
+```{r}
+renderPlot({
+  if(input$itn%in%"Wealth quintile"){
+    ggplot(itn_data[itn_data$indicator1%in%input$itn,],aes(x=indicator, y=proportions, color=classification))+
+  geom_point(size=7)+
+  theme_bw()+
+  labs( y="%", title="", x=paste0(unique(itn_data[itn_data$indicator1%in%input$itn,]$indicator1)), color="")+
+  scale_color_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=16, face="bold"))
+  }else if(input$itn%in%"County"){
+    ggplot(itn_county)+
+  geom_sf(data=itn_county, aes(geometry=geometry,fill=proportions))+facet_grid(.~classification)+
+  theme_void()+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="%",fill="")+
+  theme(text=element_text(size=14))} else{
+    ggplot(itn_data[itn_data$indicator1%in%input$itn,],aes(x=indicator, y=proportions, fill=classification))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="%", title="", x=paste0(unique(itn_data[itn_data$indicator1%in%input$itn,]$indicator1)), fill="")+
+  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=16, face="bold"))
+  }
+    }, width=1500, height=800)
 
 ```
 
@@ -1472,7 +1575,7 @@ table28.4a <- read.csv('table_28.4_percentage_who_own_land.csv', encoding="UTF-8
 table28.4b <- read.csv('table_28.4_land_has_title_deed.csv', encoding="UTF-8")  %>% 
   mutate(Participants='Men')
 
-county <- st_read("Kenya County shapefiles/County.shp")
+county <- st_read("County.shp")
 
 
 table28a <- dplyr::bind_rows(table28.1a, table28.2a) 
