@@ -27,7 +27,7 @@ p_load(flexdashboard)
 p_load(tidyverse)
 p_load(ggiraph)
 p_load(scales)
-
+p_load(sf)
 # import all the tables
 dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
 
@@ -307,7 +307,7 @@ respondentsdata <- rbind(respondentsbyage, healthstatus, religionrespondents, ma
   mutate(Indicator1=Indicator) %>%
   mutate(Indicator1=recode(Indicator1, "Education_Status"="Education Status", "Health_Status"="Health Status", "Marital_Status"="Marital Status", "Wealth_Quintile"="Wealth Quintile"))
 
-respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Fourth", "Middle", "Second", "Highest")
+respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Second", "Middle", "Fourth", "Highest")
 # visualize the data
 renderPlot({
   if (input$char%in%c("Wealth_Quintile", "Age")){
@@ -414,24 +414,21 @@ selectInput("health", "Choose sub-indicators to make comparisons between women a
 
 # health insurance data by age
 healthinsurancebyage <- read_csv("table3_healthinsurancebyage.csv") %>%
-  select(Age_category, Any_health_insurance, None_DontKnow) %>%
-  pivot_longer(c(Any_health_insurance, None_DontKnow), names_to = "Insurance", values_to="Proportion") %>%
+  tidyr::gather(Insurance,Coverage,2:7) %>%
   mutate(Insurance=recode(Insurance,"Any_health_insurance"="Form of health insurance", "None_DontKnow"="None/ Don't Know")) %>%
   rename(Indicator=Age_category) %>%
   mutate(Indicator1="Age_category")
 
 # health insurance data by residence
 healthinsurancebyresidence <-read_csv("table3_healthinsurancebyresidence.csv") %>%
-  select(Residence, Any_health_insurance, None_DontKnow) %>%
-  pivot_longer(c(Any_health_insurance, None_DontKnow), names_to = "Insurance", values_to="Proportion") %>%
+  tidyr::gather(Insurance,Coverage,2:7) %>%
   mutate(Insurance=recode(Insurance,"Any_health_insurance"="Form of health insurance", "None_DontKnow"="None/ Don't Know")) %>%
   rename(Indicator=Residence) %>%
   mutate(Indicator1="Residence")
 
 # Wealth quintile
 healthinsurancebywealthquintile <- read_csv( "table3_healthinsurancebywealthquintile.csv") %>%
-  select(Wealth_quintile, Any_health_insurance, None_DontKnow) %>%
-  pivot_longer(c(Any_health_insurance, None_DontKnow), names_to = "Insurance", values_to="Proportion") %>%
+  tidyr::gather(Insurance,Coverage,2:7) %>%
   mutate(Insurance=recode(Insurance,"Any_health_insurance"="Form of health insurance", "None_DontKnow"="None/ Don't Know")) %>%
   rename(Indicator=Wealth_quintile) %>%
   mutate(Indicator1="Wealth_quintile")
@@ -439,12 +436,11 @@ healthinsurancebywealthquintile <- read_csv( "table3_healthinsurancebywealthquin
 # total health insurance data
 healthinsurance <- rbind(healthinsurancebyage,healthinsurancebyresidence,healthinsurancebywealthquintile) 
 
-healthinsurance$Indicator <- fct_relevel(healthinsurance$Indicator, "Lowest", "Fourth", "Middle", "Second", "Highest")
+healthinsurance$Indicator <- fct_relevel(healthinsurance$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({
-  ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Proportion, fill=Insurance))+geom_bar(stat = 'identity', position = position_fill(reverse = TRUE)) +
-  coord_flip()+
-    scale_y_continuous(labels = scales::percent)+
+  ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge()) +
+  facet_grid(.~Insurance)+
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=20, face = "bold"))
 },width = 1500, height=800)
@@ -587,7 +583,7 @@ disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilityby
   mutate(difficulty=fct_relevel(difficulty, "Some Difficulty", "Alot of difficulty", "Cannot do at all")) %>%
   mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile"))
 
-disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Fourth", "Middle", "Second", "Highest")
+disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest")
 
  renderPlot({
    ggplot(disabilitydata[disabilitydata$Indicator1==input$disability,], aes(x=Indicator, y=difficultyprop, fill=difficulty)) + 
@@ -714,6 +710,106 @@ agespecificfertilityrate <- read_csv( "table5_agespecificfertilityrate.csv") %>%
 
 ```
 
+teenage_pregnancy {.hidden}
+==================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("12.2%"),
+  caption = "Of women aged 15-19 have ever had a live birth",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("0.9%"),
+  caption = "Of women aged 14-19 have ever had a pregnancy loss",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("14.9%"),
+  caption = "Of women aged 14-19 have ever been pregnant",
+  color = "darkgreen"
+)
+```
+
+<br>
+
+<br>
+
+Row
+----------------------------------
+
+```{r, fig.width=15, fig.height=8}
+teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
+  pivot_longer(cols = Live_birth:Ever_pregnant, names_to = "Pregnancy", values_to = "Percent") %>%
+  mutate(Pregnancy=recode(Pregnancy, "Currently_pregnant"="Currently pregnant", "Ever_pregnant"="Ever pregnant", "Live_birth"="Live birth", "Pregnancy_loss"="Pregnancy loss"))
+
+teenpregnancybycountyvisuals <- teenpregnancybycountyvisual %>%
+  ggplot(aes(x=reorder(County,Percent), y=Percent, fill=Pregnancy)) + 
+  geom_bar(stat = "identity") + #, position = position_dodge()) +
+  #facet_wrap(facets = ~reorder(Participants, Percent)) +
+  #scale_fill_manual("Residence", values = c("Urban" = "darkorange", "Rural" = "cyan3")) +
+  theme_bw() +
+  coord_flip() +
+  ylab("Percent (%)") + xlab("County") +
+  theme(text=element_text(size=20, face="bold")) +
+  theme(strip.background =element_rect(fill="gray80")) +scale_fill_manual(values=c("darkblue", "darkgreen", "black", "red"))
+teenpregnancybycountyvisuals
+  
+```
 
 
 nutr_status {.hidden}
@@ -765,7 +861,7 @@ Inputs {.sidebar}
 
 valueBox(
   value = paste("17.6%"),
-  caption = "Severe stunting",
+  caption = "Moderate stunting",
   color = "black"
 )
 ```
@@ -775,7 +871,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("4.9%"),
-  caption = "Severe wasting",
+  caption = "Moderate wasting",
   color = "red"
 )
 ```
@@ -786,7 +882,243 @@ valueBox(
 
 valueBox(
   value = paste("10.1%"),
-  caption = "Severely underweight",
+  caption = "Moderately underweight",
+  color = "darkgreen"
+)
+```
+
+<br>
+
+<br>
+
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("nutr", "Choose background indicators to display:",
+              c("Sex"="Sex", 
+                "Residence"="Residence"))
+
+selectInput("nutr1", "Choose background indicators to display:",
+              c("Mother's education"="Mother_education",
+                "Wealth quintile"="Wealth_quintile"))
+```
+
+Row
+-----------------------
+
+## Child nutrition by background characteristics
+
+```{r}
+#nut_age <- read_csv("table14_nutr_status_by_age.csv")%>%
+
+nut_sex <- read_csv("table14_nutr_status_by_sex.csv")%>%
+  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
+  mutate(lab = str_c(perc_below2sd,"%"))%>%
+  mutate(Indicator1 ="Sex") %>%
+  rename(Indicator=Sex)
+
+nut_res <- read_csv("table14_nutr_status_by_residence.csv")%>%
+  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
+  mutate(lab = str_c(perc_below2sd,"%"))%>%
+  mutate(Indicator1 ="Residence") %>%
+  rename(Indicator=Residence)
+
+nut_motedu <- read_csv("table14_nutr_status_by_mother_edu.csv")%>%
+  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary"))))%>%
+  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
+  mutate(lab = str_c(perc_below2sd,"%"))%>%
+  mutate(Indicator1 ="Mother_education") %>%
+  rename(Indicator=`Mother's education`)
+
+nut_wealth <- read_csv("table14_nutr_status_by_wealth.csv")%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))%>%
+  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
+  mutate(lab = str_c(perc_below2sd,"%"))%>%
+  mutate(Indicator1 ="Wealth_quintile") %>%
+  rename(Indicator=`Wealth quintile`)
+
+nut_total <- rbind(nut_sex,nut_res,nut_motedu,nut_wealth)
+
+#if(input$nutr){
+renderPlot({
+  ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=measure, y=perc_below2sd, fill=Indicator))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="% below -2 SD^2 (Moderate)", title="", x="Nutritional measure", fill="Residence")+
+  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=12))
+},width = 1500, height=800)
+#}
+```
+
+
+Column
+-----------------------
+
+```{r}
+#else if(input$nutr1){
+renderPlot({
+  ggplot(nut_total[nut_total$Indicator1%in%input$nutr1,], aes(x=Indicator, y=perc_below2sd, fill=measure))+
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
+  #geom_jitter()+
+  theme_bw()+
+  labs( y="% below -2 SD^2 (Moderate)", title="", x="Indicator", fill="")+
+  scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-1.0, size=4) 
+},width = 1500, height=800)
+#}
+#else{return(NULL)}
+ 
+```
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("nutr2", "Choose nutritional measure to display:",
+              c("HFA"="HFA",
+                "WFA"="WFA",
+                "WFH"="WFH"))
+```
+
+
+```{r, include=FALSE}
+nutc <- read_csv("table14C_nutr_status_by_county.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
+                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+county <- st_read("./Kenya County shapefiles/County.shp")%>%
+  mutate(region=ifelse(Name%in%c("Kilifi","Kwale","Lamu", "Mombasa", "Taita Taveta", "Tana River"),"Coast", ifelse(Name%in%c("Garissa", "Mandera", "Wajir"),"North Eastern", ifelse(Name%in%c("Marsabit","Isiolo","Meru","Tharaka Nithi","Embu","Kitui","Machakos","Makueni"),"Eastern", ifelse(Name%in%c("Kiambu", "Kirinyaga","Muranga","Nyandarua", "Nyeri"),"Central", ifelse(Name%in%c("Bungoma",
+ "Busia","Kakamega","Vihiga"),"Western", ifelse(Name%in%c("Kisumu", "Siaya","Homa Bay","Kisii", "Migori","Nyamira"),"Nyanza", ifelse(Name%in%"Nairobi","Nairobi", "Rift Valley"))))))))%>%
+  rename(County=Name)
+```
+
+Row
+-----------------------
+
+## Child nutrition by county
+
+```{r}
+nutc1 <- full_join(county, nutc, by="County")%>%
+  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
+  mutate(names1=paste0(County,", ", perc_below3sd,"%","(",measure,")"))%>%
+  mutate(names2=paste0(County,", ", perc_below2sd,"%","(",measure,")"))
+
+renderGirafe({
+  nut_map2 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below2sd))+
+    ggiraph::geom_sf_interactive(aes(tooltip = names2),size=0.3)+
+    theme_void()+
+    scale_fill_gradient(low = "white", high = "#8c2d04")+
+    labs(x="", y="",fill="% below -2 SD^2 (Moderate)")+
+    theme(text=element_text(size=14)) 
+  nut_map2x<-girafe(ggobj = nut_map2,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 9)))
+  print(nut_map2x)
+})#,width = 1500, height=800)
+
+```
+
+Column
+-----------------------
+
+```{r}
+nutc1 <- full_join(county, nutc, by="County")%>%
+  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
+  mutate(names1=paste0(County,", ", perc_below3sd,"%","(",measure,")"))%>%
+  mutate(names2=paste0(County,", ", perc_below2sd,"%","(",measure,")"))
+
+renderGirafe({
+  nut_map1 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below3sd))+
+    ggiraph::geom_sf_interactive(aes(tooltip = names1),size=0.3)+
+    theme_void()+
+    scale_fill_gradient(low = "white", high = "#8c2d04")+
+    labs(x="", y="",fill=" % below -3 SD (Severe)")+
+    theme(text=element_text(size=14)) 
+  nut_map1x<-girafe(ggobj = nut_map1,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 9)))
+  print(nut_map1x)
+})#,width = 1500, height=800)
+```
+
+
+treated_nets {.hidden}
+==================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("54.2%"),
+  caption = "Households with at least 1 ITN",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("1.2"),
+  caption = "Average number of ITNs per household",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("37.1%"),
+  caption = "Households with at least 1 ITN\n per 2 persons who stayed last night",
   color = "darkgreen"
 )
 ```
@@ -800,44 +1132,567 @@ valueBox(
 
 ### Choose indicators to display
 
-
-
-
-
-
-Compare indicators
-============
-
 ```{r}
-
-# selectInput("char", "Choose type of characteristics to make comparisons between women and men interviewed:",
-#              c("Age"="Age",
-#                "Reported health status"="Health_Status",
-#                "Religion"="Religion",
-#                "Marital status"="Marital_Status",
-#                "Residence"="Residence",
-#                "Education Status"="Education_Status",
-#                "Wealth Quintile"="Wealth_Quintile",
-#                "By County"="County"))
-# ### datasets
-# 
-# nutc <- read_csv("table14C_nutr_status_by_county.csv")%>%
-#   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
-# 
-# itnc <- read_csv("table18C_ITN_by_county.csv")%>%
-#   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
-# 
-# fpc <- read_csv("table8c_fpusemarriedbycounty.csv")%>%
-#   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
-# 
-# teenpregc <- read_csv("table6_teenpregnancybycounty.csv")%>%
-#   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
-# 
-# violence <- read_csv("table_29C-Experience_of_physical_violence_by_county.csv")%>% 
-#   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
-# 
 
 ```
 
 
+Compare indicators by county
+============
 
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+
+
+```{r}
+
+### datasets
+
+#nutrition
+nutc <- read_csv("table14C_nutr_status_by_county.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+#ITN
+itnc <- read_csv("table18C_ITN_by_county.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+#family planning
+fpc <- read_csv("table8c_fpusemarriedbycounty.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+#teenage pregnancy
+teenpregc <- read_csv("table6_teenpregnancybycounty.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+#violence
+violencec <- read_csv("./table_29C-Experience_of_physical_violence_by_county/table_29C_Women.csv")%>% 
+  rename(County=`Background characteristic`)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  filter(!County%in%c("Total",NA))
+
+#maternal care  
+matcarec <- read_csv("./Edwin Tables/table10Cmaternalcarecounty.csv")%>% 
+  rename(County=`NAME_1`)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+#vaccination 
+vacc <- read_csv("./Edwin Tables/table11C_vaccinationbycounty.csv")%>% 
+  rename(County=`NAME_1`)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  mutate(CountyFullyVaccinated24=round(as.numeric(CountyFullyVaccinated24)))
+
+#hiv knowledge
+hivc <- read_csv("./Edwin Tables/table23_hiv_count_data.csv")%>% 
+  #rename(County=`NAME_1`)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+#hiv testing
+hiv_testc <- read_csv("./Edwin Tables/table25C .1 and .2_HIV_test_bind.csv")%>% 
+  #rename(County=`NAME_1`)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+## combine datasets
+comb <- nutc%>%left_join(itnc, by="County")%>%
+  left_join(fpc, by="County")%>%
+  left_join(teenpregc, by="County")%>%
+  left_join(violencec, by="County")%>%
+  left_join(matcarec, by="County")%>%
+  left_join(vacc, by="County")%>%
+  left_join(hivc, by="County")%>%
+  left_join(hiv_testc, by="County")%>%
+  mutate(lab=County)
+```
+
+hiv_test_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+hiv_prevent_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+
+contraceptive_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+
+maternal_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+vaccine_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+nutrition_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+fp_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+teen_preg_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+itn_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
+
+violence_county_comp {.hidden}
+==================
+
+Priority indicators {.sidebar}
+-----------------------------------
+<br>
+
+[Coverage of prior HIV testing](#hiv_test_county_comp)</br>
+
+[Knowledge about HIV prevention methods among young people](#hiv_prevent_county_comp)</br>
+
+[Current contraceptive use](#contraceptive_county_comp)</br>
+
+[Maternal care indicators](#maternal_county_comp)</br>
+
+[Childhood vaccination coverage](#vaccine_county_comp)</br>
+
+[Children nutritional status](#nutrition_county_comp)</br>
+
+[Family planning need and demand](#fp_county_comp)</br>
+
+[Teenage pregnancy](#teen_preg_county_comp)</br>
+
+[Household possession of ITNs](#itn_county_comp)</br>
+
+[Experience of physical violence](#violence_county_comp)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+## Row {data-height="200"}
+
+```{r}
+selectInput("comp", "Choose indicator to compare against:",
+              c("Coverage of prior HIV testing"="Ind1", 
+                "Knowledge about HIV prevention methods among young people"="Ind2",
+                "Current contraceptive use"="Ind3",
+                "Maternal care indicators"="Ind4",
+                "Childhood vaccination coverage"="Ind5",
+                "Children nutritional status"="Ind6",
+                "Family planning need and demand"="Ind7",
+                "Teenage pregnancy"="Ind8",
+                "Household possession of ITNs"="Ind9",
+                "Experience of physical violence"="Ind10"))
+```
