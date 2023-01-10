@@ -1,5 +1,5 @@
 ---
-title: "KNBS DHS2022"
+title: "Kenya DHS 2022"
 output: 
   flexdashboard::flex_dashboard:
     #theme:
@@ -82,18 +82,24 @@ valueBox(
 
 <br>
 
-Row
--------------------------------------
+## Column {data-width="200"}
 
-```{r, fig.height=10,fig.height=22}
+### Choose type of questionnaire to see the number of women and men interviewed:
 
-selectInput("quest", "Choose type of questionnaire to see the number of women and men interviewed:",
+```{r}
+selectInput("quest", "",
              c("Households interviewed"="All",
                "Participants: Men"="Male",
                "Participants: Women"="Female"))
 
+```
 
+<br>
 
+Column
+-------------------------------------
+
+```{r, fig.height=10,fig.height=22}
 kdhshouseholdinterviews <- read_csv("table1_dhshhinterviews.csv") %>%
   dplyr::mutate(Households = recode(Households, "Households selected" = "Selected","Households occupied" = "Occupied", "Households interviewed" = "Interviewed"))
 
@@ -122,7 +128,7 @@ renderPlot({
   facet_grid(residence~selection) +
   theme(text= element_text(size = 20, colour = "black", face = "bold")) +
   theme(strip.background =element_rect(fill="grey80"))
-        }, width = 1500, height=800) 
+        }, width = 1600, height=600) 
   
 
 
@@ -434,9 +440,12 @@ healthinsurancebywealthquintile <- read_csv( "table3_healthinsurancebywealthquin
   mutate(Indicator1="Wealth_quintile")
   
 # total health insurance data
-healthinsurance <- rbind(healthinsurancebyage,healthinsurancebyresidence,healthinsurancebywealthquintile) 
+healthinsurance <- rbind(healthinsurancebyage,healthinsurancebyresidence,healthinsurancebywealthquintile) %>%
+  mutate(Insurance=recode(Insurance, "Community_based"="Community based", "Private_commercial"="Private/commercial"))
 
 healthinsurance$Indicator <- fct_relevel(healthinsurance$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+healthinsurance$Insurance <- fct_relevel(healthinsurance$Insurance, "NHIF", "Private/commercial", "Community based", "Other", "Form of health insurance", "None/ Don't Know")
 
 renderPlot({
   ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge()) +
@@ -892,22 +901,21 @@ valueBox(
 <br>
 
 
-## Row {data-height="200"}
+## Row {data-height="100"}
 
 ```{r}
 selectInput("nutr", "Choose background indicators to display:",
               c("Sex"="Sex", 
-                "Residence"="Residence"))
-
-selectInput("nutr1", "Choose background indicators to display:",
-              c("Mother's education"="Mother_education",
+                "Residence"="Residence",
+                "Mother's education"="Mother_education",
                 "Wealth quintile"="Wealth_quintile"))
+
 ```
 
 Row
 -----------------------
 
-## Child nutrition by background characteristics
+### Child nutrition by background characteristics
 
 ```{r}
 #nut_age <- read_csv("table14_nutr_status_by_age.csv")%>%
@@ -940,38 +948,29 @@ nut_wealth <- read_csv("table14_nutr_status_by_wealth.csv")%>%
 
 nut_total <- rbind(nut_sex,nut_res,nut_motedu,nut_wealth)
 
-#if(input$nutr){
+
 renderPlot({
+  if(input$nutr%in%c("Sex", "Residence")){
   ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=measure, y=perc_below2sd, fill=Indicator))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+
   labs( y="% below -2 SD^2 (Moderate)", title="", x="Nutritional measure", fill="Residence")+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=12))
-},width = 1500, height=800)
-#}
-```
-
-
-Column
------------------------
-
-```{r}
-#else if(input$nutr1){
-renderPlot({
-  ggplot(nut_total[nut_total$Indicator1%in%input$nutr1,], aes(x=Indicator, y=perc_below2sd, fill=measure))+
+  } else{
+  ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=Indicator, y=perc_below2sd, fill=measure))+
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
-  #geom_jitter()+
   theme_bw()+
   labs( y="% below -2 SD^2 (Moderate)", title="", x="Indicator", fill="")+
   scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
   theme(text=element_text(size=12))+
   geom_text(aes(label = lab), hjust=-1.0, size=4) 
+}
 },width = 1500, height=800)
-#}
-#else{return(NULL)}
- 
+
 ```
+
+
 
 ## Row {data-height="200"}
 
@@ -997,7 +996,7 @@ county <- st_read("./Kenya County shapefiles/County.shp")%>%
 Row
 -----------------------
 
-## Child nutrition by county
+### Child nutrition by county
 
 ```{r}
 nutc1 <- full_join(county, nutc, by="County")%>%
