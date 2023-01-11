@@ -2068,7 +2068,7 @@ renderPlot({ggplot(family_planning[family_planning$indicator1%in%input$family_pl
 
 ```
 
-family_planning {.hidden}
+physical_violence {.hidden}
 ==============================
 
 Inputs {.sidebar}
@@ -2158,8 +2158,115 @@ valueBox(
 
 <br>
 
-Column {data-width="600"}
+Row {data-width="600"}
 ---------------------------------
+
+#### Physical violence characteristics
+
+```{r}
+
+selectInput("physical_violence", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Marital status"="Marital status",
+                "Wealth quintile"="Wealth quintile"))
+```
+
+```{r, include=F}
+## import data
+# load data
+table29_men<- read.csv('table_29_Men.csv') %>% 
+  mutate(Participants='Men')
+table29_women<- read.csv('table_29_Women.csv',na.strings="na") %>% 
+  mutate(Participants='Women')
+table29C_women<- read.csv('table_29C_Women.csv',na.strings="na") %>% 
+  mutate(Participants='Women')
+table29C_men<- read.csv('Table29C_Men.csv',na.strings="na") %>% 
+  mutate(Participants='Men')
+county <- st_read("County.shp")
+
+table29 <- dplyr::bind_rows(table29_men, table29_women)
+table29C <- dplyr::bind_rows(table29C_women,table29C_men) %>%
+  select(-Number)%>%
+  pivot_longer(c(2:5), names_to="experience", values_to="value")
+
+
+
+
+
+```
+
+```{r}
+renderPlot({ggplot(table29[table29$Background.characteristic%in%input$physical_violence,]) + 
+  geom_col(mapping=aes(x=Indicator,y=Value,fill=Category),
+           position='dodge') + facet_grid(.~Participants) + 
+  labs( y = 'Percentage(%)',x = 'Marital Status',fill='Experience of Violence', title="Marital Status") +
+      theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1400, height=400)
+
+
+
+```
+
+<br>
+
+Row {data-width="100"}
+---------------------------------
+
+##### Physical violence experiences
+
+```{r}
+selectInput("physical_violence1", "",
+              c("Experienced physical violence since age 15"="Percentage.who.have.experienced.physical.violence.since.age.15",
+                "Often"="Often",
+                "Sometimes"="Sometimes",
+                "Often or Sometimes"="Often.or.sometimes"))
+```
+
+<br>
+
+Row {data-width="600"}
+---------------------------------
+
+##### County data by experience of physical violence
+
+```{r}
+
+
+
+renderPlot({
+physical_violence <- full_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
+
+#table29C<-table29C[c(0:47),c(0:7)]
+#men <- full_join(county,table29C_men,by=c("Name"="Background.characteristic")) %>%
+#  mutate(sex="Men")
+
+
+#physical_violence <- rbind(women, men)
+
+  ggplot(physical_violence) + geom_sf(aes(fill=value))+
+  theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+facet_grid(.~Participants)+ 
+  labs(fill="Percentage")
+
+},width=700, height=400)
+
+
+```
+
+##### County data
+
+```{r}
+renderPlot({
+   physical_violence <- full_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
+
+   ggplot(physical_violence, aes(x = reorder(Name,value),y = value)) + 
+  geom_bar(stat="identity", aes(fill=Participants)) + coord_flip() + theme_bw() +
+  labs(fill="Percentage", x="County", y="Percentage")
+},width=700, height=400)
+
+
+```
+
+
 
 Compare indicators by county
 ============
