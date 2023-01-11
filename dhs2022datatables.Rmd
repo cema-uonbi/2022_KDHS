@@ -1934,33 +1934,57 @@ write_csv(needdemandforfpusemarriedbywealth, "table9_needdemandforfpusemarriedby
 ```{r}
 needdemandforfpusemarriedbycounty1 <- tbls[[29]] %>%
   slice(5:41) %>% # by county
-  dplyr::select(V1:V8) %>%
+  dplyr::select(V1:V3,V5,V7) %>%
   dplyr::rename(County = V1,
-                Unmet_need= V2,
-                All_methods = V3, 
-                Modern_methods = V4,
-                Total_demand = V5,
-                Number_women = V6,
-                Demand_satisfied_all_methods = V7,
-                Demand_satisfied_modern_methods = V8)
+                "Unmet need"= V2,
+                "Met need (all methods)" = V3, 
+                #Modern_methods = V4,
+                "Total demand" = V5,
+                #Number_women = V6,
+                "Demand satisfied (all methods)" = V7) #,
+                #Demand_satisfied_modern_methods = V8)
 
 needdemandforfpusemarriedbycounty2 <- tbls[[30]] %>%
   slice(4:13) %>% # by county
-  dplyr::select(V1:V8) %>%
+  dplyr::select(V1:V3,V5,V7) %>%
   dplyr::rename(County = V1,
-                Unmet_need= V2,
-                All_methods = V3, 
-                Modern_methods = V4,
-                Total_demand = V5,
-                Number_women = V6,
-                Demand_satisfied_all_methods = V7,
-                Demand_satisfied_modern_methods = V8)
+                "Unmet need"= V2,
+                "Met need (all methods)" = V3, 
+                #Modern_methods = V4,
+                "Total demand" = V5,
+                #Number_women = V6,
+                "Demand satisfied (all methods)" = V7) #,
+                #Demand_satisfied_modern_methods = V8)
 #needdemandforfpusemarriedbycounty2
 
-needdemandforfpusemarriedbycounty <- bind_rows(needdemandforfpusemarriedbycounty1,needdemandforfpusemarriedbycounty2)
+needdemandforfpusemarriedbycounty <- bind_rows(needdemandforfpusemarriedbycounty1,needdemandforfpusemarriedbycounty2) %>%
+  pivot_longer(cols = "Unmet need":"Demand satisfied (all methods)",
+               names_to = "Family_planning",
+               values_to = "Percent")
 
 needdemandforfpusemarriedbycounty
 write_csv(needdemandforfpusemarriedbycounty, "table9c_needdemandforfpusemarriedbycounty.csv")
+
+## Visualization for the need and demand for family planning
+
+needdemandforfpusemarriedbycountyvisual <- read_csv("table9c_needdemandforfpusemarriedbycounty.csv")
+  
+ needdemandforfpusemarriedbycountyvisuals <- needdemandforfpusemarriedbycountyvisual %>%
+  arrange(desc(Percent)) %>%
+  ggplot(aes(x=reorder(County, Percent), y=Percent)) +
+geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
+  theme_bw() + coord_flip() +
+  geom_text(aes(label=Percent), hjust=1.3, size=5, color="white")+
+  coord_flip() + 
+  ylab("Weighted percent") + xlab("County") +
+  facet_grid(~Family_planning) +
+  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
+  theme(strip.background =element_rect(fill="darkorange")) 
+
+needdemandforfpusemarriedbycountyvisuals
+
 ```
 
 

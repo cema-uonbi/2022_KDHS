@@ -143,8 +143,8 @@ participantsinterviews <- read_csv("table1_participantsinterviews.csv") %>%
   dplyr::mutate(Participant = recode(Respondents, "Number of eligible women" = "Eligible women","Number of eligible women interviewed" = "Women interviewed", "Number of eligible men" = "Eligible men","Number of eligible men interviewed" = "Men interviewed"))
 
 # join the two datasets
-totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews) # %>%
-  #mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires"))
+totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews)  %>%
+  mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires"))
 
 renderPlot({
  ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest,], aes(x=Respondents, y=numbers)) + 
@@ -360,7 +360,7 @@ renderPlot({
     ggplot(aes(x=Grouping, y=Weighted_percent, color = Participants)) + 
   geom_point(stat = "identity", size= 20) + 
   theme_bw() +
-  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust=-0.5, size=4, color="black")+
+  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.5, size=4, color="white")+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_color_manual(values=c("darkgreen", "red"))+
   theme(text=element_text(size=18, face="bold"))}
     else if(input$char%in%"County"){
@@ -379,7 +379,7 @@ renderPlot({
     ggplot(aes(x=Grouping, y=Weighted_percent, fill = Participants)) + 
   geom_col(stat = "identity", size= 10) + 
   theme_bw() +
-  geom_text(aes(label=Weighted_percent), vjust=-1.5, size=4, fill="black")+
+  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, fill="white")+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("darkgreen", "red"))+
   theme(text=element_text(size=20, face="bold")) 
     }
@@ -1023,7 +1023,7 @@ renderPlot({
   labs( y="% below -2 SD^2 (Moderate)", title="", x="Indicator", fill="")+
   scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
   theme(text=element_text(size=20, face="bold"))+
-  geom_text(aes(label = lab), hjust=-1.0, size=4) 
+  geom_text(aes(label = lab), position=position_stack(hjust = 0.5), size=4) 
 }
 },width = 1300, height=400)
 
@@ -2007,7 +2007,7 @@ modernfpusemarrieducationvisual <- read_csv("table8_modernfpusemarrieducation.cs
 # by wealth quintile
 modernfpusemarriedbywealthquintilevisuals <- read_csv("table8_modernfpusemarriedbywealthquintile.csv") %>%
   mutate(Marital_status="Married") %>%
-  mutate(indicator1="Wealtn quintile") %>%
+  mutate(indicator1="Wealth_quintile") %>%
   rename(Indicator="Wealth_quintile") %>%
   mutate(type="Modern")
 
@@ -2044,12 +2044,12 @@ tradfpusemarriedbyeducationvisual <- read_csv("table8_tradfpusemarriedbyeducatio
 # by wealth quintile
 tradfpusemarriedbywealthquintilevisual <- read_csv("table8_tradfpusemarriedbywealthquintile.csv") %>%
   mutate(Marital_status="Married") %>%
-  mutate(indicator1="Wealtn quintile") %>%
+  mutate(indicator1="Wealth_quintile") %>%
   rename(Indicator="Wealth_quintile") %>%
   mutate(type="Traditional")
 
 # join the data
-family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals, modernfpusemarriedbynumberofchildren, modernfpusemarrieducationvisual, modernfpusemarriedbywealthquintilevisuals, tradfpusmarriedbynumberofchildrenvisual,tradfpusemarriedandunmarriedbyagevisual, tradfpusemarriedbyeducationvisual,tradfpusemarriedbywealthquintilevisual) %>%
+family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals, modernfpusemarriedbynumberofchildren, modernfpusemarrieducationvisual, modernfpusemarriedbywealthquintilevisuals, tradfpusmarriedbynumberofchildrenvisual,tradfpusemarriedandunmarriedbyagevisual, tradfpusemarriedbyeducationvisual,tradfpusemarriedbywealthquintilevisual, modernfpusemarriedandunmarriedbyagevisual) %>%
   mutate(Contraceptive_use=recode(Contraceptive_use, "Any_method"="Any method", "Modern_method"="Modern method", "Traditional_method"="Traditional method")) %>%
   mutate(indicator1= recode(indicator1, "Number_of_children"="Number of children", "Wealth_quintile"="wealth quintile"))
 
@@ -2161,7 +2161,7 @@ valueBox(
 Row {data-width="600"}
 ---------------------------------
 
-#### Physical violence characteristics
+### Physical violence characteristics
 
 ```{r}
 
@@ -2201,40 +2201,31 @@ renderPlot({ggplot(table29[table29$Background.characteristic%in%input$physical_v
   geom_col(mapping=aes(x=Indicator,y=Value,fill=Category),
            position='dodge') + facet_grid(.~Participants) + 
   labs( y = 'Percentage(%)',x = 'Marital Status',fill='Experience of Violence', title="Marital Status") +
-      theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1400, height=400)
+      theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
 
 
 
 ```
 
+
 <br>
 
-Row {data-width="100"}
+Column {data-height="600"}
 ---------------------------------
 
-##### Physical violence experiences
+### County data by experience of physical violence
 
 ```{r}
+
 selectInput("physical_violence1", "",
               c("Experienced physical violence since age 15"="Percentage.who.have.experienced.physical.violence.since.age.15",
                 "Often"="Often",
                 "Sometimes"="Sometimes",
                 "Often or Sometimes"="Often.or.sometimes"))
-```
-
-<br>
-
-Row {data-width="600"}
----------------------------------
-
-##### County data by experience of physical violence
-
-```{r}
-
 
 
 renderPlot({
-physical_violence <- full_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
+physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
 
 #table29C<-table29C[c(0:47),c(0:7)]
 #men <- full_join(county,table29C_men,by=c("Name"="Background.characteristic")) %>%
@@ -2247,26 +2238,130 @@ physical_violence <- full_join(county,table29C[table29C$experience%in%input$phys
   theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+facet_grid(.~Participants)+ 
   labs(fill="Percentage")
 
-},width=700, height=400)
+},width=700, height=500)
 
 
 ```
 
-##### County data
+### County data
+
+<br>
+<br>
 
 ```{r}
 renderPlot({
-   physical_violence <- full_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
+   physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
 
    ggplot(physical_violence, aes(x = reorder(Name,value),y = value)) + 
   geom_bar(stat="identity", aes(fill=Participants)) + coord_flip() + theme_bw() +
-  labs(fill="Percentage", x="County", y="Percentage")
-},width=700, height=400)
+  labs(fill="Percentage", x="County", y="Percentage")+theme(text=element_text(size=18, face="bold"))
+},width=800, height=500)
 
 
 ```
 
 
+maternal_care {.hidden}
+==============================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("89.3%"),
+  caption = "of women who had a live birth /n in the 
+2 years preceding the survey /n were delivered /n by a skilled provider
+",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("82.3%"),
+  caption = "of women who had a live birth /n in the 
+2 years preceding the survey /n delivered /n in a health facility",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("66%"),
+  caption = "of women who had a live birth /n in the 
+2 years preceding the survey /n had 4+ /n ANC visits",
+  color = "darkgreen"
+)
+``` 
+
+
+<br>
+
+Row {data-width="600"}
+---------------------------------
+
+```{r}
+
+# import data
+
+hivc <- read_csv("table23_hiv_count_data.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Elgeyo-Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Murang'a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  mutate(names1=paste0(County,", ", using_condoms,"%"))%>%
+  mutate(names2=paste0(County,", ", limit_sex,"%"))%>%
+  mutate(names3=paste0(County,", ", hivprevention_knowledge,"%")) %>%
+  pivot_longer(c(limit_sex, using_condoms, hivprevention_knowledge), names_to = )
+
+hivc1 <- full_join(county, hivc, by="County")
+
+```
 
 Compare indicators by county
 ============
