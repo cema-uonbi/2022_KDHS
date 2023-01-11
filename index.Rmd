@@ -143,8 +143,8 @@ participantsinterviews <- read_csv("table1_participantsinterviews.csv") %>%
   dplyr::mutate(Participant = recode(Respondents, "Number of eligible women" = "Eligible women","Number of eligible women interviewed" = "Women interviewed", "Number of eligible men" = "Eligible men","Number of eligible men interviewed" = "Men interviewed"))
 
 # join the two datasets
-totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews) # %>%
-  #mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires"))
+totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews)  %>%
+  mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires"))
 
 renderPlot({
  ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest,], aes(x=Respondents, y=numbers)) + 
@@ -360,7 +360,7 @@ renderPlot({
     ggplot(aes(x=Grouping, y=Weighted_percent, color = Participants)) + 
   geom_point(stat = "identity", size= 20) + 
   theme_bw() +
-  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust=-0.5, size=4, color="black")+
+  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.5, size=4, color="white")+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_color_manual(values=c("darkgreen", "red"))+
   theme(text=element_text(size=18, face="bold"))}
     else if(input$char%in%"County"){
@@ -379,7 +379,7 @@ renderPlot({
     ggplot(aes(x=Grouping, y=Weighted_percent, fill = Participants)) + 
   geom_col(stat = "identity", size= 10) + 
   theme_bw() +
-  geom_text(aes(label=Weighted_percent), vjust=-1.5, size=4, fill="black")+
+  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, fill="white")+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("darkgreen", "red"))+
   theme(text=element_text(size=20, face="bold")) 
     }
@@ -1023,7 +1023,7 @@ renderPlot({
   labs( y="% below -2 SD^2 (Moderate)", title="", x="Indicator", fill="")+
   scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
   theme(text=element_text(size=20, face="bold"))+
-  geom_text(aes(label = lab), hjust=-1.0, size=4) 
+  geom_text(aes(label = lab), position=position_stack(hjust = 0.5), size=4) 
 }
 },width = 1300, height=400)
 
@@ -2007,7 +2007,7 @@ modernfpusemarrieducationvisual <- read_csv("table8_modernfpusemarrieducation.cs
 # by wealth quintile
 modernfpusemarriedbywealthquintilevisuals <- read_csv("table8_modernfpusemarriedbywealthquintile.csv") %>%
   mutate(Marital_status="Married") %>%
-  mutate(indicator1="Wealtn quintile") %>%
+  mutate(indicator1="Wealth_quintile") %>%
   rename(Indicator="Wealth_quintile") %>%
   mutate(type="Modern")
 
@@ -2044,12 +2044,12 @@ tradfpusemarriedbyeducationvisual <- read_csv("table8_tradfpusemarriedbyeducatio
 # by wealth quintile
 tradfpusemarriedbywealthquintilevisual <- read_csv("table8_tradfpusemarriedbywealthquintile.csv") %>%
   mutate(Marital_status="Married") %>%
-  mutate(indicator1="Wealtn quintile") %>%
+  mutate(indicator1="Wealth_quintile") %>%
   rename(Indicator="Wealth_quintile") %>%
   mutate(type="Traditional")
 
 # join the data
-family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals, modernfpusemarriedbynumberofchildren, modernfpusemarrieducationvisual, modernfpusemarriedbywealthquintilevisuals, tradfpusmarriedbynumberofchildrenvisual,tradfpusemarriedandunmarriedbyagevisual, tradfpusemarriedbyeducationvisual,tradfpusemarriedbywealthquintilevisual) %>%
+family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals, modernfpusemarriedbynumberofchildren, modernfpusemarrieducationvisual, modernfpusemarriedbywealthquintilevisuals, tradfpusmarriedbynumberofchildrenvisual,tradfpusemarriedandunmarriedbyagevisual, tradfpusemarriedbyeducationvisual,tradfpusemarriedbywealthquintilevisual, modernfpusemarriedandunmarriedbyagevisual) %>%
   mutate(Contraceptive_use=recode(Contraceptive_use, "Any_method"="Any method", "Modern_method"="Modern method", "Traditional_method"="Traditional method")) %>%
   mutate(indicator1= recode(indicator1, "Number_of_children"="Number of children", "Wealth_quintile"="wealth quintile"))
 
