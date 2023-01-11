@@ -194,7 +194,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 
 [House ownership](#home_ownership)</br>
@@ -237,7 +237,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -353,40 +353,75 @@ respondentsdata <- rbind(respondentsbyage, healthstatus, religionrespondents, ma
 
 respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Second", "Middle", "Fourth", "Highest")
 # visualize the data
+# renderPlot({
+#   if (input$char%in%c("Wealth_Quintile", "Age")){
+#    respondentsdata%>%
+#     filter(Indicator==input$char)%>%
+#     ggplot(aes(x=Grouping, y=Weighted_percent, color = Participants)) + 
+#   geom_point(stat = "identity", size= 20) + 
+#   theme_bw() +
+#   geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.5, size=4, color="white")+
+#   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_color_manual(values=c("darkgreen", "red"))+
+#   theme(text=element_text(size=18, face="bold"))}
+#     else if(input$char%in%"County"){
+#       respondentsdata%>%
+#     filter(Indicator==input$char)%>%
+#       ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent, fill = Participants)) + 
+#   geom_col(stat = "identity", size= 10) + coord_flip()+
+#   theme_bw() +
+#   geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, color="white", label.size=0.7)+
+#   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("darkgreen", "red"))+
+#   theme(text=element_text(size=20, face="bold")) 
+#       
+#     } else {
+#      respondentsdata%>%
+#     filter(Indicator==input$char)%>%
+#     ggplot(aes(x=Grouping, y=Weighted_percent, fill = Participants)) + 
+#   geom_col(stat = "identity", size= 10) + 
+#   theme_bw() +
+#   geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, fill="white")+
+#   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("darkgreen", "red"))+
+#   theme(text=element_text(size=20, face="bold")) 
+#     }
+#   }, width = 1420, height=700)
+  
+
 renderPlot({
   if (input$char%in%c("Wealth_Quintile", "Age")){
    respondentsdata%>%
     filter(Indicator==input$char)%>%
-    ggplot(aes(x=Grouping, y=Weighted_percent, color = Participants)) + 
-  geom_point(stat = "identity", size= 20) + 
+    ggplot(aes(x=Grouping, y=Weighted_percent)) + 
+  geom_point(stat = "identity", size= 20, color = "cyan4") + 
   theme_bw() +
-  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.5, size=4, color="white")+
-  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_color_manual(values=c("darkgreen", "red"))+
+      facet_grid(~Participants) +
+  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.5, size=4, color="white", face = "bold")+
+  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_color_manual(values=c("cyan4", "red4"))+
+       theme(strip.background =element_rect(fill="darkorange")) +
   theme(text=element_text(size=18, face="bold"))}
     else if(input$char%in%"County"){
       respondentsdata%>%
     filter(Indicator==input$char)%>%
-      ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent, fill = Participants)) + 
-  geom_col(stat = "identity", size= 10) + coord_flip()+
+      ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
+  geom_col(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
   theme_bw() +
-  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, color="white", label.size=0.7)+
-  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("darkgreen", "red"))+
-  theme(text=element_text(size=20, face="bold")) 
+        facet_grid(~Participants) +
+  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, color="white", face = "bold", label.size=0.7)+
+  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
+  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange")) 
       
     } else {
      respondentsdata%>%
     filter(Indicator==input$char)%>%
-    ggplot(aes(x=Grouping, y=Weighted_percent, fill = Participants)) + 
-  geom_col(stat = "identity", size= 10) + 
+    ggplot(aes(x=Grouping, y=Weighted_percent)) + 
+  geom_col(stat = "identity", size= 10, fill = "cyan4") + 
   theme_bw() +
-  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, fill="white")+
-  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("darkgreen", "red"))+
-  theme(text=element_text(size=20, face="bold")) 
+        facet_grid(~Participants) +
+  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, fill="white", face = "bold")+
+  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
+  theme(text=element_text(size=20, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
     }
-  }, width = 1420, height=700)
+  }, width = 1400, height=700)
   
-
-
 ```
 
 health_insurance {.hidden}
@@ -420,7 +455,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -543,7 +578,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -693,7 +728,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -808,7 +843,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -912,7 +947,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -1138,7 +1173,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -1322,7 +1357,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -1509,7 +1544,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -1685,7 +1720,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -1834,7 +1869,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -2099,7 +2134,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -2292,7 +2327,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -2390,7 +2425,7 @@ Inputs {.sidebar}
 
 [Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+[Coverage of prior HIV testing](#HIV_testing)</br>
 
 [House ownership](#home_ownership)</br>
 
@@ -2477,149 +2512,6 @@ renderGirafe({
 ```
 
 <br>
-
-hiv_test {.hidden}
-==============================
-
-Inputs {.sidebar}
------------------------------------
-
-<br>
-
-[Characteristics of Respondents](#respondents_characteristics)</br>
-
-[Health Insurance Coverage](#health_insurance)</br>
-
-[Disability among the household population](#disability_pop)</br>
-
-[Fertility rates](#fertility)</br>
-
-[Teenage pregnancy](#teenage_pregnancy)</br>
-
-[Current use of contraception](#contraception_use)</br>
-
-[Family planning need and demand among married women](#family_planning)</br>
-
-[Maternal care](#maternal_care)</br>
-
-[Vaccinations](#vaccinations)</br>
-
-[Nutritional status](#nutr_status)</br>
-
-[Insecticide treated nets](#treated_nets)</br>
-
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
-
-[Coverage of prior HIV testing](#hiv_test)</br>
-
-[House ownership](#home_ownership)</br>
-
-[Agricultural land ownership](#agric_land_ownership)</br>
-
-[Non-agricultural land ownership](#nonagric_land_ownership)</br>
-
-[Physical violence](#physical_violence)</br>
-
-## Row {data-width="200"}
-
-<br>
-
-### {.value-box}
-
-
-```{r}
-
-valueBox(
-  value = paste("85%"),
-  caption = "of women have ever tested for HIV",
-  color = "black"
-)
-
-```
-
-### {.value-box}
-
-```{r}
-valueBox(
-  value = paste("27%"),
-  caption = "of men have ever tested for HIV",
-  color = "red"
-)
-```
-
-### {.value-box}
-
-```{r}
-valueBox(
-  value = paste("47%"),
-  caption = "of women have tested for HIV in the \nlast 12 months and received the results",
-  color = "darkgreen"
-)
-```
-
-### {.value-box}
-
-```{r}
-valueBox(
-  value = paste("39%"),
-  caption = "of men have tested for HIV in the \nlast 12 months and received the results",
-  color = "darkgreen"
-)
-```
-
-
-<br>
-
-Column {data-height="800"}
----------------------------------
-
-### Knowledge on HIV prevention
-
-```{r}
-
-selectInput("hiv_test", "",
-              c("Have ever tested for HIV"="ever_tested",
-                "Have ever tested & received results"="recieved_results",
-                "Tested in the last 12 months and received results"="received_results_last_test"))
-
-
-# import data
-
-hiv_testc <- read_csv("table25C .1 and .2_HIV_test_bind.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
-  pivot_longer(c(recieved_results,ever_tested,received_results_last_test ),names_to ="indicators", values_to="values") %>%
-  mutate(names1=paste0(County,", ", values,"%"))
-
-
-
-
-hiv_testc_men <- full_join(county, hiv_testc[ hiv_testc$Participants%in%"men",], by=c("Name"="County"))
-hiv_testc_women <- full_join(county,hiv_testc[ hiv_testc$Participants%in%"Women",], by=c("Name"="County"))
-hiv_testc1 <- rbind(hiv_testc_men , hiv_testc_women) %>%
-  mutate(Participants=str_to_title(Participants))
-
-#visualization
-
-renderGirafe({
-  
-  map2<- ggplot(hiv_testc1[hiv_testc1$indicators%in%input$hiv_test,])+
-  geom_sf_interactive(aes(fill=values, tooltip=names1),color="grey80", size=0.0)+
-  theme_void()+facet_grid(.~Participants)+
-  scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion")+
-  theme(text=element_text(size=14))
-  x <- girafe(ggobj = map2,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 4)), width=6, height=3)
-    print(x)})
-
-
-```
-
-<br>
-
 
 Compare indicators by county
 ============
@@ -3191,7 +3083,7 @@ Recommended citation of the report from which the data is drawn from:
 
 KNBS and ICF. 2022. Kenya Demographic and Health Survey 2022. Key Indicators Report. Nairobi, Kenya, and Rockville, Maryland, USA: KNBS and ICF.
 
-The analytics and visualizations app is created with the support of the *Center for Epidemiological Modelling and Analysis* (CEMA) at the University of Nairobi, Kenya.
+The analytics and visualizations are created with the support of the *Center for Epidemiological Modelling and Analysis* (CEMA) at the University of Nairobi, Kenya.
 
 
 
