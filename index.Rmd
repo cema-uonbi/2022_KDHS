@@ -2261,6 +2261,107 @@ renderPlot({
 ```
 
 
+maternal_care {.hidden}
+==============================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("89.3%"),
+  caption = "of women who had a live birth /n in the 
+2 years preceding the survey /n were delivered /n by a skilled provider
+",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("82.3%"),
+  caption = "of women who had a live birth /n in the 
+2 years preceding the survey /n delivered /n in a health facility",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("66%"),
+  caption = "of women who had a live birth /n in the 
+2 years preceding the survey /n had 4+ /n ANC visits",
+  color = "darkgreen"
+)
+``` 
+
+
+<br>
+
+Row {data-width="600"}
+---------------------------------
+
+```{r}
+
+# import data
+
+hivc <- read_csv("table23_hiv_count_data.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Elgeyo-Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Murang'a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  mutate(names1=paste0(County,", ", using_condoms,"%"))%>%
+  mutate(names2=paste0(County,", ", limit_sex,"%"))%>%
+  mutate(names3=paste0(County,", ", hivprevention_knowledge,"%")) %>%
+  pivot_longer(c(limit_sex, using_condoms, hivprevention_knowledge), names_to = )
+
+hivc1 <- full_join(county, hivc, by="County")
+
+```
 
 Compare indicators by county
 ============
