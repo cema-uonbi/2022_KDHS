@@ -2161,7 +2161,7 @@ valueBox(
 Row {data-width="600"}
 ---------------------------------
 
-#### Physical violence characteristics
+### Physical violence characteristics
 
 ```{r}
 
@@ -2201,40 +2201,31 @@ renderPlot({ggplot(table29[table29$Background.characteristic%in%input$physical_v
   geom_col(mapping=aes(x=Indicator,y=Value,fill=Category),
            position='dodge') + facet_grid(.~Participants) + 
   labs( y = 'Percentage(%)',x = 'Marital Status',fill='Experience of Violence', title="Marital Status") +
-      theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1400, height=400)
+      theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
 
 
 
 ```
 
+
 <br>
 
-Row {data-width="100"}
+Column {data-height="600"}
 ---------------------------------
 
-##### Physical violence experiences
+### County data by experience of physical violence
 
 ```{r}
+
 selectInput("physical_violence1", "",
               c("Experienced physical violence since age 15"="Percentage.who.have.experienced.physical.violence.since.age.15",
                 "Often"="Often",
                 "Sometimes"="Sometimes",
                 "Often or Sometimes"="Often.or.sometimes"))
-```
-
-<br>
-
-Row {data-width="600"}
----------------------------------
-
-##### County data by experience of physical violence
-
-```{r}
-
 
 
 renderPlot({
-physical_violence <- full_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
+physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
 
 #table29C<-table29C[c(0:47),c(0:7)]
 #men <- full_join(county,table29C_men,by=c("Name"="Background.characteristic")) %>%
@@ -2247,21 +2238,24 @@ physical_violence <- full_join(county,table29C[table29C$experience%in%input$phys
   theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+facet_grid(.~Participants)+ 
   labs(fill="Percentage")
 
-},width=700, height=400)
+},width=700, height=500)
 
 
 ```
 
-##### County data
+### County data
+
+<br>
+<br>
 
 ```{r}
 renderPlot({
-   physical_violence <- full_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
+   physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
 
    ggplot(physical_violence, aes(x = reorder(Name,value),y = value)) + 
   geom_bar(stat="identity", aes(fill=Participants)) + coord_flip() + theme_bw() +
-  labs(fill="Percentage", x="County", y="Percentage")
-},width=700, height=400)
+  labs(fill="Percentage", x="County", y="Percentage")+theme(text=element_text(size=18, face="bold"))
+},width=800, height=500)
 
 
 ```
