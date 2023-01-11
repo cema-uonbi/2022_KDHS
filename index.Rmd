@@ -342,6 +342,8 @@ countyrespondents <- read_csv("table2_participantsbycounty.csv") %>%
   arrange(desc(Weighted_percent)) %>%
   mutate(Indicator="County") %>%
   rename(Grouping=County)
+
+
   
 # join the datasets with participants characteristics
 
@@ -1906,6 +1908,11 @@ selectInput("family_planning", "",
                 "Residence"="Residence",
                 "Wealth quintile"="Wealth quintile",
                 "By County"="County"))
+
+selectInput("fp_type", "Type of family planning",
+              c("Any method:summary"="Any",
+                "Modern method: Specific"="Modern",
+                "Traditional method: Specific"="Traditional"))
 ```
 
 ```{r}
@@ -1913,50 +1920,127 @@ selectInput("family_planning", "",
 
 # import data
 
-# family planning
+# family planning: any
 fpanyusemarriedbynumberofchildrenvisual <- read_csv("fpanyusemarriedbynumberofchildren.csv") %>%
-  mutate(Marital_status="Married and Unmarried") %>%
+  mutate(Marital_status="Married") %>%
   mutate(indicator1="Number_of_children") %>%
-  rename(Indicator=Number_of_children)
+  rename(Indicator=Number_of_children) %>%
+  mutate(type="Any")
 
 # by age
 fpanyusemarriedunmarriedbyagevisual <- read_csv("table8_fpanyusemarriedunmarriedbyage.csv") %>%
   mutate(indicator1="Age") %>%
-  rename(Indicator=Age_of_respondent)
+  rename(Indicator=Age_of_respondent) %>%
+  mutate(type="Any")
 
 # by residence
 fpanyusemarriedunmarriedbyresidencevisual <- read_csv("table8_fpanyusemarriedunmarriedbyresidence.csv") %>%
   mutate(indicator1="Residence") %>%
-  rename(Indicator=Residence)
+  rename(Indicator=Residence) %>%
+  mutate(type="Any")
 
 # by education
 fpanyusemarriedbyeducationvisual <- read.csv("table8_fpanyusemarriedbyeducation.csv") %>%
-  mutate(Marital_status="Married and Unmarried") %>%
+  mutate(Marital_status="Married") %>%
   mutate(indicator1="Education") %>%
-  rename(Indicator="Education_status")
+  rename(Indicator="Education_status") %>%
+  mutate(type="Any")
 
 # wealth quintile
 fpanyusemarriedbywealthvisual <- read.csv("table8_fpanyusemarriedbywealth.csv") %>%
-  mutate(Marital_status="Married and Unmarried") %>%
+  mutate(Marital_status="Married") %>%
   mutate(indicator1="Wealth_quintile") %>%
-  rename(Indicator=Wealth_quintile)
+  rename(Indicator=Wealth_quintile) %>%
+  mutate(type="Any")
   
 # by county
 fpanyusemarriedbycountyvisuals <- read_csv("table8c_fpanyusemarriedbycounty.csv") %>%
-  mutate(Marital_status="Married and Unmarried") %>%
+  mutate(Marital_status="Married") %>%
   mutate(indicator1="County") %>%
-  rename(Indicator=County)
-  
+  rename(Indicator=County) %>%
+  mutate(type="Any")
+ 
+# modern family planing
+# by number of chidren
+modernfpusemarriedbynumberofchildren <- read.csv("table8_modernfpusemarriedbynumberofchildren.csv") %>% 
+  mutate(indicator1="Number of children") %>%
+  rename(Indicator=Number_of_children) %>%
+  mutate(type="Modern")
+
+#  by age
+modernfpusemarriedandunmarriedbyagevisual <- read_csv("table8_modernfpusemarriedandunmarriedbyage.csv") %>%   
+  mutate(indicator1="Age") %>%
+  rename(Indicator=Age) %>%
+  mutate(type="Modern")
+
+# by residential
+modernfpusemarriedandunmarriedbyresidencevisual <- read_csv("table8_modernfpusemarriedandunmarriedbyresidence.csv") %>%
+  mutate(indicator1="Residence") %>%
+  rename(Indicator=Residence) %>%
+  mutate(type="Modern")
+
+#by education
+modernfpusemarrieducationvisual <- read_csv("table8_modernfpusemarrieducation.csv") %>%
+  mutate(Education_status = fct_relevel(Education_status, 
+                                        'No education','Primary','Secondary','More than secondary')) %>%
+  mutate(Marital_status="Married") %>%
+  mutate(indicator1="Education") %>%
+  rename(Indicator="Education_status") %>%
+  mutate(type="Modern")
+
+# by wealth quintile
+modernfpusemarriedbywealthquintilevisuals <- read_csv("table8_modernfpusemarriedbywealthquintile.csv") %>%
+  mutate(Marital_status="Married") %>%
+  mutate(indicator1="Wealtn quintile") %>%
+  rename(Indicator="Wealth_quintile") %>%
+  mutate(type="Modern")
+
+# traditional methods
+
+# by number of children
+tradfpusmarriedbynumberofchildrenvisual <- read.csv("table8_tradfpusmarriedbynumberofchildren.csv") %>%
+  mutate(Marital_status="Married") %>%
+  mutate(indicator1="Number of children") %>%
+  rename(Indicator=Number_of_children) %>%
+  mutate(type="Traditional")
+
+# by age
+tradfpusemarriedandunmarriedbyagevisual <- read_csv("table8_tradfpusemarriedandunmarriedbyage.csv") %>% 
+  mutate(indicator1="Age") %>%
+  rename(Indicator=Age) %>%
+  mutate(type="Traditional")
+
+# by residence
+tradfpusemarriedandunmarriedbyresidencevisual <- read_csv("table8_tradfpusemarriedandunmarriedbyresidence.csv") %>%
+  mutate(indicator1="Residence") %>%
+  rename(Indicator=Residence) %>%
+  mutate(type="Traditional")
+
+# by education
+tradfpusemarriedbyeducationvisual <- read_csv("table8_tradfpusemarriedbyeducation.csv") %>%
+  mutate(Education_status = fct_relevel(Education_status, 
+                                        'No education','Primary','Secondary','More than secondary')) %>%
+  mutate(Marital_status="Married") %>%
+  mutate(indicator1="Education") %>%
+  rename(Indicator="Education_status") %>%
+  mutate(type="Traditional")
+
+# by wealth quintile
+tradfpusemarriedbywealthquintilevisual <- read_csv("table8_tradfpusemarriedbywealthquintile.csv") %>%
+  mutate(Marital_status="Married") %>%
+  mutate(indicator1="Wealtn quintile") %>%
+  rename(Indicator="Wealth_quintile") %>%
+  mutate(type="Traditional")
 
 # join the data
-family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals) %>%
+family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals, modernfpusemarriedbynumberofchildren, modernfpusemarrieducationvisual, modernfpusemarriedbywealthquintilevisuals, tradfpusmarriedbynumberofchildrenvisual,tradfpusemarriedandunmarriedbyagevisual, tradfpusemarriedbyeducationvisual,tradfpusemarriedbywealthquintilevisual) %>%
   mutate(Contraceptive_use=recode(Contraceptive_use, "Any_method"="Any method", "Modern_method"="Modern method", "Traditional_method"="Traditional method")) %>%
   mutate(indicator1= recode(indicator1, "Number_of_children"="Number of children", "Wealth_quintile"="wealth quintile"))
 
-renderPlot({ggplot(family_planning[family_planning$indicator1%in%input$family_planning,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
+renderPlot({ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") +
   theme_bw() + facet_grid(.~Marital_status)+
-    labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning,]$indicator1)), fill="Type of contraceptive")+
+    labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
