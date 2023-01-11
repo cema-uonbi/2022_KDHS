@@ -1959,9 +1959,25 @@ fpanyusemarriedbycountyvisuals <- read_csv("table8c_fpanyusemarriedbycounty.csv"
   mutate(indicator1="County") %>%
   rename(Indicator=County) %>%
   mutate(type="Any")
+
+# by county: modern
+modernfpusemarriedbycountyvisual <- read_csv("table8c_modernfpusemarriedbycounty.csv") %>%
+  mutate(Marital_status="Married") %>%
+  mutate(indicator1="County") %>%
+  rename(Indicator=County) %>%
+  mutate(type="Modern")
+
+# by county: traditional
+tradfpusemarriedbycounty <- read_csv("table8_tradfpusemarriedbycounty.csv") %>%
+  mutate(Marital_status="Married") %>%
+  mutate(indicator1="County") %>%
+  rename(Indicator=County) %>%
+  mutate(type="Traditional")
+
+
  
 # modern family planing
-# by number of chidren
+# by number of children
 modernfpusemarriedbynumberofchildren <- read.csv("table8_modernfpusemarriedbynumberofchildren.csv") %>% 
   mutate(indicator1="Number of children") %>%
   rename(Indicator=Number_of_children) %>%
@@ -2052,6 +2068,98 @@ renderPlot({ggplot(family_planning[family_planning$indicator1%in%input$family_pl
 
 ```
 
+family_planning {.hidden}
+==============================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("63%"),
+  caption = "of currently married women are using a contraceptive method",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("70%"),
+  caption = "of the unmarried women men use a contraceptive",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("11%"),
+  caption = "of sexually active unmarried women use traditional contraceptive methods",
+  color = "darkgreen"
+)
+``` 
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("6%"),
+  caption = "of sexually active married women use traditional contraceptive methods",
+  color = "darkblue"
+)
+```
+
+<br>
+
+Column {data-width="600"}
+---------------------------------
 
 Compare indicators by county
 ============
