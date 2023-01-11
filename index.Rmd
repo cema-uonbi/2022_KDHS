@@ -60,7 +60,7 @@ p_load(reshape2)
 
 valueBox(
   value = paste("37,911"),
-  caption = "All Households Interviewed",
+  caption = "Total Number of Households Interviewed",
   color = "black"
 )
 ```
@@ -68,9 +68,14 @@ valueBox(
 ### {.value-box}
 
 ```{r}
+# valueBox(
+#   value = paste("19,747"),
+#   caption = "Full questionnaires",
+#   color = "red"
+# )
 valueBox(
-  value = paste("19,747"),
-  caption = "Full questionnaires",
+  value = paste("32,156"),
+  caption = "Total Number of Women Interviewed",
   color = "red"
 )
 ```
@@ -79,9 +84,15 @@ valueBox(
 
 ```{r}
 
+# valueBox(
+#   value = paste("18,164"),
+#   caption = "Short questionnaires",
+#   color = "darkgreen"
+# )
+
 valueBox(
-  value = paste("18,164"),
-  caption = "Short questionnaires",
+  value = paste("14,453"),
+  caption = "Total Number of Men Interviewed",
   color = "darkgreen"
 )
 ```
@@ -106,7 +117,15 @@ radioButtons("quest", "",
 ```
 
 
-### Respondendents
+### Respondents
+
+Summary of the households selected, occupied, and interviewed for the 2022 Kenya Demographic and Health Survey. 
+
+The numbers are presented by:
+
+  - Type of questionnaire (full or short questionnaires) 
+  - Residence: Rural and urban
+  - Participants: Men and women
 
 ```{r, fig.height=10,fig.height=22}
 kdhshouseholdinterviews <- read_csv("table1_dhshhinterviews.csv") %>%
@@ -119,26 +138,24 @@ interviewvisuals <- kdhshouseholdinterviews %>%
   rename(Respondents=Households)
 
 
-
 ## import data for participant interviews 
 participantsinterviews <- read_csv("table1_participantsinterviews.csv") %>%
   dplyr::mutate(Participant = recode(Respondents, "Number of eligible women" = "Eligible women","Number of eligible women interviewed" = "Women interviewed", "Number of eligible men" = "Eligible men","Number of eligible men interviewed" = "Men interviewed"))
 
 # join the two datasets
-totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews) %>%
-  mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires"))
+totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews) # %>%
+  #mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires"))
 
 renderPlot({
  ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest,], aes(x=Respondents, y=numbers)) + 
-  geom_bar(stat = "identity", position = position_dodge(), fill="#53A7DC") +
+  geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") + #"#53A7DC"
   theme_bw() +
-  geom_text(aes(label=format(numbers, big.mark=",")), size=5,hjust=2, color="white")+scale_y_continuous(label=comma)+
+  geom_text(aes(label=format(numbers, big.mark=",")), size=5,hjust=1.5, color="white")+scale_y_continuous(label=comma)+
   coord_flip() + labs(x="Households", y="", fill="Residence")+
   facet_grid(residence~selection) +
   theme(text= element_text(size = 20, colour = "black", face = "bold")) +
-  theme(strip.background =element_rect(fill="grey80"))
-        }, width = 1350, height=800) 
-  
+  theme(strip.background =element_rect(fill="darkorange"))
+        }, width = 1200, height=600) 
 
 
 ```
@@ -1769,8 +1786,150 @@ renderPlot({ggplot(table28d[table28d$variable!=c("Total", "Number") &table28d$Ba
 
 <br>
 
+
+
+<!-- Column {data.height=800} -->
+<!-- ------------------------- -->
+
+contracteption_use {.hidden}
+==================
+
+Inputs {.sidebar}
+-----------------------------------
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("63%"),
+  caption = "of currently married women are using a contraceptive method",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("70%"),
+  caption = "of the unmarried women men use a contraceptive",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("11%"),
+  caption = "of sexually active unmarried women use traditional contraceptive methods",
+  color = "darkgreen"
+)
+``` 
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("6%"),
+  caption = "of sexually active married women use traditional contraceptive methods",
+  color = "darkblue"
+)
+```
+
 Column {data.height=800}
 -------------------------
+
+```{r}
+
+selectInput("nonagric_doc1", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth quintile"="wealth quintile"))
+
+# import data
+
+# family planning 
+fpanyusemarriedbynumberofchildrenvisual <- read_csv("fpanyusemarriedbynumberofchildren.csv") %>%
+  mutate(indicator1="Number_of_children") %>%
+  rename(Indicator=Number_of_children)
+# by age
+fpanyusemarriedunmarriedbyagevisual <- read_csv("table8_fpanyusemarriedunmarriedbyage.csv") %>%
+  rename(indicator1=Marital_status) %>%
+  rename(Indicator=Age_of_respondent)
+
+# join the data
+family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual)
+
+  ggplot(aes(x=Number_of_children, y=Percent, fill=Contraceptive_use)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  theme_bw() +
+  #coord_flip() +
+  ylab("Percent (%)") + xlab("Number of Children") +
+  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
+  theme(strip.background =element_rect(fill="gray80"))
+
+tradfpusmarriedbynumberofchildrenvisual <- read_csv("table8_tradfpusmarriedbynumberofchildren.csv") %>%
+  ggplot(aes(x=Contraceptive_use, y=Percent, fill=Number_of_children)) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  theme_bw() + 
+  coord_flip() +
+  ylab("Percent (%)") + xlab("Number of children") +
+  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
+  theme(strip.background =element_rect(fill="darkorange")) +
+  theme(legend.text = element_text(size=16, face = "bold"), 
+        legend.title = element_text(size=16, face = "bold"))
+
+
+```
+
 
 Compare indicators by county
 ============
@@ -2331,3 +2490,18 @@ selectInput("comp", "Choose indicator to compare against:",
                 "Household possession of ITNs"="Ind9",
                 "Experience of physical violence"="Ind10"))
 ```
+
+# About
+
+The App uses data from the Key Indicators Report of the 2022 Kenya Demographic and Health Survey (2022 KDHS). The survey was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MoH) and other stakeholders.
+
+It provides easy-to-use interface to explore 2022 KDHS data using tools such as choropleth maps, bar plots, trend plots. This is a living app that is continuously developed to include comparisons of the current results with those from Demographic and Health Surveys.
+
+Recommended citation of the report from which the data is drawn from:
+
+KNBS and ICF. 2022. Kenya Demographic and Health Survey 2022. Key Indicators Report. Nairobi, Kenya, and Rockville, Maryland, USA: KNBS and ICF.
+
+The analytics and visualizations app is created with the support of the *Center for Epidemiological Modelling and Analysis* (CEMA) at the University of Nairobi, Kenya.
+
+
+
