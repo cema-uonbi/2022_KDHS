@@ -192,7 +192,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -235,7 +235,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -418,7 +418,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -541,7 +541,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -691,7 +691,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -806,7 +806,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -910,7 +910,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -1136,7 +1136,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -1320,7 +1320,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -1507,7 +1507,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -1550,7 +1550,7 @@ valueBox(
 
 valueBox(
   value = paste("13.4%"),
-  caption = "Of women who own agricultural land /n have their names on the title deed",
+  caption = "Of women who own agricultural land \n have their names on the title deed",
   color = "darkgreen"
 )
 ```
@@ -1561,7 +1561,7 @@ valueBox(
 
 valueBox(
   value = paste("23.3%"),
-  caption = "Of men who own agricultural land /n have their names on the title deed",
+  caption = "Of men who own agricultural land \n have their names on the title deed",
   color = "darkblue"
 )
 ```
@@ -1683,7 +1683,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -1726,7 +1726,7 @@ valueBox(
 
 valueBox(
   value = paste("30.8%"),
-  caption = "Of women who own non-agricultural land /n have their names on the title deed",
+  caption = "Of women who own non-agricultural land \n have their names on the title deed",
   color = "darkgreen"
 )
 ```
@@ -1737,7 +1737,7 @@ valueBox(
 
 valueBox(
   value = paste("47.9%"),
-  caption = "Of men who own non-agricultural land /n have their names on the title deed",
+  caption = "Of men who own non-agricultural land \n have their names on the title deed",
   color = "darkblue"
 )
 ```
@@ -1832,7 +1832,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -2097,7 +2097,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -2290,7 +2290,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#HIV_prevention)</br>
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#HIV_testing)</br>
 
@@ -2312,8 +2312,8 @@ Inputs {.sidebar}
 
 valueBox(
   value = paste("89.3%"),
-  caption = "of women who had a live birth /n in the 
-2 years preceding the survey /n were delivered /n by a skilled provider
+  caption = "of women who had a live birth \n in the 
+2 years preceding the survey \n were delivered \n by a skilled provider
 ",
   color = "black"
 )
@@ -2324,8 +2324,8 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("82.3%"),
-  caption = "of women who had a live birth /n in the 
-2 years preceding the survey /n delivered /n in a health facility",
+  caption = "of women who had a live birth \n in the 
+2 years preceding the survey \n delivered \n in a health facility",
   color = "red"
 )
 ```
@@ -2336,32 +2336,147 @@ valueBox(
 
 valueBox(
   value = paste("66%"),
-  caption = "of women who had a live birth /n in the 
-2 years preceding the survey /n had 4+ /n ANC visits",
+  caption = "of women who had a live birth \n in the 
+2 years preceding the survey \n had 4+ \n ANC visits",
   color = "darkgreen"
 )
-``` 
 
+``` 
 
 <br>
 
 Row {data-width="600"}
 ---------------------------------
 
+
+
 ```{r}
+
+
+
+```
+
+<br>
+
+hiv_prev {.hidden}
+==============================
+
+Inputs {.sidebar}
+-----------------------------------
+
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+
+[Coverage of prior HIV testing](#HIV_testing)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+
+```{r}
+
+valueBox(
+  value = paste("54.2%"),
+  caption = "of women aged 15-24 had knowledge about HIV prevention",
+  color = "black"
+)
+
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("55.2%"),
+  caption = "of men aged 15-24 had knowledge about HIV prevention",
+  color = "red"
+)
+```
+
+
+
+<br>
+
+Column {data-height="800"}
+---------------------------------
+
+### Knowledge on HIV prevention
+
+```{r}
+
+selectInput("hiv", "",
+              c("Knowledge about HIV prevention"="hivprevention_knowledge",
+                "Limiting sexual intercourse to one uninfected partner"="limit_sex",
+                "Using condoms"="using_condoms"))
+
 
 # import data
 
 hivc <- read_csv("table23_hiv_count_data.csv")%>%
   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Elgeyo-Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Murang'a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
-  mutate(names1=paste0(County,", ", using_condoms,"%"))%>%
-  mutate(names2=paste0(County,", ", limit_sex,"%"))%>%
-  mutate(names3=paste0(County,", ", hivprevention_knowledge,"%")) %>%
-  pivot_longer(c(limit_sex, using_condoms, hivprevention_knowledge), names_to = )
+  pivot_longer(c(limit_sex, using_condoms, hivprevention_knowledge), names_to ="indicators", values_to="values" ) %>%
+  mutate(names1=paste0(County,", ", values,"%"))
 
-hivc1 <- full_join(county, hivc, by="County")
+hivc_men <- full_join(county, hivc[ hivc$Participants%in%"Men_15-24",], by=c("Name"="County"))
+hivc_women <- full_join(county, hivc[ hivc$Participants%in%"Women_15-24",], by=c("Name"="County"))
+hivc1 <- rbind(hivc_men, hivc_women) %>%
+  mutate(Participants=recode(Participants, "Men_15-24"="Men 15-24", "Women_15-24"="Women 15-24"))
+
+#visualization
+
+renderGirafe({
+  
+  map1<- ggplot(hivc1[hivc1$indicators%in%input$hiv,])+
+  geom_sf_interactive(aes(fill=values, tooltip=names1),color="grey80", size=0.0)+
+  theme_void()+facet_grid(.~Participants)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion")+
+  theme(text=element_text(size=14))
+  x <- girafe(ggobj = map1,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 4)), width=6, height=3)
+    print(x)})
+
 
 ```
+
+<br>
 
 Compare indicators by county
 ============
