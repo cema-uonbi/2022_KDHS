@@ -1900,19 +1900,22 @@ fpanyusemarriedbynumberofchildrenvisual <- read_csv("fpanyusemarriedbynumberofch
 fpanyusemarriedunmarriedbyagevisual <- read_csv("table8_fpanyusemarriedunmarriedbyage.csv") %>%
   rename(indicator1=Marital_status) %>%
   rename(Indicator=Age_of_respondent)
-
+# by residence
+fpanyusemarriedunmarriedbyresidencevisual <- read_csv("table8_fpanyusemarriedunmarriedbyresidence.csv") %>%
+  rename(indicator1=Marital_Status) %>%
+  rename(Indicator=Age_of_respondent)
 # join the data
 family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual)
 
-  ggplot(aes(x=Number_of_children, y=Percent, fill=Contraceptive_use)) + 
+renderPlot({ggplot(family_planning, aes(x=Indicator, y=Percent, fill=Contraceptive_use)) + 
   geom_bar(stat = "identity", position = "dodge") + 
   theme_bw() +
   #coord_flip() +
   ylab("Percent (%)") + xlab("Number of Children") +
   theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
-  theme(strip.background =element_rect(fill="gray80"))
+  theme(axis.title=element_text(size=18, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
+  theme(strip.background =element_rect(fill="gray80")) }, width=1400, height=900)
 
 tradfpusmarriedbynumberofchildrenvisual <- read_csv("table8_tradfpusmarriedbynumberofchildren.csv") %>%
   ggplot(aes(x=Contraceptive_use, y=Percent, fill=Number_of_children)) + 
