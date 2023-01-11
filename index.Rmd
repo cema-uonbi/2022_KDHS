@@ -361,7 +361,17 @@ renderPlot({
   geom_text(aes(label=paste0(Weighted_percent,"%")), hjust=-0.5, size=4, color="black")+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_color_manual(values=c("darkgreen", "red"))+
   theme(text=element_text(size=18, face="bold"))}
-    else {
+    else if(input$char%in%"County"){
+      respondentsdata%>%
+    filter(Indicator==input$char)%>%
+      ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent, fill = Participants)) + 
+  geom_col(stat = "identity", size= 10) + coord_flip()+
+  theme_bw() +
+  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, color="white", label.size=0.7)+
+  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("darkgreen", "red"))+
+  theme(text=element_text(size=20, face="bold")) 
+      
+    } else {
      respondentsdata%>%
     filter(Indicator==input$char)%>%
     ggplot(aes(x=Grouping, y=Weighted_percent, fill = Participants)) + 
@@ -1894,7 +1904,8 @@ selectInput("family_planning", "",
                 "Age"="Age",
                 "Education"="Education",
                 "Residence"="Residence",
-                "Wealth quintile"="Wealth quintile"))
+                "Wealth quintile"="Wealth quintile",
+                "By County"="County"))
 ```
 
 ```{r}
@@ -1926,14 +1937,19 @@ fpanyusemarriedbyeducationvisual <- read.csv("table8_fpanyusemarriedbyeducation.
 
 # wealth quintile
 fpanyusemarriedbywealthvisual <- read.csv("table8_fpanyusemarriedbywealth.csv") %>%
-  mutate(Marital_status=NA) %>%
+  mutate(Marital_status="Married and Unmarried") %>%
   mutate(indicator1="Wealth_quintile") %>%
   rename(Indicator=Wealth_quintile)
   
-
+# by county
+fpanyusemarriedbycountyvisuals <- read_csv("table8c_fpanyusemarriedbycounty.csv") %>%
+  mutate(Marital_status="Married and Unmarried") %>%
+  mutate(indicator1="County") %>%
+  rename(Indicator=County)
+  
 
 # join the data
-family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual) %>%
+family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals) %>%
   mutate(Contraceptive_use=recode(Contraceptive_use, "Any_method"="Any method", "Modern_method"="Modern method", "Traditional_method"="Traditional method")) %>%
   mutate(indicator1= recode(indicator1, "Number_of_children"="Number of children", "Wealth_quintile"="wealth quintile"))
 
