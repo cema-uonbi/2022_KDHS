@@ -1970,7 +1970,7 @@ write_csv(needdemandforfpusemarriedbycounty, "table9c_needdemandforfpusemarriedb
 needdemandforfpusemarriedbycountyvisual <- read_csv("table9c_needdemandforfpusemarriedbycounty.csv")
   
  needdemandforfpusemarriedbycountyvisuals <- needdemandforfpusemarriedbycountyvisual %>%
-  arrange(desc(Percent)) %>%
+  #arrange(desc(Percent)) %>%
   ggplot(aes(x=reorder(County, Percent), y=Percent)) +
 geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   theme_bw() + coord_flip() +
