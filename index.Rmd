@@ -21,10 +21,17 @@ resource_files:
 
 
 <!-- </style>    -->
+
+
 <style>
-    img {
+
+.img {
         border: 0;
     }
+.pre {
+        border: 0;
+    }
+
 </style>
 
 ```{r, include=FALSE}
@@ -552,12 +559,16 @@ value = paste("26%"),
  
 ```
 
-Column {data-width="800"}
+Row {data-height="200"}
 ------------------------------- 
 
-#### **Health Insurance Coverage:** *Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.* 
+### **Health Insurance Coverage:**
 
-Choose the characteristics to display:
+ *Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.* 
+
+**Choose the characteristics to display:**
+
+
 
 ```{r}
 radioButtons("health", "",
@@ -565,6 +576,12 @@ radioButtons("health", "",
                 "Residence"="Residence", 
                 "Wealth quintile"="Wealth_quintile"))
 ```
+
+
+Row {data-height="800"}
+------------------------------- 
+
+### .
 
 ```{r, fig.width=16 }
 # health insurance data by age
@@ -688,7 +705,7 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("5.2%"),
+  value = paste("5%"),
   caption = "Alot of difficulty",
   color = "#b15928"
 )
@@ -705,31 +722,39 @@ valueBox(
 )
 ```
 
+<br>
 
-Column {data-width="600"}
+Row {data-height="200"}
 -----------------------
 
-##### Choose characteristics to display
+### Choose a category:
 
 ```{r}
 
-selectInput("disability", "Choose a category",
+radioButtons("disability", "",
               c("Age"="Age_category", 
                 "Marital Status (15-49years)"="Marital_status", 
                 "Residence"="Residence",
                 "Education status (highest level attended)"="Education_status",
-                "Wealth quintile"="Wealth_quintile"))
+                "Wealth quintile"="Wealth_quintile"), width=250)
+```
 
-selectInput("disability_domain", "Choose  a disability domain:",
+### Choose  a disability domain:
+
+```{r }
+radioButtons("disability_domain", "",
               c("Seeing"="Seeing", 
                 "Hearing"="Hearing", 
                 "Communicating"="Communicating",
                 "Remembering/Concentrating"="Remembering_concentrating","Walking/ClimbingSteps"="Walking_ClimbingSteps",
-                "Washing all over/Dressing"="washingAllOver_dressing"))
+                "Washing all over/Dressing"="washingAllOver_dressing"), width=250)
 
 ```
 
+Row {data-height="600"}
+-----------------------
 
+### Kindly hover on the graph to see the actual values
 
 ```{r }
 # disability by age
@@ -770,16 +795,25 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
                                         "Married","Never married","Divorced/separated","Living together","Widowed",
                                         'No education','Primary','Secondary','More than secondary', 'Vocational')
 
- renderPlot({
-   
-   ggplot(disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,]) + 
-  geom_bar(aes(x=Indicator, y=difficultyprop, fill=difficulty),stat = "identity", position = position_dodge()) +
-     geom_line( aes(y=impairmentvalues, x=Indicator),color="brown", size=2, group=1)+
-  theme_bw() +facet_grid(.~impairment)+
+ renderGirafe({
+   domain_data<- disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,] %>%
+       dplyr::select(impairmentvalues, Indicator, impairment, Participants)%>%
+       dplyr::distinct()
+   disability_map1 <- ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,]) + 
+  geom_bar_interactive(aes(x=Indicator, y=difficultyprop, fill=difficulty, tooltip=paste0(difficultyprop, "%")),stat = "identity", position = position_dodge()) +
+     geom_point_interactive(data=domain_data, aes(y=impairmentvalues, x=Indicator, tooltip=paste0(impairmentvalues, "%"), group=Participants),color="brown", size=10)+facet_grid(.~Participants)+
+  theme_bw()+
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
      scale_fill_brewer(palette="Set1") 
-},width = 1420, height=600)
+   disability_map1a<-girafe(ggobj = disability_map1,width_svg=18, height_svg=9,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 4)))
+  print(disability_map1a, justify="left")
+})
 ```
 
 fertility {.hidden}
