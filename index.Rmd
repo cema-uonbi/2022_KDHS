@@ -2513,6 +2513,142 @@ renderGirafe({
 
 <br>
 
+hiv_test {.hidden}
+==============================
+
+Inputs {.sidebar}
+-----------------------------------
+
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+
+[Coverage of prior HIV testing](#hiv_test)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+
+```{r}
+
+valueBox(
+  value = paste("85%"),
+  caption = "of women have ever tested for HIV",
+  color = "black"
+)
+
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("74%"),
+  caption = "of men have ever tested for HIV",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("47%"),
+  caption = "of women have tested for HIV in the last 12 months \n and received results",
+  color = "darkgreen"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("39%"),
+  caption = "of men have tested for HIV in the last 12 months \n and received results",
+  color = "darkblue"
+)
+```
+
+<br>
+
+Column {data-height="800"}
+---------------------------------
+
+### HIV testing
+
+```{r}
+
+selectInput("hiv_test", "",
+              c("Ever tested"="ever_tested",
+                "Ever tested and received results"="recieved_results",
+                "In the last 12 months, tested & received results"="received_results_last_test",
+                "Never tested"="never_tested"))
+
+
+# import data
+
+hiv_testc <- read_csv("table25C .1 and .2_HIV_test_bind.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  pivot_longer(c(ever_tested, recieved_results,received_results_last_test, never_tested, not_recieve_results ), names_to ="indicators", values_to="values") %>%
+  mutate(names1=paste0(County,", ", values,"%")) %>%
+  mutate(Participants=str_to_title(Participants))
+
+
+hiv_testc1 <- full_join(county, hiv_testc, by=c("Name"="County")) 
+
+#visualization
+
+renderGirafe({
+  
+  map2<- ggplot(hiv_testc1[hiv_testc1$indicators%in%input$hiv_test,])+
+  geom_sf_interactive(aes(fill=values, tooltip=names1),color="grey80", size=0.0)+
+  theme_void()+facet_grid(.~Participants)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion")+
+  theme(text=element_text(size=14))
+  x <- girafe(ggobj = map2,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 4)), width=6, height=3)
+    print(x)})
+
+
+```
+
 vaccinations {.hidden}
 ==============================
 
@@ -2624,7 +2760,7 @@ renderGirafe({
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 4)), width=8, height=6)
+                     opts_zoom(max = 4)), width=8, height=7)
     print(x)})
 
 ```
