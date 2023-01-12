@@ -3112,68 +3112,36 @@ geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
 Compare trends over time
 ============
 
-Priority indicators {.sidebar}
------------------------------------
-<br>
-
-[Fertility by residence](#fertility_residence_trend)</br>
-
-[Need for, and demand for family planning](#fp_trend)</br>
-
-[Delivery assistance](#skilled_deliveries_trend)</br>
-
-[Childhood vaccinations](#vaccines_trend)</br>
-
-[Children nutritional status](#nutrition_trend)</br>
-
-[Exclusive breastfeeding](#exclusive_breastfeed_trend)</br>
-
-[Childhood mortality](#mortality_trend)</br>
-
-[Household possession of ITNs](#itn_trend)</br>
 
 
-
-fertility_residence_trend {.hidden}
-==================
-
-Priority indicators {.sidebar}
------------------------------------
-<br>
-
-[Fertility by residence](#fertility_residence_trend)</br>
-
-[Need for, and demand for family planning](#fp_trend)</br>
-
-[Delivery assistance](#skilled_deliveries_trend)</br>
-
-[Childhood vaccinations](#vaccines_trend)</br>
-
-[Children nutritional status](#nutrition_trend)</br>
-
-[Exclusive breastfeeding](#exclusive_breastfeed_trend)</br>
-
-[Childhood mortality](#mortality_trend)</br>
-
-[Household possession of ITNs](#itn_trend)</br>
-
-Row
+## Row {data-width="200"}
 --------------------------
+
 ### Trends on:
 
 
 ```{r}
 
 radioButtons("trends", "",
-             c("Fertility by residence", "fertility",
+             c("Fertility by residence"= "fertility",
              "Need for, and demand for family planning"="family_planning",
              "Delivery assistance"="delivery",
              "Childhood vaccinations"="vaccinations",
              "Children nutritional status"="nutrition",
              "Exclusive breastfeeding"="breastfeeding",
-             "Childhood mortality"="mortality",
+             "Incidence of Childhood mortality (per 1000)"="mortality",
              "Household possession of insecticide treated nets"="treated_nets"))
 
+```
+
+<br>
+
+Row {data.width="600"}
+--------------------------
+
+#### Trends over time
+
+```{r, fig.width=16, fig.height=10}
 # fertility rate
 trendstotalfertilityrate <- read_csv("figure1_trendstotalfertilityrate.csv") %>%
   rename(grouping=Residence,
@@ -3187,7 +3155,7 @@ trendsinfusevisual <- read_csv("figure2_trendsinfpuse.csv") %>%
 
 # skilled deliveries
 trendsdeliveryassistance <- read_csv("figure3_trendsdeliveryassistance.csv") %>%
-  mutate(grouping=NA) %>%
+  mutate(grouping="Delivery") %>%
   rename(Percent=Proportion) %>%
   mutate(indicator="delivery")
 
@@ -3196,209 +3164,54 @@ trendschildvaccinations <- read_csv("figure4_trendschildvaccines.csv") %>%
   rename(grouping=`Vaccination status`) %>%
   mutate(indicator="vaccinations")
 
-# combine data
-trends_data <- rbind(trendstotalfertilityrate, trendsinfusevisual, trendsdeliveryassistance, trendschildvaccinations) %>%
-  filter(!grouping%in%"Total")
-
-renderPlot({
-  trends_data %>% filter(indicator%in%input$trends)%>%
-  ggplot(aes(x=Years, y=Percent, color=grouping)) + 
-  geom_point(stat = "identity", size= 2.5) +
-  scale_x_discrete(limit=c(1989, 1993, 1998, 2003, 2008, 2014, 2022)) + 
-  theme_bw() + 
-  geom_line(size = 2.0) +
-  labs(x="Period (Years)", y=paste0(unique(indicator))) +
-  theme(text =element_text(size=18, face="bold"))+
-  geom_text(aes(label = Percent), hjust=-0.5, size=4)
-},width = 1500, height=800)
-
-```
-
-
-
-nutrition_trend {.hidden}
-==================
-
-Priority indicators {.sidebar}
------------------------------------
-<br>
-
-[Fertility by residence](#fertility_residence_trend)</br>
-
-[Need for, and demand for family planning](#fp_trend)</br>
-
-[Delivery assistance](#skilled_deliveries_trend)</br>
-
-[Childhood vaccinations](#vaccines_trend)</br>
-
-[Children nutritional status](#nutrition_trend)</br>
-
-[Exclusive breastfeeding](#exclusive_breastfeed_trend)</br>
-
-[Childhood mortality](#mortality_trend)</br>
-
-[Household possession of ITNs](#itn_trend)</br>
-
-```{r}
+# Child nutrition
 trendschildnutrition <- read_csv("figure6_trendschildnutrition.csv") %>%
-  mutate(lab = str_c(Percent,"%"))
+   rename(grouping=`Nutrition measure`) %>%
+  mutate(indicator="nutrition")
 
-renderPlot({
-  trendschildnutrition %>%
-  ggplot(aes(x=Years, y=Percent, color=`Nutrition measure`)) + 
-  geom_point(stat = "identity", size= 2.5) +
-  scale_x_discrete(limit=c(1993, 1998, 2003, 2008, 2014, 2022)) + 
-  theme_bw() + 
-  geom_line(size = 1.0) +
-  ylab("%") + xlab("KDHS years") +
-  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(axis.title=element_text(size=12, face="bold"), axis.text = element_text(face = "bold", size = rel(1))) +
-  theme(legend.text = element_text(size=16, face = "bold"), 
-        legend.title = element_text(size=16, face = "bold")) +
-  theme(strip.background =element_rect(fill="darkorange"))+
-  geom_text(aes(label = lab), hjust=-0.5, size=4)
-},width = 1500, height=800)
-
-```
-
-exclusive_breastfeed_trend {.hidden}
-==================
-
-Priority indicators {.sidebar}
------------------------------------
-<br>
-
-[Fertility by residence](#fertility_residence_trend)</br>
-
-[Need for, and demand for family planning](#fp_trend)</br>
-
-[Delivery assistance](#skilled_deliveries_trend)</br>
-
-[Childhood vaccinations](#vaccines_trend)</br>
-
-[Children nutritional status](#nutrition_trend)</br>
-
-[Exclusive breastfeeding](#exclusive_breastfeed_trend)</br>
-
-[Childhood mortality](#mortality_trend)</br>
-
-[Household possession of ITNs](#itn_trend)</br>
-
-```{r}
+# exclusive breastfeeding
 trendsexclusivebreastfed <- read_csv("figure7_trendsexclusivebreastfed.csv") %>%
-  mutate(lab = str_c(Proportion,"%"))
-
-renderPlot({
-  trendsexclusivebreastfed %>%
-  ggplot(aes(x=Years, y=Proportion)) + 
-  geom_point(stat = "identity", size= 2.5) +
-  scale_x_discrete(limit=c(1989, 1993, 1998, 2003, 2008, 2014, 2022)) + 
-  theme_bw() + 
-  geom_line(size = 1.0) +
-  ylab("% of children aged 0-5 months exclusively breastfed") + xlab("KDHS years") +
-  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(axis.title=element_text(size=12, face="bold"), axis.text = element_text(face = "bold", size = rel(1))) +
-  theme(legend.text = element_text(size=16, face = "bold"), 
-        legend.title = element_text(size=16, face = "bold")) +
-  theme(strip.background =element_rect(fill="darkorange"))+
-  geom_text(aes(label = lab), hjust=-0.5, size=4)
-},width = 1500, height=800)
-
-```
-
-mortality_trend {.hidden}
-==================
-
-Priority indicators {.sidebar}
------------------------------------
-<br>
-
-[Fertility by residence](#fertility_residence_trend)</br>
-
-[Need for, and demand for family planning](#fp_trend)</br>
-
-[Delivery assistance](#skilled_deliveries_trend)</br>
-
-[Childhood vaccinations](#vaccines_trend)</br>
-
-[Children nutritional status](#nutrition_trend)</br>
-
-[Exclusive breastfeeding](#exclusive_breastfeed_trend)</br>
-
-[Childhood mortality](#mortality_trend)</br>
-
-[Household possession of ITNs](#itn_trend)</br>
-
-```{r}
+  rename(Percent=Proportion) %>%
+  mutate(indicator="breastfeeding",
+         grouping="Exclusive breastfeeding")
+ 
+# child mortality
 trendschildmortality <- read_csv("figure8_trendschildmortality.csv") %>%
-  mutate(lab = str_c(n_per1000))
-
-renderPlot({
-  trendschildmortality %>%
-  ggplot(aes(x=Years, y=n_per1000, color=Category)) + 
-  geom_point(stat = "identity", size= 2.5) +
-  scale_x_discrete(limit=c(1989, 1993, 1998, 2003, 2008, 2014, 2022)) + 
-  theme_bw() + 
-  geom_line(size = 1.0) +
-  ylab("Deaths per 1,000 live births") + xlab("KDHS years") +
-  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(axis.title=element_text(size=12, face="bold"), axis.text = element_text(face = "bold", size = rel(1))) +
-  theme(legend.text = element_text(size=16, face = "bold"), 
-        legend.title = element_text(size=16, face = "bold")) +
-  theme(strip.background =element_rect(fill="darkorange"))+
-  geom_text(aes(label = lab), hjust=-0.5, size=4)
-},width = 1500, height=800)
-
-```
-
-itn_trend {.hidden}
-==================
-
-Priority indicators {.sidebar}
------------------------------------
-<br>
-
-[Fertility by residence](#fertility_residence_trend)</br>
-
-[Need for, and demand for family planning](#fp_trend)</br>
-
-[Delivery assistance](#skilled_deliveries_trend)</br>
-
-[Childhood vaccinations](#vaccines_trend)</br>
-
-[Children nutritional status](#nutrition_trend)</br>
-
-[Exclusive breastfeeding](#exclusive_breastfeed_trend)</br>
-
-[Childhood mortality](#mortality_trend)</br>
-
-[Household possession of ITNs](#itn_trend)</br>
-
-```{r}
+  rename(grouping=Category,
+         Percent=n_per1000) %>%
+  mutate(indicator="mortality")
+  
+# insecticide treated nets
 trendsitn <- read_csv("figure9_trendsitn.csv") %>%
-  mutate(lab = str_c(Percent,"%"))
+  rename(grouping=Category) %>%
+  mutate(indicator="treated_nets")
+  
 
-renderPlot({
-  trendsitn %>%
-  ggplot(aes(x=Years, y=Percent, color=Category)) + 
-  geom_point(stat = "identity", size= 2.5) +
-  scale_x_discrete(limit=c(1989, 1993, 1998, 2003, 2008, 2014, 2022)) + 
+# combine data
+trends_data <- rbind(trendstotalfertilityrate, trendsinfusevisual, trendsdeliveryassistance, trendschildvaccinations, trendschildnutrition, trendsexclusivebreastfed,trendschildmortality, trendsitn ) %>%
+  filter(!grouping%in%"Total") %>%
+  filter(!Years==1999)
+
+renderGirafe({
+  trends_map <-trends_data %>%filter(indicator%in%input$trends)%>%
+  ggplot(aes(x=Years, y=Percent, color=grouping)) + 
+  geom_smooth( size= 2.5 ) +
   theme_bw() + 
-  geom_line(size = 1.0) +
-  ylab("%") + xlab("KDHS years") +
-  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(axis.title=element_text(size=12, face="bold"), axis.text = element_text(face = "bold", size = rel(1))) +
-  theme(legend.text = element_text(size=16, face = "bold"), 
-        legend.title = element_text(size=16, face = "bold")) +
-  theme(strip.background =element_rect(fill="darkorange"))+
-  geom_text(aes(label = lab), hjust=-0.5, size=4)
-},width = 1500, height=800)
+  geom_point_interactive(size = 2.0, aes(tooltip=Percent)) +
+  labs(x="Kenya DHS Years", y=unique(input$trends),color="") +
+  theme(text =element_text(size=18, face="bold"))
+  trends_map2<-girafe(ggobj =  trends_map,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 9)),  height=4, width=6)
+  print( trends_map2)
+  
+})
 
 ```
+
+
 
 
 
