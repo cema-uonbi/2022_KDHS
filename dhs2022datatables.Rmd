@@ -1985,6 +1985,27 @@ geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
 
 needdemandforfpusemarriedbycountyvisuals
 
+## maternal care
+maternalcare <- tbls[[34]] %>%
+  slice(5:51) %>% # by county
+  dplyr::select(V1:V5,V7,V8,V10) %>%
+  dplyr::rename(County = V1,
+                "ANC from a skilled provider"= V2,
+                "At least four ANC visits" = V3, 
+                "Took iron supplements" = V4,
+                "Neonatal tetanus" = V5,
+                 "Skilled delivery" = V7,
+                "Health facility delivery" = V8,
+                "Postnatal check" = V10)
+  
+maternalcarebycounty <- maternalcare %>%
+  pivot_longer(cols = "ANC from a skilled provider":"Postnatal check",
+               names_to = "Maternal care",
+               values_to = "Percent")
+
+maternalcarebycounty
+write_csv(maternalcarebycounty, "table10c_maternalcarebycounty.csv") 
+
 ```
 
 

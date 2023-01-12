@@ -2346,7 +2346,7 @@ Inputs {.sidebar}
 ```{r}
 
 valueBox(
-  value = paste("89.3%"),
+  value = paste("89%"),
   caption = "of women who had a live birth \n in the 
 2 years preceding the survey \n were delivered \n by a skilled provider
 ",
@@ -2358,7 +2358,7 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("82.3%"),
+  value = paste("82%"),
   caption = "of women who had a live birth \n in the 
 2 years preceding the survey \n delivered \n in a health facility",
   color = "red"
@@ -2380,16 +2380,73 @@ valueBox(
 
 <br>
 
-Row {data-width="600"}
+<br>
+
+Row {data-height="200"}
 ---------------------------------
 
-
+### Maternal care
 
 ```{r}
 
-
+radioButtons("maternal_care", "",
+              c("Antenatal care from a skilled provider"="ANC from a skilled provider",
+                "At least four antenatal care visits"="At least four ANC visits",
+                "Took iron containing supplements during pregnancy"="Took iron supplements", "Most recent live birth was protected against neonatal tetanus"="Neonatal tetanus", "Delivered by a skilled provider"="Skilled delivery","delivered in a health facility"="Health facility delivery", "Postnatal check during the first 2 days after birth"="Postnatal check"))
 
 ```
+
+Column {data-height="800"}
+---------------------------------
+### Spatial visualization
+
+```{r}
+# import data
+
+maternalcarebycounty <- read_csv("table10c_maternalcarebycounty.csv")%>% 
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
+  mutate(names1=paste0(County,", ", Percent,"%"))
+  
+
+
+# join the data with the shapefile
+maternalcarebycounty1 <- left_join(county, maternalcarebycounty, by=c("Name"="County"))
+
+renderGirafe({
+  
+  map4<- ggplot(maternalcarebycounty1[maternalcarebycounty1$`Maternal care`%in%input$maternal_care,])+
+  geom_sf_interactive(aes(fill=Percent, tooltip=names1),color="grey80", size=0.0)+
+  theme_void()+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion")+
+  theme(text=element_text(size=14))
+  x <- girafe(ggobj = map4,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 4)), width=8, height=7)
+    print(x)})
+
+```
+
+### Maternal care data in descending order
+
+```{r}
+
+renderPlot({
+  ggplot(maternalcarebycounty1[maternalcarebycounty1$`Maternal care`%in%input$maternal_care,], aes(x=reorder(Name, Percent), y=Percent)) +
+geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
+  theme_bw() + coord_flip() +
+  geom_text(aes(label=Percent), hjust=1.3, size=5, color="white")+
+  coord_flip() + 
+  ylab("Weighted percent") + xlab("County") +
+ # facet_grid(~Family_planning) +
+  theme(text=element_text(size=18, face="bold"))
+   
+})
+
+```
+
 
 <br>
 
@@ -2765,7 +2822,7 @@ renderGirafe({
 
 ```
 
-Row {data-width="600"}
+Column {data-height="200"}
 ---------------------------------
 
 ### Characteristics of the fully vaccinated 
@@ -2780,7 +2837,21 @@ selectInput("vacc_char", "",
                 "Mother's education"="Education",
                 "Wealth quintile"="Wealth quintile"))
 
+```
 
+### Fully vaccinated by age
+
+```{r}
+selectInput("vacc1", "",
+              c("Fully vaccinated: 12-23 months"="12-23 months",
+                "Fully vaccinated: 24-35 months"="24-35 months"))
+
+```
+
+Row {data-width="800"}
+---------------------------------
+
+```{r}
 vacc_12_23_gender.1 <- read_csv("table11_vacc_12_23_gender.csv") %>%
   mutate(group="12-23 months") %>%
   mutate(indicator="Gender") %>%
@@ -2847,16 +2918,17 @@ vaccination_data <- rbind(vacc_12_23_gender.1 , vacc_12_23_birth.1, vacc_12_23_c
 
 
 renderPlot({
-  ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & !is.na(vaccination_data$indicator1),],aes(x=Vaccines, y=Percent, fill=group)) + 
-  geom_bar(stat = "identity", position = position_dodge())+#, fill="cyan4") +
-  theme_bw() +
+  ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & !is.na(vaccination_data$indicator1) & vaccination_data$group%in%input$vacc1,],aes(x=Vaccines, y=Percent)) + 
+  geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
+  theme_bw() +facet_grid(.~indicator1)+
   geom_text(aes(label=Percent), size=5, color="black")+
-  scale_fill_brewer(palette = "Set1")+facet_grid(~indicator1)+
+  scale_fill_brewer(palette = "Set1")+
   coord_flip() + labs(y="Proportion", x="", fill="")+
-  theme(strip.text.x = element_text(size = 16, colour = "black", face = "bold")) +
-  theme(strip.text.y = element_text(size = 16, colour = "black", face = "bold")) +
-  theme(axis.title=element_text(size=18, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
+  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
   theme(strip.background =element_rect(fill="darkorange")) 
+
 })
 ```
 
