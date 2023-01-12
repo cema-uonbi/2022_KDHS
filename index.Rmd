@@ -2860,6 +2860,154 @@ renderPlot({
 })
 ```
 
+family_planning {.hidden}
+==============================
+
+Inputs {.sidebar}
+-----------------------------------
+
+<br>
+
+[Characteristics of Respondents](#respondents_characteristics)</br>
+
+[Health Insurance Coverage](#health_insurance)</br>
+
+[Disability among the household population](#disability_pop)</br>
+
+[Fertility rates](#fertility)</br>
+
+[Teenage pregnancy](#teenage_pregnancy)</br>
+
+[Current use of contraception](#contraception_use)</br>
+
+[Family planning need and demand among married women](#family_planning)</br>
+
+[Maternal care](#maternal_care)</br>
+
+[Vaccinations](#vaccinations)</br>
+
+[Nutritional status](#nutr_status)</br>
+
+[Insecticide treated nets](#treated_nets)</br>
+
+[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+
+[Coverage of prior HIV testing](#hiv_test)</br>
+
+[House ownership](#home_ownership)</br>
+
+[Agricultural land ownership](#agric_land_ownership)</br>
+
+[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+
+[Physical violence](#physical_violence)</br>
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+
+```{r}
+
+valueBox(
+  value = paste("76%"),
+  caption = "is the demand for family planning among married women",
+  color = "black"
+)
+
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("14%"),
+  caption = "of married women have an unmet need for family planning",
+  color = "red"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("82%"),
+  caption = "of married women have satisfied demand for family planning",
+  color = "darkgreen"
+)
+```
+
+
+
+<br>
+
+Row {data-height="200"}
+---------------------------------
+
+### Family planning
+
+```{r}
+
+radioButtons("fp_demand", "",
+              c("Total demand"="Total demand",
+                "Met need (all methods)"="Met need (all methods)",
+                "Demand satisfied (all methods)"="Demand satisfied (all methods)",
+                "Unmet need"="Unmet need"))
+
+```
+
+Column {data-height="800"}
+---------------------------------
+### Spatial visualization
+
+```{r}
+# import data
+
+needdemandforfpusemarriedbycountyvisual <- read_csv("table9c_needdemandforfpusemarriedbycounty.csv") %>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
+  mutate(names1=paste0(County,", ", Percent,"%"))
+
+# join the data with the shapefile
+needdemandforfpusemarriedbycountyvisual1 <- left_join(county, needdemandforfpusemarriedbycountyvisual, by=c("Name"="County"))
+
+renderGirafe({
+  
+  map3<- ggplot(needdemandforfpusemarriedbycountyvisual1[needdemandforfpusemarriedbycountyvisual1$Family_planning%in%input$fp_demand,])+
+  geom_sf_interactive(aes(fill=Percent, tooltip=names1),color="grey80", size=0.0)+
+  theme_void()+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion")+
+  theme(text=element_text(size=14))
+  x <- girafe(ggobj = map3,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 4)), width=8, height=7)
+    print(x)})
+
+```
+
+### Family planning data in descending order
+
+```{r}
+
+renderPlot({
+  ggplot(needdemandforfpusemarriedbycountyvisual1[needdemandforfpusemarriedbycountyvisual1$Family_planning%in%input$fp_demand,], aes(x=reorder(Name, Percent), y=Percent)) +
+geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
+  theme_bw() + coord_flip() +
+  geom_text(aes(label=Percent), hjust=1.3, size=5, color="white")+
+  coord_flip() + 
+  ylab("Weighted percent") + xlab("County") +
+  facet_grid(~Family_planning) +
+  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
+  theme(strip.background =element_rect(fill="darkorange")) 
+})
+
+```
 
 
 Compare indicators by county
