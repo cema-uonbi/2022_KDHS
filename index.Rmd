@@ -896,6 +896,8 @@ valueBox(
 <br>
 
 
+
+
 Column {data-width="600"}
 --------------------------
 
@@ -913,6 +915,7 @@ Column {data-width="600"}
 
 ### Current fertility rates
 
+
 ```{r, fig.width=15, fig.height=8}
 
 
@@ -924,7 +927,7 @@ agespecificfertilityrate <- read_csv( "table5_agespecificfertilityrate.csv") %>%
   mutate(Residenceprop=as.numeric(Residenceprop))
 
 
-  ggplot(agespecificfertilityrate, aes(x=Age_category, y=Residenceprop))+geom_col(fill="#4C97C8")+facet_grid(Residence~.)+
+ggplot(agespecificfertilityrate, aes(x=Age_category, y=Residenceprop))+geom_col(fill="#4C97C8")+facet_grid(Residence~.)+geom_text(aes(label=paste0(Residenceprop)), vjust=-0.5)+
     theme_bw()+labs(x="Age category", y="Rate per 1,000 women")+theme(text=element_text(size=20, face="bold"))
 
 
@@ -1012,17 +1015,21 @@ valueBox(
 
 <br>
 
-Column {data-width="600"}
---------------------------
+Row {data-height="800"}
+-----------------------
 
-```{r, fig.width=15, fig.height=9}
+### Kindly hover on the graph to see the actual values
+
+```{r}
 teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
   pivot_longer(cols = Live_birth:Ever_pregnant, names_to = "Pregnancy", values_to = "Percent") %>%
   mutate(Pregnancy=recode(Pregnancy, "Currently_pregnant"="Currently pregnant", "Ever_pregnant"="Ever pregnant", "Live_birth"="Live birth", "Pregnancy_loss"="Pregnancy loss"))
 
-teenpregnancybycountyvisuals <- teenpregnancybycountyvisual %>%
+renderGirafe({
+  teenage_preg1<-teenpregnancybycountyvisual %>%
   ggplot(aes(x=reorder(County,Percent), y=Percent, fill=Pregnancy)) + 
-  geom_bar(stat = "identity") + #, position = position_dodge()) +
+  geom_bar_interactive(stat = "identity", aes(tooltip=paste0(County,"\n",Percent, "%"))) +
+  #, position = position_dodge()) +
   #facet_wrap(facets = ~reorder(Participants, Percent)) +
   #scale_fill_manual("Residence", values = c("Urban" = "darkorange", "Rural" = "cyan3")) +
   theme_bw() +
@@ -1030,7 +1037,14 @@ teenpregnancybycountyvisuals <- teenpregnancybycountyvisual %>%
   ylab("Percent (%)") + xlab("County") +
   theme(text=element_text(size=20, face="bold")) +
   theme(strip.background =element_rect(fill="gray80")) +scale_fill_brewer(palette="Set1")
-teenpregnancybycountyvisuals
+  teenage_preg1a<-girafe(ggobj = teenage_preg1,width_svg=18, height_svg=9,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 4)))
+  print(teenage_preg1a, justify="left")})
+
   
 ```
 
