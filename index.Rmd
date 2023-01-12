@@ -562,11 +562,17 @@ healthinsurance$Indicator <- fct_relevel(healthinsurance$Indicator, "Lowest", "S
 healthinsurance$Insurance <- fct_relevel(healthinsurance$Insurance, "NHIF", "Private/commercial", "Community based", "Other", "Form of health insurance", "None/ Don't Know")
 
 renderPlot({
-  ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge()) +
+  if(input$health%in%"Wealth_quintile"){
+    ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge()) +
+  facet_grid(.~Insurance)+labs(y="Proportion (%)")+
+    scale_fill_brewer(palette = "Set1")+coord_flip()+
+    theme_bw()+theme(text=element_text(size=20, face = "bold")) +
+    theme(strip.background =element_rect(fill="darkorange")) 
+  }else{ ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge()) +
   facet_grid(.~Insurance)+labs(y="Proportion (%)")+
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=20, face = "bold")) +
-    theme(strip.background =element_rect(fill="darkorange")) 
+    theme(strip.background =element_rect(fill="darkorange")) }
 },width = 1420, height=650)
 
 
@@ -715,10 +721,10 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
                                         'No education','Primary','Secondary','More than secondary', 'Vocational')
 
  renderPlot({
-   ggplot(disabilitydata[disabilitydata$Indicator1==input$disability,], aes(x=Indicator, y=difficultyprop, fill=difficulty)) + 
-  geom_bar(stat = "identity", position = position_dodge()) +
-  scale_fill_manual("Disability", values = c("SomeDifficulty" = "darkorange", "A_lot_of_difficulty" = "cyan3", "Cannot_do_at_all" = "red")) +
-  theme_bw() +
+   ggplot(disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,]) + 
+  geom_bar(aes(x=Indicator, y=difficultyprop, fill=difficulty),stat = "identity", position = position_dodge()) +
+     geom_line(aes(y=impairmentvalues, x=Indicator),color="brown", size=2, group=1)+
+  theme_bw() +facet_grid(.~impairment)+
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
      scale_fill_brewer(palette="Set1") 
