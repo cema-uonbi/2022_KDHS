@@ -21,7 +21,11 @@ resource_files:
 
 
 <!-- </style>    -->
-
+<style>
+    img {
+        border: 0;
+    }
+</style>
 
 ```{r, include=FALSE}
 
@@ -78,7 +82,7 @@ valueBox(
   value = paste("32,156"),
   caption = "Total Number of Women Interviewed",
   icon="fa-thumbs-up",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -259,7 +263,7 @@ Inputs {.sidebar}
 valueBox(
   value = paste("32,156"),
   caption = "Number of women interviewed",
-  color = "red",
+  color = "#b15928",
   icon='fa-female,'
 )
 ```
@@ -416,7 +420,7 @@ renderPlot({
   geom_col(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.7), size=4, color="white", face = "bold", label.size=0.7)+
+  geom_text(aes(label=paste0(Weighted_percent, "%")), position=position_stack(vjust = 0.7), size=4, color="black", face = "bold", label.size=0.7)+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
         # labs(y="Weighted percent (%)") + 
         scale_fill_manual(values=c("cyan4", "red4"))+
@@ -428,7 +432,7 @@ renderPlot({
   geom_col(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.7), size=5, color="white", face = "bold", label.size=0.7)+
+  geom_text(aes(label=paste0(Weighted_percent, "%")), position=position_stack(vjust = 0.7), size=5, color="black", face = "bold", label.size=0.7)+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
         # labs(y="Weighted percent (%)") + 
         scale_fill_manual(values=c("cyan4", "red4"))+
@@ -440,10 +444,10 @@ renderPlot({
   geom_col(stat = "identity", size= 10, fill = "cyan4") + 
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=8, color="white", face = "bold")+
+  geom_text(aes(label=paste0(Weighted_percent, "%")), position=position_stack(vjust = 0.5), size=5, color="black", face = "bold")+
  # labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
          labs(y="Weighted percent (%)", x="") +
-  theme(text=element_text(size=20, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
+  theme(text=element_text(size=16, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
     }
   }, width = 1400, height=700)
   
@@ -501,7 +505,7 @@ Inputs {.sidebar}
 valueBox(
 value = paste("26%"),
    caption = "Of women have a form of health insurance",
-   color = "red", 
+   color = "#b15928", 
    icon='fa-female,' 
  ) 
 ``` 
@@ -518,7 +522,7 @@ value = paste("26%"),
  
 ```
 
-Column {data-width="600"}
+Column {data-width="800"}
 ------------------------------- 
 
 #### **Health Insurance Coverage:** *Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.* 
@@ -531,7 +535,7 @@ radioButtons("health", "",
                 "Wealth quintile"="Wealth_quintile"))
 ```
 
-```{r }
+```{r, fig.width=16 }
 # health insurance data by age
 healthinsurancebyage <- read_csv("table3_healthinsurancebyage.csv") %>%
   tidyr::gather(Insurance,Coverage,2:7) %>%
@@ -561,19 +565,34 @@ healthinsurance$Indicator <- fct_relevel(healthinsurance$Indicator, "Lowest", "S
 
 healthinsurance$Insurance <- fct_relevel(healthinsurance$Insurance, "NHIF", "Private/commercial", "Community based", "Other", "Form of health insurance", "None/ Don't Know")
 
-renderPlot({
+renderGirafe({
   if(input$health%in%"Wealth_quintile"){
-    ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge()) +
+    insurance_map1<- ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar_interactive(stat = 'identity', position = position_dodge(),aes(tooltip=paste0(Coverage, "%"))) +
   facet_grid(.~Insurance)+labs(y="Proportion (%)")+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
-    theme_bw()+theme(text=element_text(size=20, face = "bold")) +
+    theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange")) 
-  }else{ ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge()) +
+    insurance_map1a<-girafe(ggobj = insurance_map1,width_svg=18, height_svg=9,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 4)))
+  print(insurance_map1a, justify="left")
+  }else{ 
+    insurance_map2 <-ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar_interactive(stat = 'identity', position = position_dodge(),aes(tooltip=paste0(Coverage, "%"))) +
   facet_grid(.~Insurance)+labs(y="Proportion (%)")+
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=20, face = "bold")) +
-    theme(strip.background =element_rect(fill="darkorange")) }
-},width = 1420, height=650)
+    theme(strip.background =element_rect(fill="darkorange"))
+  insurance_map2a<-girafe(ggobj = insurance_map2, width_svg=18, height_svg=9,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale=TRUE),
+                     opts_zoom(max = 4)))
+  print(insurance_map2a, justify="left")}
+})
 
 
 
@@ -640,7 +659,7 @@ valueBox(
 valueBox(
   value = paste("5.2%"),
   caption = "Alot of difficulty",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -794,7 +813,7 @@ valueBox(
 valueBox(
   value = paste("122"),
   caption = "General fertility rate, expressed per 1,000 women age 15–44",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -907,9 +926,9 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("0.9%"),
+  value = paste("1%"),
   caption = "of women aged 15-19 have ever had a pregnancy loss",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -1011,9 +1030,9 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("4.9%"),
+  value = paste("5%"),
   caption = "Moderate wasting",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -1083,14 +1102,14 @@ renderPlot({
   ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=measure, y=perc_below2sd, fill=Indicator))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+
-  labs( y="% below -2 SD^2 (Moderate)", title="", x="Nutritional measure", fill="Residence")+
+  labs( y="Moderate", title="", x="Nutritional measure", fill="Residence")+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=20, face="bold"))
   } else{
-  ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=Indicator, y=perc_below2sd, fill=measure))+
+  ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=measure, y=perc_below2sd, fill=Indicator))+
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
   theme_bw()+
-  labs( y="% below -2 SD^2 (Moderate)", title="", x="Indicator", fill="")+
+  labs( y="Moderate", title="", x="Indicator", fill="")+
   scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
   theme(text=element_text(size=20, face="bold"))+
   geom_text(aes(label = lab), position=position_stack(hjust = 0.5), size=4) 
@@ -1239,7 +1258,7 @@ valueBox(
 valueBox(
   value = paste("1.2"),
   caption = "Average number of insecticide treated nets per household",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -1421,9 +1440,9 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("36.3%"),
-  caption = "Of men own a house alone",
-  color = "red"
+  value = paste("36%"),
+  caption = "of men own a house alone",
+  color = "#b15928"
 )
 ```
 
@@ -1608,9 +1627,9 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("26.2%"),
-  caption = "Of men own agricultural land alone",
-  color = "red"
+  value = paste("26%"),
+  caption = "of men own agricultural land alone",
+  color = "#b15928"
 )
 ```
 
@@ -1786,7 +1805,7 @@ valueBox(
 valueBox(
   value = paste("7.0%"),
   caption = "Of men own non-agricultural land alone",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -1935,7 +1954,7 @@ valueBox(
 valueBox(
   value = paste("70%"),
   caption = "of the unmarried women men use a contraceptive",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -2212,7 +2231,7 @@ valueBox(
 valueBox(
   value = paste("70%"),
   caption = "of the unmarried women men use a contraceptive",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -2408,7 +2427,7 @@ valueBox(
   value = paste("82%"),
   caption = "of women who had a live birth \n in the 
 2 years preceding the survey \n delivered \n in a health facility",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -2562,7 +2581,7 @@ valueBox(
 valueBox(
   value = paste("55.2%"),
   caption = "of men aged 15-24 had knowledge about HIV prevention",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -2682,7 +2701,7 @@ valueBox(
 valueBox(
   value = paste("74%"),
   caption = "of men have ever tested for HIV",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -2818,7 +2837,7 @@ valueBox(
 valueBox(
   value = paste("38%"),
   caption = "of children 24-35 months are fully vaccinated \n according to the national schedule",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
@@ -3044,7 +3063,7 @@ valueBox(
 valueBox(
   value = paste("14%"),
   caption = "of married women have an unmet need for family planning",
-  color = "red"
+  color = "#b15928"
 )
 ```
 
