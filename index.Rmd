@@ -277,17 +277,19 @@ valueBox(
 Column {data-width="600"}
 -----------------------
 
-#### Choose the characteristics to display:
+#### **The background characteristics of the women and men interviewed in the 2022 KDHS**
+
+*For each characteristic, we show the weighted percentage distributions of the women and men that participated in the survey. Choose the characteristic to display.*
 
 ```{r}
 
 selectInput("char", "",
-             c("Age"="Age",
-               "Reported health status"="Health_Status",
+             c("Age of respondent"="Age",
+               "Self-reported health status"="Health_Status",
                "Religion"="Religion",
-               "Marital status"="Marital_Status",
+               "Marital status (15-49years)"="Marital_Status",
                "Residence"="Residence",
-               "Education Status"="Education_Status",
+               "Education status (highest level attended)"="Education_Status",
                "Wealth Quintile"="Wealth_Quintile",
                "By County"="County"))
 
@@ -351,7 +353,13 @@ respondentsdata <- rbind(respondentsbyage, healthstatus, religionrespondents, ma
   mutate(Indicator1=Indicator) %>%
   mutate(Indicator1=recode(Indicator1, "Education_Status"="Education Status", "Health_Status"="Health Status", "Marital_Status"="Marital Status", "Wealth_Quintile"="Wealth Quintile"))
 
-respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Second", "Middle", "Fourth", "Highest")
+respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Second", "Middle", "Fourth", "Highest", #wealth quintile
+                                        'No education','Primary','Secondary','More than secondary', 'Vocational', #Education
+                                        "Protestant/other Christian","Catholic", "Muslim","No religion","Other", #Religion
+                                        "Very good","Good","Moderate","Bad","Very bad", #Reported health status
+                                        "Married","Never married","Divorced/separated","Living together","Widowed") #Marital status
+
+
 # visualize the data
 # renderPlot({
 #   if (input$char%in%c("Wealth_Quintile", "Age")){
@@ -395,7 +403,9 @@ renderPlot({
   theme_bw() +
       facet_grid(~Participants) +
   geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.5, size=4, color="white", face = "bold")+
-  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_color_manual(values=c("cyan4", "red4"))+
+  #labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +
+      labs(y="Weighted percent (%)", x="")  +
+      scale_color_manual(values=c("cyan4", "red4"))+
        theme(strip.background =element_rect(fill="darkorange")) +
   theme(text=element_text(size=18, face="bold"))}
     else if(input$char%in%"County"){
@@ -405,19 +415,33 @@ renderPlot({
   geom_col(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, color="white", face = "bold", label.size=0.7)+
-  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
-  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange")) 
-      
-    } else {
+  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.7), size=4, color="white", face = "bold", label.size=0.7)+
+  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
+        # labs(y="Weighted percent (%)") + 
+        scale_fill_manual(values=c("cyan4", "red4"))+
+  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange")) } 
+  else if(input$char%in%"Religion"){
+      respondentsdata%>%
+    filter(Indicator==input$char)%>%
+      ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
+  geom_col(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
+  theme_bw() +
+        facet_grid(~Participants) +
+  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.7), size=5, color="white", face = "bold", label.size=0.7)+
+  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
+        # labs(y="Weighted percent (%)") + 
+        scale_fill_manual(values=c("cyan4", "red4"))+
+  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange")) } 
+  else {
      respondentsdata%>%
     filter(Indicator==input$char)%>%
     ggplot(aes(x=Grouping, y=Weighted_percent)) + 
   geom_col(stat = "identity", size= 10, fill = "cyan4") + 
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=4, fill="white", face = "bold")+
-  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
+  geom_text(aes(label=Weighted_percent), position=position_stack(vjust = 0.5), size=8, color="white", face = "bold")+
+ # labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
+         labs(y="Weighted percent (%)", x="") +
   theme(text=element_text(size=20, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
     }
   }, width = 1400, height=700)
@@ -496,7 +520,10 @@ value = paste("26%"),
 Column {data-width="600"}
 ------------------------------- 
 
-#### Choose characteristics to display:
+#### **Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families.**
+
+The data here shows 
+Choose characteristics to display:
 
 ```{r}
 
@@ -541,7 +568,8 @@ renderPlot({
   ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge()) +
   facet_grid(.~Insurance)+labs(y="Proportion (%)")+
     scale_fill_brewer(palette = "Set1")+
-    theme_bw()+theme(text=element_text(size=20, face = "bold"))
+    theme_bw()+theme(text=element_text(size=20, face = "bold")) +
+    theme(strip.background =element_rect(fill="darkorange")) 
 },width = 1420, height=650)
 
 
@@ -1931,7 +1959,7 @@ valueBox(
 Column {data-width="600"}
 ---------------------------------
 
-##### Choose the characteristics to display:
+##### Choose the characteristics to display: 
 
 
 ```{r}
