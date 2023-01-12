@@ -721,9 +721,10 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
                                         'No education','Primary','Secondary','More than secondary', 'Vocational')
 
  renderPlot({
+   
    ggplot(disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,]) + 
   geom_bar(aes(x=Indicator, y=difficultyprop, fill=difficulty),stat = "identity", position = position_dodge()) +
-     geom_line(aes(y=impairmentvalues, x=Indicator),color="brown", size=2, group=1)+
+     geom_line( aes(y=impairmentvalues, x=Indicator),color="brown", size=2, group=1)+
   theme_bw() +facet_grid(.~impairment)+
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
@@ -2120,9 +2121,21 @@ tradfpusemarriedbywealthquintilevisual <- read_csv("table8_tradfpusemarriedbywea
 # join the data
 family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals, modernfpusemarriedbynumberofchildren, modernfpusemarrieducationvisual, modernfpusemarriedbywealthquintilevisuals, tradfpusmarriedbynumberofchildrenvisual,tradfpusemarriedandunmarriedbyagevisual, tradfpusemarriedbyeducationvisual,tradfpusemarriedbywealthquintilevisual, modernfpusemarriedandunmarriedbyagevisual) %>%
   mutate(Contraceptive_use=recode(Contraceptive_use, "Any_method"="Any method", "Modern_method"="Modern method", "Traditional_method"="Traditional method")) %>%
-  mutate(indicator1= recode(indicator1, "Number_of_children"="Number of children", "Wealth_quintile"="wealth quintile"))
+  mutate(indicator1= recode(indicator1, "Number_of_children"="Number of children", "Wealth_quintile"="Wealth quintile")) %>%
+  mutate(Percent=as.numeric(parse_number(Percent)))
 
-renderPlot({ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
+renderPlot({if(input$family_planning%in%"County"){
+  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_bw() + facet_grid(.~Marital_status)+coord_flip()+
+    labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
+  #coord_flip() +
+  #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
+  #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(text=element_text(size=20, face="bold")) +
+  theme(strip.background =element_rect(fill="gray80"))
+}else{
+  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") +
   theme_bw() + facet_grid(.~Marital_status)+
     labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
@@ -2130,7 +2143,7 @@ renderPlot({ggplot(family_planning[family_planning$indicator1%in%input$family_pl
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
   theme(text=element_text(size=20, face="bold")) +
-  theme(strip.background =element_rect(fill="gray80")) }, width=1400, height=900)
+  theme(strip.background =element_rect(fill="gray80"))} }, width=1400, height=900)
 
 
 
