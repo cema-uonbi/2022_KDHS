@@ -1072,9 +1072,9 @@ Row {data-width="600"}
 
 ```{r}
 selectInput("nutr2", "",
-              c("HFA"="HFA",
-                "WFA"="WFA",
-                "WFH"="WFH"))
+              c("Height for Age"="HFA",
+                "Weight For Age"="WFA",
+                "Weight for Height"="WFH"))
 ```
 
 
