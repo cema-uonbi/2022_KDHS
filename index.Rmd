@@ -60,7 +60,8 @@ p_load(reshape2)
 
 valueBox(
   value = paste("37,911"),
-  caption = "Total Number of Households Interviewed",
+  caption = "Total Number of Households Interviewed)",
+  icon="fa-thumbs-down",
   color = "black"
 )
 ```
@@ -76,6 +77,7 @@ valueBox(
 valueBox(
   value = paste("32,156"),
   caption = "Total Number of Women Interviewed",
+  icon="fa-thumbs-up",
   color = "red"
 )
 ```
@@ -93,7 +95,8 @@ valueBox(
 valueBox(
   value = paste("14,453"),
   caption = "Total Number of Men Interviewed",
-  color = "darkgreen"
+  color = "darkgreen",
+  icon="fa-tag"
 )
 ```
 
@@ -117,9 +120,7 @@ radioButtons("quest", "",
 ```
 
 
-### Respondents
-
-Summary of the households selected, occupied, and interviewed for the 2022 Kenya Demographic and Health Survey. 
+### **Summary of the households selected, occupied, and interviewed for the 2022 Kenya Demographic and Health Survey** 
 
 The numbers are presented by:
 
@@ -520,18 +521,14 @@ value = paste("26%"),
 Column {data-width="600"}
 ------------------------------- 
 
-#### **Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families.**
+#### **Health Insurance Coverage:** *Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.* 
 
-The data here shows 
-Choose characteristics to display:
-
+Choose the characteristics to display:
 ```{r}
-
 radioButtons("health", "",
               c("Age"="Age_category", 
                 "Residence"="Residence", 
                 "Wealth quintile"="Wealth_quintile"))
-
 ```
 
 ```{r }
@@ -571,6 +568,7 @@ renderPlot({
     theme_bw()+theme(text=element_text(size=20, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange")) 
 },width = 1420, height=650)
+
 
 
 ```
@@ -661,13 +659,12 @@ Column {data-width="600"}
 
 selectInput("disability", "Choose a category",
               c("Age"="Age_category", 
-                "Marital Status"="Marital_status", 
+                "Marital Status (15-49years)"="Marital_status", 
                 "Residence"="Residence",
-                "Education"="Education_status",
+                "Education status (highest level attended)"="Education_status",
                 "Wealth quintile"="Wealth_quintile"))
 
-
-selectInput("disability_domain", "Choose  a sub-indicator:",
+selectInput("disability_domain", "Choose  a disability domain:",
               c("Seeing"="Seeing", 
                 "Hearing"="Hearing", 
                 "Communicating"="Communicating",
@@ -712,7 +709,10 @@ disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilityby
   mutate(difficulty=fct_relevel(difficulty, "Some Difficulty", "Alot of difficulty", "Cannot do at all")) %>%
   mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile"))
 
-disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest")
+disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest",
+                                        "50+","15-49","5-14",
+                                        "Married","Never married","Divorced/separated","Living together","Widowed",
+                                        'No education','Primary','Secondary','More than secondary', 'Vocational')
 
  renderPlot({
    ggplot(disabilitydata[disabilitydata$Indicator1==input$disability,], aes(x=Indicator, y=difficultyprop, fill=difficulty)) + 
