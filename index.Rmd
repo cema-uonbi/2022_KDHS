@@ -286,6 +286,9 @@ Column {data-width="600"}
 
 *For each characteristic, we show the weighted percentage distributions of the women and men that participated in the survey. Choose the characteristic to display.*
 
+**Kindly hover on the graphs to see the actual values**
+
+
 ```{r}
 
 selectInput("char", "",
@@ -399,57 +402,84 @@ respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Sec
 #   }, width = 1420, height=700)
   
 
-renderPlot({
+renderGirafe({
   if (input$char%in%c("Wealth_Quintile", "Age")){
-   respondentsdata%>%
+   respondents_map1<-respondentsdata%>%
     filter(Indicator==input$char)%>%
     ggplot(aes(x=Grouping, y=Weighted_percent)) + 
-  geom_point(stat = "identity", size= 20, color = "cyan4") + 
+  geom_point_interactive(stat = "identity", size= 20, color = "cyan4", aes(tooltip=paste0(Weighted_percent, "%"))) + 
   theme_bw() +
       facet_grid(~Participants) +
-  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.5, size=4, color="white", face = "bold")+
+  #geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.5, size=4, color="white", face = "bold")+
   #labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +
       labs(y="Weighted percent (%)", x="")  +
       scale_color_manual(values=c("cyan4", "red4"))+
        theme(strip.background =element_rect(fill="darkorange")) +
-  theme(text=element_text(size=18, face="bold"))}
+  theme(text=element_text(size=18, face="bold"))
+   respondents_map1a<-girafe(ggobj = respondents_map1,width_svg=18, height_svg=9,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 4)))
+  print(respondents_map1a, justify="left")}
     else if(input$char%in%"County"){
-      respondentsdata%>%
+      respondents_map2<- respondentsdata%>%
     filter(Indicator==input$char)%>%
       ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
-  geom_col(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
+  geom_col_interactive(stat = "identity", size= 10, fill = "cyan4", aes(tooltip=paste0(Weighted_percent, "%"))) + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=paste0(Weighted_percent, "%")), position=position_stack(vjust = 0.7), size=4, color="black", face = "bold", label.size=0.7)+
+  #geom_text(aes(label=paste0(Weighted_percent, "%")), position=position_stack(vjust = 0.7), size=4, color="black", face = "bold", label.size=0.7)+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
         # labs(y="Weighted percent (%)") + 
         scale_fill_manual(values=c("cyan4", "red4"))+
-  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange")) } 
+  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))
+  respondents_map2a<-girafe(ggobj = respondents_map2,width_svg=18, height_svg=9,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 4)))
+  print(respondents_map2a, justify="left")} 
   else if(input$char%in%"Religion"){
-      respondentsdata%>%
+    respondents_map3<-respondentsdata%>%
     filter(Indicator==input$char)%>%
       ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
-  geom_col(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
+  geom_col_interactive(stat = "identity", size= 10, fill = "cyan4", aes(tooltip=paste0(Weighted_percent, "%"))) + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=paste0(Weighted_percent, "%")), position=position_stack(vjust = 0.7), size=5, color="black", face = "bold", label.size=0.7)+
   labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
         # labs(y="Weighted percent (%)") + 
         scale_fill_manual(values=c("cyan4", "red4"))+
-  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange")) } 
+  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))
+    respondents_map3a<-girafe(ggobj = respondents_map3,width_svg=18, height_svg=9,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 4)))
+  print(respondents_map3a, justify="left")} 
   else {
-     respondentsdata%>%
+    respondents_map4<- respondentsdata%>%
     filter(Indicator==input$char)%>%
     ggplot(aes(x=Grouping, y=Weighted_percent)) + 
-  geom_col(stat = "identity", size= 10, fill = "cyan4") + 
+  geom_col_interactive(stat = "identity", size= 10, fill = "cyan4", aes(tooltip=paste0(Weighted_percent, "%"))) + 
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=paste0(Weighted_percent, "%")), position=position_stack(vjust = 0.5), size=5, color="black", face = "bold")+
+  #geom_text(aes(label=paste0(Weighted_percent, "%")), position=position_stack(vjust = 0.5), size=5, color="black", face = "bold")+
  # labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
          labs(y="Weighted percent (%)", x="") +
-  theme(text=element_text(size=16, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
+  theme(text=element_text(size=18, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
+    respondents_map4a<-girafe(ggobj = respondents_map4,width_svg=18, height_svg=9,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 4)))
+  print(respondents_map4a, justify="left")
     }
-  }, width = 1400, height=700)
+  })
   
 ```
 
@@ -528,6 +558,7 @@ Column {data-width="800"}
 #### **Health Insurance Coverage:** *Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.* 
 
 Choose the characteristics to display:
+
 ```{r}
 radioButtons("health", "",
               c("Age"="Age_category", 
