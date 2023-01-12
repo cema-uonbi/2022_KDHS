@@ -901,7 +901,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("0.9%"),
-  caption = "of women aged 14-19 have ever had a pregnancy loss",
+  caption = "of women aged 15-19 have ever had a pregnancy loss",
   color = "red"
 )
 ```
@@ -912,7 +912,7 @@ valueBox(
 
 valueBox(
   value = paste("14.9%"),
-  caption = "of women aged 14-19 have ever been pregnant",
+  caption = "of women aged 15-19 have ever been pregnant",
   color = "darkgreen"
 )
 ```
