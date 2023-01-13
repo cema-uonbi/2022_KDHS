@@ -2405,7 +2405,7 @@ selectInput("physical_violence1", "",
 
 renderGirafe({
 physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) %>%
-  mutate(label=paste0(Name, ":", "\n", value, "%"))
+  mutate(label=paste0(Name, ":", "\n", round(value), "%"))
 
 #table29C<-table29C[c(0:47),c(0:7)]
 #men <- full_join(county,table29C_men,by=c("Name"="Background.characteristic")) %>%
@@ -3054,8 +3054,11 @@ vacc_24_35_wealth.quintile.1 <- read_csv("table11_vacc_24_35_wealth.quintile.csv
 
 ## join all the data
 vaccination_data <- rbind(vacc_12_23_gender.1 , vacc_12_23_birth.1, vacc_12_23_card.1, vacc_12_23_mothers.education.1,vacc_12_23_residence.1, vacc_12_23_wealth.quintile.1, vacc_24_35_gender.1, vacc_24_35_birth.1, vacc_24_35_card.1, vacc_24_35_mothers.education.1, vacc_24_35_gender.1, vacc_24_35_residence.1, vacc_24_35_wealth.quintile.1) %>%
-  mutate(group=recode(group, "12-23 months"="CountyFullyVaccinated12", "24-35 months"="CountyFullyVaccinated24"))
+  mutate(group=recode(group, "12-23 months"="CountyFullyVaccinated12", "24-35 months"="CountyFullyVaccinated24")) %>%
+  mutate(Vaccines=recode(Vaccines, "Fully.vaccinated"= "Fully vaccinated (basic antigens)", "Fully.vaccinated.national schedule"="Fully vaccinated (national schedule)", "No.vaccinations"="No vaccinations", "DTP1"="DPT1", "DTP2"="DPT2", "DTP3"="DPT3"))
 
+
+vaccination_data$Vaccines <- fct_relevel(vaccination_data$Vaccines, "BCG", "DPT1", "DPT2", "DPT3", "OPV", "OPV1", "OPV2", "OPV3", "IPV", "Pneumococcal1", "Pneumococcal2", "Pneumococcal3", "Rotavirus1", "Rotavirus2", "MR 1", "Fully vaccinated (basic antigens)","No vaccinations","MR.2", "Fully vaccinated (national schedule)" )
 
 renderPlot({
   ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & !is.na(vaccination_data$indicator1) & vaccination_data$group%in%input$vacc,],aes(x=Vaccines, y=Percent)) + 
@@ -3209,7 +3212,7 @@ renderPlot({
   ggplot(needdemandforfpusemarriedbycountyvisual1[needdemandforfpusemarriedbycountyvisual1$Family_planning%in%input$fp_demand,], aes(x=reorder(Name, Percent), y=Percent)) +
 geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   theme_bw() + coord_flip() +
-  geom_text(aes(label=Percent), hjust=1.3, size=5, color="white")+
+  geom_text(aes(label=round(Percent)), hjust=1.3, size=5, color="white")+
   coord_flip() + 
   ylab("Weighted percent") + xlab("County") +
   facet_grid(~Family_planning) +
