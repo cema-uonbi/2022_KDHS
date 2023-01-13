@@ -800,8 +800,8 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
    domain_data<- disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,] %>%
        dplyr::select(impairmentvalues, Indicator, impairment, Participants)%>%
        dplyr::distinct()
-   disability_map1 <- ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,]) + 
-  geom_bar_interactive(aes(x=Indicator, y=difficultyprop, fill=difficulty, tooltip=paste0(difficultyprop, "%")),stat = "identity", position = position_dodge()) +
+   disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,]) + 
+  geom_bar(aes(x=Indicator, y=difficultyprop, fill=difficulty),stat = "identity", position = position_dodge()) + 
      geom_point_interactive(data=domain_data, aes(y=impairmentvalues, x=Indicator, tooltip=paste0(impairmentvalues, "%"), group=Participants),color="brown", size=10)+facet_grid(.~Participants)+
   theme_bw()+
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
