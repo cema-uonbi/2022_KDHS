@@ -2930,7 +2930,7 @@ valueBox(
 
 <br>
 
-Row {data-width="600"}
+Column {data-height="800"}
 ---------------------------------
 
 ### Fully vaccinated according to the national schedule
@@ -2964,23 +2964,23 @@ renderGirafe({
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion")+
   theme(text=element_text(size=14))
-  x <- girafe(ggobj = map3,
+  x <- girafe(ggobj = map3, width_svg = 5, height_svg = 5,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 4)), width=10, height=12)
+                     opts_zoom(max = 4)))
     print(x)})
+
+
 
 ```
 
-Column {data-height="150"}
----------------------------------
 
 ### Characteristics of the fully vaccinated 
 
 ```{r}
 
-selectInput("vacc_char", "",
+radioButtons("vacc_char", "",
               c("Sex"="Gender",
                 "Birth order"="Birth",
                 "Vaccination card"="Card",
@@ -2988,21 +2988,9 @@ selectInput("vacc_char", "",
                 "Mother's education"="Education",
                 "Wealth quintile"="Wealth quintile"))
 
-```
 
-### Fully vaccinated by age
 
-```{r}
-selectInput("vacc1", "",
-              c("Fully vaccinated: 12-23 months"="12-23 months",
-                "Fully vaccinated: 24-35 months"="24-35 months"))
 
-```
-
-Row {data-width="800"}
----------------------------------
-
-```{r}
 vacc_12_23_gender.1 <- read_csv("table11_vacc_12_23_gender.csv") %>%
   mutate(group="12-23 months") %>%
   mutate(indicator="Gender") %>%
@@ -3062,14 +3050,15 @@ vacc_24_35_mothers.education.1 <- read_csv("table11_vacc_24_35_mothers.education
 vacc_24_35_wealth.quintile.1 <- read_csv("table11_vacc_24_35_wealth.quintile.csv") %>%
   mutate(group="24-35 months") %>%
   mutate(indicator="Wealth quintile") %>%
-  rename(indicator1=wealth.quintile)
+  rename(indicator1=wealth.quintile) 
 
 ## join all the data
-vaccination_data <- rbind(vacc_12_23_gender.1 , vacc_12_23_birth.1, vacc_12_23_card.1, vacc_12_23_mothers.education.1,vacc_12_23_residence.1, vacc_12_23_wealth.quintile.1, vacc_24_35_gender.1, vacc_24_35_birth.1, vacc_24_35_card.1, vacc_24_35_mothers.education.1, vacc_24_35_gender.1, vacc_24_35_residence.1, vacc_24_35_wealth.quintile.1)
+vaccination_data <- rbind(vacc_12_23_gender.1 , vacc_12_23_birth.1, vacc_12_23_card.1, vacc_12_23_mothers.education.1,vacc_12_23_residence.1, vacc_12_23_wealth.quintile.1, vacc_24_35_gender.1, vacc_24_35_birth.1, vacc_24_35_card.1, vacc_24_35_mothers.education.1, vacc_24_35_gender.1, vacc_24_35_residence.1, vacc_24_35_wealth.quintile.1) %>%
+  mutate(group=recode(group, "12-23 months"="CountyFullyVaccinated12", "24-35 months"="CountyFullyVaccinated24"))
 
 
 renderPlot({
-  ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & !is.na(vaccination_data$indicator1) & vaccination_data$group%in%input$vacc1,],aes(x=Vaccines, y=Percent)) + 
+  ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & !is.na(vaccination_data$indicator1) & vaccination_data$group%in%input$vacc,],aes(x=Vaccines, y=Percent)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   theme_bw() +facet_grid(.~indicator1)+
   geom_text(aes(label=Percent), size=5, color="black")+
@@ -3080,7 +3069,7 @@ renderPlot({
   theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
   theme(strip.background =element_rect(fill="darkorange")) 
 
-})
+}, width=600, height=500)
 ```
 
 family_planning {.hidden}
