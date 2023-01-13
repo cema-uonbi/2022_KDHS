@@ -605,7 +605,7 @@ healthinsurancebywealthquintile <- read_csv( "table3_healthinsurancebywealthquin
 # total health insurance data
 healthinsurance <- rbind(healthinsurancebyage,healthinsurancebyresidence,healthinsurancebywealthquintile) %>%
   mutate(Insurance=recode(Insurance, "Community_based"="Community based", "Private_commercial"="Private/commercial")) %>%
-  mutate(label=ifelse(Coverage<0.5, "<1", paste0(round(Coverage),"")))
+  mutate(label=ifelse(Coverage<0.5, "<1%", paste0(round(Coverage),"%")))
 
 
 healthinsurance$Indicator <- fct_relevel(healthinsurance$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest")
@@ -619,7 +619,7 @@ renderPlot({
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
-    geom_text(aes(label=label), position=position_dodge(0.5),vjust=-1, size=4, color="black")
+    geom_text(aes(label=label), position=position_dodge(0.5),vjust=0.5, size=4, color="black")
   #  insurance_map1a<-girafe(ggobj = insurance_map1,width_svg=18, height_svg=9,
   #                 options = list(
   #                   opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -633,7 +633,7 @@ renderPlot({
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=20, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
-       geom_text(aes(label=label), position=position_dodge(0.7),vjust=-0.5, size=4, color="black")
+       geom_text(aes(label=label), position=position_dodge(0.7),vjust=0.5, size=4, color="black")
   #insurance_map2a<-girafe(ggobj = insurance_map2, width_svg=18, height_svg=9,
    #                options = list(
     #                 opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -2379,7 +2379,7 @@ table29C <- dplyr::bind_rows(table29C_women) %>%
 renderPlot({
   ggplot(table29[table29$Background.characteristic%in%input$physical_violence,], aes(x=Indicator,y=Value,fill=Category)) + 
   geom_col(position='dodge') + geom_text(aes(label=paste0(round(Value),"%")))+
-  labs( y = 'Percentage(%)',x = '',fill='Experience of Violence', title="Marital Status") +
+  labs( y = 'Percentage(%)',x = '',fill='Experience of Violence', title="") +
       theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
 
 
