@@ -870,7 +870,7 @@ Inputs {.sidebar}
 
 valueBox(
   value = paste("3.4"),
-  caption = "Total Fertility Rate per woman (15-49)",
+  caption = "Total Fertility Rate per woman (15-49) \n Urban areas:2.8 \n Rural areas: 3.9",
   color = "black"
 )
 ```
@@ -880,7 +880,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("122"),
-  caption = "General fertility rate, expressed per 1,000 women age 15–44",
+  caption = "General fertility rate, expressed per 1,000 women age 15–44\n Urban areas:105 \n Rural areas: 134",
   color = "#b15928"
 )
 ```
@@ -891,7 +891,7 @@ valueBox(
 
 valueBox(
   value = paste("27.7"),
-  caption = "Crude birth rate, expressed per 1,000 population",
+  caption = "Crude birth rate, expressed per 1,000 population \n Urban areas:30.1 \n Rural areas: 26.6",
   color = "darkgreen"
 )
 ```
@@ -1021,7 +1021,7 @@ valueBox(
 Row {data-height="800"}
 -----------------------
 
-### Kindly hover on the graph to see the actual values
+### .
 
 ```{r}
 teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
@@ -2230,25 +2230,35 @@ family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarrie
   mutate(Percent=as.numeric(parse_number(Percent)))
 
 renderPlot({if(input$family_planning%in%"County"){
-  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
+  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") +
-  theme_bw() + facet_grid(.~Marital_status)+coord_flip()+
+  theme_bw() + facet_grid(.~Marital_status)+coord_flip()+geom_text(aes(label=round(Percent)))+
     labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
   theme(text=element_text(size=20, face="bold")) +
   theme(strip.background =element_rect(fill="gray80"))
-}else{
-  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
-  geom_bar(stat = "identity", position = "dodge") +
+}else if(input$family_planning%in%"Residence"){
+  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
+  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=round(Percent)), position=position_dodge(0.5), hjust=0.1)+
   theme_bw() + facet_grid(.~Marital_status)+
     labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
   theme(text=element_text(size=20, face="bold")) +
-  theme(strip.background =element_rect(fill="gray80"))} }, width=1400, height=900)
+  theme(strip.background =element_rect(fill="gray80"))}
+  else{ ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
+  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=round(Percent)), position=position_dodge(0.5), vjust=-0.2)+
+  theme_bw() + facet_grid(.~Marital_status)+
+    labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
+  #coord_flip() +
+  #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
+  #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(text=element_text(size=20, face="bold")) +
+  theme(strip.background =element_rect(fill="gray80"))
+  }}, width=1400, height=600)
 
 
 
@@ -2354,7 +2364,8 @@ county <- st_read("County.shp")
 table29 <- dplyr::bind_rows(table29_women)
 table29C <- dplyr::bind_rows(table29C_women) %>%
   select(-Number)%>%
-  pivot_longer(c(2:5), names_to="experience", values_to="value")
+  pivot_longer(c(2:5), names_to="experience", values_to="value") 
+  
 
 
 
@@ -2363,10 +2374,11 @@ table29C <- dplyr::bind_rows(table29C_women) %>%
 ```
 
 ```{r}
-renderPlot({ggplot(table29[table29$Background.characteristic%in%input$physical_violence,]) + 
-  geom_col(mapping=aes(x=Indicator,y=Value,fill=Category),
-           position='dodge') +
-  labs( y = 'Percentage(%)',x = 'Marital Status',fill='Experience of Violence', title="Marital Status") +
+
+renderPlot({
+  ggplot(table29[table29$Background.characteristic%in%input$physical_violence,], aes(x=Indicator,y=Value,fill=Category)) + 
+  geom_col(position='dodge') + geom_text(aes(label=paste0(round(Value),"%")))+
+  labs( y = 'Percentage(%)',x = '',fill='Experience of Violence', title="Marital Status") +
       theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
 
 
@@ -2426,7 +2438,7 @@ renderPlot({
    physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
 
    ggplot(physical_violence, aes(x = reorder(Name,value),y = value)) + 
-  geom_bar(stat="identity", aes(fill=Participants)) + coord_flip() + theme_bw() +
+  geom_bar(stat="identity", aes(fill=Participants)) + coord_flip() + theme_bw()+ geom_text(aes(label=paste0(round(value),"%")))+
   labs(fill="Percentage", x="County", y="Percentage")+theme(text=element_text(size=18, face="bold"))
 },width=800, height=500)
 
@@ -2520,7 +2532,7 @@ valueBox(
 
 <br>
 
-Row {data-height="200"}
+Row {data-height="250"}
 ---------------------------------
 
 ### Maternal care
@@ -2530,11 +2542,11 @@ Row {data-height="200"}
 radioButtons("maternal_care", "",
               c("Antenatal care from a skilled provider"="ANC from a skilled provider",
                 "At least four antenatal care visits"="At least four ANC visits",
-                "Took iron containing supplements during pregnancy"="Took iron supplements", "Most recent live birth was protected against neonatal tetanus"="Neonatal tetanus", "Delivered by a skilled provider"="Skilled delivery","delivered in a health facility"="Health facility delivery", "Postnatal check during the first 2 days after birth"="Postnatal check"))
+                "Took iron containing supplements during pregnancy"="Took iron supplements", "Most recent live birth was protected against neonatal tetanus"="Neonatal tetanus", "Delivered by a skilled provider"="Skilled delivery","Delivered in a health facility"="Health facility delivery", "Postnatal check during the first 2 days after birth"="Postnatal check"), width=600)
 
 ```
 
-Column {data-height="800"}
+Column {data-height="600"}
 ---------------------------------
 ### Spatial visualization
 
@@ -2955,12 +2967,12 @@ renderGirafe({
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 4)), width=8, height=7)
+                     opts_zoom(max = 4)), width=10, height=12)
     print(x)})
 
 ```
 
-Column {data-height="200"}
+Column {data-height="150"}
 ---------------------------------
 
 ### Characteristics of the fully vaccinated 
