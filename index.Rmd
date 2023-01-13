@@ -206,7 +206,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 
 respondents_characteristics {.hidden}
@@ -248,7 +248,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -525,7 +525,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"} 
 
@@ -555,7 +555,7 @@ value = paste("26%"),
  
 ```
 
-Row {data-height="200"}
+Row {data-height="230"}
 ------------------------------- 
 
 ### **Health Insurance Coverage:**
@@ -574,7 +574,7 @@ radioButtons("health", "",
 ```
 
 
-Row {data-height="800"}
+Row {data-height="600"}
 ------------------------------- 
 
 ### .
@@ -618,7 +618,7 @@ renderPlot({
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
-    geom_text(aes(label=label), position=position_dodge(0.5), size=5, color="black")
+    geom_text(aes(label=label), position=position_dodge(0.5),vjust=0.5, size=4, color="black")
   #  insurance_map1a<-girafe(ggobj = insurance_map1,width_svg=18, height_svg=9,
   #                 options = list(
   #                   opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -632,7 +632,7 @@ renderPlot({
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=20, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
-       geom_text(aes(label=label), position=position_dodge(0.5), size=5, color="black")
+       geom_text(aes(label=label), position=position_dodge(0.7),vjust=0.5, size=4, color="black")
   #insurance_map2a<-girafe(ggobj = insurance_map2, width_svg=18, height_svg=9,
    #                options = list(
     #                 opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -686,7 +686,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -789,7 +789,8 @@ disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilityby
   filter(difficulty%in%c("A_lot_of_difficulty","SomeDifficulty", "Cannot_do_at_all"))%>%
   mutate(difficulty=recode(difficulty, "A_lot_of_difficulty"="Alot of difficulty", "SomeDifficulty"="Some Difficulty","Cannot_do_at_all"="Cannot do at all"  ))%>%
   mutate(difficulty=fct_relevel(difficulty, "Some Difficulty", "Alot of difficulty", "Cannot do at all")) %>%
-  mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile"))
+  mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile")) %>%
+  mutate(label=ifelse(difficultyprop<0.5, "<1%", paste0(round(difficultyprop),"%")))
 
 disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest",
                                         "50+","15-49","5-14",
@@ -800,8 +801,9 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
    domain_data<- disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,] %>%
        dplyr::select(impairmentvalues, Indicator, impairment, Participants)%>%
        dplyr::distinct()
-   disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,]) + 
+   disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,], ) + 
   geom_bar(aes(x=Indicator, y=difficultyprop, fill=difficulty),stat = "identity", position = position_dodge()) + 
+    # geom_text(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,], aes(label=label, x=Indicator, y=difficultyprop),stat="identity", position = position_dodge(0.6), hjust=0.5)+
      geom_point_interactive(data=domain_data, aes(y=impairmentvalues, x=Indicator, tooltip=paste0(impairmentvalues, "%"), group=Participants),color="brown", size=10)+facet_grid(.~Participants)+
   theme_bw()+
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
@@ -856,7 +858,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -974,7 +976,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -985,7 +987,7 @@ Inputs {.sidebar}
 ```{r}
 
 valueBox(
-  value = paste("12.2%"),
+  value = paste("12%"),
   caption = "of women aged 15-19 have ever had a live birth",
   color = "black"
 )
@@ -1006,7 +1008,7 @@ valueBox(
 ```{r}
 
 valueBox(
-  value = paste("14.9%"),
+  value = paste("15%"),
   caption = "of women aged 15-19 have ever been pregnant",
   color = "darkgreen"
 )
@@ -1024,12 +1026,15 @@ Row {data-height="800"}
 ```{r}
 teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
   pivot_longer(cols = Live_birth:Ever_pregnant, names_to = "Pregnancy", values_to = "Percent") %>%
-  mutate(Pregnancy=recode(Pregnancy, "Currently_pregnant"="Currently pregnant", "Ever_pregnant"="Ever pregnant", "Live_birth"="Live birth", "Pregnancy_loss"="Pregnancy loss"))
+  mutate(Pregnancy=recode(Pregnancy, "Currently_pregnant"="Currently pregnant", "Ever_pregnant"="Ever pregnant", "Live_birth"="Live birth", "Pregnancy_loss"="Pregnancy loss"))%>%
+  mutate(label=ifelse(Percent<0.5, "<1%", paste0(round(Percent),"%")))
 
-renderGirafe({
-  teenage_preg1<-teenpregnancybycountyvisual %>%
+
+renderPlot({
+ teenpregnancybycountyvisual %>%
   ggplot(aes(x=reorder(County,Percent), y=Percent, fill=Pregnancy)) + 
-  geom_bar_interactive(stat = "identity", aes(tooltip=paste0(County,"\n",Percent, "%"))) +
+  geom_bar(stat = "identity") +
+    geom_text(aes(label=label), position=position_stack(vjust=0.5))+
   #, position = position_dodge()) +
   #facet_wrap(facets = ~reorder(Participants, Percent)) +
   #scale_fill_manual("Residence", values = c("Urban" = "darkorange", "Rural" = "cyan3")) +
@@ -1038,13 +1043,14 @@ renderGirafe({
   ylab("Percent (%)") + xlab("County") +
   theme(text=element_text(size=20, face="bold")) +
   theme(strip.background =element_rect(fill="gray80")) +scale_fill_brewer(palette="Set1")
-  teenage_preg1a<-girafe(ggobj = teenage_preg1,width_svg=18, height_svg=9,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
+ # teenage_preg1a<-girafe(ggobj = teenage_preg1,width_svg=18, height_svg=9,
+#                   options = list(
+#                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+#                     opts_selection(css = "fill:orange;", type = "multiple"),
                   #   opts_sizing(rescale = TRUE),
-                     opts_zoom(max = 4)))
-  print(teenage_preg1a, justify="left")})
+ #                    opts_zoom(max = 4)))
+  #print(teenage_preg1a, justify="left")
+  }, width=1200, height=600)
 
   
 ```
@@ -1089,7 +1095,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -1315,7 +1321,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -1499,7 +1505,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -1686,7 +1692,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -1862,7 +1868,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -2011,7 +2017,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -2033,7 +2039,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("70%"),
-  caption = "of the unmarried women men use a contraceptive",
+  caption = "of the unmarried women use a contraceptive",
   color = "#b15928"
 )
 ```
@@ -2288,7 +2294,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -2299,8 +2305,8 @@ Inputs {.sidebar}
 ```{r}
 
 valueBox(
-  value = paste("63%"),
-  caption = "of currently married women are using a contraceptive method",
+  value = paste("34%"),
+  caption = "of women have experienced physical violence since age 15",
   color = "black"
 )
 ```
@@ -2309,33 +2315,12 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("70%"),
-  caption = "of the unmarried women men use a contraceptive",
+  value = paste("3.5%"),
+  caption = "of women have often experienced physical violence in the last 12 months",
   color = "#b15928"
 )
 ```
 
-### {.value-box}
-
-```{r}
-
-valueBox(
-  value = paste("11%"),
-  caption = "of sexually active unmarried women use traditional contraceptive methods",
-  color = "darkgreen"
-)
-``` 
-
-### {.value-box}
-
-```{r}
-
-valueBox(
-  value = paste("6%"),
-  caption = "of sexually active married women use traditional contraceptive methods",
-  color = "darkblue"
-)
-```
 
 <br>
 
@@ -2366,8 +2351,8 @@ table29C_men<- read.csv('Table29C_Men.csv',na.strings="na") %>%
   mutate(Participants='Men')
 county <- st_read("County.shp")
 
-table29 <- dplyr::bind_rows(table29_men, table29_women)
-table29C <- dplyr::bind_rows(table29C_women,table29C_men) %>%
+table29 <- dplyr::bind_rows(table29_women)
+table29C <- dplyr::bind_rows(table29C_women) %>%
   select(-Number)%>%
   pivot_longer(c(2:5), names_to="experience", values_to="value")
 
@@ -2380,7 +2365,7 @@ table29C <- dplyr::bind_rows(table29C_women,table29C_men) %>%
 ```{r}
 renderPlot({ggplot(table29[table29$Background.characteristic%in%input$physical_violence,]) + 
   geom_col(mapping=aes(x=Indicator,y=Value,fill=Category),
-           position='dodge') + facet_grid(.~Participants) + 
+           position='dodge') +
   labs( y = 'Percentage(%)',x = 'Marital Status',fill='Experience of Violence', title="Marital Status") +
       theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
 
@@ -2405,8 +2390,9 @@ selectInput("physical_violence1", "",
                 "Often or Sometimes"="Often.or.sometimes"))
 
 
-renderPlot({
-physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
+renderGirafe({
+physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) %>%
+  mutate(label=paste0(Name, ":", "\n", value, "%"))
 
 #table29C<-table29C[c(0:47),c(0:7)]
 #men <- full_join(county,table29C_men,by=c("Name"="Background.characteristic")) %>%
@@ -2415,11 +2401,17 @@ physical_violence <- left_join(county,table29C[table29C$experience%in%input$phys
 
 #physical_violence <- rbind(women, men)
 
-  ggplot(physical_violence) + geom_sf(aes(fill=value))+
-  theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+facet_grid(.~Participants)+ 
+  physical_violencemap <-ggplot(physical_violence) + geom_sf_interactive(aes(fill=value, tooltip=label))+
+  theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+
   labs(fill="Percentage")
+   physical_violencemap1 <- girafe(ggobj = physical_violencemap,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 4)))
+    print(physical_violencemap1)
 
-},width=700, height=500)
+})
 
 
 ```
@@ -2481,7 +2473,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -2636,7 +2628,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -2756,7 +2748,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -2892,7 +2884,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -3118,7 +3110,7 @@ Inputs {.sidebar}
 
 [Non-agricultural land ownership](#nonagric_land_ownership)</br>
 
-[Physical violence](#physical_violence)</br>
+[Gender based violence](#physical_violence)</br>
 
 ## Row {data-width="200"}
 
@@ -3494,9 +3486,9 @@ selectInput("comp_indicator1", "",
                 "Nutrition: Severe wasting"=" WFA_perc_below3sd",
                 "Nutrition: Moderate underweight"=" WFH_perc_below2sd",
                 "Nutrition: Severe underweight"=" WFH_perc_below3sd",
-                "Physical violence (Women): Often"="Often",
-                "Physical violence (Women): Sometimes"="Sometimes",
-                "Physical violence (Women): Ever experienced violence (from age 15)"="Percentage who have experienced physical violence since age 15",
+                "Gender based violence (Women): Often"="Often",
+                "Gender based violence (Women): Sometimes"="Sometimes",
+                "Gender based violence (Women): Ever experienced violence (from age 15)"="Percentage who have experienced physical violence since age 15",
                 "Teenager: currently pregnant"="Currently_pregnant",
                 "Teenager: ever been pregnant"="Ever_pregnant",
                 "Teenager: ever had pregnancy loss"="Pregnancy_loss",
@@ -3560,9 +3552,9 @@ selectInput("comp_indicator2", "",
                 "Nutrition: Severe wasting"=" WFA_perc_below3sd",
                 "Nutrition: Moderate underweight"=" WFH_perc_below2sd",
                 "Nutrition: Severe underweight"=" WFH_perc_below3sd",
-                "Physical violence (Women): Often"="Often",
-                "Physical violence (Women): Sometimes"="Sometimes",
-                "Physical violence (Women): Ever experienced violence (from age 15)"="Percentage who have experienced physical violence since age 15",
+                "Gender based violence (Women): Often"="Often",
+                "Gender based violence (Women): Sometimes"="Sometimes",
+                "Gender based violence (Women): Ever experienced violence (from age 15)"="Percentage who have experienced physical violence since age 15",
                 "Teenager: currently pregnant"="Currently_pregnant",
                 "Teenager: ever been pregnant"="Ever_pregnant",
                 "Teenager: ever had pregnancy loss"="Pregnancy_loss",
