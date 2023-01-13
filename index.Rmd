@@ -98,7 +98,7 @@ valueBox(
   value = paste("14,453"),
   caption = "Total Number of Men Interviewed",
   color = "darkgreen",
-  icon="fa-tag"
+  icon="fa-thumbs-up"
 )
 ```
 
@@ -147,7 +147,8 @@ participantsinterviews <- read_csv("table1_participantsinterviews.csv") %>%
 
 # join the two datasets
 totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews)  %>%
-  mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires"))
+  mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires", "All_households"="All households",
+                          "Short_questionnaire"="Short questionnaire"))
 
 renderPlot({
  ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest,], aes(x=Respondents, y=numbers)) + 
@@ -431,7 +432,7 @@ renderPlot({
   geom_bar(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=label), hjust = -0.2, size=4, color="black", face = "bold", label.size=0.7)+
+  geom_text(aes(label=label), hjust = -0.5, size=4, color="black", face = "bold", label.size=0.7)+
 #  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
          labs(y="Weighted percent (%)", x="") + 
       #  scale_fill_manual(values=c("cyan4", "red4"))+
@@ -454,7 +455,7 @@ renderPlot({
         # labs(y="Weighted percent (%)") + 
         scale_fill_manual(values=c("cyan4", "red4"))+
   theme(text=element_text(size=18, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))+
-      geom_text(aes(label=label), position=position_stack(vjust = 0.7), size=4, color="black", face = "bold", label.size=0.7)
+      geom_text(aes(label=label), position=position_stack(vjust = 0.7), size=4, color="white", face = "bold", label.size=0.7)
    # respondents_map3a<-girafe(ggobj = respondents_map3,width_svg=18, height_svg=9,
   #                 options = list(
    #                  opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -470,7 +471,7 @@ renderPlot({
   geom_bar(stat = "identity", size= 10, fill = "cyan4")+ #aes(tooltip=paste0(Weighted_percent, "%"))) + 
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=label), position=position_stack(vjust = 0.5), size=5, color="black")+
+  geom_text(aes(label=label), position=position_stack(vjust = 0.5), size=5, color="white")+
  # labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
          labs(y="Weighted percent (%)", x="") +
   theme(text=element_text(size=18, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
