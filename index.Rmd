@@ -3061,7 +3061,7 @@ renderPlot({
   ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & !is.na(vaccination_data$indicator1) & vaccination_data$group%in%input$vacc,],aes(x=Vaccines, y=Percent)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   theme_bw() +facet_grid(.~indicator1)+
-  geom_text(aes(label=Percent), size=5, color="black")+
+  geom_text(aes(label=round(Percent)), size=5, color="black", hjust=0.5)+
   scale_fill_brewer(palette = "Set1")+
   coord_flip() + labs(y="Proportion", x="", fill="")+
   theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
@@ -3248,12 +3248,12 @@ radioButtons("trends", "",
 
 <br>
 
-Row {data.width="600"}
+Row {data.height="600"}
 --------------------------
 
-#### Trends over time
+### Trends over time
 
-```{r, fig.width=16, fig.height=10}
+```{r, fig.width=14, fig.height=12}
 # fertility rate
 trendstotalfertilityrate <- read_csv("figure1_trendstotalfertilityrate.csv") %>%
   rename(grouping=Residence,
@@ -3312,14 +3312,16 @@ renderGirafe({
   geom_point_interactive(size = 2.0, aes(tooltip=Percent)) +
   labs(x="Kenya DHS Years", y=unique(input$trends),color="") +
   theme(text =element_text(size=18, face="bold"))
-  trends_map2<-girafe(ggobj =  trends_map,
+  trends_map2<-girafe(ggobj =  trends_map, width_svg=18, height_svg=9,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 9)),  height=4, width=6)
-  print( trends_map2)
+                    # opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 9)),)
+  print( trends_map2, justify="left")
   
 })
+
 
 ```
 
