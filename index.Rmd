@@ -2099,17 +2099,15 @@ valueBox(
 )
 ```
 
-<br>
+## Row {data-width="200"}
 
-Column {data-width="600"}
----------------------------------
 
-##### Choose the characteristics to display: 
+### Choose the characteristics to display: 
 
 
 ```{r}
 
-selectInput("family_planning", "",
+radioButtons("family_planning", "",
               c("Number of Children"="Number of children",
                 "Age"="Age",
                 "Education"="Education",
@@ -2117,11 +2115,28 @@ selectInput("family_planning", "",
                 "Wealth quintile"="Wealth quintile",
                 "By County"="County"))
 
-selectInput("fp_type", "Type of family planning",
-              c("Any method:summary"="Any",
-                "Modern method: Specific"="Modern",
-                "Traditional method: Specific"="Traditional"))
 ```
+
+
+### Type of family planning
+
+````{r}
+
+radioButtons("fp_type", "",
+              c("Any method"="Any",
+                "Modern method"="Modern",
+                "Traditional method"="Traditional"))
+```
+
+<br>
+
+Row {data-height="600"}
+---------------------------------
+
+<br>
+
+
+### Visualization
 
 ```{r}
 
@@ -2265,7 +2280,7 @@ family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarrie
 renderPlot({if(input$family_planning%in%"County"){
   ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") +
-  theme_bw() + facet_grid(.~Marital_status)+coord_flip()+geom_text(aes(label=round(Percent)))+
+  theme_bw() + facet_grid(.~Marital_status)+coord_flip()+geom_text(aes(label=paste0(round(Percent), "%")))+
     labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
@@ -2274,7 +2289,7 @@ renderPlot({if(input$family_planning%in%"County"){
   theme(strip.background =element_rect(fill="gray80"))
 }else if(input$family_planning%in%"Residence"){
   ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
-  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=round(Percent)), position=position_dodge(0.5), hjust=0.1)+
+  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent), "%")), position=position_dodge(0.6), vjust=0.1)+
   theme_bw() + facet_grid(.~Marital_status)+
     labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
@@ -2283,7 +2298,7 @@ renderPlot({if(input$family_planning%in%"County"){
   theme(text=element_text(size=20, face="bold")) +
   theme(strip.background =element_rect(fill="gray80"))}
   else{ ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
-  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=round(Percent)), position=position_dodge(0.5), vjust=-0.2)+
+  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent),"%")), position=position_dodge(0.6), vjust=-0.2)+
   theme_bw() + facet_grid(.~Marital_status)+
     labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
@@ -2291,7 +2306,7 @@ renderPlot({if(input$family_planning%in%"County"){
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
   theme(text=element_text(size=20, face="bold")) +
   theme(strip.background =element_rect(fill="gray80"))
-  }}, width=1400, height=600)
+  }}, width=1400, height=550)
 
 
 
@@ -2620,7 +2635,7 @@ renderPlot({
   ggplot(maternalcarebycounty1[maternalcarebycounty1$`Maternal care`%in%input$maternal_care,], aes(x=reorder(Name, Percent), y=Percent)) +
 geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   theme_bw() + coord_flip() +
-  geom_text(aes(label=Percent), hjust=1.3, size=5, color="white")+
+  geom_text(aes(label=paste0(round(Percent), "%")), hjust=1.3, size=5, color="white")+
   coord_flip() + 
   ylab("Weighted percent") + xlab("County") +
  # facet_grid(~Family_planning) +
@@ -3205,7 +3220,7 @@ radioButtons("fp_demand", "",
 
 ```
 
-Column {data-height="800"}
+Column {data-height="600"}
 ---------------------------------
 ### Spatial visualization
 
@@ -3244,7 +3259,7 @@ renderPlot({
   ggplot(needdemandforfpusemarriedbycountyvisual1[needdemandforfpusemarriedbycountyvisual1$Family_planning%in%input$fp_demand,], aes(x=reorder(Name, Percent), y=Percent)) +
 geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   theme_bw() + coord_flip() +
-  geom_text(aes(label=round(Percent)), hjust=1.3, size=5, color="white")+
+  geom_text(aes(label=paste0(round(Percent), "%")), hjust=1.3, size=5, color="white")+
   coord_flip() + 
   ylab("Weighted percent") + xlab("County") +
   facet_grid(~Family_planning) +
