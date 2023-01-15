@@ -432,7 +432,7 @@ renderPlot({
   geom_bar(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=label), hjust = -0.5, size=4, color="black", face = "bold", label.size=0.7)+
+  geom_text(aes(label=label), hjust = -0.1, size=4, color="black", face = "bold", label.size=0.7)+
 #  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
          labs(y="Weighted percent (%)", x="") + 
       #  scale_fill_manual(values=c("cyan4", "red4"))+
@@ -633,7 +633,7 @@ renderPlot({
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=20, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
-       geom_text(aes(label=label), position=position_dodge(0.7),vjust=0.5, size=4, color="black")
+       geom_text(aes(label=label), position=position_dodge(0.7),vjust=-0.5,hjust=0.4, size=4, color="black")
   #insurance_map2a<-girafe(ggobj = insurance_map2, width_svg=18, height_svg=9,
    #                options = list(
     #                 opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -756,7 +756,8 @@ radioButtons("disability_domain", "",
 Row {data-height="600"}
 -----------------------
 
-### Kindly hover on the graph to see the actual values
+### .
+
 
 ```{r }
 # disability by age
@@ -785,10 +786,9 @@ disabilitybywealthquintile <- read_csv( "table4_disabilitybywealthquintile.csv")
   rename(Indicator=Wealth_quintile)
   
 disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilitybyresidence, disabilitybyeducationstatus, disabilitybywealthquintile) %>%
-  pivot_longer(c(No_difficulty, SomeDifficulty, A_lot_of_difficulty, Cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain), names_to="difficulty", values_to="difficultyprop") %>%
-  pivot_longer(c(Seeing, Hearing,Communicating, Remembering_concentrating, Walking_ClimbingSteps, WashingAllOver_dressing), names_to="impairment", values_to="impairmentvalues")%>%
-  filter(difficulty%in%c("A_lot_of_difficulty","SomeDifficulty", "Cannot_do_at_all"))%>%
-  mutate(difficulty=recode(difficulty, "A_lot_of_difficulty"="Alot of difficulty", "SomeDifficulty"="Some Difficulty","Cannot_do_at_all"="Cannot do at all"  ))%>%
+  pivot_longer(c(No_difficulty, SomeDifficulty, A_lot_of_difficulty, Cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain, Seeing, Hearing,Communicating, Remembering_concentrating, Walking_ClimbingSteps, WashingAllOver_dressing), names_to="difficulty", values_to="difficultyprop") %>%
+  filter(difficulty%in%c("A_lot_of_difficulty","SomeDifficulty", "Cannot_do_at_all", "Seeing", "Hearing","Communicating", "Remembering_concentrating", "Walking_ClimbingSteps", "WashingAllOver_dressing"))%>%
+  mutate(difficulty=recode(difficulty, "A_lot_of_difficulty"="Alot of difficulty", "SomeDifficulty"="Some Difficulty","Cannot_do_at_all"="Cannot do at all", "Remembering_concetrating"="Remembering/Concentrating", "Walking_ClimbingSteps"="Walking/ Climbing steps","WashingAllOver_dressing"="Wasing all over/Dressing"  ))%>%
   mutate(difficulty=fct_relevel(difficulty, "Some Difficulty", "Alot of difficulty", "Cannot do at all")) %>%
   mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile")) %>%
   mutate(label=ifelse(difficultyprop<0.5, "<1%", paste0(round(difficultyprop),"%")))
@@ -798,19 +798,31 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
                                         "Married","Never married","Divorced/separated","Living together","Widowed",
                                         'No education','Primary','Secondary','More than secondary', 'Vocational')
 
- renderGirafe({
-   domain_data<- disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,] %>%
-       dplyr::select(impairmentvalues, Indicator, impairment, Participants)%>%
-       dplyr::distinct()
-   disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,], ) + 
-  geom_bar(aes(x=Indicator, y=difficultyprop, fill=difficulty),stat = "identity", position = position_dodge()) + 
-    # geom_text(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$impairment%in%input$disability_domain,], aes(label=label, x=Indicator, y=difficultyprop),stat="identity", position = position_dodge(0.6), hjust=0.5)+
-     geom_point_interactive(data=domain_data, aes(y=impairmentvalues, x=Indicator, tooltip=paste0(impairmentvalues, "%"), group=Participants),color="brown", size=10)+facet_grid(.~Participants)+
+ renderPlot({
+   ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%c("Some Difficulty", "Alot of difficulty", "Cannot do at all"),], aes(x=Indicator, y=difficultyprop, fill=difficulty)) + 
+  geom_bar(stat = "identity", position = position_dodge()) + 
+     geom_text( aes(label=label),stat="identity", position = position_dodge(0.8),  hjust=0.5)+
+     facet_grid(Participants~.)+
   theme_bw()+
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
      scale_fill_brewer(palette="Set1") 
-   disability_map1a<-girafe(ggobj = disability_map1,width_svg=18, height_svg=9,
+})
+```
+
+
+### Kindly hover on the graph to see the actual values
+
+```{r}
+
+renderGirafe({
+   disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%input$disability_domain,], ) + 
+     geom_point_interactive(aes(y=difficultyprop, x=Indicator, tooltip=paste0(difficultyprop, "%"), group=Participants),color="brown", size=10)+facet_grid(Participants~.)+
+  theme_bw()+
+  labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
+  theme(text=element_text(size=20, face="bold"))+
+     scale_fill_brewer(palette="Set1") 
+   disability_map1a<-girafe(ggobj = disability_map1,width_svg=10, height_svg=8,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
@@ -871,7 +883,7 @@ Inputs {.sidebar}
 
 valueBox(
   value = paste("3.4"),
-  caption = "Total Fertility Rate per woman (15-49) \n Urban areas:2.8 \n Rural areas: 3.9",
+  caption = "Total Fertility Rate per woman (15-49)",
   color = "black"
 )
 ```
@@ -881,7 +893,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("122"),
-  caption = "General fertility rate, expressed per 1,000 women age 15–44\n Urban areas:105 \n Rural areas: 134",
+  caption = "General fertility rate, expressed per 1,000 women age (15–44)",
   color = "#b15928"
 )
 ```
@@ -892,7 +904,7 @@ valueBox(
 
 valueBox(
   value = paste("27.7"),
-  caption = "Crude birth rate, expressed per 1,000 population \n Urban areas:30.1 \n Rural areas: 26.6",
+  caption = "Crude birth rate, expressed per 1,000 population",
   color = "darkgreen"
 )
 ```
@@ -902,7 +914,7 @@ valueBox(
 
 
 
-Column {data-width="600"}
+Row {data-width="100"}
 --------------------------
 
 <!-- ### Fertility trends -->
@@ -917,10 +929,30 @@ Column {data-width="600"}
 <!-- }) -->
 <!-- ``` -->
 
-### Current fertility rates
+### Total fertility rate 
 
 
-```{r, fig.width=15, fig.height=8}
+- *Urban areas: 2.8*
+- *Rural areas: 3.9*
+
+### General fertility rate per 1,000 women
+
+- *Urban areas:105*
+- *Rural areas: 134*
+
+### Crude birth rate per 1,000 women
+
+- *Urban areas:30.1*
+- *Rural areas: 26.6*
+
+<br>
+
+Row {data-width="600"}
+--------------------------
+
+
+
+```{r, fig.width=14.8, fig.height=8}
 
 
 
@@ -1019,7 +1051,7 @@ valueBox(
 
 <br>
 
-Row {data-height="800"}
+Column {data-height="800"}
 -----------------------
 
 ### .
@@ -1051,7 +1083,7 @@ renderPlot({
                   #   opts_sizing(rescale = TRUE),
  #                    opts_zoom(max = 4)))
   #print(teenage_preg1a, justify="left")
-  }, width=1200, height=600)
+  }, width=1300, height=750)
 
   
 ```
