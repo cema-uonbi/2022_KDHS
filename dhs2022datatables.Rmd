@@ -2006,6 +2006,28 @@ maternalcarebycounty <- maternalcare %>%
 maternalcarebycounty
 write_csv(maternalcarebycounty, "table10c_maternalcarebycounty.csv") 
 
+## gender based violence
+genderbasedviolence <- tbls[[105]] %>%
+  slice(6:40) %>% # by county
+  dplyr::select(V1:V4) %>%
+  dplyr::rename(Characteristics = V1,
+                "Ever"= V2,
+                "Last 12 months" = V3, 
+                "Number_women" = V4)
+
+write_csv(genderbasedviolence, "table31_sexualviolence.csv") 
+
+#
+genderbasedviolencecounty <- tbls[[106]] %>%
+  slice(4:50) %>% # by county
+  dplyr::select(V1:V4) %>%
+  dplyr::rename(County = V1,
+                "Ever"= V2,
+                "Last 12 months" = V3, 
+                "Number_women" = V4)
+
+write_csv(genderbasedviolencecounty, "table31C_sexualviolencecounty.csv") 
+
 ```
 
 
