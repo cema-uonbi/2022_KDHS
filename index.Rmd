@@ -4154,8 +4154,9 @@ trendsitn <- read_csv("figure9_trendsitn.csv") %>%
 
 # combine data
 trends_data <- rbind(trendstotalfertilityrate, trendsinfusevisual, trendsdeliveryassistance, trendschildvaccinations, trendschildnutrition, trendsexclusivebreastfed,trendschildmortality, trendsitn ) %>%
-  filter(!grouping%in%"Total") %>%
-  filter(!Years==1999)
+  mutate(Years = ifelse(Years%in%1999, 2008, Years)) %>%
+  mutate(Years = ifelse(Years%in%2015, 2014, Years)) %>%
+  filter(!grouping%in%"Total") 
 
 renderGirafe({
   trends_map <-trends_data %>%filter(indicator%in%input$trends)%>%
@@ -4163,7 +4164,7 @@ renderGirafe({
   geom_path( size= 2.5 ) + geom_point(size = 5) +
   theme_bw() + 
   geom_point_interactive(size = 2.0, aes(tooltip=Percent)) +
-    scale_x_continuous(breaks=unique(trends_data$Years)) + 
+    scale_x_continuous(breaks=unique(trends_data$Years),label=unique(trends_data$Years)) + 
   labs(x="Kenya DHS Years", y=unique(input$trends),color="") +
   theme(text =element_text(size=18, face="bold"))
   trends_map2<-girafe(ggobj =  trends_map, width_svg=18, height_svg=9,
