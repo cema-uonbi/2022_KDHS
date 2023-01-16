@@ -2692,7 +2692,18 @@ renderPlot({if(input$family_planning%in%"County"){
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
   theme(text=element_text(size=20, face="bold")) +
-  theme(strip.background =element_rect(fill="gray80"))}
+  theme(strip.background =element_rect(fill="gray80"))
+  } else if(input$fp_type%in%"Modern"){
+  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Contraceptive_use, y=Percent, fill=Indicator)) +
+  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent), "%")), position=position_dodge(0.6), vjust=0.1)+
+  theme_bw() + facet_grid(.~Marital_status)+
+    labs(y="Proportion (%)", x="", fill="")+
+  #coord_flip() +
+  #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
+  #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
+  theme(text=element_text(size=20, face="bold")) +
+  theme(strip.background =element_rect(fill="gray80"))
+  }
   else{ ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent),"%")), position=position_dodge(0.6), vjust=-0.2)+
   theme_bw() + facet_grid(.~Marital_status)+
