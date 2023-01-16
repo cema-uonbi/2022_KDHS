@@ -1628,14 +1628,14 @@ Column {data-width="500"}
 ### Nutritional status: Moderate
 
 ```{r, fig.height=6}
-nutc1 <- full_join(county, nutc, by="County")%>%
-  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
-  mutate(names1=paste0(County,", ", perc_below3sd,"%","(",measure,")"))%>%
-  mutate(names2=paste0(County,", ", perc_below2sd,"%","(",measure,")"))
+
+nutc1 <- full_join(county, nutc, by="County")
+
 
 renderGirafe({
+   
   nut_map2 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below2sd))+
-    ggiraph::geom_sf_interactive(aes(tooltip = names2),size=0.3)+
+    ggiraph::geom_sf_interactive(aes(tooltip = paste0(County,": ", perc_below2sd,"%")),size=0.3)+
     theme_void()+
    scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
     labs(x="", y="",fill="%")+
@@ -1655,14 +1655,12 @@ renderGirafe({
 ### Nutritional status: Severe
 
 ```{r, fig.height=6}
-nutc1 <- full_join(county, nutc, by="County")%>%
-  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
-  mutate(names1=paste0(County,", ", perc_below3sd,"%","(",measure,")"))%>%
-  mutate(names2=paste0(County,", ", perc_below2sd,"%","(",measure,")"))
+
+  
 
 renderGirafe({
   nut_map1 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below3sd))+
-    ggiraph::geom_sf_interactive(aes(tooltip = names1),size=0.3)+
+    ggiraph::geom_sf_interactive(aes(tooltip = paste0(County,": ", perc_below3sd,"%")),size=0.3)+
     theme_void()+
     scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
     labs(x="", y="",fill="%")+
