@@ -33,7 +33,7 @@ Recommended citation of the report from which the data is drawn from:
 
 **KNBS and ICF. 2022. Kenya Demographic and Health Survey 2022. Key Indicators Report. Nairobi, Kenya, and Rockville, Maryland, USA: KNBS and ICF.**
 
-The analytics and visualizations are created with the support of the [Center for Epidemiological Modelling and Analysis (CEMA)](http://www.cema-africa.uonbi.ac.ke) at the University of Nairobi, Kenya.
+The analytics and visualizations are created with the support of the [Center for Epidemiological Modelling and Analysis (CEMA)](http://cema-africa.uonbi.ac.ke) at the University of Nairobi, Kenya.
 
 
 ![](www/knbs_logo.png){width="10%"}
