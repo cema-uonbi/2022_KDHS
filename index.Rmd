@@ -1637,7 +1637,7 @@ renderGirafe({
   nut_map2 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below2sd))+
     ggiraph::geom_sf_interactive(aes(tooltip = names2),size=0.3)+
     theme_void()+
-    scale_fill_gradient(low = "white", high = "#8c2d04")+
+   scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
     labs(x="", y="",fill="%")+
     theme(text=element_text(size=14)) 
   nut_map2x<-girafe(ggobj = nut_map2, width_svg = 5, height_svg = 5,
@@ -1664,7 +1664,7 @@ renderGirafe({
   nut_map1 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below3sd))+
     ggiraph::geom_sf_interactive(aes(tooltip = names1),size=0.3)+
     theme_void()+
-    scale_fill_gradient(low = "white", high = "#8c2d04")+
+    scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
     labs(x="", y="",fill="%")+
     theme(text=element_text(size=14)) 
   nut_map1x<-girafe(ggobj = nut_map1,width_svg = 5, height_svg = 5,
@@ -1859,7 +1859,7 @@ renderGirafe({
   itn_map2<- ggplot(itn_county)+
   geom_sf_interactive(data=itn_county, aes(geometry=geometry,fill=proportions, tooltip=label))+facet_grid(.~classification)+
   theme_void()+
-  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(x="", y="Percent",fill="")+
   theme(text=element_text(size=14))
   itn_map2x<-girafe(ggobj = itn_map2,width_svg=18, height_svg=9,
@@ -2907,7 +2907,7 @@ physical_violence <- left_join(county,gbvcounty[gbvcounty$experience%in%input$ph
 #physical_violence <- rbind(women, men)
 
   physical_violencemap <-ggplot(physical_violence) + geom_sf_interactive(aes(fill=value, tooltip=label))+
-  theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+
+  theme_void()+scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(fill="Proportion")
    physical_violencemap1 <- girafe(ggobj = physical_violencemap,
                    options = list(
@@ -3074,7 +3074,7 @@ renderGirafe({
 #physical_violence <- rbind(women, men)
 
   sexual_violencemap <-ggplot(genderbased_datac[genderbased_datac$ind%in%input$sexual_violence1,]) + geom_sf_interactive(aes(fill=value, tooltip=label))+
-  theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+
+  theme_void()+sscale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(fill="Proportion")
    sexual_violencemap1 <- girafe(ggobj = sexual_violencemap,
                    options = list(
@@ -3227,8 +3227,8 @@ renderGirafe({
   map4<- ggplot(maternalcarebycounty1[maternalcarebycounty1$`Maternal care`%in%input$maternal_care,])+
   geom_sf_interactive(aes(fill=Percent, tooltip=names1),color="grey80", size=0.0)+
   theme_void()+
-  scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion")+
+  scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
+  labs(x="", y="",fill="Percent")+
   theme(text=element_text(size=14))
   x <- girafe(ggobj = map4,
                    options = list(
@@ -3249,7 +3249,7 @@ geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   theme_bw() + coord_flip() +
   geom_text(aes(label=paste0(round(Percent), "%")), hjust=1.3, size=5, color="white")+
   coord_flip() + 
-  ylab("Weighted percent") + xlab("County") +
+  ylab("Percent (%)") + xlab("County") +
  # facet_grid(~Family_planning) +
   theme(text=element_text(size=18, face="bold"))
    
@@ -3368,7 +3368,7 @@ renderGirafe({
   map1<- ggplot(hivc1[hivc1$indicators%in%input$hiv,])+
   geom_sf_interactive(aes(fill=values, tooltip=names1),color="grey80", size=0.0)+
   theme_void()+facet_grid(.~Participants)+
-  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(x="", y="",fill="Proportion")+
   theme(text=element_text(size=14))
   x <- girafe(ggobj = map1,
@@ -3509,7 +3509,7 @@ renderGirafe({
   map2<- ggplot(hiv_testc1[hiv_testc1$indicators%in%input$hiv_test,])+
   geom_sf_interactive(aes(fill=values, tooltip=names1),color="grey80", size=0.0)+
   theme_void()+facet_grid(.~Participants)+
-  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(x="", y="",fill="Proportion")+
   theme(text=element_text(size=14))
   x <- girafe(ggobj = map2,
@@ -3649,7 +3649,7 @@ renderGirafe({
   map3<- ggplot(vacc1[vacc1$indicators%in%input$vacc,])+
   geom_sf_interactive(aes(fill=values, tooltip=names1),color="grey80", size=0.0)+
   theme_void()+
-  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(x="", y="",fill="Proportion")+
   theme(text=element_text(size=14))
   x <- girafe(ggobj = map3, width_svg = 5, height_svg = 5,
@@ -4039,7 +4039,7 @@ renderGirafe({
   map3<- ggplot(needdemandforfpusemarriedbycountyvisual1[needdemandforfpusemarriedbycountyvisual1$Family_planning%in%input$fp_demand,])+
   geom_sf_interactive(aes(fill=Percent, tooltip=names1),color="grey80", size=0.0)+
   theme_void()+
-  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(x="", y="",fill="Proportion")+
   theme(text=element_text(size=14))
   x <- girafe(ggobj = map3,
@@ -4065,7 +4065,7 @@ geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   facet_grid(~Family_planning) +
   theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = rel(1.5))) +
+  theme(text=element_text(size=14, face="bold")) +
   theme(strip.background =element_rect(fill="darkorange")) 
 })
 
