@@ -2671,6 +2671,8 @@ family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarrie
   mutate(indicator1= recode(indicator1, "Number_of_children"="Number of children", "Wealth_quintile"="Wealth quintile")) %>%
   mutate(Percent=as.numeric(parse_number(Percent)))
 
+family_planning$Indicator <- fct_relevel(family_planning$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
 renderPlot({if(input$family_planning%in%"County"){
   ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") +
