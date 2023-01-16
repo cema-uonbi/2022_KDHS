@@ -116,7 +116,7 @@ Column {data-width="600"}
 ```{r}
 radioButtons("quest", "",
              c("Households"="All",
-              # "Response Rate"="Response Rate",
+               "Response Rate"="Response Rate",
                "Participants: Men (15-54)"="Male",
                "Participants: Women (15-49)"="Female"))
 
@@ -233,23 +233,23 @@ participantsinterviews <- bind_rows(womeninterviews, meninterviews) %>%
 totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews)  %>%
   mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires", "All_households"="All households",
                           "Short_questionnaire"="Short questionnaire")) %>%
-  mutate(Respondents=recode(Respondents, "Eligible men response rate2"="Response Rate", "Eligible women response rate2"="Response Rate", "Household response rate1"="Response Rate")) %>%
-  mutate(Participant=ifelse(Respondents%in%"Response Rate", "Response Rate", Participant)) %>%
+  mutate(Participant=ifelse(Respondents%in%c("Eligible men response rate2","Eligible women response rate2","Household response rate1" ), "Response Rate", Participant)) %>%
+  mutate(Respondents=recode(Respondents, "Eligible men response rate2"="Eligible men", "Eligible women response rate2"="Eligible women", "Household response rate1"="Household")) %>%
   mutate(numbers=as.numeric(parse_number(numbers)))
 
 totalinterviewvisuals$Respondents <- fct_relevel(totalinterviewvisuals$Respondents,"Number of eligible men interviewed", "Number of eligible women interviewed", "Number of eligible men", "Number of eligible women")
 renderPlot({if(input$quest%in%"Response Rate"){
-  ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest & totalinterviewvisuals$Respondents!="Response Rate",], aes(x=Respondents, y=numbers)) + 
+  ggplot(totalinterviewvisuals[totalinterviewvisuals$Participant%in%"Response Rate",], aes(x=Respondents, y=numbers)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") + #"#53A7DC"
   theme_bw() +
-  geom_text(aes(label=format(numbers, big.mark=",")), size=5,hjust=1.5, color="white")+scale_y_continuous(label=comma)+
+  geom_text(aes(label=paste0(round(numbers), "%")), size=5,hjust=1.5, color="white")+scale_y_continuous(label=comma)+
   coord_flip() + labs(x="Households", y="", fill="Residence")+
   facet_grid(residence~selection) +
   theme(text= element_text(size = 20, colour = "black", face = "bold")) +
   theme(strip.background =element_rect(fill="darkorange"))
         
 } else
- ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest & totalinterviewvisuals$Respondents!="Response Rate",], aes(x=Respondents, y=numbers)) + 
+ ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest & totalinterviewvisuals$Participant!="Response Rate",], aes(x=Respondents, y=numbers)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") + #"#53A7DC"
   theme_bw() +
   geom_text(aes(label=format(numbers, big.mark=",")), size=5,hjust=1.5, color="white")+scale_y_continuous(label=comma)+
