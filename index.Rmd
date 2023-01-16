@@ -1501,7 +1501,7 @@ Inputs {.sidebar}
 
 valueBox(
   value = paste("18%"),
-  caption = "Moderate stunting",
+  caption = "of children <5 years are stunted",
   color = "black"
 )
 ```
@@ -1511,7 +1511,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("5%"),
-  caption = "Moderate wasting",
+  caption = "of children <5 years are wasted",
   color = "#b15928"
 )
 ```
@@ -1522,7 +1522,7 @@ valueBox(
 
 valueBox(
   value = paste("10%"),
-  caption = "Moderately underweight",
+  caption = "of children <5 years are underweight",
   color = "darkgreen"
 )
 ```
@@ -1625,7 +1625,7 @@ Column {data-width="500"}
 -------------------------------------
 
 
-### Nutritional status: Moderate
+### Nutritional status
 
 ```{r, fig.height=6}
 
@@ -1652,26 +1652,20 @@ renderGirafe({
 ```
 
 
-### Nutritional status: Severe
+### Nutritional status: descending
 
 ```{r, fig.height=6}
 
   
 
-renderGirafe({
-  nut_map1 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below3sd))+
-    ggiraph::geom_sf_interactive(aes(tooltip = paste0(County,": ", perc_below3sd,"%")),size=0.3)+
-    theme_void()+
+renderPlot({
+  ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(x=reorder(County,perc_below2sd), y=perc_below2sd))+
+    geom_col(fill="cyan4")+coord_flip()+
+    theme_bw()+ geom_text(aes(label=paste0(perc_below2sd,"%")))+
     scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
     labs(x="", y="",fill="%")+
-    theme(text=element_text(size=14)) 
-  nut_map1x<-girafe(ggobj = nut_map1,width_svg = 5, height_svg = 5,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 4)))
-  print(nut_map1x)
-})#,width = 1500, height=800)
+    theme(text=element_text(size=14, face="bold")) 
+},width = 605, height=550)
 ```
 
 <br>
