@@ -345,11 +345,11 @@ Inputs {.sidebar}
 [Female genital mutilation](#female_genital)</br>
 
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 
 
@@ -402,11 +402,11 @@ Inputs {.sidebar}
 [Female genital mutilation](#female_genital)</br>
 
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 
 ## Row {data-width="200"}
@@ -682,11 +682,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"} 
 
@@ -849,11 +849,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -1277,11 +1277,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -1423,11 +1423,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -1559,11 +1559,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -1787,11 +1787,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -1998,11 +1998,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -2196,11 +2196,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -2380,11 +2380,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -2537,11 +2537,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -2861,11 +2861,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -3083,11 +3083,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -3255,11 +3255,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -3418,11 +3418,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -3547,11 +3547,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="40%"}}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -3692,11 +3692,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
@@ -4099,11 +4099,11 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
-![](www/knbs_logo.png){width="60%"}
+![](www/knbs_logo.png){width="20%"}
 
 <br>
 
-![](www/moh_logo.png){width="60%"}
+![](www/moh_logo.png){width="40%"}
 
 ## Row {data-width="200"}
 
