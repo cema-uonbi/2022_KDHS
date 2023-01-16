@@ -1106,12 +1106,13 @@ disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilityby
   mutate(difficulty=fct_relevel(difficulty, "Some Difficulty", "Alot of difficulty", "Cannot do at all")) %>%
   mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile", "All"="Summary")) %>%
   mutate(difficultyprop=as.numeric(difficultyprop))%>%
-  mutate(label=ifelse(difficultyprop<0.5, "<1%", paste0(round(difficultyprop),"%")))
+  mutate(label=ifelse(difficultyprop<0.5, "<1%", paste0(round(difficultyprop),"%")))%>%
+  mutate(Indicator=recode(Indicator, "Divorced/separated"= "Divorced or \nseparated", "No education"="No\n education", "Married/living together"="Married or \nliving together", "Not asked/missing"="Not asked or\nmissing"))
 
 disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest",
                                         "50+","15-49","5-14",
-                                        "Married","Never married","Divorced/separated","Living together","Widowed",
-                                        'No education','Primary','Secondary','More than secondary', 'Vocational')
+                                        "Married","Never married","Divorced or \nseparated","Married or \nliving together","Widowed",
+                                        "No\n education",'Primary','Secondary','More than secondary', 'Vocational')
 
  renderPlot({if(input$disability%in%"All"){
   ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%c("Some Difficulty", "Alot of difficulty", "Cannot do at all"),], aes(x=difficulty, y=difficultyprop, )) + 
@@ -1160,7 +1161,7 @@ renderGirafe({if(input$disability_domain%in%"All"){
   disability_map2<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%input$disability_domain,], ) + 
      geom_point_interactive(aes(y=difficultyprop, x=Indicator, tooltip=paste0(difficultyprop, "%"), group=Participants),color="brown", size=10)+facet_grid(Participants~.)+
   theme_bw()+
-  labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
+  labs(y="Percent (%)", x="", fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
      theme(strip.background =element_rect(fill="darkorange"))+
      scale_fill_brewer(palette="Set1") 
