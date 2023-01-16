@@ -549,14 +549,8 @@ renderPlot({
 #  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
          labs(y="Percent (%)", x="") + 
       #  scale_fill_manual(values=c("cyan4", "red4"))+
-  theme(text=element_text(size=16)) + theme(strip.background =element_rect(fill="darkorange"))
-#  respondents_map2a<-girafe(ggobj = respondents_map2,width_svg=18, height_svg=9,
- #                  options = list(
-  #                   opts_hover(css = "fill:#666666;cursor:pointer;"),
-   #                  opts_selection(css = "fill:orange;", type = "multiple"),
-                    # opts_sizing(rescale = TRUE),
-    #                 opts_zoom(max = 4)))
- # print(respondents_map2a)
+  theme(text=element_text(size=16, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))
+
   }  else if(input$char%in%c("Religion", "Marital_Status")){
   respondentsdata%>%
     filter(Indicator==input$char)%>%
