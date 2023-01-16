@@ -41,11 +41,9 @@ knitr::include_graphics("www/front_page_knbs.png")
 
 ### About 
 
-- This Shiny app uses data from the Key Indicators Report of the 2022 Kenya Demographic and Health Survey (2022 KDHS). The 2022 KDHS was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MOH) and other stakeholders.
+- The App uses data from the Key Indicators Report of the 2022 Kenya Demographic and Health Survey (2022 KDHS). The survey was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MoH) and other stakeholders.
 
-- The app provides an easy-to-use interactive interface to explore the 2022 KDHS data using tools such as choropleth maps, bar plots, trend plots. 
-
-- This is a living app that is continuously under development and improvement to include comparisons of the current demographic and health results with those from previous surveys, aimed at understanding Kenya's progress in attainment of health.
+- It provides easy-to-use interface to explore 2022 KDHS data using tools such as choropleth maps, bar plots, trend plots. This is a living app that is continuously developed to include comparisons of the current results with those from Demographic and Health Surveys.
 
 - The analytics and visualizations are created by the [Center for Epidemiological Modelling and Analysis (CEMA)](http://cema-africa.uonbi.ac.ke) at the University of Nairobi, Kenya.
 
@@ -341,7 +339,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -394,7 +392,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -671,7 +669,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -834,7 +832,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -1257,7 +1255,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -1398,7 +1396,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -1529,7 +1527,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -1752,7 +1750,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -1959,7 +1957,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -2153,7 +2151,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -2333,7 +2331,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -2485,7 +2483,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -2805,7 +2803,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -3023,7 +3021,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -3190,7 +3188,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -3349,7 +3347,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -3473,7 +3471,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -3613,7 +3611,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 
@@ -4020,7 +4018,7 @@ Inputs {.sidebar}
 
 [Gender based violence](#physical_violence)</br>
 
-[Female genital mutilation](#female_genital)</br>
+<!-- [Female genital mutilation](#female_genital)</br> -->
 
 
 ## Row {data-width="200"}
@@ -4220,10 +4218,10 @@ renderGirafe({
   trends_map<- ggplot(trends_data1, aes(x=Years, y=Percent, color=grouping)) + 
   geom_path( size= 2.5 ) + geom_point(size = 5) +
   theme_bw() + 
-  geom_point_interactive(size = 5.0, aes(tooltip=Percent)) +
+  geom_point_interactive(size = 2.0, aes(tooltip=Percent)) +
     scale_x_continuous(breaks=unique(trends_data1$Years),label=unique(trends_data1$Years)) + 
   labs(x="Kenya DHS Years", y=unique(input$trends),color="") +
-  theme(text =element_text(size=20, face="bold"))
+  theme(text =element_text(size=18, face="bold"))
   trends_map2<-girafe(ggobj =  trends_map, width_svg=18, height_svg=9,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
