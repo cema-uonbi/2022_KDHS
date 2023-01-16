@@ -549,7 +549,7 @@ renderPlot({
 #  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
          labs(y="Percent (%)", x="") + 
       #  scale_fill_manual(values=c("cyan4", "red4"))+
-  theme(text=element_text(size=18, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))
+  theme(text=element_text(size=16)) + theme(strip.background =element_rect(fill="darkorange"))
 #  respondents_map2a<-girafe(ggobj = respondents_map2,width_svg=18, height_svg=9,
  #                  options = list(
   #                   opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -565,7 +565,7 @@ renderPlot({
   theme_bw() +
         facet_grid(~Participants) +
   #labs(y="Percentage (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
-         labs(y="Percent (%)", y="") + 
+         labs(y="Percent (%)", x="") + 
         scale_fill_manual(values=c("cyan4", "red4"))+
   theme(text=element_text(size=18, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))+
       geom_text(aes(label=label), position=position_stack(vjust = 0.7), size=4, color="white", face = "bold", label.size=0.7)
