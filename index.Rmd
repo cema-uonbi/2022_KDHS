@@ -69,6 +69,7 @@ p_load(ggiraph)
 p_load(scales)
 p_load(sf)
 p_load(reshape2)
+p_load(cowplot)
 
 # import all the tables
 dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
@@ -4219,10 +4220,10 @@ renderGirafe({
   trends_map<- ggplot(trends_data1, aes(x=Years, y=Percent, color=grouping)) + 
   geom_path( size= 2.5 ) + geom_point(size = 5) +
   theme_bw() + 
-  geom_point_interactive(size = 2.0, aes(tooltip=Percent)) +
+  geom_point_interactive(size = 5.0, aes(tooltip=Percent)) +
     scale_x_continuous(breaks=unique(trends_data1$Years),label=unique(trends_data1$Years)) + 
   labs(x="Kenya DHS Years", y=unique(input$trends),color="") +
-  theme(text =element_text(size=18, face="bold"))
+  theme(text =element_text(size=20, face="bold"))
   trends_map2<-girafe(ggobj =  trends_map, width_svg=18, height_svg=9,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
