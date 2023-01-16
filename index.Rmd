@@ -1129,7 +1129,7 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
      geom_text( aes(label=label),stat="identity", position = position_dodge(0.8),  hjust=0.5)+
      facet_grid(Participants~.)+
   theme_bw()+
-  labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
+  labs(y="Percent (%)", x="", fill="Disability") +
   theme(text=element_text(size=16, face="bold"))+ 
      theme(strip.background =element_rect(fill="darkorange"))+
      scale_fill_brewer(palette="Set1")
