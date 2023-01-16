@@ -42,6 +42,7 @@ The analytics and visualizations are created with the support of the *Center for
 #setwd("~/")
 # load all the required packages
 library(pacman)
+p_load(shiny)
 p_load(docxtractr)
 p_load(flexdashboard)
 p_load(tidyverse)
