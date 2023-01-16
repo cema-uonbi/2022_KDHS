@@ -557,7 +557,7 @@ renderPlot({
                     # opts_sizing(rescale = TRUE),
     #                 opts_zoom(max = 4)))
  # print(respondents_map2a)
-  }  else if(input$char%in%c("Religion", "Marital Status")){
+  }  else if(input$char%in%c("Religion", "Marital_Status")){
   respondentsdata%>%
     filter(Indicator==input$char)%>%
       ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
