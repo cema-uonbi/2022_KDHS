@@ -36,6 +36,12 @@ Recommended citation of the report from which the data is drawn from:
 The analytics and visualizations are created with the support of the *Center for Epidemiological Modelling and Analysis* (CEMA) at the University of Nairobi, Kenya.
 
 
+![](www/knbs_logo.png){width="20%"}
+
+<br>
+
+![](www/moh_logo.png){width="20%"}
+
 
 ```{r, include=FALSE}
 
@@ -322,6 +328,20 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
+
+
+
+
+
+
+
 respondents_characteristics {.hidden}
 ==================
 
@@ -364,6 +384,14 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 
 ## Row {data-width="200"}
 
@@ -638,6 +666,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"} 
 
 <br>
@@ -798,6 +832,12 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
 
 ## Row {data-width="200"}
 
@@ -1221,6 +1261,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"}
 
 <br>
@@ -1361,6 +1407,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"}
 
 <br>
@@ -1490,6 +1542,12 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
 
 ## Row {data-width="200"}
 
@@ -1661,7 +1719,7 @@ renderGirafe({
 renderPlot({
   ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(x=reorder(County,perc_below2sd), y=perc_below2sd))+
     geom_col(fill="cyan4")+coord_flip()+
-    theme_bw()+ geom_text(aes(label=paste0(perc_below2sd,"%")))+
+    theme_bw()+ geom_text(aes(label=paste0(round(perc_below2sd),"%")))+
     scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
     labs(x="", y="",fill="%")+
     theme(text=element_text(size=14, face="bold")) 
@@ -1712,6 +1770,12 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
 
 ## Row {data-width="200"}
 
@@ -1918,6 +1982,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"}
 
 <br>
@@ -2110,6 +2180,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"}
 
 <br>
@@ -2288,6 +2364,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"}
 
 <br>
@@ -2438,6 +2520,12 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
 
 ## Row {data-width="200"}
 
@@ -2757,6 +2845,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"}
 
 <br>
@@ -2973,6 +3067,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"}
 
 <br>
@@ -3066,7 +3166,7 @@ renderGirafe({
 #physical_violence <- rbind(women, men)
 
   sexual_violencemap <-ggplot(genderbased_datac[genderbased_datac$ind%in%input$sexual_violence1,]) + geom_sf_interactive(aes(fill=value, tooltip=label))+
-  theme_void()+sscale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
+  theme_void()+scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(fill="Proportion")
    sexual_violencemap1 <- girafe(ggobj = sexual_violencemap,
                    options = list(
@@ -3138,6 +3238,12 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
 
 ## Row {data-width="200"}
 
@@ -3296,6 +3402,12 @@ Inputs {.sidebar}
 
 [Female genital mutilation](#female_genital)</br>
 
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
+
 ## Row {data-width="200"}
 
 <br>
@@ -3418,6 +3530,12 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
 
 ## Row {data-width="200"}
 
@@ -3557,6 +3675,12 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
 
 ## Row {data-width="200"}
 
@@ -3958,6 +4082,12 @@ Inputs {.sidebar}
 [Gender based violence](#physical_violence)</br>
 
 [Female genital mutilation](#female_genital)</br>
+
+![](www/knbs_logo.png){width="60%"}
+
+<br>
+
+![](www/moh_logo.png){width="60%"}
 
 ## Row {data-width="200"}
 
