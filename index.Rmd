@@ -2754,7 +2754,14 @@ valueBox(
 Row {data-width="600"}
 ---------------------------------
 
-### Physical violence characteristics
+### Gender based violence characteristics
+
+```{r}
+
+selectInput("violence", "",
+              c("Physical violence"="Physical violence",
+                "Sexual violence"="Sexual violence"))
+```
 
 ```{r}
 
@@ -2784,17 +2791,43 @@ table29C <- dplyr::bind_rows(table29C_women) %>%
   pivot_longer(c(2:5), names_to="experience", values_to="value") 
   
 
+genderbasedviolence <- read_csv("table31_sexualviolence.csv") %>%
+  filter(!is.na(Ever)) %>%
+  mutate(indicator=ifelse(Characteristics%in%c("15–19", "20–24", "25–29", "30–39", "40–49"), "Age", ifelse(Characteristics%in%c("Urban", "Rural"), "Residence", ifelse(Characteristics%in%c("Never married", "Never ever had intimate partner", "Ever had intimate partner", "Ever married", "Married/living together", "Divorced/separated/widowed"), "Marital status", ifelse(Characteristics%in%c("Employed for cash", "Employed not for cash", "Not employed"), "Employment", ifelse(Characteristics%in%c("No education", "Primary", "Secondary", "More than secondary"), "Education", "Wealth quintile")))))) %>%
+  filter(!(Characteristics%in%c("Residence", "Marital status", "Employment", "Education2", "Wealth quintile"))) %>%
+  select(-Number_women) %>%
+  pivot_longer(c(Ever, `Last 12 months`), names_to = "indicator1", values_to="values")
 
+genderbasedviolence$Characteristics <- fct_relevel(genderbasedviolence$Characteristics, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 
+physicalviolence <- table29 %>%
+  rename(Characteristics=Indicator, indicator=Background.characteristic, values=Value, indicator1=Category)%>%
+  select(-Participants) %>%
+  mutate(group="Physical violence")
+# join data
+gbv_data<- rbind(genderbasedviolence%>%mutate(group="Sexual violence"), physicalviolence)
 
+## county data
+genderbasedviolencecounty<- read_csv("table31C_sexualviolencecounty.csv") %>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
+                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
+  pivot_longer(c(2,3), names_to="experience", values_to="value")%>%
+  select(-Number_women)
 
+physical_violencecounty <- table29C %>%
+  rename(County=Background.characteristic) %>%
+  select(-Participants)
+
+gbvcounty <- rbind(genderbasedviolencecounty, physical_violencecounty)%>%
+   mutate(label=paste0(County, ":", "\n", round(value), "%"))
+  
 ```
 
 ```{r}
 
 renderPlot({
-  ggplot(table29[table29$Background.characteristic%in%input$physical_violence,], aes(x=Indicator,y=Value,fill=Category)) + 
-  geom_col(position='dodge') + geom_text(aes(label=paste0(round(Value),"%")))+
+  ggplot(gbv_data[gbv_data$indicator%in%input$physical_violence & gbv_data$group%in%input$violence,], aes(x=Characteristics,y=values,fill=indicator1)) + 
+  geom_col(position='dodge') + geom_text(aes(label=paste0(round(values),"%")))+
   labs( y = 'Proportion (%)',x = '',fill='Experience of Violence', title="") +
       theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
 
@@ -2808,20 +2841,21 @@ renderPlot({
 Column {data-height="600"}
 ---------------------------------
 
-### County data by experience of physical violence
+### County data by experience of gender based violence
 
 ```{r}
 
 selectInput("physical_violence1", "",
-              c("Experienced physical violence since age 15"="Percentage.who.have.experienced.physical.violence.since.age.15",
-                "Experience physical violence often"="Often",
-                "Experience physical violence sometimes"="Sometimes",
-                "Experience physical violence often or sometimes"="Often.or.sometimes"), width=600)
+              c("For Physical violence: Experienced physical violence since age 15"="Percentage.who.have.experienced.physical.violence.since.age.15",
+                "For Physical violence: Experience physical violence often"="Often",
+                "For Physical violence: Experience physical violence sometimes"="Sometimes",
+                "For Physical violence: Experience physical violence often or sometimes"="Often.or.sometimes",
+                "For sexual violence: Ever experienced"="Ever",
+                "For sexual violence: Experienced in the last 12 months"="Last 12 months"), width=600)
 
 
 renderGirafe({
-physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) %>%
-  mutate(label=paste0(Name, ":", "\n", round(value), "%"))
+physical_violence <- left_join(county,gbvcounty[gbvcounty$experience%in%input$physical_violence1 ,],by=c("Name"="County")) 
 
 #table29C<-table29C[c(0:47),c(0:7)]
 #men <- full_join(county,table29C_men,by=c("Name"="Background.characteristic")) %>%
@@ -2852,10 +2886,10 @@ physical_violence <- left_join(county,table29C[table29C$experience%in%input$phys
 
 ```{r}
 renderPlot({
-   physical_violence <- left_join(county,table29C[table29C$experience%in%input$physical_violence1 ,],by=c("Name"="Background.characteristic")) 
+   physical_violence <- left_join(county,gbvcounty[gbvcounty$experience%in%input$physical_violence1 ,],by=c("Name"="County")) 
 
    ggplot(physical_violence, aes(x = reorder(Name,value),y = value)) + 
-  geom_bar(stat="identity", aes(fill=Participants)) + coord_flip() + theme_bw()+ geom_text(aes(label=paste0(round(value),"%")))+
+  geom_bar(stat="identity", fill="cyan4") + coord_flip() + theme_bw()+ geom_text(aes(label=paste0(round(value),"%")))+
   labs(fill="Proportion", x="County", y="Proportion")+theme(text=element_text(size=18, face="bold"))
 },width=800, height=500)
 
@@ -2947,14 +2981,7 @@ selectInput("sexual_violence", "",
                 "Wealth quintile"="Wealth quintile"))
 
 
-genderbasedviolence <- read_csv("table31_sexualviolence.csv") %>%
-  filter(!is.na(Ever)) %>%
-  mutate(indicator=ifelse(Characteristics%in%c("15–19", "20–24", "25–29", "30–39", "40–49"), "Age", ifelse(Characteristics%in%c("Urban", "Rural"), "Residence", ifelse(Characteristics%in%c("Never married", "Never ever had intimate partner", "Ever had intimate partner", "Ever married", "Married/living together", "Divorced/separated/widowed"), "Marital status", ifelse(Characteristics%in%c("Employed for cash", "Employed not for cash", "Not employed"), "Employment", ifelse(Characteristics%in%c("No education", "Primary", "Secondary", "More than secondary"), "Education", "Wealth quintile")))))) %>%
-  filter(!(Characteristics%in%c("Residence", "Marital status", "Employment", "Education2", "Wealth quintile"))) %>%
-  select(-Number_women) %>%
-  pivot_longer(c(Ever, `Last 12 months`), names_to = "indicator1", values_to="values")
 
-genderbasedviolence$Characteristics <- fct_relevel(genderbasedviolence$Characteristics, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 renderPlot({
   ggplot(genderbasedviolence[genderbasedviolence$indicator%in%input$sexual_violence,], aes(x=Characteristics,y=values,fill=indicator1)) + 
   geom_col(position='dodge') + geom_text(aes(label=paste0(round(values),"%")), position=position_dodge(0.6), vjust=-0.5, hjust=0.2)+
