@@ -306,7 +306,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -350,7 +350,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -629,7 +629,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -792,7 +792,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -1188,7 +1188,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -1328,7 +1328,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -1449,7 +1449,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -1548,25 +1548,16 @@ nut_wealth <- read_csv("table14_nutr_status_by_wealth.csv")%>%
 
 nut_total <- rbind(nut_sex,nut_res,nut_motedu,nut_wealth)
 
+nut_total$Indicator <- fct_relevel(nut_total$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 
 renderPlot({
-  if(input$nutr%in%c("Sex", "Residence")){
-  ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=measure, y=perc_below2sd, fill=Indicator))+
+  ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=Indicator, y=perc_below2sd, fill=measure))+
   geom_bar(position="dodge", stat="identity")+
       geom_text(aes(label=paste0(round(perc_below2sd), "%")), position=position_dodge(0.7), vjust=-0.1)+
   theme_bw()+
   labs( y="Proportion(%)", title="", x="Nutritional measure", fill="Residence")+
-  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  scale_fill_manual(values = c("#f46d43","#74add1", "#78c679"))+
   theme(text=element_text(size=20, face="bold"))
-  } else{
-  ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=measure, y=perc_below2sd, fill=Indicator))+
-  geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
-  theme_bw()+
-  labs( y="Moderate", title="", x="Indicator", fill="")+
-  scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
-  theme(text=element_text(size=20, face="bold"))+
-  geom_text(aes(label = lab), position=position_stack(hjust = 0.5), size=4) 
-}
 },width = 1300, height=400)
 
 ```
@@ -1688,7 +1679,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -1826,7 +1817,7 @@ renderGirafe({
   itn_map1<- ggplot(itn_data[itn_data$indicator1%in%input$itn,],aes(x=indicator, y=proportions, color=classification))+
   geom_point_interactive(size=7, aes(tooltip=proportions))+
   theme_bw()+
-  labs( y="%", title="", x=paste0(unique(itn_data[itn_data$indicator1%in%input$itn,]$indicator1)), color="")+
+  labs( y="Percent", title="", x=paste0(unique(itn_data[itn_data$indicator1%in%input$itn,]$indicator1)), color="")+
   scale_color_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=18, face="bold"))
    itn_map1x<-girafe(ggobj = itn_map1,width_svg=18, height_svg=9,
@@ -1841,7 +1832,7 @@ renderGirafe({
   geom_sf_interactive(data=itn_county, aes(geometry=geometry,fill=proportions, tooltip=label))+facet_grid(.~classification)+
   theme_void()+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="%",fill="")+
+  labs(x="", y="Percent",fill="")+
   theme(text=element_text(size=14))
   itn_map2x<-girafe(ggobj = itn_map2,width_svg=18, height_svg=9,
                    options = list(
@@ -1853,7 +1844,7 @@ renderGirafe({
   itn_map3<-ggplot(itn_data[itn_data$indicator1%in%input$itn,],aes(x=indicator, y=proportions, fill=classification))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+geom_text(aes(label=paste0(round(proportions), "%")), position=position_dodge(0.7), size=5, vjust=-0.1)+
-  labs( y="%", title="", x=paste0(unique(itn_data[itn_data$indicator1%in%input$itn,]$indicator1)), fill="")+
+  labs( y="Percent", title="", x=paste0(unique(itn_data[itn_data$indicator1%in%input$itn,]$indicator1)), fill="")+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=18, face="bold"))
   itn_map3x <- girafe(ggobj=itn_map3, width_svg = 20, height_svg=10)
@@ -1893,7 +1884,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -2085,7 +2076,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -2263,7 +2254,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -2414,7 +2405,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -2718,7 +2709,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -2900,7 +2891,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -3073,7 +3064,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -3230,7 +3221,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -3254,7 +3245,7 @@ Inputs {.sidebar}
 ```{r}
 
 valueBox(
-  value = paste("54.2%"),
+  value = paste("54%"),
   caption = "of women aged 15-24 had knowledge about HIV prevention",
   color = "black"
 )
@@ -3265,7 +3256,7 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("55.2%"),
+  value = paste("55%"),
   caption = "of men aged 15-24 had knowledge about HIV prevention",
   color = "#b15928"
 )
@@ -3300,6 +3291,7 @@ hivc_women <- full_join(county, hivc[ hivc$Participants%in%"Women_15-24",], by=c
 hivc1 <- rbind(hivc_men, hivc_women) %>%
   mutate(Participants=recode(Participants, "Men_15-24"="Men 15-24", "Women_15-24"="Women 15-24"))
 
+hivc1$Participants <- fct_relevel(hivc1$Participants, "Women 15-24", "Men 15-24")
 #visualization
 
 renderGirafe({
@@ -3352,7 +3344,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -3387,7 +3379,7 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = paste("74%"),
+  value = paste("73%"),
   caption = "of men have ever tested for HIV",
   color = "#b15928"
 )
@@ -3440,6 +3432,7 @@ hiv_testc <- read_csv("table25C .1 and .2_HIV_test_bind.csv")%>%
 
 hiv_testc1 <- full_join(county, hiv_testc, by=c("Name"="County")) 
 
+hiv_testc1$Participants <- fct_relevel(hiv_testc1$Participants, "Women", "Men")
 #visualization
 
 renderGirafe({
@@ -3490,7 +3483,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
@@ -3888,7 +3881,7 @@ Inputs {.sidebar}
 
 [Insecticide treated nets](#treated_nets)</br>
 
-[Knowledge about HIV prevention methods among youth](#hiv_prev)</br>
+[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
 
 [Coverage of prior HIV testing](#hiv_test)</br>
 
