@@ -27,7 +27,7 @@ resource_files:
 
 ```{r, include=FALSE}
 
-setwd("~/")
+#setwd("~/")
 # load all the required packages
 library(pacman)
 p_load(docxtractr)
@@ -38,12 +38,12 @@ p_load(scales)
 p_load(sf)
 p_load(reshape2)
 # import all the tables
-#dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
+dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
 
 
 # number of tables in the report
-#docx_tbl_count(dhs2022report)
-#tbls <- docx_extract_all_tbls(dhs2022report, trim = T, guess_header = T)
+docx_tbl_count(dhs2022report)
+tbls <- docx_extract_all_tbls(dhs2022report, trim = T, guess_header = T)
 
 ```
 
@@ -111,13 +111,14 @@ valueBox(
 Column {data-width="600"}
 ---------------------------------
 
-##### Choose the characteristics to display:
+##### Choose the category to display:
 
 ```{r}
 radioButtons("quest", "",
-             c("Households interviewed"="All",
-               "Participants: Men"="Male",
-               "Participants: Women"="Female"))
+             c("Households"="All",
+              # "Response Rate"="Response Rate",
+               "Participants: Men (15-54)"="Male",
+               "Participants: Women (15-49)"="Female"))
 
 ```
 
@@ -131,7 +132,39 @@ The numbers are presented by:
   - Participants: Men and women
 
 ```{r, fig.height=10,fig.height=22}
-kdhshouseholdinterviews <- read_csv("table1_dhshhinterviews.csv") %>%
+
+#### Import the data
+## Results of the household interviews
+allhhinterviews <- tbls[[3]] %>% # all household interviews
+  slice(7:9) %>%
+  dplyr::select(V1,V2,V3) %>%
+  dplyr::rename(Households = V1,
+                Urban = V2,
+                Rural = V3) %>%
+  dplyr::mutate(selection = "All households")
+
+fqhhinterviews <- tbls[[3]] %>% #full questionnaire household interviews
+  slice(20:22,24) %>%
+  dplyr::select(V1,V2,V3) %>%
+  dplyr::rename(Households = V1,
+                Urban = V2,
+                Rural = V3) %>%
+  dplyr::mutate(selection = "Full questionnaire")
+
+sqhhinterviews <- tbls[[3]] %>% #short questionnaire household interviews
+  slice(39:41,43) %>%
+  dplyr::select(V1,V2,V3) %>%
+  dplyr::rename(Households = V1,
+                Urban = V2,
+                Rural = V3)%>%
+  dplyr::mutate(selection = "Short questionanaire")
+
+interviews <- dplyr::bind_rows(allhhinterviews,fqhhinterviews,sqhhinterviews) %>%
+  tidyr::gather(residence,numbers,2:3) %>%
+  dplyr::arrange(selection, residence)
+
+
+kdhshouseholdinterviews <- interviews %>%
   dplyr::mutate(Households = recode(Households, "Households selected" = "Selected","Households occupied" = "Occupied", "Households interviewed" = "Interviewed"))
 
 # include redundant columns in the household data to combine with the participant data
@@ -141,17 +174,82 @@ interviewvisuals <- kdhshouseholdinterviews %>%
   rename(Respondents=Households)
 
 
-## import data for participant interviews 
-participantsinterviews <- read_csv("table1_participantsinterviews.csv") %>%
+## import data for participant interviews
+
+## Results of participants
+allwomen <- tbls[[3]] %>% #women age 15-49 years - from all households
+  slice(14:15,17) %>%
+  dplyr::select(V1,V2,V3) %>%
+  dplyr::rename(Respondents = V1,
+                Urban = V2,
+                Rural = V3) %>%
+  dplyr::mutate(selection = "All households")
+
+fqwomen <- tbls[[3]] %>% #women age 15-49 years - for the full questionnaire
+  slice(27:28,30) %>%
+  dplyr::select(V1,V2,V3) %>%
+  dplyr::rename(Respondents = V1,
+                Urban = V2,
+                Rural = V3) %>%
+  dplyr::mutate(selection = "Full questionnaire")
+
+sqwomen <- tbls[[3]] %>% #women age 15-49 years - for the short questionnaire
+  slice(46:47,49) %>%
+  dplyr::select(V1,V2,V3) %>%
+  dplyr::rename(Respondents = V1,
+                Urban = V2,
+                Rural = V3) %>%
+  dplyr::mutate(selection = "Short questionnaire")
+
+womeninterviews <- dplyr::bind_rows(allwomen,fqwomen,sqwomen) %>%
+  tidyr::gather(residence,numbers,2:3) %>%
+  dplyr::arrange(selection, residence) %>%
+  mutate(Gender = "Female")
+
+#womeninterviews
+#write_csv(womeninterviews, "table1_womeninterviewed.csv") ## saves the .csv file of the women 15-59 years interviewed
+
+
+lqmen <- tbls[[3]] %>% #men 15-54 years - for the full questionnaire
+  slice(33:34,36) %>%
+  dplyr::select(V1,V2,V3) %>%
+  dplyr::rename(Respondents = V1,
+                Urban = V2,
+                Rural = V3) %>%
+  dplyr::mutate(selection = "Full questionnaire")
+
+meninterviews <- lqmen %>%
+  tidyr::gather(residence,numbers,2:3) %>%
+  dplyr::arrange(selection, residence) %>%
+  mutate(Gender = "Male")
+  
+#meninterviews
+#write_csv(meninterviews, "table1_meninterviewed.csv") ## saves .csv file of the men 15-54years interviewed
+
+participantsinterviews <- bind_rows(womeninterviews, meninterviews) %>%
   dplyr::mutate(Participant = recode(Respondents, "Number of eligible women" = "Eligible women","Number of eligible women interviewed" = "Women interviewed", "Number of eligible men" = "Eligible men","Number of eligible men interviewed" = "Men interviewed"))
 
 # join the two datasets
 totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews)  %>%
   mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires", "All_households"="All households",
-                          "Short_questionnaire"="Short questionnaire"))
+                          "Short_questionnaire"="Short questionnaire")) %>%
+  mutate(Respondents=recode(Respondents, "Eligible men response rate2"="Response Rate", "Eligible women response rate2"="Response Rate", "Household response rate1"="Response Rate")) %>%
+  mutate(Participant=ifelse(Respondents%in%"Response Rate", "Response Rate", Participant)) %>%
+  mutate(numbers=as.numeric(parse_number(numbers)))
 
-renderPlot({
- ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest,], aes(x=Respondents, y=numbers)) + 
+totalinterviewvisuals$Respondents <- fct_relevel(totalinterviewvisuals$Respondents,"Number of eligible men interviewed", "Number of eligible women interviewed", "Number of eligible men", "Number of eligible women")
+renderPlot({if(input$quest%in%"Response Rate"){
+  ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest & totalinterviewvisuals$Respondents!="Response Rate",], aes(x=Respondents, y=numbers)) + 
+  geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") + #"#53A7DC"
+  theme_bw() +
+  geom_text(aes(label=format(numbers, big.mark=",")), size=5,hjust=1.5, color="white")+scale_y_continuous(label=comma)+
+  coord_flip() + labs(x="Households", y="", fill="Residence")+
+  facet_grid(residence~selection) +
+  theme(text= element_text(size = 20, colour = "black", face = "bold")) +
+  theme(strip.background =element_rect(fill="darkorange"))
+        
+} else
+ ggplot(totalinterviewvisuals[totalinterviewvisuals$Gender%in%input$quest & totalinterviewvisuals$Respondents!="Response Rate",], aes(x=Respondents, y=numbers)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") + #"#53A7DC"
   theme_bw() +
   geom_text(aes(label=format(numbers, big.mark=",")), size=5,hjust=1.5, color="white")+scale_y_continuous(label=comma)+
