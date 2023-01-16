@@ -71,7 +71,7 @@ p_load(ggiraph)
 p_load(scales)
 p_load(sf)
 p_load(reshape2)
-p_load(cowplot)
+
 # import all the tables
 dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
 
@@ -2611,13 +2611,14 @@ radioButtons("family_planning", "",
 
 ### Type of family planning
 
-````{r}
+```{r}
 
 radioButtons("fp_type", "",
               c("Any method"="Any",
                 "Modern method"="Modern",
                 "Traditional method"="Traditional"))
 ```
+
 
 <br>
 
@@ -3742,27 +3743,30 @@ Column {data-height="800"}
 
 ## Vaccination data
 
-vacc1 <- tbls[[42]] %>%
-  slice(6:49) %>% # by county
-  dplyr::select(V1, V18, V22) %>%
-  dplyr::rename(County = V1,
-                CountyFullyVaccinated12= V18,
-                CountyFullyVaccinated24 = V22)
+# vacc1 <- tbls[[42]] %>%
+#   slice(6:49) %>% # by county
+#   dplyr::select(V1, V18, V22) %>%
+#   dplyr::rename(County = V1,
+#                 CountyFullyVaccinated12= V18,
+#                 CountyFullyVaccinated24 = V22)
+# 
+# vacc <- tbls[[43]] %>%
+#   slice(5:7) %>% # by county
+#   dplyr::select(V1, V18, V22) %>%
+#   dplyr::rename(County = V1,
+#                 CountyFullyVaccinated12= V18,
+#                 CountyFullyVaccinated24 = V22)%>%
+#   rbind(vacc1) %>%
+#   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+#   pivot_longer(c(CountyFullyVaccinated12,CountyFullyVaccinated24 ),names_to ="indicators", values_to="values") %>%
+#   mutate(values=as.numeric(parse_number(values))) %>%
+#   mutate(names1=paste0(County,", ", round(values),"%"))
 
-vacc <- tbls[[43]] %>%
-  slice(5:7) %>% # by county
-  dplyr::select(V1, V18, V22) %>%
-  dplyr::rename(County = V1,
-                CountyFullyVaccinated12= V18,
-                CountyFullyVaccinated24 = V22)%>%
-  rbind(vacc1) %>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
-  pivot_longer(c(CountyFullyVaccinated12,CountyFullyVaccinated24 ),names_to ="indicators", values_to="values") %>%
-  mutate(values=as.numeric(parse_number(values))) %>%
-  mutate(names1=paste0(County,", ", round(values),"%"))
+vacc_data <- read_csv("vaccinations_countydata.csv") %>%
+  rename(indicator2=indicators)
 
 county <- st_read("County.shp")
-vacc1<- full_join(county, vacc, by=c("Name"="County"))
+vacc_data1<- full_join(county, vacc_data, by=c("Name"="County"))
 ```
 
 ### Fully vaccinated according to the national schedule
@@ -3778,18 +3782,19 @@ radioButtons("vacc", "",
 
 renderGirafe({
   
-  map3<- ggplot(vacc1[vacc1$indicators%in%input$vacc,])+
-  geom_sf_interactive(aes(fill=values, tooltip=names1),color="grey80", size=0.0)+
+  map3<- ggplot(vacc_data1[vacc_data1$indicator2%in%input$vacc,], aes(fill=values))+
+  geom_sf(color="grey80", size=0.0)+
   theme_void()+
   scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
-  labs(x="", y="",fill="Proportion")+
-  theme(text=element_text(size=14))
+  labs(x="", y="",fill="Proportion")#+
+  #theme(text=element_text(size=14))
   x <- girafe(ggobj = map3, width_svg = 5, height_svg = 5,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
                      opts_zoom(max = 4)))
-    print(x)})
+    print(x)
+    })
 
 
 
@@ -4645,7 +4650,7 @@ combined_data1<- left_join(county, combined_data[combined_data$indicator1%in%inp
   indicator_map1y<-girafe(ggobj =  plot2)
   
 
-girafe(ggobj = plot_grid(plotlist=list(indicator_map1, plot2),rel_widths=1.2, rel_heights=0.5,  nrow=1))
+girafe(ggobj = cowplot::plot_grid(plotlist=list(indicator_map1, plot2),rel_widths=1.2, rel_heights=0.5,  nrow=1))
 })
 
 ```
