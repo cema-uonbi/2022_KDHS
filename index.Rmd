@@ -1403,9 +1403,17 @@ valueBox(
 Column {data-height="800"}
 -----------------------
 
-### .
+###### Choose the category
 
 ```{r}
+
+selectInput("teenage", "",
+            c("Currently pregnant"="Currently pregnant",
+            "Ever pregnant"="Ever pregnant",
+            "Live birth"="Live birth",
+            "Pregnancy loss"="Pregnancy loss"
+            ))
+
 teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
   pivot_longer(cols = Live_birth:Ever_pregnant, names_to = "Pregnancy", values_to = "Percent") %>%
   mutate(Pregnancy=recode(Pregnancy, "Currently_pregnant"="Currently pregnant", "Ever_pregnant"="Ever pregnant", "Live_birth"="Live birth", "Pregnancy_loss"="Pregnancy loss"))%>%
@@ -1414,15 +1422,16 @@ teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
 
 renderPlot({
  teenpregnancybycountyvisual %>%
-  ggplot(aes(x=reorder(County,Percent), y=Percent, fill=Pregnancy)) + 
-  geom_bar(stat = "identity") +
-    geom_text(aes(label=label), position=position_stack(vjust=0.5))+
+    filter(Pregnancy%in%input$teenage) %>%
+  ggplot(aes(x=reorder(County,Percent), y=Percent)) + 
+  geom_bar(stat = "identity", fill="cyan4") +
+    geom_text(aes(label=label), position=position_stack(vjust=0.5), color="white")+
   #, position = position_dodge()) +
   #facet_wrap(facets = ~reorder(Participants, Percent)) +
   #scale_fill_manual("Residence", values = c("Urban" = "darkorange", "Rural" = "cyan3")) +
   theme_bw() +
   coord_flip() +
-  ylab("Proportion (%)") + xlab("County") +
+  ylab("Percent (%)") + xlab("County") +
   theme(text=element_text(size=20, face="bold")) +
   theme(strip.background =element_rect(fill="gray80")) +scale_fill_brewer(palette="Set1")
  # teenage_preg1a<-girafe(ggobj = teenage_preg1,width_svg=18, height_svg=9,
