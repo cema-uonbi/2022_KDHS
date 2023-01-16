@@ -67,6 +67,7 @@ p_load(ggiraph)
 p_load(scales)
 p_load(sf)
 p_load(reshape2)
+p_load(cowplot)
 
 # import all the tables
 dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
