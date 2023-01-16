@@ -3905,6 +3905,9 @@ vaccination_data <- rbind(vacc_12_23_gender.1 , vacc_12_23_birth.1, vacc_12_23_c
 
 vaccination_data$Vaccines <- fct_relevel(vaccination_data$Vaccines,  "Fully vaccinated\n(national schedule)","Fully vaccinated\n(basic antigens)","No vaccinations","MR2", "MR1","Rotavirus2","Rotavirus1","Pneumococcal3","Pneumococcal2","Pneumococcal1","IPV","OPV3","OPV2","OPV1","OPV0","DPT3","DPT2"  ,"DPT1",  "BCG" )
 
+vaccination_data$Characteristics <- recode(vaccination_data$Characteristics, "Not seen or no longer has card"="Not seen or \n no longer has card", "More than secondary"="More than\n secondary")
+vaccination_data$Characteristics <- fct_relevel(vaccination_data$Characteristics, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education","Primary", "Secondary", "More than\n secondary")
+
 renderPlot({
   ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & vaccination_data$group%in%input$vacc,],aes(x=Vaccines, y=Percent)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
