@@ -3251,7 +3251,7 @@ geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   coord_flip() + 
   ylab("Percent (%)") + xlab("County") +
  # facet_grid(~Family_planning) +
-  theme(text=element_text(size=18, face="bold"))
+  theme(text=element_text(size=14, face="bold"))
    
 })
 
