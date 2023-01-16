@@ -23,6 +23,18 @@ resource_files:
 <!-- </style>    -->
 
 
+# About
+
+The App uses data from the Key Indicators Report of the 2022 Kenya Demographic and Health Survey (2022 KDHS). The survey was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MoH) and other stakeholders.
+
+It provides easy-to-use interface to explore 2022 KDHS data using tools such as choropleth maps, bar plots, trend plots. This is a living app that is continuously developed to include comparisons of the current results with those from Demographic and Health Surveys.
+
+Recommended citation of the report from which the data is drawn from:
+
+**KNBS and ICF. 2022. Kenya Demographic and Health Survey 2022. Key Indicators Report. Nairobi, Kenya, and Rockville, Maryland, USA: KNBS and ICF.**
+
+The analytics and visualizations are created with the support of the *Center for Epidemiological Modelling and Analysis* (CEMA) at the University of Nairobi, Kenya.
+
 
 
 ```{r, include=FALSE}
@@ -50,7 +62,7 @@ tbls <- docx_extract_all_tbls(dhs2022report, trim = T, guess_header = T)
  {.tabset}
 -----------------------------------------------------------------------
 
-# Summary 
+# Sample survey
 
 ## Row {data-width="200"}
 
@@ -232,7 +244,7 @@ participantsinterviews <- bind_rows(womeninterviews, meninterviews) %>%
 # join the two datasets
 totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews)  %>%
   mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires", "All_households"="All households",
-                          "Short_questionnaire"="Short questionnaire")) %>%
+                          "Short_questionnaire"="Short questionnaire", "Short questionanaire"="Short questionnaire")) %>%
   mutate(Participant=ifelse(Respondents%in%c("Eligible men response rate2","Eligible women response rate2","Household response rate1" ), "Response Rate", Participant)) %>%
   mutate(Respondents=recode(Respondents, "Eligible men response rate2"="Eligible men", "Eligible women response rate2"="Eligible women", "Household response rate1"="Household")) %>%
   mutate(numbers=as.numeric(parse_number(numbers)))
@@ -3987,20 +3999,6 @@ renderGirafe({
 #paste0(input$comp)
 #paste0(input$comp1)
 ```
-
-
-
-# About
-
-The App uses data from the Key Indicators Report of the 2022 Kenya Demographic and Health Survey (2022 KDHS). The survey was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MoH) and other stakeholders.
-
-It provides easy-to-use interface to explore 2022 KDHS data using tools such as choropleth maps, bar plots, trend plots. This is a living app that is continuously developed to include comparisons of the current results with those from Demographic and Health Surveys.
-
-Recommended citation of the report from which the data is drawn from:
-
-KNBS and ICF. 2022. Kenya Demographic and Health Survey 2022. Key Indicators Report. Nairobi, Kenya, and Rockville, Maryland, USA: KNBS and ICF.
-
-The analytics and visualizations are created with the support of the *Center for Epidemiological Modelling and Analysis* (CEMA) at the University of Nairobi, Kenya.
 
 
 
