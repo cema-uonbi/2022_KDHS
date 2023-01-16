@@ -56,6 +56,7 @@ p_load(ggiraph)
 p_load(scales)
 p_load(sf)
 p_load(reshape2)
+p_load(cowplot)
 # import all the tables
 dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
 
@@ -4362,9 +4363,23 @@ matcarec <- read_csv("table10c_maternalcarebycounty.csv")%>%
   select(County, indicator, indicator1, values)
 
 #vaccination 
-vacc <- read_csv("table11C_vaccinationbycounty.csv")%>%
-  mutate(County=recode(NAME_1,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(2:3), names_to="indicator1", values_to="values") %>%
+vacc1 <- tbls[[42]] %>%
+  slice(6:49) %>% # by county
+  dplyr::select(V1, V18, V22) %>%
+  dplyr::rename(County = V1,
+                CountyFullyVaccinated12= V18,
+                CountyFullyVaccinated24 = V22)
+
+vacc <- tbls[[43]] %>%
+  slice(5:7) %>% # by county
+  dplyr::select(V1, V18, V22) %>%
+  dplyr::rename(County = V1,
+                CountyFullyVaccinated12= V18,
+                CountyFullyVaccinated24 = V22)%>%
+  rbind(vacc1) %>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  pivot_longer(c(CountyFullyVaccinated12,CountyFullyVaccinated24 ),names_to ="indicator1", values_to="values") %>%
+  mutate(values=values) %>%
   mutate(indicator="Child Vaccinations") %>%
   select(County, indicator, indicator1, values)
 
@@ -4411,7 +4426,7 @@ combined_data <- rbind(nutc, itnc,fpc,teenpregc,
   mutate(values=as.numeric(parse_number(values))) 
 ```
 
-Row {data-width="800"}
+Row {data-width="500"}
 ---------------------------------
 
 
@@ -4551,15 +4566,17 @@ selectInput("comp_indicator2", "",
 
 ### Comparison by indicators 
 
-```{r, fig.width=12,fig.height=22}
+** Kindly hover on the graphic to see the name of the county**
+
+```{r, fig.width=12,fig.height=6}
 
 
 renderGirafe({
   combined_data1<- left_join(combined_data[combined_data$indicator1%in%input$comp_indicator1,]%>%select(-indicator), combined_data[combined_data$indicator1%in%input$comp_indicator2, ]%>%rename(indicator2=indicator1, values2=values)%>%select(-indicator))
   combined_map<- ggplot(combined_data1, aes(x=values, y=values2))+
-  geom_point_interactive(size=4, aes(tooltip=County), color="cyan")+
+  geom_point_interactive(size=4, aes(tooltip=County), color="cyan4")+
   theme_bw()+
-  labs(y=paste0(unique(combined_data1$indicator2)), title="", x=paste0(unique(combined_data1$indicator1)), fill="")+
+  labs(y="Indicator2",x="Indicator1", fill="")+
   #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
   theme(text=element_text(size=18), legend.position = "none")
   
@@ -4576,4 +4593,75 @@ renderGirafe({
 ```
 
 
+```{r, include=F}
 
+county <- st_read("County.shp")
+
+```
+
+Row {data.width="500"}
+-------------------
+
+### Indicator 1
+
+```{r,fig.width=6,fig.height=6}
+#
+renderGirafe({
+combined_data1<- left_join(county, combined_data[combined_data$indicator1%in%input$comp_indicator1,]%>%select(-indicator), by=c("Name"="County"))
+  indicator_map1<- ggplot(combined_data1, aes(fill=values))+
+  geom_sf_interactive(aes(tooltip=paste0(Name,": ",round(values))))+
+  theme_void()+scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
+  labs(y="", x="", fill="")#+
+  #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  #theme(text=element_text(size=18), legend.position = "none")
+  
+   indicator_map1x<-girafe(ggobj =  indicator_map1,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 4)))
+  plot2<-ggplot(combined_data1, aes(y=values, x=reorder(Name, values)))+coord_flip()+
+  geom_point_interactive(size=2, color="cyan4", aes(tooltip=round(values)))+
+  theme_bw()+
+  labs(y="", x="")+
+  #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  theme(text=element_text(size=8), legend.position = "none")
+  indicator_map1y<-girafe(ggobj =  plot2)
+  
+
+girafe(ggobj = plot_grid(plotlist=list(indicator_map1, plot2),rel_widths=1.2, rel_heights=0.5,  nrow=1))
+})
+
+```
+
+### Indicator 2
+
+```{r,fig.width=6,fig.height=6}
+#
+renderGirafe({
+combined_data1<- left_join(county, combined_data[combined_data$indicator1%in%input$comp_indicator2,]%>%select(-indicator), by=c("Name"="County"))
+  indicator_map2<- ggplot(combined_data1, aes(fill=values))+
+  geom_sf_interactive(aes(tooltip=paste0(Name,": ",round(values))))+
+  theme_void()+scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
+  labs(y="", x="", fill="")#+
+  #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  #theme(text=element_text(size=18), legend.position = "none")
+  
+   indicator_map2x<-girafe(ggobj =  indicator_map2,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 4)))
+  plot2a<-ggplot(combined_data1, aes(y=values, x=reorder(Name, values)))+coord_flip()+
+  geom_point_interactive(size=2, color="cyan4", aes(tooltip=round(values)))+
+  theme_bw()+
+  labs(y="", x="")+
+  #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  theme(text=element_text(size=8), legend.position = "none")
+  indicator_map2y<-girafe(ggobj =  plot2a)
+  
+
+girafe(ggobj = plot_grid(plotlist=list(indicator_map2, plot2a),rel_widths=1.2, rel_heights=0.5, nrow=1))
+})
+
+```
