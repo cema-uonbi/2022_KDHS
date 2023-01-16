@@ -515,7 +515,7 @@ renderPlot({
       facet_grid(~Participants) +
   geom_text(aes(label=label), hjust = 0.5, size=4, color="white", face = "bold")+
   #labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +
-      labs(y="Weighted percent (%)", x="")  +
+      labs(y="Proportions (%)", x="")  +
      # scale_color_manual(values=c("cyan4", "red4"))+
        theme(strip.background =element_rect(fill="darkorange")) +
   theme(text=element_text(size=18, face="bold"))
@@ -853,8 +853,8 @@ radioButtons("disability_domain", "",
               c("Seeing"="Seeing", 
                 "Hearing"="Hearing", 
                 "Communicating"="Communicating",
-                "Remembering/Concentrating"="Remembering_concentrating","Walking/ClimbingSteps"="Walking_ClimbingSteps",
-                "Washing all over/Dressing"="washingAllOver_dressing"), width=250)
+                "Remembering/Concentrating"="Remembering_concentrating","Walking/ClimbingSteps"="Walking/Climbing steps",
+                "Washing all over/Dressing"="Washing all over/Dressing"), width=250)
 
 ```
 
@@ -893,7 +893,7 @@ disabilitybywealthquintile <- read_csv( "table4_disabilitybywealthquintile.csv")
 disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilitybyresidence, disabilitybyeducationstatus, disabilitybywealthquintile) %>%
   pivot_longer(c(No_difficulty, SomeDifficulty, A_lot_of_difficulty, Cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain, Seeing, Hearing,Communicating, Remembering_concentrating, Walking_ClimbingSteps, WashingAllOver_dressing), names_to="difficulty", values_to="difficultyprop") %>%
   filter(difficulty%in%c("A_lot_of_difficulty","SomeDifficulty", "Cannot_do_at_all", "Seeing", "Hearing","Communicating", "Remembering_concentrating", "Walking_ClimbingSteps", "WashingAllOver_dressing"))%>%
-  mutate(difficulty=recode(difficulty, "A_lot_of_difficulty"="Alot of difficulty", "SomeDifficulty"="Some Difficulty","Cannot_do_at_all"="Cannot do at all", "Remembering_concetrating"="Remembering/Concentrating", "Walking_ClimbingSteps"="Walking/ Climbing steps","WashingAllOver_dressing"="Wasing all over/Dressing"  ))%>%
+  mutate(difficulty=recode(difficulty, "A_lot_of_difficulty"="Alot of difficulty", "SomeDifficulty"="Some Difficulty","Cannot_do_at_all"="Cannot do at all", "Remembering_concetrating"="Remembering/Concentrating", "Walking_ClimbingSteps"="Walking/Climbing steps","WashingAllOver_dressing"="Washing all over/Dressing"  ))%>%
   mutate(difficulty=fct_relevel(difficulty, "Some Difficulty", "Alot of difficulty", "Cannot do at all")) %>%
   mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile")) %>%
   mutate(label=ifelse(difficultyprop<0.5, "<1%", paste0(round(difficultyprop),"%")))
@@ -1391,8 +1391,8 @@ Column {data-width="500"}
 ```{r, fig.height=6}
 nutc1 <- full_join(county, nutc, by="County")%>%
   mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
-  mutate(names1=paste0(County,", ", perc_below3sd,"%","(",measure,")"))%>%
-  mutate(names2=paste0(County,", ", perc_below2sd,"%","(",measure,")"))
+  mutate(names1=paste0(County,", ", round(perc_below3sd),"%","(",measure,")"))%>%
+  mutate(names2=paste0(County,", ", round(perc_below2sd),"%","(",measure,")"))
 
 renderGirafe({
   nut_map2 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below2sd))+
