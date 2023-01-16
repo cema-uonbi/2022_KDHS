@@ -722,7 +722,7 @@ healthinsurance$Insurance <- fct_relevel(healthinsurance$Insurance, "NHIF", "Pri
 renderPlot({
   if(input$health%in%"Wealth_quintile"){
     ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge())+#,aes(tooltip=paste0(Coverage, "%"))) +
-  facet_grid(.~Insurance)+labs(y="Percent (%)")+
+  facet_grid(.~Insurance)+labs(y="Percent (%)", x="")+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
@@ -848,7 +848,7 @@ radioButtons("disability", "",
                 "Marital Status (15-49years)"="Marital_status", 
                 "Residence"="Residence",
                 "Education status (highest level attended)"="Education_status",
-                "Wealth quintile"="Wealth_quintile"), width=250)
+                "Wealth quintile"="Wealth_quintile"), width=400)
 ```
 
 ### Choose  a disability domain:
@@ -1113,16 +1113,27 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
                                         "Married","Never married","Divorced/separated","Living together","Widowed",
                                         'No education','Primary','Secondary','More than secondary', 'Vocational')
 
- renderPlot({
+ renderPlot({if(input$disability%in%"All"){
+  ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%c("Some Difficulty", "Alot of difficulty", "Cannot do at all"),], aes(x=difficulty, y=difficultyprop, )) + 
+  geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") + 
+     geom_text( aes(label=label),stat="identity", position = position_dodge(0.8),  hjust=0.5, vjust=-0.2)+
+  theme_bw()+
+  labs(y="Percent (%)", x="", fill="Disability") +
+  theme(text=element_text(size=16, face="bold"))+ 
+     theme(strip.background =element_rect(fill="darkorange"))+
+     scale_fill_brewer(palette="Set1")
+ }else{
    ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%c("Some Difficulty", "Alot of difficulty", "Cannot do at all"),], aes(x=Indicator, y=difficultyprop, fill=difficulty)) + 
   geom_bar(stat = "identity", position = position_dodge()) + 
      geom_text( aes(label=label),stat="identity", position = position_dodge(0.8),  hjust=0.5)+
      facet_grid(Participants~.)+
   theme_bw()+
-  labs(y="Proportion (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
+  labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=16, face="bold"))+ 
      theme(strip.background =element_rect(fill="darkorange"))+
-     scale_fill_brewer(palette="Set1") 
+     scale_fill_brewer(palette="Set1")
+ }
+    
 })
  
  
@@ -1133,21 +1144,35 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
 
 ```{r}
 
-renderGirafe({
-   disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%input$disability_domain,], ) + 
-     geom_point_interactive(aes(y=difficultyprop, x=Indicator, tooltip=paste0(difficultyprop, "%"), group=Participants),color="brown", size=10)+facet_grid(Participants~.)+
-  theme_bw()+
-  labs(y="Proportion (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
+renderGirafe({if(input$disability%in%"All"){
+  disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability,],aes(y=difficultyprop, x=reorder(difficulty, difficultyprop)) )+ geom_col(fill="brown")+
+  theme_bw()+coord_flip()+geom_text(aes(label=paste0(round(difficultyprop), "%")),hjust=0.1)+
+  labs(y="Percent (%)", x="", fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
      theme(strip.background =element_rect(fill="darkorange"))+
      scale_fill_brewer(palette="Set1") 
    disability_map1a<-girafe(ggobj = disability_map1,width_svg=10, height_svg=8,
                    options = list(
+                    # opts_sizing(rescale = TRUE),
+                     opts_zoom(max = 4)))
+  print(disability_map1a, justify="left")
+}else{
+  disability_map2<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%input$disability_domain,], ) + 
+     geom_point_interactive(aes(y=difficultyprop, x=Indicator, tooltip=paste0(difficultyprop, "%"), group=Participants),color="brown", size=10)+facet_grid(Participants~.)+
+  theme_bw()+
+  labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
+  theme(text=element_text(size=20, face="bold"))+
+     theme(strip.background =element_rect(fill="darkorange"))+
+     scale_fill_brewer(palette="Set1") 
+   disability_map2a<-girafe(ggobj = disability_map2,width_svg=10, height_svg=8,
+                   options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
                     # opts_sizing(rescale = TRUE),
                      opts_zoom(max = 4)))
-  print(disability_map1a, justify="left")
+  print(disability_map2a, justify="left")
+}
+   
 })
 ```
 
