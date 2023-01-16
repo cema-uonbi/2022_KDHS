@@ -547,7 +547,7 @@ renderPlot({
         facet_grid(~Participants) +
   geom_text(aes(label=label), hjust = -0.1, size=4, color="black", face = "bold", label.size=0.7)+
 #  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
-         labs(y="Weighted percent (%)", x="") + 
+         labs(y="Percent (%)", x="") + 
       #  scale_fill_manual(values=c("cyan4", "red4"))+
   theme(text=element_text(size=18, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))
 #  respondents_map2a<-girafe(ggobj = respondents_map2,width_svg=18, height_svg=9,
@@ -846,12 +846,13 @@ valueBox(
 Row {data-height="200"}
 -----------------------
 
-### *Disability*, choose a characteristic to display by:
+### Disability: choose a characteristic to display by:
 
 ```{r}
 
 radioButtons("disability", "",
-              c("Age category (in years)"="Age_category", 
+              c("Summary"="All",
+                "Age category (in years)"="Age_category", 
                 "Marital Status (15-49years)"="Marital_status", 
                 "Residence"="Residence",
                 "Education status (highest level attended)"="Education_status",
@@ -862,7 +863,8 @@ radioButtons("disability", "",
 
 ```{r }
 radioButtons("disability_domain", "",
-              c("Seeing"="Seeing", 
+              c(
+                "Seeing"="Seeing", 
                 "Hearing"="Hearing", 
                 "Communicating"="Communicating",
                 "Remembering/Concentrating"="Remembering_concentrating","Walking/ClimbingSteps"="Walking/Climbing steps",
@@ -878,36 +880,240 @@ Row {data-height="600"}
 
 ```{r }
 # disability by age
-disabilitybyage <- read_csv( "table4_disabilitybyage.csv") %>%
+
+## import data ## Extracted Table 9 - has information on disability
+
+disabilitytotal <-  tbls[[9]]  %>% 
+  slice(34) %>%
+  dplyr::rename(Age_category = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "All") %>%
+  mutate(Indicator1 ="All") %>%
+  rename(Indicator=Age_category)
+
+disabilitywomenbyage <- tbls[[9]] %>% ## Extracted Table 9 - has information on disability by women
+  slice(6:8) %>% #Age data rows
+  dplyr::rename(Age_category = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Women")
+
+disabilitymenbyage <- tbls[[10]] %>% ## Extracted Table 10 - has information on disability by men
+  slice(6:8) %>% # Age data rows
+  dplyr::rename(Age_category = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Men")
+
+disabilitybyage <- bind_rows(disabilitywomenbyage,disabilitymenbyage) %>%
   mutate(Indicator1 ="Age_category") %>%
   rename(Indicator=Age_category)
 
 # disability by marital status
-disabilitybymaritalstatus <- read_csv( "table4_disabilitybymaritalstatus.csv") %>%
+disabilitywomenbymaritalstatus <- tbls[[9]] %>% ## Extracted Table 9 - has information on disability by women
+  slice(11:15) %>% #marital status data rows
+  dplyr::rename(Marital_status = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Women")
+
+disabilitymenbymaritalstatus <- tbls[[10]] %>% ## Extracted Table 10 - has information on disability by men
+  slice(11:15) %>% # marital status data rows
+  dplyr::rename(Marital_status = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Men")
+
+disabilitybymaritalstatus <- bind_rows(disabilitywomenbymaritalstatus,disabilitymenbymaritalstatus) %>%
   mutate(Indicator1="Marital_status") %>%
   rename(Indicator=Marital_status)
 
 # disability by residence
-disabilitybyresidence <- read_csv( "table4_disabilitybyresidence.csv") %>%
+disabilitywomenbyresidence <- tbls[[9]] %>% ## Extracted Table 9 - has information on disability by women
+  slice(18:19) %>% # residence data rows
+  dplyr::rename(Residence = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Women")
+
+disabilitymenbyresidence <- tbls[[10]] %>% ## Extracted Table 10 - has information on disability by men
+  slice(18:19) %>% # residence data rows
+  dplyr::rename(Residence = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Men")
+
+disabilitybyresidence <- bind_rows(disabilitywomenbyresidence,disabilitymenbyresidence) %>%
   mutate(Indicator1 = "Residence") %>%
   rename(Indicator=Residence)
 
 # disability by education status
-disabilitybyeducationstatus <- read_csv( "table4_disabilitybyeducationstatus.csv") %>%
+disabilitywomenbyeducationstatus <- tbls[[9]] %>% ## Extracted Table 9 - has information on disability by women
+  slice(22:25) %>% # Education status data rows
+  dplyr::rename(Education_status = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Women")
+
+disabilitymenbyeducationstatus <- tbls[[10]] %>% ## Extracted Table 10 - has information on disability by men
+  slice(22:25) %>% # Educcation status data rows
+  dplyr::rename(Education_status= V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Men")
+
+disabilitybyeducationstatus <- bind_rows(disabilitywomenbyeducationstatus,disabilitymenbyeducationstatus) %>%
   mutate(Indicator1 ="Education_status") %>%
   rename(Indicator=Education_status)
  
 #disability by wealth quintile
-disabilitybywealthquintile <- read_csv( "table4_disabilitybywealthquintile.csv") %>%
+disabilitywomenbywealthquintile <- tbls[[9]] %>% ## Extracted Table 9 - has information on disability by women
+  slice(28:32) %>% # wealth quintile data rows
+  dplyr::rename(Wealth_quintile = V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Women")
+
+disabilitymenbywealthquintile <- tbls[[10]] %>% ## Extracted Table 10 - has information on disability by men
+  slice(28:32) %>% # wealth quintile data rows
+  dplyr::rename(Wealth_quintile= V1,
+                No_difficulty = V2,
+                Seeing = V3,
+                Hearing = V4,
+                Communicating = V5,
+                Remembering_concentrating = V6,
+                Walking_ClimbingSteps = V7,
+                WashingAllOver_dressing = V8,
+                SomeDifficulty = V9,
+                A_lot_of_difficulty = V10,
+                Cannot_do_at_all = V11,
+                A_lot_of_difficulty_cannot_do_at_all = V12,
+                A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain = V13,
+                Number = V14) %>%
+  dplyr::mutate(Participants = "Men")
+
+disabilitybywealthquintile <- bind_rows(disabilitywomenbywealthquintile,disabilitymenbywealthquintile) %>%
   mutate(Indicator1="Wealth_quintile") %>%
   rename(Indicator=Wealth_quintile)
   
-disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilitybyresidence, disabilitybyeducationstatus, disabilitybywealthquintile) %>%
+disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilitybyresidence, disabilitybyeducationstatus, disabilitybywealthquintile, disabilitytotal) %>%
   pivot_longer(c(No_difficulty, SomeDifficulty, A_lot_of_difficulty, Cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain, Seeing, Hearing,Communicating, Remembering_concentrating, Walking_ClimbingSteps, WashingAllOver_dressing), names_to="difficulty", values_to="difficultyprop") %>%
   filter(difficulty%in%c("A_lot_of_difficulty","SomeDifficulty", "Cannot_do_at_all", "Seeing", "Hearing","Communicating", "Remembering_concentrating", "Walking_ClimbingSteps", "WashingAllOver_dressing"))%>%
   mutate(difficulty=recode(difficulty, "A_lot_of_difficulty"="Alot of difficulty", "SomeDifficulty"="Some Difficulty","Cannot_do_at_all"="Cannot do at all", "Remembering_concetrating"="Remembering/Concentrating", "Walking_ClimbingSteps"="Walking/Climbing steps","WashingAllOver_dressing"="Washing all over/Dressing"  ))%>%
   mutate(difficulty=fct_relevel(difficulty, "Some Difficulty", "Alot of difficulty", "Cannot do at all")) %>%
-  mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile")) %>%
+  mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile", "All"="Summary")) %>%
+  mutate(difficultyprop=as.numeric(difficultyprop))%>%
   mutate(label=ifelse(difficultyprop<0.5, "<1%", paste0(round(difficultyprop),"%")))
 
 disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest",
@@ -921,11 +1127,13 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
      geom_text( aes(label=label),stat="identity", position = position_dodge(0.8),  hjust=0.5)+
      facet_grid(Participants~.)+
   theme_bw()+
-  labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
+  labs(y="Proportion (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=16, face="bold"))+ 
      theme(strip.background =element_rect(fill="darkorange"))+
      scale_fill_brewer(palette="Set1") 
 })
+ 
+ 
 ```
 
 
@@ -937,7 +1145,7 @@ renderGirafe({
    disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%input$disability_domain,], ) + 
      geom_point_interactive(aes(y=difficultyprop, x=Indicator, tooltip=paste0(difficultyprop, "%"), group=Participants),color="brown", size=10)+facet_grid(Participants~.)+
   theme_bw()+
-  labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
+  labs(y="Proportion (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
      theme(strip.background =element_rect(fill="darkorange"))+
      scale_fill_brewer(palette="Set1") 
@@ -1196,7 +1404,7 @@ renderPlot({
   #scale_fill_manual("Residence", values = c("Urban" = "darkorange", "Rural" = "cyan3")) +
   theme_bw() +
   coord_flip() +
-  ylab("Percent (%)") + xlab("County") +
+  ylab("Proportion (%)") + xlab("County") +
   theme(text=element_text(size=20, face="bold")) +
   theme(strip.background =element_rect(fill="gray80")) +scale_fill_brewer(palette="Set1")
  # teenage_preg1a<-girafe(ggobj = teenage_preg1,width_svg=18, height_svg=9,
@@ -1403,8 +1611,8 @@ Column {data-width="500"}
 ```{r, fig.height=6}
 nutc1 <- full_join(county, nutc, by="County")%>%
   mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
-  mutate(names1=paste0(County,", ", round(perc_below3sd),"%","(",measure,")"))%>%
-  mutate(names2=paste0(County,", ", round(perc_below2sd),"%","(",measure,")"))
+  mutate(names1=paste0(County,", ", perc_below3sd,"%","(",measure,")"))%>%
+  mutate(names2=paste0(County,", ", perc_below2sd,"%","(",measure,")"))
 
 renderGirafe({
   nut_map2 <- ggplot(nutc1[nutc1$indicator%in%input$nutr2,], aes(fill=perc_below2sd))+
@@ -1839,7 +2047,7 @@ renderPlot({ggplot(title_deed_data[title_deed_data$indicator%in%input$home_own,]
   scale_colour_discrete(name="Own Title Deed")+
   xlim(0,100)+
   theme_bw()+
-  labs(x ='Percentage (%)', y =paste0(title_deed_data[title_deed_data$indicator%in%input$home_own,]$indicator, " of respondents"), fill="Own Title Deed")+
+  labs(x ='Proportion (%)', y =paste0(title_deed_data[title_deed_data$indicator%in%input$home_own,]$indicator, " of respondents"), fill="Own Title Deed")+
   facet_grid(.~variable) +
   coord_flip()+theme(text = element_text(size=16, face="bold"))}, width=1500, height=800)
 
@@ -2449,7 +2657,7 @@ renderPlot({if(input$family_planning%in%"County"){
   ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") +
   theme_bw() + facet_grid(.~Marital_status)+coord_flip()+geom_text(aes(label=paste0(round(Percent), "%")))+
-    labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
+    labs(y="Proportion (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
@@ -2459,7 +2667,7 @@ renderPlot({if(input$family_planning%in%"County"){
   ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent), "%")), position=position_dodge(0.6), vjust=0.1)+
   theme_bw() + facet_grid(.~Marital_status)+
-    labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
+    labs(y="Proportion (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
@@ -2468,7 +2676,7 @@ renderPlot({if(input$family_planning%in%"County"){
   else{ ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
   geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent),"%")), position=position_dodge(0.6), vjust=-0.2)+
   theme_bw() + facet_grid(.~Marital_status)+
-    labs(y="Percent (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
+    labs(y="Proportion (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
   #coord_flip() +
   #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
   #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
@@ -2596,7 +2804,7 @@ table29C <- dplyr::bind_rows(table29C_women) %>%
 renderPlot({
   ggplot(table29[table29$Background.characteristic%in%input$physical_violence,], aes(x=Indicator,y=Value,fill=Category)) + 
   geom_col(position='dodge') + geom_text(aes(label=paste0(round(Value),"%")))+
-  labs( y = 'Percentage(%)',x = '',fill='Experience of Violence', title="") +
+  labs( y = 'Proportion (%)',x = '',fill='Experience of Violence', title="") +
       theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
 
 
@@ -2633,7 +2841,7 @@ physical_violence <- left_join(county,table29C[table29C$experience%in%input$phys
 
   physical_violencemap <-ggplot(physical_violence) + geom_sf_interactive(aes(fill=value, tooltip=label))+
   theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+
-  labs(fill="Percentage")
+  labs(fill="Proportion")
    physical_violencemap1 <- girafe(ggobj = physical_violencemap,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -2657,7 +2865,7 @@ renderPlot({
 
    ggplot(physical_violence, aes(x = reorder(Name,value),y = value)) + 
   geom_bar(stat="identity", aes(fill=Participants)) + coord_flip() + theme_bw()+ geom_text(aes(label=paste0(round(value),"%")))+
-  labs(fill="Percentage", x="County", y="Percentage")+theme(text=element_text(size=18, face="bold"))
+  labs(fill="Proportion", x="County", y="Proportion")+theme(text=element_text(size=18, face="bold"))
 },width=800, height=500)
 
 
@@ -2759,7 +2967,7 @@ genderbasedviolence$Characteristics <- fct_relevel(genderbasedviolence$Character
 renderPlot({
   ggplot(genderbasedviolence[genderbasedviolence$indicator%in%input$sexual_violence,], aes(x=Characteristics,y=values,fill=indicator1)) + 
   geom_col(position='dodge') + geom_text(aes(label=paste0(round(values),"%")), position=position_dodge(0.6), vjust=-0.5, hjust=0.2)+
-  labs( y = 'Percentage(%)',x = '',fill='Experience of Violence', title="") +
+  labs( y = 'Proportion(%)',x = '',fill='Experience of Violence', title="") +
       theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
 
 
@@ -2807,7 +3015,7 @@ renderGirafe({
 
   sexual_violencemap <-ggplot(genderbased_datac[genderbased_datac$ind%in%input$sexual_violence1,]) + geom_sf_interactive(aes(fill=value, tooltip=label))+
   theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026")+
-  labs(fill="Percentage")
+  labs(fill="Proportion")
    sexual_violencemap1 <- girafe(ggobj = sexual_violencemap,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -2830,7 +3038,7 @@ renderPlot({
 
    ggplot(genderbased_datac[genderbased_datac$ind%in%input$sexual_violence1,], aes(x = reorder(Name,value),y = value)) + 
   geom_bar(stat="identity", fill="#e6550d") + coord_flip() + theme_bw()+ geom_text(aes(label=paste0(round(value),"%")))+
-  labs(fill="Percentage", x="County", y="Percentage")+theme(text=element_text(size=18, face="bold"))
+  labs(fill="Proportion", x="County", y="Proportion")+theme(text=element_text(size=18, face="bold"))
 },width=800, height=500)
 
 
@@ -3330,25 +3538,46 @@ valueBox(
 Column {data-height="800"}
 ---------------------------------
 
-### Fully vaccinated according to the national schedule
 
-```{r}
 
-radioButtons("vacc", "",
-              c("Fully vaccinated: 12-23 months"="CountyFullyVaccinated12",
-                "Fully vaccinated: 24-35 months"="CountyFullyVaccinated24"))
+```{r, include=F}
+
 
 
 # import data
 
-vacc <- read_csv("table11C_vaccinationbycounty.csv")%>%
-  mutate(County=recode(NAME_1,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+## Vaccination data
+
+vacc1 <- tbls[[42]] %>%
+  slice(6:49) %>% # by county
+  dplyr::select(V1, V18, V22) %>%
+  dplyr::rename(County = V1,
+                CountyFullyVaccinated12= V18,
+                CountyFullyVaccinated24 = V22)
+
+vacc <- tbls[[43]] %>%
+  slice(5:7) %>% # by county
+  dplyr::select(V1, V18, V22) %>%
+  dplyr::rename(County = V1,
+                CountyFullyVaccinated12= V18,
+                CountyFullyVaccinated24 = V22)%>%
+  rbind(vacc1) %>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
   pivot_longer(c(CountyFullyVaccinated12,CountyFullyVaccinated24 ),names_to ="indicators", values_to="values") %>%
-  mutate(names1=paste0(County,", ", values,"%"))
+  mutate(values=as.numeric(parse_number(values))) %>%
+  mutate(names1=paste0(County,", ", round(values),"%"))
 
+county <- st_read("County.shp")
+vacc1<- full_join(county, vacc, by=c("Name"="County"))
+```
 
-vacc1<- full_join(county, vacc, by=c("Name"="County"))%>%
-  mutate(values=as.numeric(parse_number(values)))
+### Fully vaccinated according to the national schedule
+
+```{r}
+# user's input
+radioButtons("vacc", "",
+              c("Fully vaccinated: 12-23 months"="CountyFullyVaccinated12",
+                "Fully vaccinated: 24-35 months"="CountyFullyVaccinated24"))
 
 
 #visualization
@@ -3388,79 +3617,236 @@ radioButtons("vacc_char", "",
 
 
 
-vacc_12_23_gender.1 <- read_csv("table11_vacc_12_23_gender.csv") %>%
+vacc_12_23_gender.1 <- tbls[[41]] %>%
+  slice(7:8) %>% 
+  dplyr::select(V1:V19) %>%
+  dplyr::rename(Characteristics = V1,
+                BCG = V2,
+                DPT1 = V3,
+                DPT2 = V4,
+                DPT3 = V5,
+                OPV0 = V6,
+                OPV1 = V7,
+                OPV2 = V8,
+                OPV3 = V9,
+                IPV = V10,
+                Pneumococcal1 = V11,
+                Pneumococcal2 = V12,
+                Pneumococcal3 = V13,
+                Rotavirus1 = V14,
+                Rotavirus2 = V15,
+                MR1 = V16,
+                Fully_vacc_basic = V17,
+                Fully_vacc_national = V18,
+                No_vacc = V19) %>%
+  pivot_longer(c(2:19), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="12-23 months") %>%
-  mutate(indicator="Gender") %>%
-  rename(indicator1=Sex)
+  mutate(indicator="Gender") 
 
-vacc_12_23_birth.1 <- read_csv("table11_vacc_12_23_birth.csv") %>%
+vacc_12_23_birth.1 <- tbls[[41]] %>%
+  slice(11:14) %>% 
+  dplyr::select(V1:V19) %>%
+  dplyr::rename(Characteristics = V1,
+                BCG = V2,
+                DPT1 = V3,
+                DPT2 = V4,
+                DPT3 = V5,
+                OPV0 = V6,
+                OPV1 = V7,
+                OPV2 = V8,
+                OPV3 = V9,
+                IPV = V10,
+                Pneumococcal1 = V11,
+                Pneumococcal2 = V12,
+                Pneumococcal3 = V13,
+                Rotavirus1 = V14,
+                Rotavirus2 = V15,
+                MR1 = V16,
+                Fully_vacc_basic = V17,
+                Fully_vacc_national = V18,
+                No_vacc = V19) %>%
+  pivot_longer(c(2:19), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="12-23 months")  %>%
-  mutate(indicator="Birth") %>%
-  rename(indicator1=birth.order)
+  mutate(indicator="Birth") 
 
-vacc_12_23_card.1 <- read_csv("table11_vacc_12_23_card.csv") %>%
+vacc_12_23_card.1 <- tbls[[41]] %>%
+  slice(17:19) %>% 
+  dplyr::select(V1:V19) %>%
+  dplyr::rename(Characteristics = V1,
+                BCG = V2,
+                DPT1 = V3,
+                DPT2 = V4,
+                DPT3 = V5,
+                OPV0 = V6,
+                OPV1 = V7,
+                OPV2 = V8,
+                OPV3 = V9,
+                IPV = V10,
+                Pneumococcal1 = V11,
+                Pneumococcal2 = V12,
+                Pneumococcal3 = V13,
+                Rotavirus1 = V14,
+                Rotavirus2 = V15,
+                MR1 = V16,
+                Fully_vacc_basic = V17,
+                Fully_vacc_national = V18,
+                No_vacc = V19) %>%
+  pivot_longer(c(2:19), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="12-23 months")  %>%
-  mutate(indicator="Card") %>%
-  rename(indicator1=vacciantion.card)
+  mutate(indicator="Card") 
   
-vacc_12_23_residence.1 <- read_csv("table11_vacc_12_23_residence.csv") %>%
+vacc_12_23_residence.1 <- tbls[[41]] %>%
+  slice(22:23) %>% 
+  dplyr::select(V1:V19) %>%
+  dplyr::rename(Characteristics = V1,
+                BCG = V2,
+                DPT1 = V3,
+                DPT2 = V4,
+                DPT3 = V5,
+                OPV0 = V6,
+                OPV1 = V7,
+                OPV2 = V8,
+                OPV3 = V9,
+                IPV = V10,
+                Pneumococcal1 = V11,
+                Pneumococcal2 = V12,
+                Pneumococcal3 = V13,
+                Rotavirus1 = V14,
+                Rotavirus2 = V15,
+                MR1 = V16,
+                Fully_vacc_basic = V17,
+                Fully_vacc_national = V18,
+                No_vacc = V19) %>%
+  pivot_longer(c(2:19), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="12-23 months")  %>%
-  mutate(indicator="Residence") %>%
-  rename(indicator1=residence)
+  mutate(indicator="Residence") 
   
-vacc_12_23_mothers.education.1 <- read_csv("table11_vacc_12_23_mothers.education.csv") %>%
+vacc_12_23_mothers.education.1 <- tbls[[41]] %>%
+  slice(26:29) %>% 
+  dplyr::select(V1:V19) %>%
+  dplyr::rename(Characteristics = V1,
+                BCG = V2,
+                DPT1 = V3,
+                DPT2 = V4,
+                DPT3 = V5,
+                OPV0 = V6,
+                OPV1 = V7,
+                OPV2 = V8,
+                OPV3 = V9,
+                IPV = V10,
+                Pneumococcal1 = V11,
+                Pneumococcal2 = V12,
+                Pneumococcal3 = V13,
+                Rotavirus1 = V14,
+                Rotavirus2 = V15,
+                MR1 = V16,
+                Fully_vacc_basic = V17,
+                Fully_vacc_national = V18,
+                No_vacc = V19) %>%
+  pivot_longer(c(2:19), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="12-23 months")  %>%
-  mutate(indicator="Education") %>%
-  rename(indicator1=mothers.education)
+  mutate(indicator="Education") 
 
-vacc_12_23_wealth.quintile.1 <- read_csv("table11_vacc_12_23_wealth.quintile.csv") %>%
+vacc_12_23_wealth.quintile.1 <- tbls[[41]] %>%
+  slice(32:36) %>% 
+  dplyr::select(V1:V19) %>%
+  dplyr::rename(Characteristics = V1,
+                BCG = V2,
+                DPT1 = V3,
+                DPT2 = V4,
+                DPT3 = V5,
+                OPV0 = V6,
+                OPV1 = V7,
+                OPV2 = V8,
+                OPV3 = V9,
+                IPV = V10,
+                Pneumococcal1 = V11,
+                Pneumococcal2 = V12,
+                Pneumococcal3 = V13,
+                Rotavirus1 = V14,
+                Rotavirus2 = V15,
+                MR1 = V16,
+                Fully_vacc_basic = V17,
+                Fully_vacc_national = V18,
+                No_vacc = V19) %>%
+  pivot_longer(c(2:19), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="12-23 months")  %>%
-  mutate(indicator="Wealth quintile") %>%
-  rename(indicator1=wealth.quintile)
+  mutate(indicator="Wealth quintile") 
 
 
-vacc_24_35_gender.1 <- read_csv("table11_vacc_24_35_gender.csv") %>%
+vacc_24_35_gender.1 <- tbls[[41]] %>%
+  slice(7:8) %>% 
+  dplyr::select(V1,V21:V22) %>%
+  dplyr::rename(Characteristics = V1,
+                MR2 = V21,
+                Fully_vacc_national = V22) %>%
+  pivot_longer(c(2:3), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="24-35 months")  %>%
-  mutate(indicator="Gender") %>%
-  rename(indicator1=Sex)
+  mutate(indicator="Gender") 
   
-vacc_24_35_birth.1 <- read_csv("table11_vacc_24_35_birth.csv") %>%
+vacc_24_35_birth.1 <- tbls[[41]] %>%
+  slice(11:14) %>% 
+  dplyr::select(V1,V21:V22) %>%
+  dplyr::rename(Characteristics = V1,
+                MR2 = V21,
+                Fully_vacc_national = V22) %>%
+  pivot_longer(c(2:3), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="24-35 months")  %>%
-  mutate(indicator="Birth") %>%
-  rename(indicator1=birth.order)
+  mutate(indicator="Birth") 
 
-vacc_24_35_card.1 <- read_csv("table11_vacc_24_35_card.csv") %>%
+vacc_24_35_card.1 <- tbls[[41]] %>%
+  slice(17:19) %>% 
+  dplyr::select(V1,V21:V22) %>%
+  dplyr::rename(Characteristics = V1,
+                MR2 = V21,
+                Fully_vacc_national = V22) %>%
+  pivot_longer(c(2:3), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="24-35 months")  %>%
-  mutate(indicator="Card") %>%
-  rename(indicator1=vacciantion.card)
+  mutate(indicator="Card") 
 
-vacc_24_35_residence.1 <- read_csv("table11_vacc_24_35_residence.csv") %>%
+vacc_24_35_residence.1 <- tbls[[41]] %>%
+  slice(22:23) %>% 
+  dplyr::select(V1,V21:V22) %>%
+  dplyr::rename(Characteristics = V1,
+                MR2 = V21,
+                Fully_vacc_national = V22) %>%
+  pivot_longer(c(2:3), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="24-35 months") %>%
-  mutate(indicator="Residence") %>%
-  rename(indicator1=residence)
+  mutate(indicator="Residence") 
 
-vacc_24_35_mothers.education.1 <- read_csv("table11_vacc_24_35_mothers.education.csv") %>%
+vacc_24_35_mothers.education.1 <- tbls[[41]] %>%
+  slice(26:29) %>% 
+  dplyr::select(V1,V21:V22) %>%
+  dplyr::rename(Characteristics = V1,
+                MR2 = V21,
+                Fully_vacc_national = V22) %>%
+  pivot_longer(c(2:3), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="24-35 months") %>%
-  mutate(indicator="Education") %>%
-  rename(indicator1=mothers.education)
+  mutate(indicator="Education") 
 
-vacc_24_35_wealth.quintile.1 <- read_csv("table11_vacc_24_35_wealth.quintile.csv") %>%
+vacc_24_35_wealth.quintile.1 <- tbls[[41]] %>%
+  slice(32:36) %>% 
+  dplyr::select(V1,V21:V22) %>%
+  dplyr::rename(Characteristics = V1,
+                MR2 = V21,
+                Fully_vacc_national = V22) %>%
+  pivot_longer(c(2:3), names_to="Vaccines", values_to="Percent") %>%
   mutate(group="24-35 months") %>%
-  mutate(indicator="Wealth quintile") %>%
-  rename(indicator1=wealth.quintile) 
+  mutate(indicator="Wealth quintile") 
 
 ## join all the data
 vaccination_data <- rbind(vacc_12_23_gender.1 , vacc_12_23_birth.1, vacc_12_23_card.1, vacc_12_23_mothers.education.1,vacc_12_23_residence.1, vacc_12_23_wealth.quintile.1, vacc_24_35_gender.1, vacc_24_35_birth.1, vacc_24_35_card.1, vacc_24_35_mothers.education.1, vacc_24_35_gender.1, vacc_24_35_residence.1, vacc_24_35_wealth.quintile.1) %>%
   mutate(group=recode(group, "12-23 months"="CountyFullyVaccinated12", "24-35 months"="CountyFullyVaccinated24")) %>%
-  mutate(Vaccines=recode(Vaccines, "Fully.vaccinated"= "Fully vaccinated\n(basic antigens)", "Fully.vaccinated.national schedule"="Fully vaccinated\n(national schedule)", "No.vaccinations"="No vaccinations", "DTP1"="DPT1", "DTP2"="DPT2", "DTP3"="DPT3"))
+  mutate(Vaccines=recode(Vaccines, "Fully_vacc_basic"= "Fully vaccinated\n(basic antigens)", "Fully_vacc_national"="Fully vaccinated\n(national schedule)", "No_vacc"="No vaccinations", "DTP1"="DPT1", "DTP2"="DPT2", "DTP3"="DPT3")) %>%
+  mutate(Percent=parse_number(Percent))
 
 
-vaccination_data$Vaccines <- fct_relevel(vaccination_data$Vaccines,  "Fully vaccinated\n(national schedule)","Fully vaccinated\n(basic antigens)","No vaccinations","MR.2", "MR 1","Rotavirus2","Rotavirus1","Pneumococcal3","Pneumococcal2","Pneumococcal1","IPV","OPV3","OPV2","OPV1","OPV","DPT3","DPT2"  ,"DPT1",  "BCG" )
+vaccination_data$Vaccines <- fct_relevel(vaccination_data$Vaccines,  "Fully vaccinated\n(national schedule)","Fully vaccinated\n(basic antigens)","No vaccinations","MR2", "MR1","Rotavirus2","Rotavirus1","Pneumococcal3","Pneumococcal2","Pneumococcal1","IPV","OPV3","OPV2","OPV1","OPV0","DPT3","DPT2"  ,"DPT1",  "BCG" )
 
 renderPlot({
-  ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & !is.na(vaccination_data$indicator1) & vaccination_data$group%in%input$vacc,],aes(x=Vaccines, y=Percent)) + 
+  ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & vaccination_data$group%in%input$vacc,],aes(x=Vaccines, y=Percent)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
-  theme_bw() +facet_grid(.~indicator1)+
+  theme_bw() +facet_grid(.~Characteristics)+
   geom_text(aes(label=paste0(round(Percent), "%")), size=3, color="black", hjust=0.5)+
   scale_fill_brewer(palette = "Set1")+
   coord_flip() + labs(y="Proportion", x="", fill="")+
