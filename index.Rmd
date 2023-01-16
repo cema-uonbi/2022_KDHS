@@ -40,8 +40,8 @@ p_load(reshape2)
 # import all the tables
 #dhs2022report <- read_docx("2022KDHSKIR_KNBS.docx") 
 
-# number of tables in the report
 
+# number of tables in the report
 #docx_tbl_count(dhs2022report)
 #tbls <- docx_extract_all_tbls(dhs2022report, trim = T, guess_header = T)
 
