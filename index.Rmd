@@ -116,9 +116,9 @@ Column {data-width="600"}
 ```{r}
 radioButtons("quest", "",
              c("Households"="All",
-               "Response Rate"="Response Rate",
                "Participants: Men (15-54)"="Male",
-               "Participants: Women (15-49)"="Female"))
+               "Participants: Women (15-49)"="Female",
+               "Response Rate"="Response Rate"))
 
 ```
 
