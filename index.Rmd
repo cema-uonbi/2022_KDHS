@@ -855,7 +855,7 @@ radioButtons("disability", "",
 
 ```{r }
 radioButtons("disability_domain", "",
-              c(
+              c("All domains"="All",
                 "Seeing"="Seeing", 
                 "Hearing"="Hearing", 
                 "Communicating"="Communicating",
@@ -1144,8 +1144,8 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
 
 ```{r}
 
-renderGirafe({if(input$disability%in%"All"){
-  disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability,],aes(y=difficultyprop, x=reorder(difficulty, difficultyprop)) )+ geom_col(fill="brown")+
+renderGirafe({if(input$disability_domain%in%"All"){
+  disability_map1<-ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability_domain &disabilitydata$difficulty!=c("Some Difficulty", "Alot of difficulty", "Cannot do at all"),],aes(y=difficultyprop, x=reorder(difficulty, difficultyprop)) )+ geom_col(fill="brown")+
   theme_bw()+coord_flip()+geom_text(aes(label=paste0(round(difficultyprop), "%")),hjust=0.1)+
   labs(y="Percent (%)", x="", fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
