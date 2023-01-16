@@ -128,9 +128,9 @@ Column {data-width="600"}
 ```{r}
 radioButtons("quest", "",
              c("Households"="All",
-               "Participants: Men (15-54)"="Male",
-               "Participants: Women (15-49)"="Female",
-               "Response Rate"="Response Rate"))
+               "Participants: Men (15-54 years)"="Male",
+               "Participants: Women (15-49 years)"="Female",
+               "Response Rates"="Response Rate"))
 
 ```
 
@@ -526,8 +526,8 @@ renderPlot({
   theme_bw() +
       facet_grid(~Participants) +
   geom_text(aes(label=label), hjust = 0.5, size=4, color="white", face = "bold")+
-  #labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +
-      labs(y="Proportions (%)", x="")  +
+  #labs(y="Percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +
+      labs(y="Percent (%)", x="")  +
      # scale_color_manual(values=c("cyan4", "red4"))+
        theme(strip.background =element_rect(fill="darkorange")) +
   theme(text=element_text(size=18, face="bold"))
@@ -557,15 +557,15 @@ renderPlot({
                     # opts_sizing(rescale = TRUE),
     #                 opts_zoom(max = 4)))
  # print(respondents_map2a)
-  }  else if(input$char%in%"Religion"){
+  }  else if(input$char%in%c("Religion", "Marital Status")){
   respondentsdata%>%
     filter(Indicator==input$char)%>%
       ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
   geom_bar(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
-        # labs(y="Weighted percent (%)") + 
+  #labs(y="Percentage (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
+         labs(y="Percent (%)", y="") + 
         scale_fill_manual(values=c("cyan4", "red4"))+
   theme(text=element_text(size=18, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))+
       geom_text(aes(label=label), position=position_stack(vjust = 0.7), size=4, color="white", face = "bold", label.size=0.7)
@@ -586,7 +586,7 @@ renderPlot({
         facet_grid(~Participants) +
   geom_text(aes(label=label), position=position_stack(vjust = 0.5), size=5, color="white")+
  # labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
-         labs(y="Weighted percent (%)", x="") +
+         labs(y="Percent (%)", x="") +
   theme(text=element_text(size=18, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
   #  respondents_map4a<-girafe(ggobj = respondents_map4,width_svg=18, height_svg=9,
    #                options = list(
@@ -676,11 +676,9 @@ Row {data-height="230"}
 
 ### **Health Insurance Coverage:**
 
- *Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.* 
+*Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.* 
 
 **Choose the characteristics to display:**
-
-
 
 ```{r}
 radioButtons("health", "",
@@ -730,7 +728,7 @@ healthinsurance$Insurance <- fct_relevel(healthinsurance$Insurance, "NHIF", "Pri
 renderPlot({
   if(input$health%in%"Wealth_quintile"){
     ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge())+#,aes(tooltip=paste0(Coverage, "%"))) +
-  facet_grid(.~Insurance)+labs(y="Proportion (%)")+
+  facet_grid(.~Insurance)+labs(y="Percent (%)")+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
@@ -744,7 +742,7 @@ renderPlot({
   #print(insurance_map1a)
   }else{ 
   ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge())+
-  facet_grid(.~Insurance)+labs(x="", y="Proportion (%)")+
+  facet_grid(.~Insurance)+labs(x="", y="Percent (%)")+
     scale_fill_brewer(palette = "Set1")+ 
     theme_bw()+theme(text=element_text(size=20, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
