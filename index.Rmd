@@ -41,9 +41,11 @@ knitr::include_graphics("www/front_page_knbs.png")
 
 ### About 
 
-- The App uses data from the Key Indicators Report of the 2022 Kenya Demographic and Health Survey (2022 KDHS). The survey was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MoH) and other stakeholders.
+- This Shiny app uses data from the Key Indicators Report of the 2022 Kenya Demographic and Health Survey (2022 KDHS). The 2022 KDHS was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MOH) and other stakeholders.
 
-- It provides easy-to-use interface to explore 2022 KDHS data using tools such as choropleth maps, bar plots, trend plots. This is a living app that is continuously developed to include comparisons of the current results with those from Demographic and Health Surveys.
+- The app provides an easy-to-use interactive interface to explore the 2022 KDHS data using tools such as choropleth maps, bar plots, trend plots. 
+
+- This is a living app that is continuously under development and improvement to include comparisons of the current demographic and health results with those from previous surveys, aimed at understanding Kenya's progress in attainment of health.
 
 - The analytics and visualizations are created by the [Center for Epidemiological Modelling and Analysis (CEMA)](http://cema-africa.uonbi.ac.ke) at the University of Nairobi, Kenya.
 
