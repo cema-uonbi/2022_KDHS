@@ -1107,12 +1107,12 @@ disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilityby
   mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile", "All"="Summary")) %>%
   mutate(difficultyprop=as.numeric(difficultyprop))%>%
   mutate(label=ifelse(difficultyprop<0.5, "<1%", paste0(round(difficultyprop),"%")))%>%
-  mutate(Indicator=recode(Indicator, "Divorced/separated"= "Divorced or \nseparated", "No education"="No\n education", "Married/living together"="Married or \nliving together", "Not asked/missing"="Not asked or\nmissing"))
+  mutate(Indicator=recode(Indicator, "Divorced/separated"= "Divorced or \nseparated", "Married/living together"="Married or \nliving together", "Not asked/missing"="Not asked or\nmissing"))
 
 disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest",
                                         "50+","15-49","5-14",
                                         "Married","Never married","Divorced or \nseparated","Married or \nliving together","Widowed",
-                                        "No\n education",'Primary','Secondary','More than secondary', 'Vocational')
+                                        "No education",'Primary','Secondary','More than secondary', 'Vocational')
 
  renderPlot({if(input$disability%in%"All"){
   ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%c("Some Difficulty", "Alot of difficulty", "Cannot do at all"),], aes(x=difficulty, y=difficultyprop, )) + 
