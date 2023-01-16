@@ -4157,9 +4157,10 @@ trends_data <- rbind(trendstotalfertilityrate, trendsinfusevisual, trendsdeliver
 renderGirafe({
   trends_map <-trends_data %>%filter(indicator%in%input$trends)%>%
   ggplot(aes(x=Years, y=Percent, color=grouping)) + 
-  geom_smooth( size= 2.5 ) +
+  geom_path( size= 2.5 ) + geom_point(size = 5) +
   theme_bw() + 
   geom_point_interactive(size = 2.0, aes(tooltip=Percent)) +
+    scale_x_continuous(breaks=unique(trends_data$Years)) + 
   labs(x="Kenya DHS Years", y=unique(input$trends),color="") +
   theme(text =element_text(size=18, face="bold"))
   trends_map2<-girafe(ggobj =  trends_map, width_svg=18, height_svg=9,
