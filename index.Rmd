@@ -574,7 +574,7 @@ Row {data-height="230"}
 
 ```{r}
 radioButtons("health", "",
-              c("Age"="Age_category", 
+              c("Age in Years"="Age_category", 
                 "Residence"="Residence", 
                 "Wealth quintile"="Wealth_quintile"))
 ```
@@ -634,8 +634,8 @@ renderPlot({
   #print(insurance_map1a)
   }else{ 
   ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge())+
-  facet_grid(.~Insurance)+labs(y="Proportion (%)")+
-    scale_fill_brewer(palette = "Set1")+
+  facet_grid(.~Insurance)+labs(x="", y="Proportion (%)")+
+    scale_fill_brewer(palette = "Set1")+ 
     theme_bw()+theme(text=element_text(size=20, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
        geom_text(aes(label=label), position=position_dodge(0.7),vjust=-0.5,hjust=0.4, size=4, color="black")
@@ -736,12 +736,12 @@ valueBox(
 Row {data-height="200"}
 -----------------------
 
-### Choose a category:
+### *Disability*, choose a characteristic to display by:
 
 ```{r}
 
 radioButtons("disability", "",
-              c("Age"="Age_category", 
+              c("Age category (in years)"="Age_category", 
                 "Marital Status (15-49years)"="Marital_status", 
                 "Residence"="Residence",
                 "Education status (highest level attended)"="Education_status",
@@ -812,7 +812,8 @@ disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Sec
      facet_grid(Participants~.)+
   theme_bw()+
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
-  theme(text=element_text(size=20, face="bold"))+
+  theme(text=element_text(size=16, face="bold"))+ 
+     theme(strip.background =element_rect(fill="darkorange"))+
      scale_fill_brewer(palette="Set1") 
 })
 ```
@@ -828,6 +829,7 @@ renderGirafe({
   theme_bw()+
   labs(y="Percent (%)", x=paste0(unique(disabilitydata[disabilitydata$Indicator1==input$disability,]$Indicator2) ," of respondents"), fill="Disability") +
   theme(text=element_text(size=20, face="bold"))+
+     theme(strip.background =element_rect(fill="darkorange"))+
      scale_fill_brewer(palette="Set1") 
    disability_map1a<-girafe(ggobj = disability_map1,width_svg=10, height_svg=8,
                    options = list(
