@@ -1957,7 +1957,7 @@ Row {data.width=600}
 
 selectInput("home_own", "",
               c("Age"="Age",
-                "Education"="Education",
+                "Education attainment"="Education",
                 "Residence"="residence",
                 "Wealth quintile"="wealth"))
 
@@ -2148,7 +2148,7 @@ Column {data.height=800}
 
 selectInput("agric_own", "",
               c("Age"="Age",
-                "Education"="Education",
+                "Education attainment"="Education",
                 "Residence"="Residence",
                 "Wealth quintile"="wealth quintile"))
 
@@ -2205,7 +2205,7 @@ renderPlot({ggplot(table28a[table28a$variable!=c("Total", "Number") &table28a$Ba
 ```{r}
 # selectInput("agric_doc", "",
 #               c("Age"="Age",
-#                 "Education"="Education",
+#                 "Education attainment"="Education",
 #                 "Residence"="Residence",
 #                 "Wealth quintile"="wealth quintile"))
 
@@ -2760,7 +2760,7 @@ Row {data-width="600"}
 
 selectInput("physical_violence", "",
               c("Age"="Age",
-                "Education"="Education",
+                "Education attainment"="Education",
                 "Marital status"="Marital status",
                 "Wealth quintile"="Wealth quintile"))
 ```
@@ -2814,9 +2814,9 @@ Column {data-height="600"}
 
 selectInput("physical_violence1", "",
               c("Experienced physical violence since age 15"="Percentage.who.have.experienced.physical.violence.since.age.15",
-                "Often"="Often",
-                "Sometimes"="Sometimes",
-                "Often or Sometimes"="Often.or.sometimes"))
+                "Experience physical violence often"="Often",
+                "Experience physical violence sometimes"="Sometimes",
+                "Experience physical violence often or sometimes"="Often.or.sometimes"), width=600)
 
 
 renderGirafe({
