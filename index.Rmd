@@ -1461,8 +1461,8 @@ renderPlot({
  teenpregnancybycountyvisual %>%
     filter(Pregnancy%in%input$teenage) %>%
   ggplot(aes(x=reorder(County,Percent), y=Percent)) + 
-  geom_bar(stat = "identity", fill="cyan4") +
-    geom_text(aes(label=label), position=position_stack(vjust=0.5), color="white")+
+  geom_point(size=3,color="cyan4") +
+    geom_text(aes(label=label), hjust=-1,color="black")+
   #, position = position_dodge()) +
   #facet_wrap(facets = ~reorder(Participants, Percent)) +
   #scale_fill_manual("Residence", values = c("Urban" = "darkorange", "Rural" = "cyan3")) +
@@ -1908,7 +1908,7 @@ Column {data-height="600"}
 ---------------------------------
 ### Spatial visualization
 
-```{r}
+```{r, include=F}
 county <- st_read("County.shp")
 ```
 
