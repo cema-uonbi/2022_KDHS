@@ -4168,52 +4168,116 @@ Row {data.height="600"}
 
 ```{r, fig.width=14, fig.height=12}
 # fertility rate
-trendstotalfertilityrate <- read_csv("figure1_trendstotalfertilityrate.csv") %>%
+trendstotalfertilityrate <- tribble(~Years, ~Rural, ~Urban, ~Total,
+                                    1989, 7.1, 4.5, 6.7,
+                                    1993, 5.8, 3.4, 5.4,
+                                    1998, 5.2, 3.1, 4.7,
+                                    2003, 5.4, 3.3, 4.9,
+                                    2008, 5.2, 2.9, 4.6,
+                                    2014, 4.5, 3.1, 3.9,
+                                    2022, 3.9, 2.8, 3.4) %>%
+  pivot_longer(!Years, names_to= "Residence", values_to = "Total Fertility Rate") %>%
   rename(grouping=Residence,
          Percent=`Total Fertility Rate`) %>%
   mutate(indicator="fertility")
  
 # family planning
-trendsinfusevisual <- read_csv("figure2_trendsinfpuse.csv") %>%
+
+trendsinfpuse <- tribble(~Years, ~`Total demand`, ~`Unmet need`, ~`Traditional methods:met need`, ~`Modern methods:met need`,
+                                    1993, 68, 35, 6, 27,
+                                    1998, 67, 28, 8, 32,
+                                    2003, 67, 27, 8, 32,
+                                    2008, 71, 26, 6, 39,
+                                    2014, 76, 18, 5, 53,
+                                    2022, 76, 14, 6, 57) %>%
+  pivot_longer(!Years, names_to= "Family planning", values_to = "Percent") %>%
   rename(grouping=`Family planning`) %>%
   mutate(indicator="family_planning")
 
 # skilled deliveries
-trendsdeliveryassistance <- read_csv("figure3_trendsdeliveryassistance.csv") %>%
+
+trendsdeliveryassistance <- tribble(~Years, ~Proportion, 
+                                    1989, 52,
+                                    1993, 43,
+                                    1998, 43,
+                                    2003, 41,
+                                    2008, 48,
+                                    2014, 66,
+                                    2022, 89)  %>%
   mutate(grouping="Delivery") %>%
   rename(Percent=Proportion) %>%
   mutate(indicator="delivery")
 
 # Child vaccinations
-trendschildvaccinations <- read_csv("figure4_trendschildvaccines.csv") %>%
+
+trendschildvaccinations <- tribble(~Years, ~`Fully vaccinated`, ~`No vaccination`, 
+                                    1989, 44, 39,
+                                    1993, 79, 3,
+                                    1998, 65, 3,
+                                    2003, 57, 7,
+                                    2008, 77, 3,
+                                    2014, 79, 2,
+                                    2022, 80, 2) %>%
+  pivot_longer(!Years, names_to= "Vaccination status", values_to = "Percent") %>%
   rename(grouping=`Vaccination status`) %>%
   mutate(indicator="vaccinations")
 
 # Child nutrition
-trendschildnutrition <- read_csv("figure6_trendschildnutrition.csv") %>%
+
+trendschildnutrition <- tribble(~Years, ~Stunting, ~Wasting, ~Overweight,
+                                    1993, 40, 7, 6,
+                                    1998, 38, 7, 6,
+                                    2003, 36, 6, 6,
+                                    2008, 35, 7, 5,
+                                    2014, 26, 4, 4,
+                                    2022, 18, 5, 3) %>%
+  pivot_longer(!Years, names_to= "Nutrition measure", values_to = "Percent") %>%
    rename(grouping=`Nutrition measure`) %>%
   mutate(indicator="nutrition")
 
 # exclusive breastfeeding
-trendsexclusivebreastfed <- read_csv("figure7_trendsexclusivebreastfed.csv") %>%
+
+trendsexclusivebreastfed <- tribble(~Years, ~Proportion, 
+                                    1989, 23,
+                                    1993, 17,
+                                    1998, 13,
+                                    2003, 13,
+                                    2008, 32,
+                                    2014, 61,
+                                    2022, 60) %>%
   rename(Percent=Proportion) %>%
   mutate(indicator="breastfeeding",
          grouping="Exclusive breastfeeding")
  
 # child mortality
-trendschildmortality <- read_csv("figure8_trendschildmortality.csv") %>%
+
+trendschildmortality <- tribble(~Years, ~`Under 5 mortality`, ~`Infant mortality`, ~`Neonatal mortality`,
+                                1989, 90, 61, 28,
+                                    1993, 96, 62, 26,
+                                    1998, 111, 74, 28,
+                                    2003, 115, 77, 33,
+                                    2008, 74, 52, 31,
+                                    2014, 52, 39, 22,
+                                    2022, 41, 32, 21) %>%
+  pivot_longer(!Years, names_to= "Category", values_to = "n_per1000") %>%
   rename(grouping=Category,
          Percent=n_per1000) %>%
   mutate(indicator="mortality")
   
 # insecticide treated nets
-trendsitn <- read_csv("figure9_trendsitn.csv") %>%
+trendsitn <- tribble(~Years, ~`ITN ownership`, ~`ITN ownership per 2 people`, 
+                                    2008, 56, 27,
+                                    2014, 59, 35,
+                                    2015, 63, 40,
+                                    2020, 49, 29,
+                                    2022, 54, 37) %>%
+  pivot_longer(!Years, names_to= "Category", values_to = "Percent") %>%
   rename(grouping=Category) %>%
   mutate(indicator="treated_nets")
   
 
 # combine data
-trends_data <- rbind(trendstotalfertilityrate, trendsinfusevisual, trendsdeliveryassistance, trendschildvaccinations, trendschildnutrition, trendsexclusivebreastfed,trendschildmortality, trendsitn ) %>%
+trends_data <- rbind(trendstotalfertilityrate, trendsinfpuse, trendsdeliveryassistance, trendschildvaccinations, trendschildnutrition, trendsexclusivebreastfed,trendschildmortality, trendsitn ) %>%
 #  mutate(Years = ifelse(Years%in%1999, 2008, Years)) %>%
  # mutate(Years = ifelse(Years%in%2015, 2014, Years)) %>%
   filter(!grouping%in%"Total") 
