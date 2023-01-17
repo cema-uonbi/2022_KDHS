@@ -4213,14 +4213,15 @@ trends_data <- rbind(trendstotalfertilityrate, trendsinfusevisual, trendsdeliver
   filter(!grouping%in%"Total") 
 
 renderGirafe({
-  trends_data1 <-trends_data %>%filter(indicator%in%input$trends)
+  trends_data1 <-trends_data %>%filter(indicator%in%input$trends) %>%
+    mutate(Years=as.numeric(as.character(Years)))
 
   trends_map<- ggplot(trends_data1, aes(x=Years, y=Percent, color=grouping)) + 
-  geom_path( size= 2.5 ) + geom_point(size = 5) +
+  geom_line( size= 2.5 ) + geom_point(size = 5) +
   theme_bw() + 
   geom_point_interactive(size = 2.0, aes(tooltip=Percent)) +
     scale_x_continuous(breaks=unique(trends_data1$Years),label=unique(trends_data1$Years)) + 
-  labs(x="Kenya DHS Years", y=unique(input$trends),color="") +
+  labs(x="Kenya DHS Years", y="",color="") +
   theme(text =element_text(size=18, face="bold"))
   trends_map2<-girafe(ggobj =  trends_map, width_svg=18, height_svg=9,
                    options = list(
