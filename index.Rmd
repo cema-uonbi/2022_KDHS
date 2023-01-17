@@ -79,8 +79,6 @@ tbls <- docx_extract_all_tbls(dhs2022report, trim = T, guess_header = T)
 
 ```
 
- {.tabset}
------------------------------------------------------------------------
 
 # Sample survey
 
