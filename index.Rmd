@@ -34,6 +34,9 @@ Column {data-width=400}
 knitr::include_graphics("www/front_page_knbs.png")
 ```
 
+
+[Link to the report](https://www.knbs.or.ke/download/2022-kdhs-key-indicators-report/#)
+
 <!-- ![**KNBS and ICF. 2022. Kenya Demographic and Health Survey 2022. Key Indicators Report. Nairobi, Kenya, and Rockville, Maryland, USA: KNBS and ICF.**](www/front_page_knbs.png){out.width='100%', out.height='100%'} -->
 
 <br>
