@@ -2247,7 +2247,7 @@ radioButtons("vacc", "",
 renderGirafe({
   
   map3<- ggplot(vacc_data1[vacc_data1$indicator2%in%input$vacc,], aes(fill=values))+
-  geom_sf(color="grey80", size=0.0)+
+  geom_sf_interactive(aes(tooltip=paste0(values, "%")),color="grey80", size=0.0)+
   theme_void()+
   scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(x="", y="",fill="Proportion")#+
