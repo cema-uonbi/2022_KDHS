@@ -448,12 +448,14 @@ selectInput("char", "",
                "Residence"="Residence",
                "Education status (highest level attended)"="Education_Status",
                "Wealth Quintile"="Wealth_Quintile",
-               "By County"="County"))
+               "By County"="County",
+               "By County: Men" = "Men",
+               "By County: Women"= "Women"))
 
 ```
 
 
-```{r}
+```{r, include=F}
 
 respondentsbyage <- read_csv("table2_ageparticipants.csv")%>%
   mutate(Indicator="Age")%>%
@@ -517,6 +519,32 @@ respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Sec
                                         "Very good","Good","Moderate","Bad","Very bad", #Reported health status
                                         "Married","Never married","Divorced/separated","Living together","Widowed") #Marital status
 
+## county data
+
+### men
+men_background_xtics_county <- read_csv("table2C_men_backgroundxtics_by_county.csv") %>%
+  mutate(group="Men")
+
+county <- st_read("County.shp")%>%
+  mutate(region=ifelse(Name%in%c("Kilifi","Kwale","Lamu", "Mombasa", "Taita Taveta", "Tana River"),"Coast", ifelse(Name%in%c("Garissa", "Mandera", "Wajir"),"North Eastern", ifelse(Name%in%c("Marsabit","Isiolo","Meru","Tharaka Nithi","Embu","Kitui","Machakos","Makueni"),"Eastern", ifelse(Name%in%c("Kiambu", "Kirinyaga","Muranga","Nyandarua", "Nyeri"),"Central", ifelse(Name%in%c("Bungoma",
+ "Busia","Kakamega","Vihiga"),"Western", ifelse(Name%in%c("Kisumu", "Siaya","Homa Bay","Kisii", "Migori","Nyamira"),"Nyanza", ifelse(Name%in%"Nairobi","Nairobi", "Rift Valley"))))))))%>%
+  rename(County=Name)
+
+men_background_xtics_county1 <- full_join(county, men_background_xtics_county, by="County")%>%
+  mutate(names=paste0(County,", ", weighted_perc,"%"))
+
+### women
+women_background_xtics_county <- read_csv("table2C_women_backgroundxtics_by_county.csv") %>%
+  mutate(group="Women")
+
+women_background_xtics_county1 <- full_join(county, women_background_xtics_county, by="County")%>%
+  mutate(names=paste0(County,", ", weighted_perc,"%"))
+
+background_characteristics_map <- rbind(women_background_xtics_county1, men_background_xtics_county1)
+```
+
+
+```{r, fig.width= 16, fig.height=12}
 
 # visualize the data
 # renderPlot({
@@ -552,9 +580,9 @@ respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Sec
 #   }, width = 1420, height=700)
   
 
-renderPlot({
+renderGirafe({
   if (input$char%in%c("Wealth_Quintile", "Age")){
-  respondentsdata%>%
+  respondents_map1 <- respondentsdata%>%
     filter(Indicator==input$char)%>%
     ggplot(aes(x=Grouping, y=Weighted_percent)) + 
   geom_point(stat = "identity", size= 20, color = "cyan4")+#, aes(tooltip=paste0(Weighted_percent, "%"))) + 
@@ -565,16 +593,16 @@ renderPlot({
       labs(y="Percent (%)", x="")  +
      # scale_color_manual(values=c("cyan4", "red4"))+
        theme(strip.background =element_rect(fill="darkorange")) +
-  theme(text=element_text(size=18, face="bold"))
-   #respondents_map1a<-girafe(ggobj = respondents_map1,width_svg=18, height_svg=9,
-  #                 options = list(
-   #                  opts_hover(css = "fill:#666666;cursor:pointer;"),
-    #                 opts_selection(css = "fill:orange;", type = "multiple"),
-                    # opts_sizing(rescale = TRUE),
-     #                opts_zoom(max = 4)))
-#  print(respondents_map1a)
+  theme(text=element_text(size=20, face="bold"))
+   respondents_map1a<-girafe(ggobj = respondents_map1,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     #opts_sizing(width = .7),
+                     opts_zoom(max = 4)), width=18, height=10)
+  print(respondents_map1a)
     } else if(input$char%in%"County"){
- respondentsdata%>%
+ respondents_map2 <-respondentsdata%>%
     filter(Indicator==input$char)%>%
       ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
   geom_bar(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
@@ -584,10 +612,17 @@ renderPlot({
 #  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
          labs(y="Percent (%)", x="") + 
       #  scale_fill_manual(values=c("cyan4", "red4"))+
-  theme(text=element_text(size=16, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))
+  theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))
+ respondents_map2a<-girafe(ggobj = respondents_map2,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(width = .7),
+                     opts_zoom(max = 4)), width=18, height=10)
+  print(respondents_map2a)
 
   }  else if(input$char%in%c("Religion", "Marital_Status")){
-  respondentsdata%>%
+  respondents_map3 <- respondentsdata%>%
     filter(Indicator==input$char)%>%
       ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
   geom_bar(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
@@ -598,16 +633,30 @@ renderPlot({
         scale_fill_manual(values=c("cyan4", "red4"))+
   theme(text=element_text(size=18, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))+
       geom_text(aes(label=label), position=position_stack(vjust = 0.7), size=4, color="white", face = "bold", label.size=0.7)
-   # respondents_map3a<-girafe(ggobj = respondents_map3,width_svg=18, height_svg=9,
-  #                 options = list(
-   #                  opts_hover(css = "fill:#666666;cursor:pointer;"),
-    #                 opts_selection(css = "fill:orange;", type = "multiple"),
-                     #opts_sizing(rescale = TRUE),
-       #              opts_zoom(max = 4)))
-#  print(respondents_map3a)
+   respondents_map3a<-girafe(ggobj = respondents_map3,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(width = .7),
+                     opts_zoom(max = 4)), width=18, height=10)
+  print(respondents_map3a)
   } 
-  else {
-  respondentsdata%>%
+  else if (input$char%in%c("Men", "Women")){
+    background_xtics <- ggplot(background_characteristics_map[background_characteristics_map$group%in%input$char,], aes(fill=weighted_perc))+ geom_sf_interactive(aes(tooltip=names),color="grey80", size=0.0)+
+  theme_void()+
+  scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
+  labs(x="", y="",fill="Percentage")+
+  theme(text=element_text(size=14))
+   background_map <- girafe(ggobj = background_xtics,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(width = .7),
+                     opts_zoom(max = 4)), width=18, height=10)
+    print(background_map)
+  }
+  else{
+  respondents_map4 <- respondentsdata%>%
     filter(Indicator==input$char)%>%
     ggplot(aes(x=Grouping, y=Weighted_percent)) + 
   geom_bar(stat = "identity", size= 10, fill = "cyan4")+ #aes(tooltip=paste0(Weighted_percent, "%"))) + 
@@ -617,17 +666,25 @@ renderPlot({
  # labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +scale_fill_manual(values=c("cyan4", "red4"))+
          labs(y="Percent (%)", x="") +
   theme(text=element_text(size=18, face="bold")) +  theme(strip.background =element_rect(fill="darkorange")) 
-  #  respondents_map4a<-girafe(ggobj = respondents_map4,width_svg=18, height_svg=9,
-   #                options = list(
-    #                 opts_hover(css = "fill:#666666;cursor:pointer;"),
-     #                opts_selection(css = "fill:orange;", type = "multiple"),
-                   #  opts_sizing(rescale = TRUE),
-      #               opts_zoom(max = 4)))
-  #print(respondents_map4)
-  }
-  }, width=1300, height=700)
+    respondents_map4a<-girafe(ggobj = respondents_map4,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_zoom(max = 4)), width=18, height=10)
+  print(respondents_map4a)
+  }  
+  })
   
 ```
+
+
+<br>
+
+
+
+
+
+
 
 Health Insurance Coverage {data-navmenu="Key Indicators"}
 ==================
