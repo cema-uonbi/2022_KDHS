@@ -406,3 +406,136 @@ plot5 <- ggplot(comb%>%filter(Participants.x%in%"Women_15-24")%>%filter(Particip
 ![](maln_vacc.png)
 
 
+### Table 2C: Background xtics by county
+
+```{r}
+### men
+men_background_xtics_county <- read_csv("table2C_men_backgroundxtics_by_county.csv")
+
+men_background_xtics_county1 <- full_join(county, men_background_xtics_county, by="County")%>%
+  mutate(names=paste0(County,", ", weighted_perc,"%"))
+
+men_background_xtics_map <- ggplot(men_background_xtics_county1)+
+  geom_sf(data=men_background_xtics_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=weighted_perc),color="grey80", size=0.0)+
+  theme_void()+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="% distribution of men")+
+  theme(text=element_text(size=14))
+
+### women
+women_background_xtics_county <- read_csv("table2C_women_backgroundxtics_by_county.csv")
+
+women_background_xtics_county1 <- full_join(county, women_background_xtics_county, by="County")%>%
+  mutate(names=paste0(County,", ", weighted_perc,"%"))
+
+women_background_xtics_map <- ggplot(women_background_xtics_county1)+
+  geom_sf(data=women_background_xtics_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=weighted_perc),color="grey80", size=0.0)+
+  theme_void()+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="% distribution of women")+
+  theme(text=element_text(size=14))
+```
+
+
+### Table 6: Teenage pregnancy by background xtics
+
+```{r}
+### Age
+teen_preg_age <- read_csv("table6_teenpregnancybyage.csv")%>%
+  #select(Age, Ever_pregnant, Live_birth)%>%
+  #pivot_longer(cols = c(Ever_pregnant, Live_birth), names_to = "classification", values_to = "proportion")%>%
+  #mutate(classification=recode(classification,"Ever_pregnant"="% of teenagers who\n have ever been pregnant","Live_birth"="% of teenagers who\n have ever had a live birth"))%>%
+  mutate(lab=paste0(Ever_pregnant,"%"))
+  
+
+teen_preg_age_plot <- ggplot(teen_preg_age,aes(x=Age, y=Ever_pregnant))+#, fill=classification))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Age", fill="")+
+  #scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
+
+### Residence
+teen_preg_residence <- read_csv("table6_teenpregbyresidence.csv")%>%
+  #select(Age, Ever_pregnant, Live_birth)%>%
+  #pivot_longer(cols = c(Ever_pregnant, Live_birth), names_to = "classification", values_to = "proportion")%>%
+  #mutate(classification=recode(classification,"Ever_pregnant"="% of teenagers who\n have ever been pregnant","Live_birth"="% of teenagers who\n have ever had a live birth"))%>%
+  mutate(lab=paste0(Ever_pregnant,"%"))
+  
+
+teen_preg_residence_plot <- ggplot(teen_preg_residence,aes(x=Residence, y=Ever_pregnant))+#, fill=classification))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Residence", fill="")+
+  #scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
+
+### Education
+teen_preg_edu <- read_csv("table6_teenpregnancybyeducationstatus.csv")%>%
+  #select(Age, Ever_pregnant, Live_birth)%>%
+  #pivot_longer(cols = c(Ever_pregnant, Live_birth), names_to = "classification", values_to = "proportion")%>%
+  #mutate(classification=recode(classification,"Ever_pregnant"="% of teenagers who\n have ever been pregnant","Live_birth"="% of teenagers who\n have ever had a live birth"))%>%
+  mutate(lab=paste0(Ever_pregnant,"%"))%>%
+  mutate(Education_status=as.factor(fct_relevel(Education_status, c("No education", "Primary", "Secondary", "More than secondary"))))
+
+teen_preg_edu_plot <- ggplot(teen_preg_edu, aes(x=Education_status, y=Ever_pregnant)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 2, fill="#4292c6")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Education Status", fill="")+
+  #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-1.0, size=4) 
+
+### Wealth quintile
+teen_preg_wealth <- read_csv("table6_teenpregnancybywealthquintile.csv")%>%
+  #select(Age, Ever_pregnant, Live_birth)%>%
+  #pivot_longer(cols = c(Ever_pregnant, Live_birth), names_to = "classification", values_to = "proportion")%>%
+  #mutate(classification=recode(classification,"Ever_pregnant"="% of teenagers who\n have ever been pregnant","Live_birth"="% of teenagers who\n have ever had a live birth"))%>%
+  mutate(lab=paste0(Ever_pregnant,"%"))%>%
+  mutate(Wealth_quintile=as.factor(fct_relevel(Wealth_quintile, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))
+
+teen_preg_wealth_plot <- ggplot(teen_preg_wealth, aes(x=Wealth_quintile, y=Ever_pregnant)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 2, fill="#4292c6")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Wealth Quintile", fill="")+
+  #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-1.0, size=4) 
+```
+
+### Table 7: Fertility preferences according to no of living children
+
+```{r}
+fertility_preferences <- read_csv("table7_fertilitypreferences.csv")%>%
+  filter(!`Number of children`%in%"V9")#%>%
+fertility_preferences$Desire_children <- gsub("[[:digit:]]", "",fertility_preferences$Desire_children)
+
+fertility_preferences_plot <- ggplot(fertility_preferences,aes(x=`Number of children`, y=Percent, fill=Desire_children))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Number of children", fill="")+
+  scale_fill_brewer(palette = "Set1")+
+  theme(text=element_text(size=12))
+```
+
+### Table 10: Maternal care indicators by background xtics
+
+```{r}
+### Mother's age at birth
+matcare_motage_1birth <- read_csv("table10_maternalcare_by_motherage_atbirth.csv")
+
+### Residence
+matcare_residence <- read_csv("table10_maternalcare_by_residence.csv")
+
+### Mother's education
+matcare_motedu <- read_csv("table10_maternalcare_by_education.csv")
+
+### Wealth
+matcare_wealth <- read_csv("table10_maternalcare_by_wealth.csv")
+
+```
+
