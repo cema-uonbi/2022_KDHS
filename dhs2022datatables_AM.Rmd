@@ -215,3 +215,74 @@ itnc <- tbls[[68]]%>%
 write_csv(itnc, "table18C_ITN_by_county.csv")
 ```
 
+
+
+### Table 2C: Background xtics by county
+
+```{r}
+### women
+women_background_xtics_county <- tbls[[6]]%>%
+  slice(5:51)%>%
+  select(V1:V4)%>%
+  dplyr::rename(County = V1, weighted_perc = V2, weighted_no = V3, unweighted_no = V4)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
+                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+write_csv(women_background_xtics_county, "table2C_women_backgroundxtics_by_county.csv")
+
+### men
+men_background_xtics_county <- tbls[[6]]%>%
+  slice(5:51)%>%
+  select(V1,V5:V7)%>%
+  dplyr::rename(County = V1, weighted_perc = V5, weighted_no = V6, unweighted_no = V7)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
+                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+
+write_csv(men_background_xtics_county, "table2C_men_backgroundxtics_by_county.csv")
+```
+
+### Table 10: Maternal care indicators by background xtics
+
+```{r}
+### Mother's age at birth
+matcare_motage_1birth <- tbls[[33]]%>%
+  slice(7:9)%>%
+  select(V1:V5,V7,V8,V10)%>%
+  dplyr::rename(`Mother's age at birth`=V1, ANC_skilled_provider=V2, `ANC4+`=V3, iron_supplements=V4, neonatal_tetanus_protection=V5, skilled_provider_delivery=V7, health_facility_delivery=V8, PNC_2days_afterbirth=V10)
+
+write_csv(matcare_motage_1birth, "table10_maternalcare_by_motherage_atbirth.csv")
+
+### Residence
+matcare_residence <- tbls[[33]]%>%
+  slice(12:13)%>%
+  select(V1:V5,V7,V8,V10)%>%
+  dplyr::rename(Residence=V1, ANC_skilled_provider=V2, `ANC4+`=V3, iron_supplements=V4, neonatal_tetanus_protection=V5, skilled_provider_delivery=V7, health_facility_delivery=V8, PNC_2days_afterbirth=V10)
+
+write_csv(matcare_residence, "table10_maternalcare_by_residence.csv")
+
+### Mother's education
+matcare_motedu <- tbls[[33]]%>%
+  slice(16:19)%>%
+  select(V1:V5,V7,V8,V10)%>%
+  dplyr::rename(`Mother's education`=V1, ANC_skilled_provider=V2, `ANC4+`=V3, iron_supplements=V4, neonatal_tetanus_protection=V5, skilled_provider_delivery=V7, health_facility_delivery=V8, PNC_2days_afterbirth=V10)
+
+write_csv(matcare_motedu, "table10_maternalcare_by_education.csv")
+
+### Wealth
+matcare_wealth <- tbls[[33]]%>%
+  slice(22:26)%>%
+  select(V1:V5,V7,V8,V10)%>%
+  dplyr::rename(`Wealth quintile`=V1, ANC_skilled_provider=V2, `ANC4+`=V3, iron_supplements=V4, neonatal_tetanus_protection=V5, skilled_provider_delivery=V7, health_facility_delivery=V8, PNC_2days_afterbirth=V10)
+
+write_csv(matcare_wealth, "table10_maternalcare_by_wealth.csv")
+```
+
+### Table 12: Treatment for ARI symptoms, fever, & diarrhea
+
+```{r}
+### Age
+treatment_symptoms_age_ARI <- tbls[[45]]%>%
+  slice(6:11)
+  
+```
+
