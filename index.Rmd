@@ -1505,11 +1505,62 @@ Column {data-height="800"}
 ```{r}
 
 selectInput("teenage", "",
-            c("Currently pregnant"="Currently pregnant",
-            "Ever pregnant"="Ever pregnant",
-            "Live birth"="Live birth",
-            "Pregnancy loss"="Pregnancy loss"
+            c("Age" = "Age",
+              "Education" = "Education",
+              "Residence" = "Residence",
+              "Wealth quintile"="Wealth quintile",
+              "By County: Currently pregnant"="Currently pregnant",
+            "By County: Ever pregnant"="Ever pregnant",
+            "By County: Live birth"="Live birth",
+            "By County: Pregnancy loss"="Pregnancy loss"
             ))
+
+### Age
+teen_preg_age <- read_csv("table6_teenpregnancybyage.csv")%>%
+  pivot_longer(cols = c(Ever_pregnant, Live_birth, Pregnancy_loss, Currently_pregnant), names_to = "classification", values_to = "proportion")%>%
+  #mutate(classification=recode(classification,"Ever_pregnant"="% of teenagers who\n have ever been pregnant","Live_birth"="% of teenagers who\n have ever had a live birth"))%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  mutate(group="Age") %>%
+  select(-Count) %>%
+  rename(indicator=Age)
+  
+
+
+### Residence
+teen_preg_residence <- read_csv("table6_teenpregbyresidence.csv")%>%
+  pivot_longer(cols = c(Ever_pregnant, Live_birth, Pregnancy_loss, Currently_pregnant), names_to = "classification", values_to = "proportion")%>%
+  #mutate(classification=recode(classification,"Ever_pregnant"="% of teenagers who\n have ever been pregnant","Live_birth"="% of teenagers who\n have ever had a live birth"))%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  mutate(group="Residence") %>%
+  select(-Count) %>%
+  rename(indicator=Residence)
+  
+  
+
+### Education
+teen_preg_edu <- read_csv("table6_teenpregnancybyeducationstatus.csv") %>%
+  pivot_longer(cols = c(Ever_pregnant, Live_birth, Pregnancy_loss, Currently_pregnant), names_to = "classification", values_to = "proportion")%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  mutate(group="Education") %>%
+  select(-Count) %>%
+  rename(indicator=Education_status)
+  
+
+
+### Wealth quintile
+teen_preg_wealth <- read_csv("table6_teenpregnancybywealthquintile.csv")%>%
+  pivot_longer(cols = c(Ever_pregnant, Live_birth, Pregnancy_loss, Currently_pregnant), names_to = "classification", values_to = "proportion")%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  mutate(group="Wealth quintile") %>%
+  select(-Count) %>%
+  rename(indicator=Wealth_quintile)
+
+teen_preg <- rbind(teen_preg_age, teen_preg_edu, teen_preg_residence, teen_preg_wealth) %>%
+  mutate(classification = recode(classification, "Currently_pregnant"="Currently pregnant", "Ever_pregnant"="Ever pregnant", "Live_birth"="Live birth", "Pregnancy_loss"="Pregnancy loss"))
+
+teen_preg$indicator <- fct_relevel(teen_preg$indicator, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
+
 
 teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
   pivot_longer(cols = Live_birth:Ever_pregnant, names_to = "Pregnancy", values_to = "Percent") %>%
@@ -1517,7 +1568,24 @@ teenpregnancybycountyvisual <- read_csv("table6_teenpregnancybycounty.csv") %>%
   mutate(label=ifelse(Percent<0.5, "<1%", paste0(round(Percent),"%")))
 
 
-renderPlot({
+renderPlot({if(input$teenage%in%"Wealth quintile"){
+  ggplot(teen_preg[teen_preg$group%in%input$teenage,], aes(x=indicator, y=proportion, fill=classification)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="", fill="")+
+  #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-1.0, size=4)
+}
+  else if(input$teenage%in%c("Age", "Education", "Residence")){
+  ggplot(teen_preg[teen_preg$group%in%input$teenage,], aes(x=indicator, y=proportion, fill=classification)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Wealth Quintile", fill="")+
+  #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-1.0, size=4)
+} else{
  teenpregnancybycountyvisual %>%
     filter(Pregnancy%in%input$teenage) %>%
   ggplot(aes(x=reorder(County,Percent), y=Percent)) + 
@@ -1538,6 +1606,7 @@ renderPlot({
                   #   opts_sizing(rescale = TRUE),
  #                    opts_zoom(max = 4)))
   #print(teenage_preg1a, justify="left")
+    }
   }, width=1300, height=750)
 
   
