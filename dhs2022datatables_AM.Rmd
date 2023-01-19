@@ -369,25 +369,25 @@ treatment_motedu <- rbind(treatment_motedu_ARI, treatment_motedu_fever, treatmen
 write_csv(treatment_motedu, "table12_childtreatment_by_mothereducation.csv")
 
 ### Wealth
-treatment_motedu_ARI <- tbls[[45]]%>%
-  slice(22:25)%>%
+treatment_wealth_ARI <- tbls[[45]]%>%
+  slice(28:32)%>%
   dplyr::select(V1,V2)%>%
-  dplyr::rename(`Mother's education`=V1, sought_treatment=V2)%>%
+  dplyr::rename(`Wealth quintile`=V1, sought_treatment=V2)%>%
   mutate(condition="ARI")
-treatment_motedu_fever <- tbls[[45]]%>%
-  slice(22:25)%>%
+treatment_wealth_fever <- tbls[[45]]%>%
+  slice(28:32)%>%
   dplyr::select(V1,V4)%>%
-  dplyr::rename(`Mother's education`=V1, sought_treatment=V4)%>%
+  dplyr::rename(`Wealth quintile`=V1, sought_treatment=V4)%>%
   mutate(condition="Fever")
-treatment_motedu_diarrhea <- tbls[[45]]%>%
-  slice(22:25)%>%
+treatment_wealth_diarrhea <- tbls[[45]]%>%
+  slice(28:32)%>%
   dplyr::select(V1,V6)%>%
-  dplyr::rename(`Mother's education`=V1, sought_treatment=V6)%>%
+  dplyr::rename(`Wealth quintile`=V1, sought_treatment=V6)%>%
   mutate(condition="Diarrhea")
-treatment_motedu <- rbind(treatment_motedu_ARI, treatment_motedu_fever, treatment_motedu_diarrhea)%>%
+treatment_wealth <- rbind(treatment_wealth_ARI, treatment_wealth_fever, treatment_wealth_diarrhea)%>%
   mutate(sought_treatment=gsub("[()]", "", sought_treatment))
 
-write_csv(treatment_motedu, "table12_childtreatment_by_mothereducation.csv")
+write_csv(treatment_wealth, "table12_childtreatment_by_wealth.csv")
 ```
 
 ### Table 12C: Treatment for ARI symptoms, fever, & diarrhea by county
@@ -463,5 +463,29 @@ ecd_wealth <- tbls[[48]]%>%
 
 readr::write_csv(ecd_wealth, "table13_ECD_by_wealth.csv")
   
+```
+
+### Table 17: Five-year early childhood mortality rates according to background characteristics	
+
+```{r}
+child_mortality_sex <- tbls[[63]]%>%
+  slice(5:6)%>%
+  dplyr::rename(Sex=V1, `Neonatal Mortality`=V2, `Postneonatal mortality`=V3, `Infant mortality`=V4, `Child mortality`=V5, `Under 5 mortality`=V6 )%>%
+  pivot_longer(cols = c(`Neonatal Mortality`:`Under 5 mortality`), names_to = "Measure", values_to = "Value")
+
+readr::write_csv(child_mortality_sex, "table17_child_mortality_by_sex.csv")
+
+child_mortality_residence <- tbls[[63]]%>%
+  slice(5:6)%>%
+  dplyr::rename(Residence=V1, `Neonatal Mortality`=V2, `Postneonatal mortality`=V3, `Infant mortality`=V4, `Child mortality`=V5, `Under 5 mortality`=V6 )%>%
+  pivot_longer(cols = c(`Neonatal Mortality`:`Under 5 mortality`), names_to = "Measure", values_to = "Value")
+
+readr::write_csv(child_mortality_residence, "table17_child_mortality_by_residence.csv")
+```
+
+### Table 19: Use of insecticide-treated nets by children and pregnant women	
+
+```{r}
+
 ```
 
