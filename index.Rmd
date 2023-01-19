@@ -2219,7 +2219,7 @@ valueBox(
 
 <br>
 
-Row {data-height="250"}
+Row {data-height="400"}
 ---------------------------------
 
 ### Maternal care
@@ -2233,12 +2233,73 @@ radioButtons("maternal_care", "",
 
 ```
 
-Column {data-height="600"}
+
+### Mother's background characteristics
+
+```{r}
+
+### Mother's age at birth
+matcare_motage_1birth <- read_csv("table10_maternalcare_by_motherage_atbirth.csv")%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  mutate(group="Age at birth") %>%
+  rename(indicator=`Mother's age at birth`)
+
+
+
+### Residence
+matcare_residence <- read_csv("table10_maternalcare_by_residence.csv")%>%
+  mutate(lab=paste0(round(proportion),"%"))  %>%
+  mutate(group="Residence") %>%
+  rename(indicator=Residence)
+
+
+### Mother's education
+matcare_motedu <- read_csv("table10_maternalcare_by_education.csv")%>%
+  mutate(lab=paste0(round(proportion),"%"))%>%
+  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary"))))  %>%
+  mutate(group="Education") %>%
+  rename(indicator= `Mother's education`)
+
+### Wealth
+matcare_wealth <- read_csv("table10_maternalcare_by_wealth.csv")%>%
+  mutate(lab=paste0(round(proportion),"%"))%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest")))) %>%
+  mutate(group="Wealth quintile") %>%
+  rename(indicator= `Wealth quintile`)
+
+selectInput("chrt","",
+            c("Age at birth"="Age at birth",
+              "Education"="Education",
+              "Residence"="Residence",
+              "Wealth quintile"="Wealth quintile"
+              
+            ))
+maternalcare <- rbind(matcare_motage_1birth,matcare_residence, matcare_motedu, matcare_wealth) %>%
+  mutate(category=recode(category, "ANC from skilled provider"="ANC from a skilled provider", 
+                         "At least 4 ANC visits"="At least four ANC visits", 
+                         "Protected against neonatal tetanus"="Neonatal tetanus",
+                         "Delivered by skilled provider"="Skilled delivery", "Delivered in health facility"="Health facility delivery", "PNC 2 days after birth"="Postnatal check"))
+
+maternalcare$indicator <- fct_relevel(maternalcare$indicator,"Urban", "Rural", "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
+renderPlot({
+  ggplot(maternalcare[maternalcare$category%in%input$maternal_care & maternalcare$group%in%input$chrt,], aes(x=indicator, y=proportion)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 3, fill="#4292c6")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
+  theme(text=element_text(size=16, face="bold"))+
+  geom_text(aes(label = lab), hjust=0.2, size=4)
+}, width=700, height=300)
+
+```
+
+Column {data-height="500"}
 ---------------------------------
 ### Spatial visualization
 
 ```{r}
 # import data
+
 
 maternalcarebycounty <- read_csv("table10c_maternalcarebycounty.csv")%>% 
   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
@@ -2248,7 +2309,9 @@ maternalcarebycounty <- read_csv("table10c_maternalcarebycounty.csv")%>%
 
 # join the data with the shapefile
 maternalcarebycounty1 <- left_join(county, maternalcarebycounty, by=c("Name"="County"))
+```
 
+```{r}
 renderGirafe({
   
   map4<- ggplot(maternalcarebycounty1[maternalcarebycounty1$`Maternal care`%in%input$maternal_care,])+
@@ -2272,9 +2335,9 @@ renderGirafe({
 
 renderPlot({
   ggplot(maternalcarebycounty1[maternalcarebycounty1$`Maternal care`%in%input$maternal_care,], aes(x=reorder(Name, Percent), y=Percent)) +
-geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
+geom_point(size=4, position = position_dodge(), color="cyan4") +
   theme_bw() + coord_flip() +
-  geom_text(aes(label=paste0(round(Percent), "%")), hjust=1.3, size=5, color="white")+
+  geom_text(aes(label=paste0(round(Percent), "%")), hjust=1.3, size=4, color="black")+
   coord_flip() + 
   ylab("Percent (%)") + xlab("County") +
  # facet_grid(~Family_planning) +
