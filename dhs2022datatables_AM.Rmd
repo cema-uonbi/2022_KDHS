@@ -248,7 +248,8 @@ write_csv(men_background_xtics_county, "table2C_men_backgroundxtics_by_county.cs
 matcare_motage_1birth <- tbls[[33]]%>%
   slice(7:9)%>%
   select(V1:V5,V7,V8,V10)%>%
-  dplyr::rename(`Mother's age at birth`=V1, ANC_skilled_provider=V2, `ANC4+`=V3, iron_supplements=V4, neonatal_tetanus_protection=V5, skilled_provider_delivery=V7, health_facility_delivery=V8, PNC_2days_afterbirth=V10)
+  dplyr::rename(`Mother's age at birth`=V1, `ANC from skilled provider`=V2, `At least 4 ANC visits`=V3, `Took iron supplements`=V4, `Protected against neonatal tetanus`=V5, `Delivered by skilled provider` =V7, `Delivered in health facility`=V8, `PNC 2 days after birth`=V10)%>%
+  pivot_longer(cols = c(`ANC from skilled provider`:`PNC 2 days after birth`), names_to = "category", values_to = "proportion")
 
 write_csv(matcare_motage_1birth, "table10_maternalcare_by_motherage_atbirth.csv")
 
@@ -256,7 +257,8 @@ write_csv(matcare_motage_1birth, "table10_maternalcare_by_motherage_atbirth.csv"
 matcare_residence <- tbls[[33]]%>%
   slice(12:13)%>%
   select(V1:V5,V7,V8,V10)%>%
-  dplyr::rename(Residence=V1, ANC_skilled_provider=V2, `ANC4+`=V3, iron_supplements=V4, neonatal_tetanus_protection=V5, skilled_provider_delivery=V7, health_facility_delivery=V8, PNC_2days_afterbirth=V10)
+  dplyr::rename(Residence=V1, `ANC from skilled provider`=V2, `At least 4 ANC visits`=V3, `Took iron supplements`=V4, `Protected against neonatal tetanus`=V5, `Delivered by skilled provider` =V7, `Delivered in health facility`=V8, `PNC 2 days after birth`=V10)%>%
+  pivot_longer(cols = c(`ANC from skilled provider`:`PNC 2 days after birth`), names_to = "category", values_to = "proportion")
 
 write_csv(matcare_residence, "table10_maternalcare_by_residence.csv")
 
@@ -264,7 +266,8 @@ write_csv(matcare_residence, "table10_maternalcare_by_residence.csv")
 matcare_motedu <- tbls[[33]]%>%
   slice(16:19)%>%
   select(V1:V5,V7,V8,V10)%>%
-  dplyr::rename(`Mother's education`=V1, ANC_skilled_provider=V2, `ANC4+`=V3, iron_supplements=V4, neonatal_tetanus_protection=V5, skilled_provider_delivery=V7, health_facility_delivery=V8, PNC_2days_afterbirth=V10)
+  dplyr::rename(`Mother's education`=V1, `ANC from skilled provider`=V2, `At least 4 ANC visits`=V3, `Took iron supplements`=V4, `Protected against neonatal tetanus`=V5, `Delivered by skilled provider` =V7, `Delivered in health facility`=V8, `PNC 2 days after birth`=V10)%>%
+  pivot_longer(cols = c(`ANC from skilled provider`:`PNC 2 days after birth`), names_to = "category", values_to = "proportion")
 
 write_csv(matcare_motedu, "table10_maternalcare_by_education.csv")
 
@@ -272,7 +275,8 @@ write_csv(matcare_motedu, "table10_maternalcare_by_education.csv")
 matcare_wealth <- tbls[[33]]%>%
   slice(22:26)%>%
   select(V1:V5,V7,V8,V10)%>%
-  dplyr::rename(`Wealth quintile`=V1, ANC_skilled_provider=V2, `ANC4+`=V3, iron_supplements=V4, neonatal_tetanus_protection=V5, skilled_provider_delivery=V7, health_facility_delivery=V8, PNC_2days_afterbirth=V10)
+  dplyr::rename(`Wealth quintile`=V1, `ANC from skilled provider`=V2, `At least 4 ANC visits`=V3, `Took iron supplements`=V4, `Protected against neonatal tetanus`=V5, `Delivered by skilled provider` =V7, `Delivered in health facility`=V8, `PNC 2 days after birth`=V10)%>%
+  pivot_longer(cols = c(`ANC from skilled provider`:`PNC 2 days after birth`), names_to = "category", values_to = "proportion")
 
 write_csv(matcare_wealth, "table10_maternalcare_by_wealth.csv")
 ```
@@ -281,8 +285,183 @@ write_csv(matcare_wealth, "table10_maternalcare_by_wealth.csv")
 
 ```{r}
 ### Age
-treatment_symptoms_age_ARI <- tbls[[45]]%>%
-  slice(6:11)
+treatment_age_ARI <- tbls[[45]]%>%
+  slice(6:11)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(Age=V1, sought_treatment=V2)%>%
+  mutate(condition="ARI")
+treatment_age_fever <- tbls[[45]]%>%
+  slice(6:11)%>%
+  dplyr::select(V1,V4)%>%
+  dplyr::rename(Age=V1, sought_treatment=V4)%>%
+  mutate(condition="Fever")
+treatment_age_diarrhea <- tbls[[45]]%>%
+  slice(6:11)%>%
+  dplyr::select(V1,V6)%>%
+  dplyr::rename(Age=V1, sought_treatment=V6)%>%
+  mutate(condition="Diarrhea")
+treatment_age <- rbind(treatment_age_ARI, treatment_age_fever, treatment_age_diarrhea)%>%
+  mutate(sought_treatment=gsub("[()]", "", sought_treatment))
+
+write_csv(treatment_age, "table12_childtreatment_by_age.csv")
+  
+### Sex
+treatment_sex_ARI <- tbls[[45]]%>%
+  slice(14:15)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(Sex=V1, sought_treatment=V2)%>%
+  mutate(condition="ARI")
+treatment_sex_fever <- tbls[[45]]%>%
+  slice(14:15)%>%
+  dplyr::select(V1,V4)%>%
+  dplyr::rename(Sex=V1, sought_treatment=V4)%>%
+  mutate(condition="Fever")
+treatment_sex_diarrhea <- tbls[[45]]%>%
+  slice(14:15)%>%
+  dplyr::select(V1,V6)%>%
+  dplyr::rename(Sex=V1, sought_treatment=V6)%>%
+  mutate(condition="Diarrhea")
+treatment_sex <- rbind(treatment_sex_ARI, treatment_sex_fever, treatment_sex_diarrhea)%>%
+  mutate(sought_treatment=gsub("[()]", "", sought_treatment))
+
+write_csv(treatment_sex, "table12_childtreatment_by_sex.csv")
+
+### Residence
+treatment_residence_ARI <- tbls[[45]]%>%
+  slice(18:19)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(Residence=V1, sought_treatment=V2)%>%
+  mutate(condition="ARI")
+treatment_residence_fever <- tbls[[45]]%>%
+  slice(18:19)%>%
+  dplyr::select(V1,V4)%>%
+  dplyr::rename(Residence=V1, sought_treatment=V4)%>%
+  mutate(condition="Fever")
+treatment_residence_diarrhea <- tbls[[45]]%>%
+  slice(18:19)%>%
+  dplyr::select(V1,V6)%>%
+  dplyr::rename(Residence=V1, sought_treatment=V6)%>%
+  mutate(condition="Diarrhea")
+treatment_residence <- rbind(treatment_residence_ARI, treatment_residence_fever, treatment_residence_diarrhea)%>%
+  mutate(sought_treatment=gsub("[()]", "", sought_treatment))
+
+write_csv(treatment_residence, "table12_childtreatment_by_residence.csv")
+
+### Mother's education
+treatment_motedu_ARI <- tbls[[45]]%>%
+  slice(22:25)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(`Mother's education`=V1, sought_treatment=V2)%>%
+  mutate(condition="ARI")
+treatment_motedu_fever <- tbls[[45]]%>%
+  slice(22:25)%>%
+  dplyr::select(V1,V4)%>%
+  dplyr::rename(`Mother's education`=V1, sought_treatment=V4)%>%
+  mutate(condition="Fever")
+treatment_motedu_diarrhea <- tbls[[45]]%>%
+  slice(22:25)%>%
+  dplyr::select(V1,V6)%>%
+  dplyr::rename(`Mother's education`=V1, sought_treatment=V6)%>%
+  mutate(condition="Diarrhea")
+treatment_motedu <- rbind(treatment_motedu_ARI, treatment_motedu_fever, treatment_motedu_diarrhea)%>%
+  mutate(sought_treatment=gsub("[()]", "", sought_treatment))
+
+write_csv(treatment_motedu, "table12_childtreatment_by_mothereducation.csv")
+
+### Wealth
+treatment_motedu_ARI <- tbls[[45]]%>%
+  slice(22:25)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(`Mother's education`=V1, sought_treatment=V2)%>%
+  mutate(condition="ARI")
+treatment_motedu_fever <- tbls[[45]]%>%
+  slice(22:25)%>%
+  dplyr::select(V1,V4)%>%
+  dplyr::rename(`Mother's education`=V1, sought_treatment=V4)%>%
+  mutate(condition="Fever")
+treatment_motedu_diarrhea <- tbls[[45]]%>%
+  slice(22:25)%>%
+  dplyr::select(V1,V6)%>%
+  dplyr::rename(`Mother's education`=V1, sought_treatment=V6)%>%
+  mutate(condition="Diarrhea")
+treatment_motedu <- rbind(treatment_motedu_ARI, treatment_motedu_fever, treatment_motedu_diarrhea)%>%
+  mutate(sought_treatment=gsub("[()]", "", sought_treatment))
+
+write_csv(treatment_motedu, "table12_childtreatment_by_mothereducation.csv")
+```
+
+### Table 12C: Treatment for ARI symptoms, fever, & diarrhea by county
+
+```{r}
+treatment_county_ARI <- tbls[[46]]%>%
+  slice(5:51)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(County=V1, sought_treatment=V2)%>%
+  mutate(condition="ARI")
+treatment_county_fever <- tbls[[46]]%>%
+  slice(5:51)%>%
+  dplyr::select(V1,V4)%>%
+  dplyr::rename(County=V1, sought_treatment=V4)%>%
+  mutate(condition="Fever")
+treatment_county_diarrhea <- tbls[[46]]%>%
+  slice(5:51)%>%
+  dplyr::select(V1,V6)%>%
+  dplyr::rename(County=V1, sought_treatment=V6)%>%
+  mutate(condition="Diarrhea")
+treatment_county <- rbind(treatment_county_ARI, treatment_county_fever, treatment_county_diarrhea)%>%
+  mutate(sought_treatment=gsub("[()]", "", sought_treatment))%>%
+  mutate(sought_treatment=ifelse(sought_treatment%in%"*",NA,sought_treatment))
+
+readr::write_csv(treatment_county, "table12C_childtreatment_by_county.csv")
+  
+```
+
+### Table 13: Early Childhood Development 2030
+
+### Proportion of children aged 24-59 months who are developmentally on track in health, learning, & psychosocial wellbeing.
+
+```{r}
+ecd_age <- tbls[[48]]%>%
+  slice(5:7)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(Age=V1, proportion=V2)
+
+readr::write_csv(ecd_age, "table13_ECD_by_age.csv")
+
+ecd_sex <- tbls[[48]]%>%
+  slice(10:11)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(Sex=V1, proportion=V2)
+
+readr::write_csv(ecd_sex, "table13_ECD_by_sex.csv")
+
+ecd_residence <- tbls[[48]]%>%
+  slice(14:15)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(Residence=V1, proportion=V2)
+
+readr::write_csv(ecd_residence, "table13_ECD_by_residence.csv")
+
+ecd_edu_attendance <- tbls[[48]]%>%
+  slice(18:20)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(`Early childhood education attendance`=V1, proportion=V2)
+
+readr::write_csv(ecd_edu_attendance, "table13_ECD_by_early_education_attendance.csv")
+
+ecd_mot_edu <- tbls[[48]]%>%
+  slice(23:26)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(`Mother's education`=V1, proportion=V2)
+
+readr::write_csv(ecd_mot_edu, "table13_ECD_by_mother_education.csv")
+
+ecd_wealth <- tbls[[48]]%>%
+  slice(29:33)%>%
+  dplyr::select(V1,V2)%>%
+  dplyr::rename(`Wealth quintile`=V1, proportion=V2)
+
+readr::write_csv(ecd_wealth, "table13_ECD_by_wealth.csv")
   
 ```
 
