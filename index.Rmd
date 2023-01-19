@@ -1574,17 +1574,17 @@ renderPlot({if(input$teenage%in%"Wealth quintile"){
   theme_bw()+
   labs( y="Percent (%)", title="", x="", fill="")+
   #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
-  theme(text=element_text(size=12))+
-  geom_text(aes(label = lab), hjust=-1.0, size=4)
+  theme(text=element_text(size=18, face="bold"))+
+  geom_text(aes(label = lab), hjust=0.5,vjust=0.2, size=4)
 }
   else if(input$teenage%in%c("Age", "Education", "Residence")){
   ggplot(teen_preg[teen_preg$group%in%input$teenage,], aes(x=indicator, y=proportion, fill=classification)) + 
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
   theme_bw()+
-  labs( y="Percent (%)", title="", x="Wealth Quintile", fill="")+
+  labs( y="Percent (%)", title="", x="", fill="")+
   #scale_fill_manual(values = c("#f46d43","#fee090","#4575b4"))+
-  theme(text=element_text(size=12))+
-  geom_text(aes(label = lab), hjust=-1.0, size=4)
+  theme(text=element_text(size=18, face="bold"))+
+  geom_text(aes(label = lab), hjust=0.5,vjust=0.2, size=4)
 } else{
  teenpregnancybycountyvisual %>%
     filter(Pregnancy%in%input$teenage) %>%
