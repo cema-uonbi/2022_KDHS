@@ -1612,6 +1612,47 @@ renderPlot({if(input$teenage%in%"Wealth quintile"){
   
 ```
 
+Fertility preferences according to number of living children {data-navmenu="Key Indicators"}
+==============================
+
+
+*Percent distribution of married women desire for children, by the number of children they already have - and whether they would want the child soon or later*
+
+```{r}
+selectInput("fertility", "",
+            c( "Desire to have another soon"="Have another soon",
+              "Desire to have another later"="Have another later",
+              "Desire to have another, undecided when"="Have another, undecided when",
+              "Undecided"="Undecided",
+              "Want no more"="Want no more",
+              "Sterilized"="Sterilized",
+              "Declared infecund"="Declared infecund"))
+```
+
+Column {data.width='600'}
+------------------
+
+```{r}
+
+
+
+fertility_preferences <- read_csv("table7_fertilitypreferences.csv")%>%
+  filter(!`Number of children`%in%"V9")%>%
+  mutate(Desire_children=recode(Desire_children, "Have another later3"="Have another later", "Have another soon2"="Have another soon", "Sterilized4"="Sterilized"))
+fertility_preferences$Desire_children <- gsub("[[:digit:]]", "",fertility_preferences$Desire_children)
+
+
+renderPlot({
+  ggplot(fertility_preferences[fertility_preferences$Desire_children%in%input$fertility,],aes(x=`Number of children`, y=Percent))+
+  geom_bar(position="dodge", stat="identity", fill="cyan4")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Number of children", fill="")+
+  scale_fill_brewer(palette = "Set1")+
+  theme(text=element_text(size=18, face="bold"))
+}, width=1200, height=800)
+
+```
+
 Current use of contraception {data-navmenu="Key Indicators"}
 ==============================
 
