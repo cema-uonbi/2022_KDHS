@@ -544,7 +544,7 @@ background_characteristics_map <- rbind(women_background_xtics_county1, men_back
 ```
 
 
-```{r, fig.width= 16, fig.height=12}
+```{r}
 
 # visualize the data
 # renderPlot({
