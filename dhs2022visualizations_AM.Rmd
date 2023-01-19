@@ -526,16 +526,61 @@ fertility_preferences_plot <- ggplot(fertility_preferences,aes(x=`Number of chil
 
 ```{r}
 ### Mother's age at birth
-matcare_motage_1birth <- read_csv("table10_maternalcare_by_motherage_atbirth.csv")
+matcare_motage_1birth <- read_csv("table10_maternalcare_by_motherage_atbirth.csv")%>%
+  mutate(lab=paste0(proportion,"%"))
+
+matcare_motage_1birth_plot <- ggplot(matcare_motage_1birth,aes(x=`Mother's age at birth`, y=proportion))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  facet_wrap(~category)+
+  labs( y="Percent (%)", title="", x="Mother's age at birth", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
 
 ### Residence
-matcare_residence <- read_csv("table10_maternalcare_by_residence.csv")
+matcare_residence <- read_csv("table10_maternalcare_by_residence.csv")%>%
+  mutate(lab=paste0(proportion,"%"))
+
+matcare_residence_plot <- ggplot(matcare_residence,aes(x=`Residence`, y=proportion))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  facet_wrap(~category)+
+  labs( y="Percent (%)", title="", x="Residence", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
 
 ### Mother's education
-matcare_motedu <- read_csv("table10_maternalcare_by_education.csv")
+matcare_motedu <- read_csv("table10_maternalcare_by_education.csv")%>%
+  mutate(lab=paste0(proportion,"%"))%>%
+  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary"))))
+
+matcare_motedu_plot <- ggplot(matcare_motedu, aes(x=`Mother's education`, y=proportion)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4, fill="#4292c6")+
+  theme_bw()+
+  facet_wrap(~category)+
+  labs( y="Percent (%)", title="", x="Mother's education", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-0.3, size=3) 
 
 ### Wealth
-matcare_wealth <- read_csv("table10_maternalcare_by_wealth.csv")
+matcare_wealth <- read_csv("table10_maternalcare_by_wealth.csv")%>%
+  mutate(lab=paste0(proportion,"%"))%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))
+
+matcare_wealth_plot <- ggplot(matcare_wealth, aes(x=`Wealth quintile`, y=proportion)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4, fill="#4292c6")+
+  theme_bw()+
+  facet_wrap(~category)+
+  labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-0.3, size=3)
 
 ```
 
+### Table 12: Treatment for ARI symptoms, fever, & diarrhea
+
+```{r}
+
+```
+
+### Table 12C: Treatment for ARI symptoms, fever, & diarrhea by county
