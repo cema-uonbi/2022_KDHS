@@ -58,7 +58,7 @@ itnc <- read_csv("table18C_ITN_by_county.csv")%>%
   mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
                        "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
 
-county <- st_read("./Kenya County shapefiles/County.shp")%>%
+county <- st_read("County.shp")%>%
   mutate(region=ifelse(Name%in%c("Kilifi","Kwale","Lamu", "Mombasa", "Taita Taveta", "Tana River"),"Coast", ifelse(Name%in%c("Garissa", "Mandera", "Wajir"),"North Eastern", ifelse(Name%in%c("Marsabit","Isiolo","Meru","Tharaka Nithi","Embu","Kitui","Machakos","Makueni"),"Eastern", ifelse(Name%in%c("Kiambu", "Kirinyaga","Muranga","Nyandarua", "Nyeri"),"Central", ifelse(Name%in%c("Bungoma",
  "Busia","Kakamega","Vihiga"),"Western", ifelse(Name%in%c("Kisumu", "Siaya","Homa Bay","Kisii", "Migori","Nyamira"),"Nyanza", ifelse(Name%in%"Nairobi","Nairobi", "Rift Valley"))))))))%>%
   rename(County=Name)
@@ -580,7 +580,179 @@ matcare_wealth_plot <- ggplot(matcare_wealth, aes(x=`Wealth quintile`, y=proport
 ### Table 12: Treatment for ARI symptoms, fever, & diarrhea
 
 ```{r}
+### Age
+treatment_age <- read_csv("table12_childtreatment_by_age.csv")
+
+treatment_age_plot <- ggplot(treatment_age,aes(x=Age, y=sought_treatment, fill=condition))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="% for whom treatment was sought", title="", x="Age (in months)", fill="Health condition")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
+
+### Sex
+treatment_sex <- read_csv("table12_childtreatment_by_sex.csv")
+
+treatment_sex_plot <- ggplot(treatment_sex,aes(x=Sex, y=sought_treatment, fill=condition))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="% for whom treatment was sought", title="", x="Sex", fill="Health condition")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
+
+### Residence
+treatment_residence <- read_csv("table12_childtreatment_by_residence.csv")
+
+treatment_residence_plot <- ggplot(treatment_residence,aes(x=Residence, y=sought_treatment, fill=condition))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="% for whom treatment was sought", title="", x="Residence", fill="Health condition")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
+
+### Mother's education
+treatment_motedu <- read_csv("table12_childtreatment_by_mothereducation.csv")%>%
+  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary"))))
+
+treatment_motedu_plot <- ggplot(treatment_motedu, aes(x=`Mother's education`, y=sought_treatment, fill=condition)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
+  theme_bw()+
+  labs( y="% for whom treatment was sought", title="", x="Mother's education", fill="Health condition")+scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
+
+### Wealth
+treatment_wealth <- read_csv("table12_childtreatment_by_wealth.csv")%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))
+
+treatment_wealth_plot <- ggplot(treatment_wealth, aes(x=`Wealth quintile`, y=sought_treatment, fill=condition)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
+  theme_bw()+
+  labs( y="% for whom treatment was sought", title="", x="Wealth quintile", fill="Health condition")+scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
 
 ```
 
 ### Table 12C: Treatment for ARI symptoms, fever, & diarrhea by county
+
+```{r}
+treatment_county <- read_csv("table12C_childtreatment_by_county.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+  
+treatment_county1 <- full_join(county, treatment_county, by="County")%>%
+  mutate(names=ifelse(sought_treatment%in%NA, paste0(County), paste0(County,", ", sought_treatment,"%")))
+
+treatment_county_map <- ggplot(treatment_county1)+
+  geom_sf(data=treatment_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=sought_treatment),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~condition)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="% of children for whom\n treatment was sought")+
+  theme(text=element_text(size=14))
+```
+
+### Table 13: Early Childhood Development 2030
+
+```{r}
+#### Proportion of children aged 24-59 months who are developmentally on track in health, learning, #### & psychosocial wellbeing.
+
+### Age
+ecd_age <- read_csv("table13_ECD_by_age.csv")%>%
+  mutate(lab=paste0(proportion,"%"))
+
+ecd_age_plot <- ggplot(ecd_age,aes(x=`Age`, y=proportion))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Age in months", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
+
+### sex
+ecd_sex <- read_csv("table13_ECD_by_sex.csv")%>%
+  mutate(lab=paste0(proportion,"%"))
+
+ecd_sex_plot <- ggplot(ecd_sex,aes(x=`Sex`, y=proportion))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Sex", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
+  
+### residence
+ecd_residence <- read_csv("table13_ECD_by_residence.csv")%>%
+  mutate(lab=paste0(proportion,"%"))
+
+ecd_residence_plot <- ggplot(ecd_residence,aes(x=`Residence`, y=proportion))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Residence", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
+
+### education attendance
+ecd_edu_attendance <- read_csv("table13_ECD_by_early_education_attendance.csv")%>%
+  mutate(lab=paste0(proportion,"%"))
+
+ecd_edu_attendance_plot <- ggplot(ecd_edu_attendance,aes(x=`Early childhood education attendance`, y=proportion))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Early childhood education attendance", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
+  
+### mother's education
+ecd_mot_edu <- read_csv("table13_ECD_by_mother_education.csv")%>%
+  mutate(lab=paste0(proportion,"%"))%>%
+  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary"))))
+
+ecd_mot_edu_plot <- ggplot(ecd_mot_edu, aes(x=`Mother's education`, y=proportion)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4, fill="#4292c6")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Mother's education", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-0.3, size=3) 
+
+### wealth
+ecd_wealth <- read_csv("table13_ECD_by_wealth.csv")%>%
+  mutate(lab=paste0(proportion,"%"))%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))
+
+ecd_wealth_plot <- ggplot(ecd_wealth, aes(x=`Wealth quintile`, y=proportion)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4, fill="#4292c6")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), hjust=-0.3, size=3) 
+
+```
+
+### Table 17: Five-year early childhood mortality rates according to background characteristics	
+
+```{r}
+### Deaths per 1,000 live births
+
+### Sex
+child_mortality_sex <- read_csv("table17_child_mortality_by_sex.csv")%>%
+  mutate(lab=paste0(Value))
+
+child_mortality_sex_plot <- ggplot(child_mortality_sex,aes(x=`Sex`, y=Value))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  facet_wrap(~Measure)+
+  labs( y="Deaths per 1,000 live births", title="", x="Sex", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
+
+### Residence
+child_mortality_residence <- read_csv("table17_child_mortality_by_residence.csv")%>%
+  mutate(lab=paste0(Value))
+
+child_mortality_residence_plot <- ggplot(child_mortality_residence,aes(x=`Residence`, y=Value))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  facet_wrap(~Measure)+
+  labs( y="Deaths per 1,000 live births", title="", x="Residence", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 0.5)
+```
+
