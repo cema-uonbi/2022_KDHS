@@ -1619,14 +1619,14 @@ Fertility preferences according to number of living children {data-navmenu="Key 
 *Percent distribution of married women desire for children, by the number of children they already have - and whether they would want the child soon or later*
 
 ```{r}
-selectInput("fertility", "",
-            c( "Desire to have another soon"="Have another soon",
-              "Desire to have another later"="Have another later",
-              "Desire to have another, undecided when"="Have another, undecided when",
-              "Undecided"="Undecided",
-              "Want no more"="Want no more",
-              "Sterilized"="Sterilized",
-              "Declared infecund"="Declared infecund"))
+# selectInput("fertility", "",
+#             c( "Desire to have another soon"="Have another soon",
+#               "Desire to have another later"="Have another later",
+#               "Desire to have another, undecided when"="Have another, undecided when",
+#               "Undecided"="Undecided",
+#               "Want no more"="Want no more",
+#               "Sterilized"="Sterilized",
+#               "Declared infecund"="Declared infecund"))
 ```
 
 Column {data.width='600'}
@@ -1643,9 +1643,9 @@ fertility_preferences$Desire_children <- gsub("[[:digit:]]", "",fertility_prefer
 
 
 renderPlot({
-  ggplot(fertility_preferences[fertility_preferences$Desire_children%in%input$fertility,],aes(x=`Number of children`, y=Percent))+
+  ggplot(fertility_preferences,aes(x=`Number of children`, y=Percent))+
   geom_bar(position="dodge", stat="identity", fill="cyan4")+
-  theme_bw()+
+  theme_bw()+facet_wrap(~Desire_children)+
   labs( y="Percent (%)", title="", x="Number of children", fill="")+
   scale_fill_brewer(palette = "Set1")+
   theme(text=element_text(size=18, face="bold"))
@@ -2284,7 +2284,7 @@ maternalcare$indicator <- fct_relevel(maternalcare$indicator,"Urban", "Rural", "
 
 renderPlot({
   ggplot(maternalcare[maternalcare$category%in%input$maternal_care & maternalcare$group%in%input$chrt,], aes(x=indicator, y=proportion)) + 
-  geom_dotplot(binaxis='y', stackdir='center', binwidth = 3, fill="#4292c6")+
+  geom_point(size=4, color="#4292c6")+
   theme_bw()+
   labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
   theme(text=element_text(size=16, face="bold"))+
