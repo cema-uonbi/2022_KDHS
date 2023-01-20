@@ -756,3 +756,177 @@ child_mortality_residence_plot <- ggplot(child_mortality_residence,aes(x=`Reside
   geom_text(aes(label = lab), nudge_y = 0.5)
 ```
 
+### Table 19: Use of insecticide-treated nets by children and pregnant women
+```{r}
+### % of children under age 5 & pregnant women aged 15-49 who slept under an ITN the night before the survey
+
+### residence
+itn_usage_res <- read_csv("table19_ITN_usage_children_mothers_by_residence.csv")
+
+itn_usage_res_plot <- ggplot(itn_usage_res,aes(x=`Residence`, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  facet_wrap(~Participants)+
+  labs( y="Percent (%)", title="", x="Residence", fill="")+
+  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=12))
+
+### endemicity zone
+itn_usage_endem <- read_csv("table19_ITN_usage_children_mothers_by_endemicity_zone.csv")
+
+itn_usage_endem_plot <- ggplot(itn_usage_endem,aes(x=`Endemicity zone`, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  facet_wrap(~Participants)+
+  labs( y="Percent (%)", title="", x="Endemicity zone", fill="")+
+  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=8))+
+  coord_flip()
+
+### wealth 
+itn_usage_wealth <- read_csv("table19_ITN_usage_children_mothers_by_wealth.csv")%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))
+
+itn_usage_wealth_plot <- ggplot(itn_usage_wealth, aes(x=`Wealth quintile`, y=Proportion, fill=Category)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+#, fill="#4292c6")+
+  theme_bw()+
+  facet_wrap(~Participants)+
+  labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
+  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=12))
+
+```
+
+### Table 19C:	Use of insecticide-treated nets by children and pregnant women by county	
+```{r}
+itn_usage_county <- read_csv("table19C_ITN_usage_children_mothers_by_county.csv")
+
+itn_usage_county1 <- full_join(county, itn_usage_county, by="County")%>%
+  mutate(names=ifelse(Proportion%in%NA, paste0(County), paste0(County,", ", Proportion,"%")))
+
+itn_usage_county_map_children <- ggplot(itn_usage_county1%>%filter(Participants%in%"Children"))+
+  geom_sf(data=itn_usage_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~Category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="% of children under age 5\n who slept under an ITN")+
+  theme(text=element_text(size=14))
+
+itn_usage_county_map_mothers <- ggplot(itn_usage_county1%>%filter(Participants%in%"Mothers"))+
+  geom_sf(data=itn_usage_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~Category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="% of pregnant women\n who slept under an ITN")+
+  theme(text=element_text(size=14))
+
+```
+
+### Table 20: Use of intermittent preventive treatment (IPTp) by women during pregnancy	
+```{r}
+### % of women aged 15-49 with a live birth in the 2 years preceding the survey who received SP/Fansidar
+
+### residence
+IPTp_res <- read_csv("table20_IPTp_usage_by_residence.csv")
+
+IPTp_res_plot <- ggplot(IPTp_res,aes(x=Residence, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Residence", fill="")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
+
+### endemicity zone
+IPTp_endem <- read_csv("table20_IPTp_usage_by_endemicity_zone.csv")
+
+IPTp_endem_plot <- ggplot(IPTp_endem,aes(x=`Endemicity zone`, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Endemicity zone", fill="")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))+
+  coord_flip()
+```
+
+### Table 20C: Use of intermittent preventive treatment (IPTp) by women during pregnancy by county
+```{r}
+IPTp_county <- read_csv("table20C_IPTp_usage_by_county.csv")
+
+IPTp_county1 <- full_join(county, IPTp_county, by="County")%>%
+  mutate(names=paste0(County,", ", Proportion,"%"))
+
+IPTp_county_map1 <- ggplot(IPTp_county1%>%filter(Classification%in%"IPTp implemented"))+
+  geom_sf(data=IPTp_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~Category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion")+
+  theme(text=element_text(size=14))
+
+IPTp_county_map2 <- ggplot(IPTp_county1%>%filter(Classification%in%"IPTp not implemented"))+
+  geom_sf(data=IPTp_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~Category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion")+
+  theme(text=element_text(size=14))
+```
+
+### Table 21: Children with fever and care seeking for, diagnosis of, and treatment of fever
+```{r}
+### residence
+fever_res <- read_csv("table21_children_fever_by_residence.csv")
+
+fever_res_plot <- ggplot(fever_res,aes(x=`Residence`, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Residence", fill="")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
+
+### endemicity zone
+fever_endem <- read_csv("table21_children_fever_by_endemicity_zone.csv")
+
+fever_endem_plot <- ggplot(fever_endem,aes(x=`Endemicity zone`, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Endemicity zone", fill="")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))+
+  coord_flip()
+
+### wealth
+fever_wealth <- read_csv("table21_children_fever_by_wealth_quintile.csv")%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))
+
+fever_wealth_plot <- ggplot(fever_wealth, aes(x=`Wealth quintile`, y=Proportion, fill=Category)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
+  scale_fill_brewer(palette = "Set1")+
+  theme(text=element_text(size=12))
+  
+```
+
+### Table 21C: Children with fever and care seeking for, diagnosis of, and treatment of fever by county
+```{r}
+fever_county <- read_csv("table21C_children_fever_by_county.csv")
+
+fever_county1 <- full_join(county, fever_county, by="County")%>%
+  mutate(names=paste0(County,", ", Proportion,"%"))
+
+fever_county_map <- ggplot(fever_county1)+
+  geom_sf(data=fever_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~Category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion")+
+  theme(text=element_text(size=14))
+```
+
+
