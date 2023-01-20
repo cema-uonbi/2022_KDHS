@@ -171,18 +171,6 @@ write_csv(nutc, "table14C_nutr_status_by_county.csv")
 iycf <- tbls[[59]]
 ```
 
-## 3.15	Early Childhood Mortality
-
-### Table 16: Early childhood mortality rates
-```{r}
-child_mort <- tbls[[61]]
-```
-
-### Table 17: Five-year early childhood mortality rates according to background characteristics
-```{r}
-child_mort5 <- tbls[[63]]
-```
-
 ## 3.16: Malaria
 
 ### Table 18: Household possession of insecticide-treated nets
@@ -486,6 +474,249 @@ readr::write_csv(child_mortality_residence, "table17_child_mortality_by_residenc
 ### Table 19: Use of insecticide-treated nets by children and pregnant women	
 
 ```{r}
+itn_usage_res_children <- tbls[[69]]%>%
+  slice(6:7)%>%
+  dplyr::select(V1,V2,V4)%>%
+  dplyr::rename(Residence=V1, `All households`=V2, `Households with 1+ ITN`=V4)%>%
+  pivot_longer(cols=c(`All households`, `Households with 1+ ITN`), names_to="Category", values_to="Proportion")%>%
+  mutate(Participants="Children")
+itn_usage_res_mothers <- tbls[[69]]%>%
+  slice(6:7)%>%
+  dplyr::select(V1,V6,V8)%>%
+  dplyr::rename(Residence=V1, `All households`=V6, `Households with 1+ ITN`=V8)%>%
+  pivot_longer(cols=c(`All households`, `Households with 1+ ITN`), names_to="Category", values_to="Proportion")%>%
+  mutate(Participants="Mothers")
+itn_usage_res <- rbind(itn_usage_res_children, itn_usage_res_mothers)
+readr::write_csv(itn_usage_res, "table19_ITN_usage_children_mothers_by_residence.csv")
 
+itn_usage_endem_children <- tbls[[69]]%>%
+  slice(10:14)%>%
+  dplyr::select(V1,V2,V4)%>%
+  dplyr::rename(`Endemicity zone`=V1, `All households`=V2, `Households with 1+ ITN`=V4)%>%
+  pivot_longer(cols=c(`All households`, `Households with 1+ ITN`), names_to="Category", values_to="Proportion")%>%
+  mutate(Participants="Children")
+itn_usage_endem_mothers <- tbls[[69]]%>%
+  slice(10:14)%>%
+  dplyr::select(V1,V6,V8)%>%
+  dplyr::rename(`Endemicity zone`=V1, `All households`=V6, `Households with 1+ ITN`=V8)%>%
+  pivot_longer(cols=c(`All households`, `Households with 1+ ITN`), names_to="Category", values_to="Proportion")%>%
+  mutate(Participants="Mothers")
+itn_usage_endem <- rbind(itn_usage_endem_children, itn_usage_endem_mothers)
+readr::write_csv(itn_usage_endem, "table19_ITN_usage_children_mothers_by_endemicity_zone.csv")  
+
+itn_usage_wealth_children <- tbls[[69]]%>%
+  slice(17:21)%>%
+  dplyr::select(V1,V2,V4)%>%
+  dplyr::rename(`Wealth quintile`=V1, `All households`=V2, `Households with 1+ ITN`=V4)%>%
+  pivot_longer(cols=c(`All households`, `Households with 1+ ITN`), names_to="Category", values_to="Proportion")%>%
+  mutate(Participants="Children")
+itn_usage_wealth_mothers <- tbls[[69]]%>%
+  slice(17:21)%>%
+  dplyr::select(V1,V6,V8)%>%
+  dplyr::rename(`Wealth quintile`=V1, `All households`=V6, `Households with 1+ ITN`=V8)%>%
+  pivot_longer(cols=c(`All households`, `Households with 1+ ITN`), names_to="Category", values_to="Proportion")%>%
+  mutate(Participants="Mothers")
+itn_usage_wealth <- rbind(itn_usage_wealth_children, itn_usage_wealth_mothers)
+readr::write_csv(itn_usage_wealth, "table19_ITN_usage_children_mothers_by_wealth.csv") 
+```
+
+### Table 19C:	Use of insecticide-treated nets by children and pregnant women by county	
+```{r}
+itn_usage_county_children <- tbls[[70]]%>%
+  slice(5:51)%>%
+  dplyr::select(V1,V2,V4)%>%
+  dplyr::rename(County=V1, `All households`=V2, `Households with 1+ ITN`=V4)%>%
+  pivot_longer(cols=c(`All households`, `Households with 1+ ITN`), names_to="Category", values_to="Proportion")%>%
+  mutate(Participants="Children")
+itn_usage_county_mothers <- tbls[[70]]%>%
+  slice(5:51)%>%
+  dplyr::select(V1,V6,V8)%>%
+  dplyr::rename(County=V1, `All households`=V6, `Households with 1+ ITN`=V8)%>%
+  pivot_longer(cols=c(`All households`, `Households with 1+ ITN`), names_to="Category", values_to="Proportion")%>%
+  mutate(Participants="Mothers")
+itn_usage_county <- rbind(itn_usage_county_children, itn_usage_county_mothers)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
+                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  mutate(Proportion=gsub("[()]", "", Proportion))%>%
+  mutate(Proportion=ifelse(Proportion%in%"*",NA,Proportion))
+  
+readr::write_csv(itn_usage_county, "table19C_ITN_usage_children_mothers_by_county.csv")
+```
+
+### Table 20: Use of intermittent preventive treatment (IPTp) by women during pregnancy	
+
+```{r}
+IPTp_res <- tbls[[72]]%>%
+  slice(6:7)%>%
+  dplyr::select(V1:V4)%>%
+  dplyr::rename(Residence=V1, `1+ Doses of SP/Fansidar`=V2, `2+ Doses of SP/Fansidar`=V3, `3+ Doses of SP/Fansidar`=V4)%>%
+  pivot_longer(cols = c(`1+ Doses of SP/Fansidar`:`3+ Doses of SP/Fansidar`), names_to = "Category", values_to = "Proportion")
+
+readr::write_csv(IPTp_res, "table20_IPTp_usage_by_residence.csv")
+
+IPTp_endem <- tbls[[72]]%>%
+  slice(10:14)%>%
+  dplyr::select(V1:V4)%>%
+  dplyr::rename(`Endemicity zone`=V1, `1+ Doses of SP/Fansidar`=V2, `2+ Doses of SP/Fansidar`=V3, `3+ Doses of SP/Fansidar`=V4)%>%
+  pivot_longer(cols = c(`1+ Doses of SP/Fansidar`:`3+ Doses of SP/Fansidar`), names_to = "Category", values_to = "Proportion")
+
+readr::write_csv(IPTp_endem, "table20_IPTp_usage_by_endemicity_zone.csv")
+```
+
+### Table 20C: Use of intermittent preventive treatment (IPTp) by women during pregnancy by county	
+```{r}
+IPTp_county_implement <- tbls[[73]]%>%
+  slice(5:18)%>%
+  dplyr::select(V1:V4)%>%
+  dplyr::rename(`County`=V1, `1+ Doses of SP/Fansidar`=V2, `2+ Doses of SP/Fansidar`=V3, `3+ Doses of SP/Fansidar`=V4)%>%
+  pivot_longer(cols = c(`1+ Doses of SP/Fansidar`:`3+ Doses of SP/Fansidar`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Classification="IPTp implemented")
+IPTp_county_not_implement <- tbls[[73]]%>%
+  slice(21:53)%>%
+  dplyr::select(V1:V4)%>%
+  dplyr::rename(`County`=V1, `1+ Doses of SP/Fansidar`=V2, `2+ Doses of SP/Fansidar`=V3, `3+ Doses of SP/Fansidar`=V4)%>%
+  pivot_longer(cols = c(`1+ Doses of SP/Fansidar`:`3+ Doses of SP/Fansidar`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Classification="IPTp not implemented")
+IPTp_county <- rbind(IPTp_county_implement, IPTp_county_not_implement)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
+                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  mutate(Proportion=gsub("[()]", "", Proportion))
+  
+
+readr::write_csv(IPTp_county, "table20C_IPTp_usage_by_county.csv")
+```
+
+### Table 21: Children with fever and care seeking for, diagnosis of, and treatment of fever	
+```{r}
+fever_res <- tbls[[75]]%>%
+  slice(6:7)%>%
+  dplyr::select(V1,V2,V4,V5,V7)%>%
+  dplyr::rename(Residence=V1, `Had a fever`=V2, `Treatment was sought`=V4, `Had blood taken for testing`=V5, `Received any ACT`=V7)%>%
+  pivot_longer(cols = c(`Had a fever`:`Received any ACT`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Proportion=gsub("[()]", "", Proportion))%>%
+  mutate(Proportion=ifelse(Proportion%in%"*",NA,Proportion))
+
+readr::write_csv(fever_res, "table21_children_fever_by_residence.csv")
+
+fever_endem <- tbls[[75]]%>%
+  slice(10:14)%>%
+  dplyr::select(V1,V2,V4,V5,V7)%>%
+  dplyr::rename(`Endemicity zone`=V1, `Had a fever`=V2, `Treatment was sought`=V4, `Had blood taken for testing`=V5, `Received any ACT`=V7)%>%
+  pivot_longer(cols = c(`Had a fever`:`Received any ACT`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Proportion=gsub("[()]", "", Proportion))%>%
+  mutate(Proportion=ifelse(Proportion%in%"*",NA,Proportion))
+
+readr::write_csv(fever_endem, "table21_children_fever_by_endemicity_zone.csv")
+
+fever_wealth <- tbls[[75]]%>%
+  slice(17:21)%>%
+  dplyr::select(V1,V2,V4,V5,V7)%>%
+  dplyr::rename(`Wealth quintile`=V1, `Had a fever`=V2, `Treatment was sought`=V4, `Had blood taken for testing`=V5, `Received any ACT`=V7)%>%
+  pivot_longer(cols = c(`Had a fever`:`Received any ACT`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Proportion=gsub("[()]", "", Proportion))%>%
+  mutate(Proportion=ifelse(Proportion%in%"*",NA,Proportion))
+
+readr::write_csv(fever_wealth, "table21_children_fever_by_wealth_quintile.csv")
+  
+```
+
+### Table 21C: Children with fever and care seeking for, diagnosis of, and treatment of fever by county
+
+```{r}
+fever_county <- tbls[[76]]%>%
+  slice(5:51)%>%
+  dplyr::select(V1,V2,V4,V5,V7)%>%
+  dplyr::rename(`County`=V1, `Had a fever`=V2, `Treatment was sought`=V4, `Had blood taken for testing`=V5, `Received any ACT`=V7)%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
+                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
+  pivot_longer(cols = c(`Had a fever`:`Received any ACT`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Proportion=gsub("[()]", "", Proportion))%>%
+  mutate(Proportion=ifelse(Proportion%in%"*",NA,Proportion))
+
+readr::write_csv(fever_county, "table21C_children_fever_by_county.csv")
+```
+
+### Table 22: Knowledge of, beliefs about, and diagnosis of tuberculosis	
+
+```{r}
+tb_age_women <- tbls[[77]]%>%
+  slice(6:11)%>%
+  dplyr::select(V1, V2, V4, V5)%>%
+  dplyr::rename(Age=V1, `Have heard of TB`=V2, `Think everyone with TB has HIV`=V4, `Diagnosed in past 12 months`=V5)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Women")
+tb_age_men <- tbls[[77]]%>%
+  slice(6:11)%>%
+  dplyr::select(V1, V7, V9, V10)%>%
+  dplyr::rename(Age=V1, `Have heard of TB`=V7, `Think everyone with TB has HIV`=V9, `Diagnosed in past 12 months`=V10)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Men")
+tb_age <- rbind(tb_age_women, tb_age_men)
+
+readr::write_csv(tb_age, "table22_tb_by_age.csv")
+
+tb_marital_women <- tbls[[77]]%>%
+  slice(14:18)%>%
+  dplyr::select(V1, V2, V4, V5)%>%
+  dplyr::rename(`Marital status`=V1, `Have heard of TB`=V2, `Think everyone with TB has HIV`=V4, `Diagnosed in past 12 months`=V5)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Women")
+tb_marital_men <- tbls[[77]]%>%
+  slice(14:18)%>%
+  dplyr::select(V1, V7, V9, V10)%>%
+  dplyr::rename(`Marital status`=V1, `Have heard of TB`=V7, `Think everyone with TB has HIV`=V9, `Diagnosed in past 12 months`=V10)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Men")
+tb_marital <- rbind(tb_marital_women, tb_marital_men)
+
+readr::write_csv(tb_marital, "table22_tb_by_marital_status.csv")
+
+tb_res_women <- tbls[[77]]%>%
+  slice(21:22)%>%
+  dplyr::select(V1, V2, V4, V5)%>%
+  dplyr::rename(`Residence`=V1, `Have heard of TB`=V2, `Think everyone with TB has HIV`=V4, `Diagnosed in past 12 months`=V5)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Women")
+tb_res_men <- tbls[[77]]%>%
+  slice(21:22)%>%
+  dplyr::select(V1, V7, V9, V10)%>%
+  dplyr::rename(`Residence`=V1, `Have heard of TB`=V7, `Think everyone with TB has HIV`=V9, `Diagnosed in past 12 months`=V10)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Men")
+tb_res <- rbind(tb_res_women, tb_res_men)
+
+readr::write_csv(tb_res, "table22_tb_by_residence.csv")
+
+tb_edu_women <- tbls[[77]]%>%
+  slice(25:28)%>%
+  dplyr::select(V1, V2, V4, V5)%>%
+  dplyr::rename(`Education`=V1, `Have heard of TB`=V2, `Think everyone with TB has HIV`=V4, `Diagnosed in past 12 months`=V5)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Women")
+tb_edu_men <- tbls[[77]]%>%
+  slice(25:28)%>%
+  dplyr::select(V1, V7, V9, V10)%>%
+  dplyr::rename(`Education`=V1, `Have heard of TB`=V7, `Think everyone with TB has HIV`=V9, `Diagnosed in past 12 months`=V10)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Men")
+tb_edu <- rbind(tb_edu_women, tb_edu_men)
+
+readr::write_csv(tb_edu, "table22_tb_by_education.csv")
+  
+tb_wealth_women <- tbls[[77]]%>%
+  slice(31:35)%>%
+  dplyr::select(V1, V2, V4, V5)%>%
+  dplyr::rename(`Wealth quintile`=V1, `Have heard of TB`=V2, `Think everyone with TB has HIV`=V4, `Diagnosed in past 12 months`=V5)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Women")
+tb_wealth_men <- tbls[[77]]%>%
+  slice(31:35)%>%
+  dplyr::select(V1, V7, V9, V10)%>%
+  dplyr::rename(`Wealth quintile`=V1, `Have heard of TB`=V7, `Think everyone with TB has HIV`=V9, `Diagnosed in past 12 months`=V10)%>%
+  pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Men")
+tb_wealth <- rbind(tb_wealth_women, tb_wealth_men)
+
+readr::write_csv(tb_wealth, "table22_tb_by_wealth.csv")
 ```
 
