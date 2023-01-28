@@ -2757,6 +2757,109 @@ renderPlot({
 }, width=600, height=550)
 ```
 
+<br>
+
+Acute respiratory infection symptoms, fever & diarrhea {data-navmenu="Key Indicators"}
+==============================
+
+
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+
+```{r}
+
+valueBox(
+  value = paste("82%"),
+  caption = "of children <5 years with symptoms of ARI sought treatment or advice",
+  color = "black"
+)
+
+```
+
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("70%"),
+  caption = "of children <5 years with fever soought treatment or advice",
+  color = "#b15928"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("57%"),
+  caption = "of children <5 years with diarrhea soought treatment or advice",
+  color = "darkgreen"
+)
+```
+
+
+<br>
+
+Column {data-height="800"}
+---------------------------------
+
+```{r}
+### Age
+treatment_age <- read_csv("table12_childtreatment_by_age.csv") %>%
+  rename(characteristics=Age) %>%
+  mutate(indicator="Age")
+### Sex
+treatment_sex <- read_csv("table12_childtreatment_by_sex.csv") %>%
+  rename(characteristics=Sex) %>%
+  mutate(indicator="Sex")
+### Residence
+treatment_residence <- read_csv("table12_childtreatment_by_residence.csv") %>%
+  rename(characteristics=Residence) %>%
+  mutate(indicator="Residence")
+### Mother's education
+treatment_motedu <- read_csv("table12_childtreatment_by_mothereducation.csv")%>%
+  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary")))) %>%
+  rename(characteristics=`Mother's education`) %>%
+  mutate(indicator="Mother's Education")
+## wealth
+treatment_wealth <- read_csv("table12_childtreatment_by_wealth.csv")%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest")))) %>%
+  rename(characteristics=`Wealth quintile`) %>%
+  mutate(indicator="Wealth quintile")
+## treatment data
+
+treatment <- rbind(treatment_age, treatment_sex, treatment_residence, treatment_motedu, treatment_wealth)
+
+radioButtons("treat_char", "",
+              c("Sex"="Sex",
+                "Age"="Age",
+                "Mother's Education"="Mother's Education",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile"))
+
+
+treatment$characteristics <- fct_relevel(treatment$characteristics, "<6", "6-11", "12-23", "24-35", "36-47", "48-59", "No education", "Primary", "Secondary", "More than secondary", "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+renderPlot({if (input$treat_char%in%c("Age", "Sex", "Residence")){ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=characteristics, y=sought_treatment, fill=condition))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  labs( y="% for whom treatment was sought", title="", x="Age (in months)", fill="Health condition")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=16))} else{
+    ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=characteristics, y=sought_treatment, fill=condition)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
+  theme_bw()+
+  labs( y="% for whom treatment was sought", title="", x="Mother's education", fill="Health condition")+scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=16))
+  } }, width=1200, height=850)
+
+```
+
+
 Nutritional status {data-navmenu="Key Indicators"}
 ==================
 
