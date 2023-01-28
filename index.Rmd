@@ -2804,7 +2804,7 @@ valueBox(
 
 <br>
 
-Column {data-height="800"}
+Column {data-height="400"}
 ---------------------------------
 
 ```{r}
@@ -2846,18 +2846,78 @@ treatment$characteristics <- fct_relevel(treatment$characteristics, "<6", "6-11"
 
 renderPlot({if (input$treat_char%in%c("Age", "Sex", "Residence")){ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=characteristics, y=sought_treatment, fill=condition))+
   geom_bar(position="dodge", stat="identity")+
+    geom_text(aes(label=paste0(round(sought_treatment),"%" )), position=position_dodge(0.7), vjust=-0.2)+
   theme_bw()+
   labs( y="% for whom treatment was sought", title="", x="Age (in months)", fill="Health condition")+
   scale_fill_brewer(palette="Set1")+
   theme(text=element_text(size=16))} else{
     ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=characteristics, y=sought_treatment, fill=condition)) + 
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
-  theme_bw()+
+  theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%" )))+
   labs( y="% for whom treatment was sought", title="", x="Mother's education", fill="Health condition")+scale_fill_brewer(palette="Set1")+
   theme(text=element_text(size=16))
-  } }, width=1200, height=850)
+  } }, width=1200, height=400)
 
 ```
+
+Column {data-width="400"}
+---------------------------------
+###
+
+```{r, include=F}
+
+county <- st_read("County.shp")
+
+```
+
+```{r}
+
+selectInput("trt_county", "",
+            c("ARI"="ARI",
+              "Diarrhea"="Diarrhea",
+              "Fever"="Fever"))
+
+treatment_county <- read_csv("table12C_childtreatment_by_county.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+  
+
+
+renderGirafe({
+  treatment_county1 <- full_join(county, treatment_county[treatment_county$condition%in%input$trt_county,], by=c("Name"="County"))%>%
+  mutate(names=ifelse(sought_treatment%in%NA, paste0(Name,"No value"), paste0(Name,", ", sought_treatment,"%")))
+  treatment_map <- ggplot(treatment_county1, aes(fill=sought_treatment))+
+  #geom_sf(data=treatment_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf_interactive(aes(fill=sought_treatment, tooltip=names),color="grey80", size=0.0)+
+  theme_void()+
+   scale_fill_gradient(low = "#fee6ce", high = "#7f2704", na.value = "white")+
+  labs(x="", y="",fill="% of children for whom\n treatment was sought")+
+  theme(text=element_text(size=14))
+  treatment_map2<-girafe(ggobj = treatment_map , width_svg = 5, height_svg = 5,
+                   options = list(
+                     opts_hover(css = "fill:#666666;cursor:pointer;"),
+                     opts_selection(css = "fill:orange;", type = "multiple"),
+                     opts_sizing(rescale = T),
+                     opts_zoom(max = 4)))
+  print(treatment_map2)
+  })
+```
+
+### Treatment conditions: descending
+
+```{r, fig.height=6}
+
+  
+
+renderPlot({
+  ggplot(treatment_county[treatment_county$condition%in%input$trt_county & !is.na(treatment_county$sought_treatment),], aes(x=reorder(County,sought_treatment), y=sought_treatment))+
+    geom_col(fill="cyan4")+coord_flip()+
+    theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%")))+
+    scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
+    labs(x="", y="",fill="%")+
+    theme(text=element_text(size=14, face="bold")) 
+},width = 605, height=550)
+```
+
 
 
 Nutritional status {data-navmenu="Key Indicators"}
