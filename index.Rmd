@@ -2884,7 +2884,7 @@ treatment_county <- read_csv("table12C_childtreatment_by_county.csv")%>%
 
 renderGirafe({
   treatment_county1 <- full_join(county, treatment_county[treatment_county$condition%in%input$trt_county,], by=c("Name"="County"))%>%
-  mutate(names=ifelse(sought_treatment%in%NA, paste0(Name,"No value"), paste0(Name,", ", sought_treatment,"%")))
+  mutate(names=ifelse(sought_treatment%in%NA, paste0(Name," No value"), paste0(Name,", ", sought_treatment,"%")))
   treatment_map <- ggplot(treatment_county1, aes(fill=sought_treatment))+
   #geom_sf(data=treatment_county1, aes(geometry=geometry), fill=NA)+
   geom_sf_interactive(aes(fill=sought_treatment, tooltip=names),color="grey80", size=0.0)+
@@ -2918,50 +2918,116 @@ renderPlot({
 },width = 605, height=550)
 ```
 
+Early Childhood Development Index 2030 {data-navmenu="Key Indicators"}
+==================
 
+## Row {data-width="200"}
+
+<br>
+
+### {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("78%"),
+  caption = "of children 24-59 months who are developed mentally on track in health, learning & physiological well-being",
+  color = "black"
+)
+```
+
+### {.value-box}
+
+```{r}
+valueBox(
+  value = paste("4,797"),
+  caption = "children 24-59 months were assessed",
+  color = "#b15928"
+)
+```
+
+## Row {data-width="600"}
+
+```{r}
+#### Proportion of children aged 24-59 months who are developmentally on track in health, learning, #### & psychosocial wellbeing.
+
+radioButtons("ecd","",
+             c("Age"="Age",
+               "Sex"="Sex",
+               "Residence"="Residence",
+               "Early childhood education attendance"="Early childhood education attendance",
+               "Mother's education"="Mother's education",
+               "Wealth quintile"="Wealth quintile"))
+
+### Age
+ecd_age <- read_csv("table13_ECD_by_age.csv")%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  rename(characteristics=Age) %>%
+  mutate(indicator="Age")
+
+### sex
+ecd_sex <- read_csv("table13_ECD_by_sex.csv")%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  rename(characteristics=Sex) %>%
+  mutate(indicator="Sex")
+
+### residence
+ecd_residence <- read_csv("table13_ECD_by_residence.csv")%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  rename(characteristics=Residence) %>%
+  mutate(indicator="Residence")
+
+### education attendance
+ecd_edu_attendance <- read_csv("table13_ECD_by_early_education_attendance.csv")%>%
+  mutate(lab=paste0(round(proportion),"%")) %>%
+  rename(characteristics=`Early childhood education attendance`) %>%
+  mutate(indicator="Early childhood education attendance")
+
+### mother's education
+ecd_mot_edu <- read_csv("table13_ECD_by_mother_education.csv")%>%
+  mutate(lab=paste0(round(proportion),"%"))%>%
+  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary")))) %>%
+  rename(characteristics=`Mother's education`) %>%
+  mutate(indicator="Mother's education")
+
+### wealth
+ecd_wealth <- read_csv("table13_ECD_by_wealth.csv")%>%
+  mutate(lab=paste0(round(proportion),"%"))%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest")))) %>%
+  rename(characteristics=`Wealth quintile`) %>%
+  mutate(indicator="Wealth quintile")
+  
+ecd <- rbind(ecd_age, ecd_sex, ecd_residence, ecd_edu_attendance, ecd_mot_edu, ecd_wealth)
+
+ecd$characteristics <- fct_relevel(ecd$characteristics, "Attending", "Not attending", "Information not available",
+                                   "No education", "Primary", "Secondary", "More than secondary", "Lowest", "Second", "Middle", "Fourth", "Highest")
+renderPlot({ if(input$ecd%in%c("Age", "Sex", "Residence", "Early childhood education attendance")){
+  ggplot(ecd[ecd$indicator%in%input$ecd,],aes(x=characteristics, y=proportion))+
+  geom_col(fill="#74add1")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16))+
+  geom_text(aes(label = lab), nudge_y = 0.5, size=5)} else{
+  ggplot(ecd[ecd$indicator%in%input$ecd,], aes(x=characteristics, y=proportion)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4, fill="#4292c6")+
+  theme_bw()+
+  labs( y="Percent (%)", title="", x="Mother's education", fill="")+
+  theme(text=element_text(size=16))+
+  geom_text(aes(label = lab), hjust=0.3, size=5)   
+  }
+}, width=1400, height=800)
+
+
+
+  
+
+
+
+```
 
 Nutritional status {data-navmenu="Key Indicators"}
 ==================
 
-<!-- Inputs {.sidebar} -->
-<!-- ----------------------------------- -->
-<!-- <br> -->
-
-<!-- [Characteristics of Respondents](#respondents_characteristics)</br> -->
-
-<!-- [Health Insurance Coverage](#health_insurance)</br> -->
-
-<!-- [Disability among the household population](#disability_pop)</br> -->
-
-<!-- [Fertility rates](#fertility)</br> -->
-
-<!-- [Teenage pregnancy](#teenage_pregnancy)</br> -->
-
-<!-- [Current use of contraception](#contraception_use)</br> -->
-
-<!-- [Family planning need and demand among married women](#family_planning)</br> -->
-
-<!-- [Maternal care](#maternal_care)</br> -->
-
-<!-- [Vaccinations](#vaccinations)</br> -->
-
-<!-- [Nutritional status](#nutr_status)</br> -->
-
-<!-- [Insecticide treated nets](#treated_nets)</br> -->
-
-<!-- [Knowledge about HIV prevention methods among young people](#hiv_prev)</br> -->
-
-<!-- [Coverage of prior HIV testing](#hiv_test)</br> -->
-
-<!-- [House ownership](#home_ownership)</br> -->
-
-<!-- [Agricultural land ownership](#agric_land_ownership)</br> -->
-
-<!-- [Non-agricultural land ownership](#nonagric_land_ownership)</br> -->
-
-<!-- [Gender based violence](#physical_violence)</br> -->
-
-<!-- <!-- [Female genital mutilation](#female_genital)</br> --> 
 
 
 ## Row {data-width="200"}
