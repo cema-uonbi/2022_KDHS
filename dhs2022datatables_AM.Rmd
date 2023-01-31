@@ -640,13 +640,13 @@ readr::write_csv(fever_county, "table21C_children_fever_by_county.csv")
 
 ```{r}
 tb_age_women <- tbls[[77]]%>%
-  slice(6:11)%>%
+  slice(7,8,10,11)%>%
   dplyr::select(V1, V2, V4, V5)%>%
   dplyr::rename(Age=V1, `Have heard of TB`=V2, `Think everyone with TB has HIV`=V4, `Diagnosed in past 12 months`=V5)%>%
   pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
   mutate(Participants="Women")
 tb_age_men <- tbls[[77]]%>%
-  slice(6:11)%>%
+  slice(7,8,10,11)%>%
   dplyr::select(V1, V7, V9, V10)%>%
   dplyr::rename(Age=V1, `Have heard of TB`=V7, `Think everyone with TB has HIV`=V9, `Diagnosed in past 12 months`=V10)%>%
   pivot_longer(cols = c(`Have heard of TB`:`Diagnosed in past 12 months`), names_to = "Category", values_to = "Proportion")%>%
@@ -718,5 +718,16 @@ tb_wealth_men <- tbls[[77]]%>%
 tb_wealth <- rbind(tb_wealth_women, tb_wealth_men)
 
 readr::write_csv(tb_wealth, "table22_tb_by_wealth.csv")
+```
+
+### Table 23: Knowledge about HIV prevention methods among young people	
+
+```{r}
+hiv_prevent_age_women <- tbls[[79]]%>%
+  slice(8,9,11,12)%%
+  dplyr::select(V1, V2, V3, V4)%>%
+  dplyr::rename(Age=V1, `HIV prevented by using condoms`=V2, `HIV prevented by 1 uninfected partner`=V3, `HIV prevention knowledge`=V4)%>%
+  pivot_longer(cols=c(`HIV prevented by using condoms`:`HIV prevention knowledge`), names_to = "Category", values_to = "Proportion")%>%
+  mutate(Participants="Women")
 ```
 
