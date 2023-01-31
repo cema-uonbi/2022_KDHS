@@ -929,4 +929,66 @@ fever_county_map <- ggplot(fever_county1)+
   theme(text=element_text(size=14))
 ```
 
+### Table 22: Knowledge of, beliefs about, and diagnosis of tuberculosis
+
+```{r}
+### age
+tb_age <- read_csv("table22_tb_by_age.csv")
+
+tb_age_plot <- ggplot(tb_age,aes(x=`Age`, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  facet_wrap(~Participants)+
+  labs( y="Percent (%)", title="", x="Age", fill="")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
+
+### marital status
+tb_marital <- read_csv("table22_tb_by_marital_status.csv")
+
+tb_marital_plot <- ggplot(tb_marital,aes(x=`Marital status`, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  facet_wrap(~Participants)+
+  labs( y="Percent (%)", title="", x="Marital status", fill="")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))+
+  coord_flip()
+
+### residence
+tb_res <- read_csv("table22_tb_by_residence.csv")
+
+tb_res_plot <- ggplot(tb_res,aes(x=`Residence`, y=Proportion, fill=Category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+
+  facet_wrap(~Participants)+
+  labs( y="Percent (%)", title="", x="Residence", fill="")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=12))
+
+### education
+tb_edu <- read_csv("table22_tb_by_education.csv")%>%
+  mutate(`Education`=as.factor(fct_relevel(`Education`, c("No education", "Primary", "Secondary", "More than secondary"))))
+
+tb_edu_plot <- ggplot(tb_edu, aes(x=`Education`, y=Proportion, fill=Category)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
+  theme_bw()+
+  facet_wrap(~Participants)+
+  labs( y="Percent (%)", title="", x="Education", fill="")+
+  scale_fill_brewer(palette = "Set1")+
+  theme(text=element_text(size=12))
+
+### wealth
+tb_wealth <- read_csv("table22_tb_by_wealth.csv")%>%
+  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))
+
+tb_wealth_plot <- ggplot(tb_wealth, aes(x=`Wealth quintile`, y=Proportion, fill=Category)) + 
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
+  theme_bw()+
+  facet_wrap(~Participants)+
+  labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
+  scale_fill_brewer(palette = "Set1")+
+  theme(text=element_text(size=12))
+```
+
 
