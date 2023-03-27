@@ -664,8 +664,8 @@ renderGirafe({
 ```{r}
 
 valueBox(
-value = paste("xx%"),
-   caption = "xx",
+value = paste("26%"),
+   caption = "Of women have a form of health insurance",
    color = "#b15928", 
    icon='fa-female,' 
  ) 
@@ -675,12 +675,11 @@ value = paste("xx%"),
 
 ```{r}
  valueBox( 
-   value = paste("xx%"), 
-   caption = "xx", 
+   value = paste("26.5%"), 
+   caption = "Of men have a form of health insurance", 
    color = "darkgreen", 
    icon='fa-male' 
  )
- 
 ```
 
 ## Column {.tabset .tabset-fade data-height="900"}
@@ -1040,39 +1039,8 @@ renderPlot({if(input$covid%in%"Residence"){
 ```
 
 
-# Health Insurance Coverage {data-navmenu="Key Indicators"}
 
-## Row {data-width="200"}
-
-<br>
-
-###  {.value-box}
-
-```{r}
-
-valueBox(
-value = paste("26%"),
-   caption = "Of women have a form of health insurance",
-   color = "#b15928", 
-   icon='fa-female,' 
- ) 
-```
-
-###  {.value-box}
-
-```{r}
- valueBox( 
-   value = paste("26.5%"), 
-   caption = "Of men have a form of health insurance", 
-   color = "darkgreen", 
-   icon='fa-male' 
- )
- 
-```
-
-## Row {data-height="230"}
-
-### **Health Insurance Coverage:**
+### **Health Insurance Coverage**
 
 *Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.*
 
@@ -1080,55 +1048,41 @@ value = paste("26%"),
 
 ```{r}
 radioButtons("health", "",
-              c("Age in Years"="Age_category", 
+              c("Age in Years"="Age", 
                 "Residence"="Residence", 
-                "Wealth quintile"="Wealth_quintile"))
+                "Wealth quintile"="Wealth quintile"))
 ```
 
-## Row {data-height="600"}
+```{r, include=F}
 
-### .
+insurance_county <- read_csv("data/table_2/table_2_20C_insurance_by_county.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
+  mutate(Proportion=as.numeric(Proportion))%>%
+  mutate(Names=paste0(County,", ", Proportion,"%"))
+
+insurance_county1 <- full_join(county, insurance_county, by=c("Name"="County"))
+
+```
+
+
 
 ```{r, fig.width=16 }
 # health insurance data by age
-healthinsurancebyage <- read_csv("data/table_3/table3_healthinsurancebyage.csv") %>%
-  tidyr::gather(Insurance,Coverage,2:7) %>%
-  mutate(Insurance=recode(Insurance,"Any_health_insurance"="Form of health insurance", "None_DontKnow"="None/ Don't Know")) %>%
-  rename(Indicator=Age_category) %>%
-  mutate(Indicator1="Age_category")
-
-# health insurance data by residence
-healthinsurancebyresidence <-read_csv("data/table_3/table3_healthinsurancebyresidence.csv") %>%
-  tidyr::gather(Insurance,Coverage,2:7) %>%
-  mutate(Insurance=recode(Insurance,"Any_health_insurance"="Form of health insurance", "None_DontKnow"="None/ Don't Know")) %>%
-  rename(Indicator=Residence) %>%
-  mutate(Indicator1="Residence")
-
-# Wealth quintile
-healthinsurancebywealthquintile <- read_csv( "data/table_3/table3_healthinsurancebywealthquintile.csv") %>%
-  tidyr::gather(Insurance,Coverage,2:7) %>%
-  mutate(Insurance=recode(Insurance,"Any_health_insurance"="Form of health insurance", "None_DontKnow"="None/ Don't Know")) %>%
-  rename(Indicator=Wealth_quintile) %>%
-  mutate(Indicator1="Wealth_quintile")
-  
-# total health insurance data
-healthinsurance <- rbind(healthinsurancebyage,healthinsurancebyresidence,healthinsurancebywealthquintile) %>%
-  mutate(Insurance=recode(Insurance, "Community_based"="Community based", "Private_commercial"="Private/commercial")) %>%
-  mutate(label=ifelse(Coverage<0.5, "<1%", paste0(round(Coverage),"%")))
+insurance <- read_csv("data/table_2/table_2_20_insurance_by_background_xtics.csv")
 
 
-healthinsurance$Indicator <- fct_relevel(healthinsurance$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest")
+insurance$Value <- fct_relevel(insurance$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-healthinsurance$Insurance <- fct_relevel(healthinsurance$Insurance, "NHIF", "Private/commercial", "Community based", "Other", "Form of health insurance", "None/ Don't Know")
+insurance$`Health Insurance Type` <- fct_relevel(insurance$`Health Insurance Type`,"Any", "NHIF", "Private/commercial", "Community-based", "Other", "None/Don't know")
 
 renderPlot({
-  if(input$health%in%"Wealth_quintile"){
-    ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge())+#,aes(tooltip=paste0(Coverage, "%"))) +
-  facet_grid(.~Insurance)+labs(y="Percent (%)", x="")+
-    scale_fill_brewer(palette = "Set1")+coord_flip()+
+  if(input$health%in%c("Wealth quintile", "Age", "Residence")){
+    ggplot(insurance[insurance$`Background characteristics`%in%input$health,], aes(x=Value, y=Proportion))+geom_bar(stat = 'identity', position = position_dodge(), fill="#74add1")+#,aes(tooltip=paste0(Coverage, "%"))) +
+  labs(y="Percent (%)", x="")+
+   coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
-    theme(strip.background =element_rect(fill="darkorange"))+
-    geom_text(aes(label=label), position=position_dodge(0.5),vjust=0.5, size=4, color="black")
+   # theme(strip.background =element_rect(fill="darkorange"))+
+    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.5),vjust=0.5, size=4, color="black")}
   #  insurance_map1a<-girafe(ggobj = insurance_map1,width_svg=18, height_svg=9,
   #                 options = list(
   #                   opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -1136,13 +1090,16 @@ renderPlot({
                     # opts_sizing(rescale = TRUE),
    #                  opts_zoom(max = 4)))
   #print(insurance_map1a)
-  }else{ 
-  ggplot(healthinsurance[healthinsurance$Indicator1%in%input$health,], aes(x=Indicator, y=Coverage, fill=Participants))+geom_bar(stat = 'identity', position = position_dodge())+
-  facet_grid(.~Insurance)+labs(x="", y="Percent (%)")+
-    scale_fill_brewer(palette = "Set1")+ 
-    theme_bw()+theme(text=element_text(size=20, face = "bold")) +
-    theme(strip.background =element_rect(fill="darkorange"))+
-       geom_text(aes(label=label), position=position_dodge(0.7),vjust=-0.5,hjust=0.4, size=4, color="black")
+  else
+    { 
+  ggplot(insurance_county1)+
+  geom_sf(data=insurance_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~`Health Insurance Type`)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion (%)")+
+  theme(text=element_text(size=14))
   #insurance_map2a<-girafe(ggobj = insurance_map2, width_svg=18, height_svg=9,
    #                options = list(
     #                 opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -1151,11 +1108,43 @@ renderPlot({
       #               opts_zoom(max = 4)))
  # print(insurance_map2a, justify="left")
   }
-})
+}, width=1600, height=700)
 
 
 
 ```
+
+### **Cash transfer or social assistance**
+
+**Choose the provider to display:**
+
+```{r}
+radioButtons("cash_transfer", "",
+              c( 
+                "County government"="County government", 
+                "National government"="National government",
+                "Religious organizations"="Religious organization",
+                "Charitable organization"="Charitable organization",
+                "Friends, relatives, or neighbours"="Friends, relatives, or neighbours"))
+```
+
+```{r}
+cash_transfer <- read_csv("data/table_2/table_2_22_1_cash_transfer_by_provider.csv")%>%
+  mutate(lab = str_c(Proportion,"%")) %>%
+  mutate(Provider1=recode(Provider, "Church, mosque, or any other religious organization"="Religious organization", "NGO. CBO, or other charitable organization"="Charitable organization"))
+
+
+renderPlot({
+  ggplot(cash_transfer[cash_transfer$Provider1%in%input$cash_transfer,], aes(x=reorder(`Reason For Assistance`,Proportion), y=Proportion))+
+  geom_bar(stat = "identity", fill="#74add1")+
+  theme_bw()+
+  labs( y="Proportion (%)", title="", x="Reason for assistance", fill="")+
+  theme(text=element_text(size=12))+
+  geom_text(aes(label = lab), nudge_y = 2.0)+
+  coord_flip()
+}, width=1600, height=700)
+```
+
 
 # Disability among the household population {data-navmenu="Key Indicators"}
 
