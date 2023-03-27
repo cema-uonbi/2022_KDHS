@@ -1,0 +1,48 @@
+county,neonatal_mortality,post_neonatal_mortality,infant_mortality,child_mortality,under_5_mortality
+Mombasa,32,10,43,8,50
+Kwale,19,4,23,7,30
+Kilifi,24,10,34,6,40
+Tana River,23,14,38,8,45
+Lamu,26,15,41,9,50
+Taita/Taveta,(19),(5),(24),(6),(29)
+Garissa,28,13,41,3,44
+Wajir,37,6,43,15,57
+Mandera,16,4,20,1,21
+Marsabit,4,5,9,6,15
+Isiolo,22,2,24,9,33
+Meru,20,9,29,(6),(35)
+Tharaka-Nithi,(12),(7),(19),(6),(25)
+Embu,24,(11),(36),(8),(44)
+Kitui,13,9,23,4,27
+Machakos,26,8,34,7,41
+Makueni,26,9,35,3,38
+Nyandarua,20,16,36,10,45
+Nyeri,(27),(21),(48),(5),(52)
+Kirinyaga,37,(17),(55),(2),(56)
+Murang’a,36,(7),(43),(5),(47)
+Kiambu,28,7,35,5,40
+Turkana,21,7,29,27,55
+West Pokot,27,11,38,9,46
+Samburu,19,10,29,9,38
+Trans Nzoia,23,14,36,6,42
+Uasin Gishu,17,14,31,6,37
+Elgeyo/Marakwet,27,5,32,1,33
+Nandi,24,9,33,7,39
+Baringo,33,17,50,5,55
+Laikipia,20,23,44,7,50
+Nakuru,25,16,41,10,51
+Narok,16,8,24,2,26
+Kajiado,14,12,25,7,32
+Kericho,17,8,25,7,31
+Bomet,17,9,26,3,28
+Kakamega,16,11,28,18,45
+Vihiga,16,18,34,17,51
+Bungoma,25,15,39,16,55
+Busia,22,12,34,20,53
+Siaya,24,22,45,19,63
+Kisumu,21,19,40,5,45
+Homa Bay,32,11,42,20,61
+Migori,37,16,53,21,73
+Kisii,21,3,24,16,40
+Nyamira,27,4,31,12,42
+Nairobi City,20,20,40,4,44

@@ -1,0 +1,847 @@
+County,Category,Proportion,Participants
+Mombasa,"Legislators, Administrators & Managers",15.3,Women
+Mombasa,Professionals,10.7,Women
+Mombasa,Technicians & Associate Professionals,9.0,Women
+Mombasa,Secretarial & Clerical Services,2.3,Women
+Mombasa,Service Workers,29.2,Women
+Mombasa,Skilled Farm & Wildlife Related Workers,1.0,Women
+Mombasa,Craft & Related Trades Workers,0.2,Women
+Mombasa,Plant & Machine Operators,1.4,Women
+Mombasa,Elementary Occupations,28.7,Women
+Kwale,"Legislators, Administrators & Managers",20.5,Women
+Kwale,Professionals,9.2,Women
+Kwale,Technicians & Associate Professionals,7.8,Women
+Kwale,Secretarial & Clerical Services,3.3,Women
+Kwale,Service Workers,30.7,Women
+Kwale,Skilled Farm & Wildlife Related Workers,2.9,Women
+Kwale,Craft & Related Trades Workers,0.7,Women
+Kwale,Plant & Machine Operators,0.0,Women
+Kwale,Elementary Occupations,19.7,Women
+Kilifi,"Legislators, Administrators & Managers",14.2,Women
+Kilifi,Professionals,7.0,Women
+Kilifi,Technicians & Associate Professionals,5.9,Women
+Kilifi,Secretarial & Clerical Services,3.7,Women
+Kilifi,Service Workers,21.8,Women
+Kilifi,Skilled Farm & Wildlife Related Workers,7.2,Women
+Kilifi,Craft & Related Trades Workers,1.0,Women
+Kilifi,Plant & Machine Operators,0.4,Women
+Kilifi,Elementary Occupations,33.7,Women
+Tana River,"Legislators, Administrators & Managers",11.2,Women
+Tana River,Professionals,6.3,Women
+Tana River,Technicians & Associate Professionals,4.9,Women
+Tana River,Secretarial & Clerical Services,2.2,Women
+Tana River,Service Workers,12.6,Women
+Tana River,Skilled Farm & Wildlife Related Workers,23.2,Women
+Tana River,Craft & Related Trades Workers,1.2,Women
+Tana River,Plant & Machine Operators,0.0,Women
+Tana River,Elementary Occupations,38.5,Women
+Lamu,"Legislators, Administrators & Managers",8.1,Women
+Lamu,Professionals,11.8,Women
+Lamu,Technicians & Associate Professionals,6.3,Women
+Lamu,Secretarial & Clerical Services,1.6,Women
+Lamu,Service Workers,17.7,Women
+Lamu,Skilled Farm & Wildlife Related Workers,26.4,Women
+Lamu,Craft & Related Trades Workers,2.9,Women
+Lamu,Plant & Machine Operators,0.6,Women
+Lamu,Elementary Occupations,23.3,Women
+Taita/Taveta,"Legislators, Administrators & Managers",10.0,Women
+Taita/Taveta,Professionals,6.0,Women
+Taita/Taveta,Technicians & Associate Professionals,10.5,Women
+Taita/Taveta,Secretarial & Clerical Services,3.8,Women
+Taita/Taveta,Service Workers,19.5,Women
+Taita/Taveta,Skilled Farm & Wildlife Related Workers,16.5,Women
+Taita/Taveta,Craft & Related Trades Workers,2.1,Women
+Taita/Taveta,Plant & Machine Operators,0.3,Women
+Taita/Taveta,Elementary Occupations,30.4,Women
+Garissa,"Legislators, Administrators & Managers",9.1,Women
+Garissa,Professionals,6.7,Women
+Garissa,Technicians & Associate Professionals,10.5,Women
+Garissa,Secretarial & Clerical Services,1.7,Women
+Garissa,Service Workers,22.1,Women
+Garissa,Skilled Farm & Wildlife Related Workers,0.0,Women
+Garissa,Craft & Related Trades Workers,1.3,Women
+Garissa,Plant & Machine Operators,4.1,Women
+Garissa,Elementary Occupations,39.9,Women
+Wajir,"Legislators, Administrators & Managers",24.5,Women
+Wajir,Professionals,7.4,Women
+Wajir,Technicians & Associate Professionals,6.3,Women
+Wajir,Secretarial & Clerical Services,0.9,Women
+Wajir,Service Workers,24.4,Women
+Wajir,Skilled Farm & Wildlife Related Workers,6.3,Women
+Wajir,Craft & Related Trades Workers,2.5,Women
+Wajir,Plant & Machine Operators,0.0,Women
+Wajir,Elementary Occupations,24.6,Women
+Mandera,"Legislators, Administrators & Managers",(27.9),Women
+Mandera,Professionals,(4.1),Women
+Mandera,Technicians & Associate Professionals,(4.6),Women
+Mandera,Secretarial & Clerical Services,(4.6),Women
+Mandera,Service Workers,(12.8),Women
+Mandera,Skilled Farm & Wildlife Related Workers,(3.7),Women
+Mandera,Craft & Related Trades Workers,(6.5),Women
+Mandera,Plant & Machine Operators,(0.0),Women
+Mandera,Elementary Occupations,(33.9),Women
+Marsabit,"Legislators, Administrators & Managers",(33.8),Women
+Marsabit,Professionals,(5.5),Women
+Marsabit,Technicians & Associate Professionals,(19.1),Women
+Marsabit,Secretarial & Clerical Services,(2.7),Women
+Marsabit,Service Workers,(17.4),Women
+Marsabit,Skilled Farm & Wildlife Related Workers,(0.0),Women
+Marsabit,Craft & Related Trades Workers,(0.0),Women
+Marsabit,Plant & Machine Operators,(0.0),Women
+Marsabit,Elementary Occupations,(21.5),Women
+Isiolo,"Legislators, Administrators & Managers",18.0,Women
+Isiolo,Professionals,6.5,Women
+Isiolo,Technicians & Associate Professionals,11.6,Women
+Isiolo,Secretarial & Clerical Services,2.4,Women
+Isiolo,Service Workers,19.0,Women
+Isiolo,Skilled Farm & Wildlife Related Workers,6.8,Women
+Isiolo,Craft & Related Trades Workers,0.3,Women
+Isiolo,Plant & Machine Operators,0.6,Women
+Isiolo,Elementary Occupations,34.3,Women
+Meru,"Legislators, Administrators & Managers",7.7,Women
+Meru,Professionals,3.9,Women
+Meru,Technicians & Associate Professionals,5.5,Women
+Meru,Secretarial & Clerical Services,1.1,Women
+Meru,Service Workers,14.8,Women
+Meru,Skilled Farm & Wildlife Related Workers,45.2,Women
+Meru,Craft & Related Trades Workers,0.1,Women
+Meru,Plant & Machine Operators,0.8,Women
+Meru,Elementary Occupations,20.2,Women
+Tharaka-Nithi,"Legislators, Administrators & Managers",7.1,Women
+Tharaka-Nithi,Professionals,3.7,Women
+Tharaka-Nithi,Technicians & Associate Professionals,8.9,Women
+Tharaka-Nithi,Secretarial & Clerical Services,1.8,Women
+Tharaka-Nithi,Service Workers,19.8,Women
+Tharaka-Nithi,Skilled Farm & Wildlife Related Workers,35.7,Women
+Tharaka-Nithi,Craft & Related Trades Workers,0.5,Women
+Tharaka-Nithi,Plant & Machine Operators,0.3,Women
+Tharaka-Nithi,Elementary Occupations,20.0,Women
+Embu,"Legislators, Administrators & Managers",27.0,Women
+Embu,Professionals,5.0,Women
+Embu,Technicians & Associate Professionals,6.3,Women
+Embu,Secretarial & Clerical Services,2.5,Women
+Embu,Service Workers,8.6,Women
+Embu,Skilled Farm & Wildlife Related Workers,32.4,Women
+Embu,Craft & Related Trades Workers,0.2,Women
+Embu,Plant & Machine Operators,0.7,Women
+Embu,Elementary Occupations,15.2,Women
+Kitui,"Legislators, Administrators & Managers",16.3,Women
+Kitui,Professionals,7.4,Women
+Kitui,Technicians & Associate Professionals,10.3,Women
+Kitui,Secretarial & Clerical Services,4.7,Women
+Kitui,Service Workers,19.5,Women
+Kitui,Skilled Farm & Wildlife Related Workers,15.3,Women
+Kitui,Craft & Related Trades Workers,0.6,Women
+Kitui,Plant & Machine Operators,0.0,Women
+Kitui,Elementary Occupations,24.9,Women
+Machakos,"Legislators, Administrators & Managers",19.8,Women
+Machakos,Professionals,7.3,Women
+Machakos,Technicians & Associate Professionals,9.4,Women
+Machakos,Secretarial & Clerical Services,2.4,Women
+Machakos,Service Workers,25.0,Women
+Machakos,Skilled Farm & Wildlife Related Workers,7.2,Women
+Machakos,Craft & Related Trades Workers,0.5,Women
+Machakos,Plant & Machine Operators,1.8,Women
+Machakos,Elementary Occupations,24.0,Women
+Makueni,"Legislators, Administrators & Managers",15.2,Women
+Makueni,Professionals,4.0,Women
+Makueni,Technicians & Associate Professionals,11.5,Women
+Makueni,Secretarial & Clerical Services,2.4,Women
+Makueni,Service Workers,24.5,Women
+Makueni,Skilled Farm & Wildlife Related Workers,6.3,Women
+Makueni,Craft & Related Trades Workers,0.2,Women
+Makueni,Plant & Machine Operators,0.1,Women
+Makueni,Elementary Occupations,34.3,Women
+Nyandarua,"Legislators, Administrators & Managers",10.3,Women
+Nyandarua,Professionals,3.4,Women
+Nyandarua,Technicians & Associate Professionals,4.3,Women
+Nyandarua,Secretarial & Clerical Services,0.5,Women
+Nyandarua,Service Workers,12.0,Women
+Nyandarua,Skilled Farm & Wildlife Related Workers,52.3,Women
+Nyandarua,Craft & Related Trades Workers,0.4,Women
+Nyandarua,Plant & Machine Operators,0.3,Women
+Nyandarua,Elementary Occupations,15.9,Women
+Nyeri,"Legislators, Administrators & Managers",16.6,Women
+Nyeri,Professionals,6.7,Women
+Nyeri,Technicians & Associate Professionals,9.8,Women
+Nyeri,Secretarial & Clerical Services,3.0,Women
+Nyeri,Service Workers,16.6,Women
+Nyeri,Skilled Farm & Wildlife Related Workers,23.2,Women
+Nyeri,Craft & Related Trades Workers,1.3,Women
+Nyeri,Plant & Machine Operators,0.3,Women
+Nyeri,Elementary Occupations,19.8,Women
+Kirinyaga,"Legislators, Administrators & Managers",10.9,Women
+Kirinyaga,Professionals,4.7,Women
+Kirinyaga,Technicians & Associate Professionals,6.0,Women
+Kirinyaga,Secretarial & Clerical Services,2.8,Women
+Kirinyaga,Service Workers,21.7,Women
+Kirinyaga,Skilled Farm & Wildlife Related Workers,19.8,Women
+Kirinyaga,Craft & Related Trades Workers,1.3,Women
+Kirinyaga,Plant & Machine Operators,0.0,Women
+Kirinyaga,Elementary Occupations,31.0,Women
+Murang’a,"Legislators, Administrators & Managers",6.4,Women
+Murang’a,Professionals,5.7,Women
+Murang’a,Technicians & Associate Professionals,5.5,Women
+Murang’a,Secretarial & Clerical Services,0.8,Women
+Murang’a,Service Workers,17.9,Women
+Murang’a,Skilled Farm & Wildlife Related Workers,31.6,Women
+Murang’a,Craft & Related Trades Workers,1.3,Women
+Murang’a,Plant & Machine Operators,0.3,Women
+Murang’a,Elementary Occupations,29.1,Women
+Kiambu,"Legislators, Administrators & Managers",9.2,Women
+Kiambu,Professionals,5.2,Women
+Kiambu,Technicians & Associate Professionals,7.5,Women
+Kiambu,Secretarial & Clerical Services,1.8,Women
+Kiambu,Service Workers,23.1,Women
+Kiambu,Skilled Farm & Wildlife Related Workers,14.3,Women
+Kiambu,Craft & Related Trades Workers,1.7,Women
+Kiambu,Plant & Machine Operators,0.7,Women
+Kiambu,Elementary Occupations,31.9,Women
+Turkana,"Legislators, Administrators & Managers",7.7,Women
+Turkana,Professionals,2.1,Women
+Turkana,Technicians & Associate Professionals,7.0,Women
+Turkana,Secretarial & Clerical Services,0.2,Women
+Turkana,Service Workers,39.2,Women
+Turkana,Skilled Farm & Wildlife Related Workers,9.4,Women
+Turkana,Craft & Related Trades Workers,4.2,Women
+Turkana,Plant & Machine Operators,5.6,Women
+Turkana,Elementary Occupations,22.8,Women
+West Pokot,"Legislators, Administrators & Managers",10.9,Women
+West Pokot,Professionals,5.1,Women
+West Pokot,Technicians & Associate Professionals,15.2,Women
+West Pokot,Secretarial & Clerical Services,1.6,Women
+West Pokot,Service Workers,21.3,Women
+West Pokot,Skilled Farm & Wildlife Related Workers,40.4,Women
+West Pokot,Craft & Related Trades Workers,0.7,Women
+West Pokot,Plant & Machine Operators,0.5,Women
+West Pokot,Elementary Occupations,3.8,Women
+Samburu,"Legislators, Administrators & Managers",22.2,Women
+Samburu,Professionals,2.7,Women
+Samburu,Technicians & Associate Professionals,9.1,Women
+Samburu,Secretarial & Clerical Services,1.6,Women
+Samburu,Service Workers,24.9,Women
+Samburu,Skilled Farm & Wildlife Related Workers,2.9,Women
+Samburu,Craft & Related Trades Workers,3.2,Women
+Samburu,Plant & Machine Operators,0.9,Women
+Samburu,Elementary Occupations,32.2,Women
+Trans Nzoia,"Legislators, Administrators & Managers",6.1,Women
+Trans Nzoia,Professionals,5.9,Women
+Trans Nzoia,Technicians & Associate Professionals,11.6,Women
+Trans Nzoia,Secretarial & Clerical Services,1.6,Women
+Trans Nzoia,Service Workers,19.6,Women
+Trans Nzoia,Skilled Farm & Wildlife Related Workers,7.8,Women
+Trans Nzoia,Craft & Related Trades Workers,0.6,Women
+Trans Nzoia,Plant & Machine Operators,1.3,Women
+Trans Nzoia,Elementary Occupations,43.4,Women
+Uasin Gishu,"Legislators, Administrators & Managers",9.3,Women
+Uasin Gishu,Professionals,7.5,Women
+Uasin Gishu,Technicians & Associate Professionals,10.5,Women
+Uasin Gishu,Secretarial & Clerical Services,5.0,Women
+Uasin Gishu,Service Workers,23.3,Women
+Uasin Gishu,Skilled Farm & Wildlife Related Workers,14.6,Women
+Uasin Gishu,Craft & Related Trades Workers,2.0,Women
+Uasin Gishu,Plant & Machine Operators,1.3,Women
+Uasin Gishu,Elementary Occupations,22.7,Women
+Elgeyo/Marakwet,"Legislators, Administrators & Managers",9.9,Women
+Elgeyo/Marakwet,Professionals,4.7,Women
+Elgeyo/Marakwet,Technicians & Associate Professionals,18.4,Women
+Elgeyo/Marakwet,Secretarial & Clerical Services,0.7,Women
+Elgeyo/Marakwet,Service Workers,9.6,Women
+Elgeyo/Marakwet,Skilled Farm & Wildlife Related Workers,43.6,Women
+Elgeyo/Marakwet,Craft & Related Trades Workers,0.0,Women
+Elgeyo/Marakwet,Plant & Machine Operators,0.0,Women
+Elgeyo/Marakwet,Elementary Occupations,13.1,Women
+Nandi,"Legislators, Administrators & Managers",8.3,Women
+Nandi,Professionals,2.9,Women
+Nandi,Technicians & Associate Professionals,7.8,Women
+Nandi,Secretarial & Clerical Services,0.8,Women
+Nandi,Service Workers,15.8,Women
+Nandi,Skilled Farm & Wildlife Related Workers,53.3,Women
+Nandi,Craft & Related Trades Workers,0.6,Women
+Nandi,Plant & Machine Operators,0.0,Women
+Nandi,Elementary Occupations,10.5,Women
+Baringo,"Legislators, Administrators & Managers",19.9,Women
+Baringo,Professionals,3.0,Women
+Baringo,Technicians & Associate Professionals,10.0,Women
+Baringo,Secretarial & Clerical Services,0.3,Women
+Baringo,Service Workers,12.7,Women
+Baringo,Skilled Farm & Wildlife Related Workers,26.8,Women
+Baringo,Craft & Related Trades Workers,0.6,Women
+Baringo,Plant & Machine Operators,0.4,Women
+Baringo,Elementary Occupations,24.4,Women
+Laikipia,"Legislators, Administrators & Managers",3.9,Women
+Laikipia,Professionals,2.2,Women
+Laikipia,Technicians & Associate Professionals,5.5,Women
+Laikipia,Secretarial & Clerical Services,1.7,Women
+Laikipia,Service Workers,24.0,Women
+Laikipia,Skilled Farm & Wildlife Related Workers,27.9,Women
+Laikipia,Craft & Related Trades Workers,1.1,Women
+Laikipia,Plant & Machine Operators,0.3,Women
+Laikipia,Elementary Occupations,29.8,Women
+Nakuru,"Legislators, Administrators & Managers",8.9,Women
+Nakuru,Professionals,6.4,Women
+Nakuru,Technicians & Associate Professionals,6.5,Women
+Nakuru,Secretarial & Clerical Services,2.3,Women
+Nakuru,Service Workers,21.8,Women
+Nakuru,Skilled Farm & Wildlife Related Workers,20.9,Women
+Nakuru,Craft & Related Trades Workers,0.6,Women
+Nakuru,Plant & Machine Operators,0.2,Women
+Nakuru,Elementary Occupations,28.3,Women
+Narok,"Legislators, Administrators & Managers",12.5,Women
+Narok,Professionals,3.7,Women
+Narok,Technicians & Associate Professionals,10.7,Women
+Narok,Secretarial & Clerical Services,0.8,Women
+Narok,Service Workers,17.4,Women
+Narok,Skilled Farm & Wildlife Related Workers,32.4,Women
+Narok,Craft & Related Trades Workers,2.5,Women
+Narok,Plant & Machine Operators,0.0,Women
+Narok,Elementary Occupations,19.2,Women
+Kajiado,"Legislators, Administrators & Managers",14.7,Women
+Kajiado,Professionals,8.9,Women
+Kajiado,Technicians & Associate Professionals,10.4,Women
+Kajiado,Secretarial & Clerical Services,2.6,Women
+Kajiado,Service Workers,24.9,Women
+Kajiado,Skilled Farm & Wildlife Related Workers,3.7,Women
+Kajiado,Craft & Related Trades Workers,1.7,Women
+Kajiado,Plant & Machine Operators,0.5,Women
+Kajiado,Elementary Occupations,30.0,Women
+Kericho,"Legislators, Administrators & Managers",11.1,Women
+Kericho,Professionals,2.1,Women
+Kericho,Technicians & Associate Professionals,7.7,Women
+Kericho,Secretarial & Clerical Services,1.4,Women
+Kericho,Service Workers,4.5,Women
+Kericho,Skilled Farm & Wildlife Related Workers,61.7,Women
+Kericho,Craft & Related Trades Workers,0.1,Women
+Kericho,Plant & Machine Operators,0.0,Women
+Kericho,Elementary Occupations,8.8,Women
+Bomet,"Legislators, Administrators & Managers",2.8,Women
+Bomet,Professionals,3.5,Women
+Bomet,Technicians & Associate Professionals,7.1,Women
+Bomet,Secretarial & Clerical Services,0.9,Women
+Bomet,Service Workers,9.3,Women
+Bomet,Skilled Farm & Wildlife Related Workers,60.5,Women
+Bomet,Craft & Related Trades Workers,0.9,Women
+Bomet,Plant & Machine Operators,0.6,Women
+Bomet,Elementary Occupations,13.4,Women
+Kakamega,"Legislators, Administrators & Managers",6.3,Women
+Kakamega,Professionals,15.5,Women
+Kakamega,Technicians & Associate Professionals,8.4,Women
+Kakamega,Secretarial & Clerical Services,2.1,Women
+Kakamega,Service Workers,14.1,Women
+Kakamega,Skilled Farm & Wildlife Related Workers,22.2,Women
+Kakamega,Craft & Related Trades Workers,1.3,Women
+Kakamega,Plant & Machine Operators,1.1,Women
+Kakamega,Elementary Occupations,26.7,Women
+Vihiga,"Legislators, Administrators & Managers",4.7,Women
+Vihiga,Professionals,4.0,Women
+Vihiga,Technicians & Associate Professionals,9.2,Women
+Vihiga,Secretarial & Clerical Services,0.4,Women
+Vihiga,Service Workers,16.6,Women
+Vihiga,Skilled Farm & Wildlife Related Workers,15.5,Women
+Vihiga,Craft & Related Trades Workers,2.5,Women
+Vihiga,Plant & Machine Operators,0.3,Women
+Vihiga,Elementary Occupations,45.8,Women
+Bungoma,"Legislators, Administrators & Managers",8.0,Women
+Bungoma,Professionals,5.4,Women
+Bungoma,Technicians & Associate Professionals,9.9,Women
+Bungoma,Secretarial & Clerical Services,1.1,Women
+Bungoma,Service Workers,18.1,Women
+Bungoma,Skilled Farm & Wildlife Related Workers,21.0,Women
+Bungoma,Craft & Related Trades Workers,0.9,Women
+Bungoma,Plant & Machine Operators,0.4,Women
+Bungoma,Elementary Occupations,33.6,Women
+Busia,"Legislators, Administrators & Managers",9.5,Women
+Busia,Professionals,2.6,Women
+Busia,Technicians & Associate Professionals,5.2,Women
+Busia,Secretarial & Clerical Services,0.5,Women
+Busia,Service Workers,16.3,Women
+Busia,Skilled Farm & Wildlife Related Workers,44.6,Women
+Busia,Craft & Related Trades Workers,2.9,Women
+Busia,Plant & Machine Operators,0.3,Women
+Busia,Elementary Occupations,17.5,Women
+Siaya,"Legislators, Administrators & Managers",6.2,Women
+Siaya,Professionals,11.4,Women
+Siaya,Technicians & Associate Professionals,10.2,Women
+Siaya,Secretarial & Clerical Services,1.7,Women
+Siaya,Service Workers,20.7,Women
+Siaya,Skilled Farm & Wildlife Related Workers,19.4,Women
+Siaya,Craft & Related Trades Workers,3.4,Women
+Siaya,Plant & Machine Operators,1.0,Women
+Siaya,Elementary Occupations,26.0,Women
+Kisumu,"Legislators, Administrators & Managers",13.3,Women
+Kisumu,Professionals,3.1,Women
+Kisumu,Technicians & Associate Professionals,7.8,Women
+Kisumu,Secretarial & Clerical Services,3.8,Women
+Kisumu,Service Workers,29.4,Women
+Kisumu,Skilled Farm & Wildlife Related Workers,3.9,Women
+Kisumu,Craft & Related Trades Workers,2.1,Women
+Kisumu,Plant & Machine Operators,0.9,Women
+Kisumu,Elementary Occupations,32.9,Women
+Homa Bay,"Legislators, Administrators & Managers",13.6,Women
+Homa Bay,Professionals,5.1,Women
+Homa Bay,Technicians & Associate Professionals,8.4,Women
+Homa Bay,Secretarial & Clerical Services,0.8,Women
+Homa Bay,Service Workers,23.5,Women
+Homa Bay,Skilled Farm & Wildlife Related Workers,28.6,Women
+Homa Bay,Craft & Related Trades Workers,2.1,Women
+Homa Bay,Plant & Machine Operators,0.8,Women
+Homa Bay,Elementary Occupations,15.3,Women
+Migori,"Legislators, Administrators & Managers",4.9,Women
+Migori,Professionals,5.0,Women
+Migori,Technicians & Associate Professionals,5.0,Women
+Migori,Secretarial & Clerical Services,1.1,Women
+Migori,Service Workers,10.8,Women
+Migori,Skilled Farm & Wildlife Related Workers,36.5,Women
+Migori,Craft & Related Trades Workers,1.9,Women
+Migori,Plant & Machine Operators,0.4,Women
+Migori,Elementary Occupations,33.9,Women
+Kisii,"Legislators, Administrators & Managers",4.7,Women
+Kisii,Professionals,4.5,Women
+Kisii,Technicians & Associate Professionals,6.5,Women
+Kisii,Secretarial & Clerical Services,0.6,Women
+Kisii,Service Workers,16.8,Women
+Kisii,Skilled Farm & Wildlife Related Workers,53.2,Women
+Kisii,Craft & Related Trades Workers,0.0,Women
+Kisii,Plant & Machine Operators,0.5,Women
+Kisii,Elementary Occupations,12.3,Women
+Nyamira,"Legislators, Administrators & Managers",6.1,Women
+Nyamira,Professionals,0.3,Women
+Nyamira,Technicians & Associate Professionals,5.6,Women
+Nyamira,Secretarial & Clerical Services,0.9,Women
+Nyamira,Service Workers,11.0,Women
+Nyamira,Skilled Farm & Wildlife Related Workers,59.4,Women
+Nyamira,Craft & Related Trades Workers,0.3,Women
+Nyamira,Plant & Machine Operators,0.1,Women
+Nyamira,Elementary Occupations,15.9,Women
+Nairobi City,"Legislators, Administrators & Managers",9.3,Women
+Nairobi City,Professionals,5.4,Women
+Nairobi City,Technicians & Associate Professionals,10.2,Women
+Nairobi City,Secretarial & Clerical Services,3.4,Women
+Nairobi City,Service Workers,32.7,Women
+Nairobi City,Skilled Farm & Wildlife Related Workers,1.8,Women
+Nairobi City,Craft & Related Trades Workers,1.9,Women
+Nairobi City,Plant & Machine Operators,1.9,Women
+Nairobi City,Elementary Occupations,28.5,Women
+Mombasa,"Legislators, Administrators & Managers",7.3,Men
+Mombasa,Professionals,8.4,Men
+Mombasa,Technicians & Associate Professionals,8.8,Men
+Mombasa,Secretarial & Clerical Services,2.3,Men
+Mombasa,Service Workers,12.1,Men
+Mombasa,Skilled Farm & Wildlife Related Workers,2.7,Men
+Mombasa,Craft & Related Trades Workers,16.0,Men
+Mombasa,Plant & Machine Operators,14.3,Men
+Mombasa,Elementary Occupations,25.1,Men
+Kwale,"Legislators, Administrators & Managers",5.8,Men
+Kwale,Professionals,2.7,Men
+Kwale,Technicians & Associate Professionals,4.3,Men
+Kwale,Secretarial & Clerical Services,1.9,Men
+Kwale,Service Workers,18.5,Men
+Kwale,Skilled Farm & Wildlife Related Workers,14.1,Men
+Kwale,Craft & Related Trades Workers,9.1,Men
+Kwale,Plant & Machine Operators,12.6,Men
+Kwale,Elementary Occupations,26.6,Men
+Kilifi,"Legislators, Administrators & Managers",2.5,Men
+Kilifi,Professionals,2.5,Men
+Kilifi,Technicians & Associate Professionals,11.4,Men
+Kilifi,Secretarial & Clerical Services,0.8,Men
+Kilifi,Service Workers,10.4,Men
+Kilifi,Skilled Farm & Wildlife Related Workers,14.0,Men
+Kilifi,Craft & Related Trades Workers,12.8,Men
+Kilifi,Plant & Machine Operators,15.2,Men
+Kilifi,Elementary Occupations,24.8,Men
+Tana River,"Legislators, Administrators & Managers",3.5,Men
+Tana River,Professionals,2.4,Men
+Tana River,Technicians & Associate Professionals,1.9,Men
+Tana River,Secretarial & Clerical Services,0.0,Men
+Tana River,Service Workers,9.8,Men
+Tana River,Skilled Farm & Wildlife Related Workers,25.9,Men
+Tana River,Craft & Related Trades Workers,6.4,Men
+Tana River,Plant & Machine Operators,8.7,Men
+Tana River,Elementary Occupations,40.0,Men
+Lamu,"Legislators, Administrators & Managers",6.5,Men
+Lamu,Professionals,1.0,Men
+Lamu,Technicians & Associate Professionals,5.2,Men
+Lamu,Secretarial & Clerical Services,3.3,Men
+Lamu,Service Workers,7.5,Men
+Lamu,Skilled Farm & Wildlife Related Workers,34.7,Men
+Lamu,Craft & Related Trades Workers,12.6,Men
+Lamu,Plant & Machine Operators,8.5,Men
+Lamu,Elementary Occupations,18.5,Men
+Taita/Taveta,"Legislators, Administrators & Managers",5.9,Men
+Taita/Taveta,Professionals,5.7,Men
+Taita/Taveta,Technicians & Associate Professionals,5.6,Men
+Taita/Taveta,Secretarial & Clerical Services,0.0,Men
+Taita/Taveta,Service Workers,4.8,Men
+Taita/Taveta,Skilled Farm & Wildlife Related Workers,17.1,Men
+Taita/Taveta,Craft & Related Trades Workers,14.9,Men
+Taita/Taveta,Plant & Machine Operators,7.7,Men
+Taita/Taveta,Elementary Occupations,38.2,Men
+Garissa,"Legislators, Administrators & Managers",7.6,Men
+Garissa,Professionals,5.0,Men
+Garissa,Technicians & Associate Professionals,8.1,Men
+Garissa,Secretarial & Clerical Services,0.3,Men
+Garissa,Service Workers,17.9,Men
+Garissa,Skilled Farm & Wildlife Related Workers,1.4,Men
+Garissa,Craft & Related Trades Workers,3.9,Men
+Garissa,Plant & Machine Operators,22.2,Men
+Garissa,Elementary Occupations,33.4,Men
+Wajir,"Legislators, Administrators & Managers",10.9,Men
+Wajir,Professionals,8.5,Men
+Wajir,Technicians & Associate Professionals,19.7,Men
+Wajir,Secretarial & Clerical Services,0.7,Men
+Wajir,Service Workers,7.4,Men
+Wajir,Skilled Farm & Wildlife Related Workers,0.6,Men
+Wajir,Craft & Related Trades Workers,2.9,Men
+Wajir,Plant & Machine Operators,16.9,Men
+Wajir,Elementary Occupations,32.4,Men
+Mandera,"Legislators, Administrators & Managers",11.2,Men
+Mandera,Professionals,4.1,Men
+Mandera,Technicians & Associate Professionals,8.2,Men
+Mandera,Secretarial & Clerical Services,0.0,Men
+Mandera,Service Workers,7.8,Men
+Mandera,Skilled Farm & Wildlife Related Workers,6.1,Men
+Mandera,Craft & Related Trades Workers,9.3,Men
+Mandera,Plant & Machine Operators,14.9,Men
+Mandera,Elementary Occupations,32.7,Men
+Marsabit,"Legislators, Administrators & Managers",2.9,Men
+Marsabit,Professionals,3.2,Men
+Marsabit,Technicians & Associate Professionals,10.1,Men
+Marsabit,Secretarial & Clerical Services,0.0,Men
+Marsabit,Service Workers,15.3,Men
+Marsabit,Skilled Farm & Wildlife Related Workers,2.7,Men
+Marsabit,Craft & Related Trades Workers,0.6,Men
+Marsabit,Plant & Machine Operators,21.3,Men
+Marsabit,Elementary Occupations,41.0,Men
+Isiolo,"Legislators, Administrators & Managers",4.3,Men
+Isiolo,Professionals,7.1,Men
+Isiolo,Technicians & Associate Professionals,9.7,Men
+Isiolo,Secretarial & Clerical Services,0.5,Men
+Isiolo,Service Workers,17.4,Men
+Isiolo,Skilled Farm & Wildlife Related Workers,4.0,Men
+Isiolo,Craft & Related Trades Workers,5.8,Men
+Isiolo,Plant & Machine Operators,13.9,Men
+Isiolo,Elementary Occupations,36.6,Men
+Meru,"Legislators, Administrators & Managers",8.0,Men
+Meru,Professionals,2.6,Men
+Meru,Technicians & Associate Professionals,3.8,Men
+Meru,Secretarial & Clerical Services,0.6,Men
+Meru,Service Workers,6.7,Men
+Meru,Skilled Farm & Wildlife Related Workers,14.6,Men
+Meru,Craft & Related Trades Workers,11.1,Men
+Meru,Plant & Machine Operators,5.8,Men
+Meru,Elementary Occupations,46.5,Men
+Tharaka-Nithi,"Legislators, Administrators & Managers",0.7,Men
+Tharaka-Nithi,Professionals,2.3,Men
+Tharaka-Nithi,Technicians & Associate Professionals,5.3,Men
+Tharaka-Nithi,Secretarial & Clerical Services,0.3,Men
+Tharaka-Nithi,Service Workers,15.5,Men
+Tharaka-Nithi,Skilled Farm & Wildlife Related Workers,22.3,Men
+Tharaka-Nithi,Craft & Related Trades Workers,12.2,Men
+Tharaka-Nithi,Plant & Machine Operators,6.8,Men
+Tharaka-Nithi,Elementary Occupations,30.6,Men
+Embu,"Legislators, Administrators & Managers",3.1,Men
+Embu,Professionals,4.3,Men
+Embu,Technicians & Associate Professionals,7.7,Men
+Embu,Secretarial & Clerical Services,0.0,Men
+Embu,Service Workers,15.2,Men
+Embu,Skilled Farm & Wildlife Related Workers,23.6,Men
+Embu,Craft & Related Trades Workers,9.7,Men
+Embu,Plant & Machine Operators,10.7,Men
+Embu,Elementary Occupations,23.2,Men
+Kitui,"Legislators, Administrators & Managers",10.6,Men
+Kitui,Professionals,1.3,Men
+Kitui,Technicians & Associate Professionals,4.2,Men
+Kitui,Secretarial & Clerical Services,0.0,Men
+Kitui,Service Workers,9.2,Men
+Kitui,Skilled Farm & Wildlife Related Workers,3.1,Men
+Kitui,Craft & Related Trades Workers,9.3,Men
+Kitui,Plant & Machine Operators,8.1,Men
+Kitui,Elementary Occupations,51.3,Men
+Machakos,"Legislators, Administrators & Managers",3.8,Men
+Machakos,Professionals,8.3,Men
+Machakos,Technicians & Associate Professionals,4.4,Men
+Machakos,Secretarial & Clerical Services,1.3,Men
+Machakos,Service Workers,9.1,Men
+Machakos,Skilled Farm & Wildlife Related Workers,9.9,Men
+Machakos,Craft & Related Trades Workers,22.4,Men
+Machakos,Plant & Machine Operators,9.4,Men
+Machakos,Elementary Occupations,27.5,Men
+Makueni,"Legislators, Administrators & Managers",3.2,Men
+Makueni,Professionals,3.3,Men
+Makueni,Technicians & Associate Professionals,3.8,Men
+Makueni,Secretarial & Clerical Services,0.3,Men
+Makueni,Service Workers,7.9,Men
+Makueni,Skilled Farm & Wildlife Related Workers,6.9,Men
+Makueni,Craft & Related Trades Workers,5.4,Men
+Makueni,Plant & Machine Operators,13.7,Men
+Makueni,Elementary Occupations,54.1,Men
+Nyandarua,"Legislators, Administrators & Managers",6.7,Men
+Nyandarua,Professionals,1.6,Men
+Nyandarua,Technicians & Associate Professionals,6.2,Men
+Nyandarua,Secretarial & Clerical Services,0.1,Men
+Nyandarua,Service Workers,4.5,Men
+Nyandarua,Skilled Farm & Wildlife Related Workers,37.4,Men
+Nyandarua,Craft & Related Trades Workers,12.9,Men
+Nyandarua,Plant & Machine Operators,5.9,Men
+Nyandarua,Elementary Occupations,23.6,Men
+Nyeri,"Legislators, Administrators & Managers",1.2,Men
+Nyeri,Professionals,3.7,Men
+Nyeri,Technicians & Associate Professionals,8.5,Men
+Nyeri,Secretarial & Clerical Services,0.8,Men
+Nyeri,Service Workers,14.4,Men
+Nyeri,Skilled Farm & Wildlife Related Workers,28.7,Men
+Nyeri,Craft & Related Trades Workers,21.9,Men
+Nyeri,Plant & Machine Operators,10.6,Men
+Nyeri,Elementary Occupations,8.2,Men
+Kirinyaga,"Legislators, Administrators & Managers",0.5,Men
+Kirinyaga,Professionals,3.2,Men
+Kirinyaga,Technicians & Associate Professionals,6.4,Men
+Kirinyaga,Secretarial & Clerical Services,0.8,Men
+Kirinyaga,Service Workers,17.6,Men
+Kirinyaga,Skilled Farm & Wildlife Related Workers,15.9,Men
+Kirinyaga,Craft & Related Trades Workers,8.2,Men
+Kirinyaga,Plant & Machine Operators,4.5,Men
+Kirinyaga,Elementary Occupations,43.1,Men
+Murang’a,"Legislators, Administrators & Managers",4.3,Men
+Murang’a,Professionals,1.4,Men
+Murang’a,Technicians & Associate Professionals,3.4,Men
+Murang’a,Secretarial & Clerical Services,0.0,Men
+Murang’a,Service Workers,4.3,Men
+Murang’a,Skilled Farm & Wildlife Related Workers,28.8,Men
+Murang’a,Craft & Related Trades Workers,15.5,Men
+Murang’a,Plant & Machine Operators,6.5,Men
+Murang’a,Elementary Occupations,32.9,Men
+Kiambu,"Legislators, Administrators & Managers",6.5,Men
+Kiambu,Professionals,4.8,Men
+Kiambu,Technicians & Associate Professionals,6.3,Men
+Kiambu,Secretarial & Clerical Services,0.7,Men
+Kiambu,Service Workers,12.9,Men
+Kiambu,Skilled Farm & Wildlife Related Workers,16.5,Men
+Kiambu,Craft & Related Trades Workers,14.8,Men
+Kiambu,Plant & Machine Operators,13.3,Men
+Kiambu,Elementary Occupations,18.7,Men
+Turkana,"Legislators, Administrators & Managers",2.4,Men
+Turkana,Professionals,4.3,Men
+Turkana,Technicians & Associate Professionals,3.0,Men
+Turkana,Secretarial & Clerical Services,2.4,Men
+Turkana,Service Workers,20.7,Men
+Turkana,Skilled Farm & Wildlife Related Workers,24.7,Men
+Turkana,Craft & Related Trades Workers,12.8,Men
+Turkana,Plant & Machine Operators,11.5,Men
+Turkana,Elementary Occupations,15.8,Men
+West Pokot,"Legislators, Administrators & Managers",9.1,Men
+West Pokot,Professionals,1.2,Men
+West Pokot,Technicians & Associate Professionals,3.1,Men
+West Pokot,Secretarial & Clerical Services,0.2,Men
+West Pokot,Service Workers,6.4,Men
+West Pokot,Skilled Farm & Wildlife Related Workers,42.3,Men
+West Pokot,Craft & Related Trades Workers,5.6,Men
+West Pokot,Plant & Machine Operators,7.0,Men
+West Pokot,Elementary Occupations,24.5,Men
+Samburu,"Legislators, Administrators & Managers",5.4,Men
+Samburu,Professionals,5.4,Men
+Samburu,Technicians & Associate Professionals,10.8,Men
+Samburu,Secretarial & Clerical Services,0.0,Men
+Samburu,Service Workers,15.5,Men
+Samburu,Skilled Farm & Wildlife Related Workers,14.1,Men
+Samburu,Craft & Related Trades Workers,4.9,Men
+Samburu,Plant & Machine Operators,7.8,Men
+Samburu,Elementary Occupations,30.4,Men
+Trans Nzoia,"Legislators, Administrators & Managers",2.4,Men
+Trans Nzoia,Professionals,6.6,Men
+Trans Nzoia,Technicians & Associate Professionals,8.3,Men
+Trans Nzoia,Secretarial & Clerical Services,0.8,Men
+Trans Nzoia,Service Workers,6.7,Men
+Trans Nzoia,Skilled Farm & Wildlife Related Workers,8.0,Men
+Trans Nzoia,Craft & Related Trades Workers,9.9,Men
+Trans Nzoia,Plant & Machine Operators,16.5,Men
+Trans Nzoia,Elementary Occupations,39.0,Men
+Uasin Gishu,"Legislators, Administrators & Managers",2.0,Men
+Uasin Gishu,Professionals,2.7,Men
+Uasin Gishu,Technicians & Associate Professionals,9.5,Men
+Uasin Gishu,Secretarial & Clerical Services,2.6,Men
+Uasin Gishu,Service Workers,10.0,Men
+Uasin Gishu,Skilled Farm & Wildlife Related Workers,24.8,Men
+Uasin Gishu,Craft & Related Trades Workers,16.8,Men
+Uasin Gishu,Plant & Machine Operators,5.4,Men
+Uasin Gishu,Elementary Occupations,16.3,Men
+Elgeyo/Marakwet,"Legislators, Administrators & Managers",6.1,Men
+Elgeyo/Marakwet,Professionals,1.7,Men
+Elgeyo/Marakwet,Technicians & Associate Professionals,9.8,Men
+Elgeyo/Marakwet,Secretarial & Clerical Services,0.1,Men
+Elgeyo/Marakwet,Service Workers,2.8,Men
+Elgeyo/Marakwet,Skilled Farm & Wildlife Related Workers,52.1,Men
+Elgeyo/Marakwet,Craft & Related Trades Workers,5.8,Men
+Elgeyo/Marakwet,Plant & Machine Operators,6.2,Men
+Elgeyo/Marakwet,Elementary Occupations,10.4,Men
+Nandi,"Legislators, Administrators & Managers",2.5,Men
+Nandi,Professionals,2.2,Men
+Nandi,Technicians & Associate Professionals,9.5,Men
+Nandi,Secretarial & Clerical Services,0.9,Men
+Nandi,Service Workers,6.0,Men
+Nandi,Skilled Farm & Wildlife Related Workers,37.7,Men
+Nandi,Craft & Related Trades Workers,14.4,Men
+Nandi,Plant & Machine Operators,9.6,Men
+Nandi,Elementary Occupations,14.8,Men
+Baringo,"Legislators, Administrators & Managers",0.2,Men
+Baringo,Professionals,2.9,Men
+Baringo,Technicians & Associate Professionals,5.9,Men
+Baringo,Secretarial & Clerical Services,0.7,Men
+Baringo,Service Workers,10.0,Men
+Baringo,Skilled Farm & Wildlife Related Workers,33.8,Men
+Baringo,Craft & Related Trades Workers,8.2,Men
+Baringo,Plant & Machine Operators,10.3,Men
+Baringo,Elementary Occupations,28.0,Men
+Laikipia,"Legislators, Administrators & Managers",2.8,Men
+Laikipia,Professionals,5.4,Men
+Laikipia,Technicians & Associate Professionals,4.0,Men
+Laikipia,Secretarial & Clerical Services,1.2,Men
+Laikipia,Service Workers,10.3,Men
+Laikipia,Skilled Farm & Wildlife Related Workers,22.6,Men
+Laikipia,Craft & Related Trades Workers,3.7,Men
+Laikipia,Plant & Machine Operators,7.5,Men
+Laikipia,Elementary Occupations,36.6,Men
+Nakuru,"Legislators, Administrators & Managers",5.0,Men
+Nakuru,Professionals,2.3,Men
+Nakuru,Technicians & Associate Professionals,8.6,Men
+Nakuru,Secretarial & Clerical Services,1.2,Men
+Nakuru,Service Workers,14.7,Men
+Nakuru,Skilled Farm & Wildlife Related Workers,35.2,Men
+Nakuru,Craft & Related Trades Workers,10.5,Men
+Nakuru,Plant & Machine Operators,12.1,Men
+Nakuru,Elementary Occupations,6.8,Men
+Narok,"Legislators, Administrators & Managers",11.1,Men
+Narok,Professionals,0.9,Men
+Narok,Technicians & Associate Professionals,4.5,Men
+Narok,Secretarial & Clerical Services,0.7,Men
+Narok,Service Workers,4.6,Men
+Narok,Skilled Farm & Wildlife Related Workers,42.2,Men
+Narok,Craft & Related Trades Workers,4.9,Men
+Narok,Plant & Machine Operators,10.2,Men
+Narok,Elementary Occupations,18.2,Men
+Kajiado,"Legislators, Administrators & Managers",3.7,Men
+Kajiado,Professionals,8.4,Men
+Kajiado,Technicians & Associate Professionals,9.9,Men
+Kajiado,Secretarial & Clerical Services,0.6,Men
+Kajiado,Service Workers,14.5,Men
+Kajiado,Skilled Farm & Wildlife Related Workers,10.5,Men
+Kajiado,Craft & Related Trades Workers,15.9,Men
+Kajiado,Plant & Machine Operators,12.7,Men
+Kajiado,Elementary Occupations,21.6,Men
+Kericho,"Legislators, Administrators & Managers",2.1,Men
+Kericho,Professionals,2.0,Men
+Kericho,Technicians & Associate Professionals,5.9,Men
+Kericho,Secretarial & Clerical Services,1.4,Men
+Kericho,Service Workers,11.0,Men
+Kericho,Skilled Farm & Wildlife Related Workers,25.2,Men
+Kericho,Craft & Related Trades Workers,4.4,Men
+Kericho,Plant & Machine Operators,10.4,Men
+Kericho,Elementary Occupations,35.8,Men
+Bomet,"Legislators, Administrators & Managers",4.9,Men
+Bomet,Professionals,2.0,Men
+Bomet,Technicians & Associate Professionals,7.9,Men
+Bomet,Secretarial & Clerical Services,0.1,Men
+Bomet,Service Workers,7.5,Men
+Bomet,Skilled Farm & Wildlife Related Workers,36.8,Men
+Bomet,Craft & Related Trades Workers,5.7,Men
+Bomet,Plant & Machine Operators,11.7,Men
+Bomet,Elementary Occupations,22.8,Men
+Kakamega,"Legislators, Administrators & Managers",1.3,Men
+Kakamega,Professionals,3.3,Men
+Kakamega,Technicians & Associate Professionals,6.5,Men
+Kakamega,Secretarial & Clerical Services,0.5,Men
+Kakamega,Service Workers,6.3,Men
+Kakamega,Skilled Farm & Wildlife Related Workers,12.5,Men
+Kakamega,Craft & Related Trades Workers,9.9,Men
+Kakamega,Plant & Machine Operators,25.5,Men
+Kakamega,Elementary Occupations,32.2,Men
+Vihiga,"Legislators, Administrators & Managers",5.4,Men
+Vihiga,Professionals,3.6,Men
+Vihiga,Technicians & Associate Professionals,7.5,Men
+Vihiga,Secretarial & Clerical Services,0.5,Men
+Vihiga,Service Workers,6.0,Men
+Vihiga,Skilled Farm & Wildlife Related Workers,24.8,Men
+Vihiga,Craft & Related Trades Workers,23.1,Men
+Vihiga,Plant & Machine Operators,6.7,Men
+Vihiga,Elementary Occupations,20.8,Men
+Bungoma,"Legislators, Administrators & Managers",1.3,Men
+Bungoma,Professionals,5.2,Men
+Bungoma,Technicians & Associate Professionals,6.6,Men
+Bungoma,Secretarial & Clerical Services,0.6,Men
+Bungoma,Service Workers,9.9,Men
+Bungoma,Skilled Farm & Wildlife Related Workers,10.9,Men
+Bungoma,Craft & Related Trades Workers,15.4,Men
+Bungoma,Plant & Machine Operators,8.5,Men
+Bungoma,Elementary Occupations,40.3,Men
+Busia,"Legislators, Administrators & Managers",4.3,Men
+Busia,Professionals,1.8,Men
+Busia,Technicians & Associate Professionals,7.3,Men
+Busia,Secretarial & Clerical Services,1.3,Men
+Busia,Service Workers,3.6,Men
+Busia,Skilled Farm & Wildlife Related Workers,28.4,Men
+Busia,Craft & Related Trades Workers,26.3,Men
+Busia,Plant & Machine Operators,12.5,Men
+Busia,Elementary Occupations,13.3,Men
+Siaya,"Legislators, Administrators & Managers",0.9,Men
+Siaya,Professionals,5.0,Men
+Siaya,Technicians & Associate Professionals,2.7,Men
+Siaya,Secretarial & Clerical Services,3.2,Men
+Siaya,Service Workers,4.5,Men
+Siaya,Skilled Farm & Wildlife Related Workers,29.9,Men
+Siaya,Craft & Related Trades Workers,18.7,Men
+Siaya,Plant & Machine Operators,12.8,Men
+Siaya,Elementary Occupations,20.4,Men
+Kisumu,"Legislators, Administrators & Managers",4.4,Men
+Kisumu,Professionals,6.8,Men
+Kisumu,Technicians & Associate Professionals,3.9,Men
+Kisumu,Secretarial & Clerical Services,0.0,Men
+Kisumu,Service Workers,4.8,Men
+Kisumu,Skilled Farm & Wildlife Related Workers,5.9,Men
+Kisumu,Craft & Related Trades Workers,5.7,Men
+Kisumu,Plant & Machine Operators,16.6,Men
+Kisumu,Elementary Occupations,51.2,Men
+Homa Bay,"Legislators, Administrators & Managers",0.9,Men
+Homa Bay,Professionals,4.0,Men
+Homa Bay,Technicians & Associate Professionals,4.1,Men
+Homa Bay,Secretarial & Clerical Services,1.3,Men
+Homa Bay,Service Workers,7.4,Men
+Homa Bay,Skilled Farm & Wildlife Related Workers,36.0,Men
+Homa Bay,Craft & Related Trades Workers,13.3,Men
+Homa Bay,Plant & Machine Operators,9.3,Men
+Homa Bay,Elementary Occupations,22.5,Men
+Migori,"Legislators, Administrators & Managers",2.0,Men
+Migori,Professionals,4.4,Men
+Migori,Technicians & Associate Professionals,1.7,Men
+Migori,Secretarial & Clerical Services,0.4,Men
+Migori,Service Workers,5.9,Men
+Migori,Skilled Farm & Wildlife Related Workers,38.1,Men
+Migori,Craft & Related Trades Workers,12.9,Men
+Migori,Plant & Machine Operators,11.5,Men
+Migori,Elementary Occupations,21.9,Men
+Kisii,"Legislators, Administrators & Managers",8.8,Men
+Kisii,Professionals,1.7,Men
+Kisii,Technicians & Associate Professionals,9.9,Men
+Kisii,Secretarial & Clerical Services,0.7,Men
+Kisii,Service Workers,3.1,Men
+Kisii,Skilled Farm & Wildlife Related Workers,27.0,Men
+Kisii,Craft & Related Trades Workers,7.5,Men
+Kisii,Plant & Machine Operators,13.2,Men
+Kisii,Elementary Occupations,26.8,Men
+Nyamira,"Legislators, Administrators & Managers",9.9,Men
+Nyamira,Professionals,2.3,Men
+Nyamira,Technicians & Associate Professionals,7.4,Men
+Nyamira,Secretarial & Clerical Services,0.0,Men
+Nyamira,Service Workers,4.8,Men
+Nyamira,Skilled Farm & Wildlife Related Workers,26.2,Men
+Nyamira,Craft & Related Trades Workers,9.0,Men
+Nyamira,Plant & Machine Operators,12.3,Men
+Nyamira,Elementary Occupations,24.3,Men
+Nairobi City,"Legislators, Administrators & Managers",7.6,Men
+Nairobi City,Professionals,9.1,Men
+Nairobi City,Technicians & Associate Professionals,10.0,Men
+Nairobi City,Secretarial & Clerical Services,2.9,Men
+Nairobi City,Service Workers,17.4,Men
+Nairobi City,Skilled Farm & Wildlife Related Workers,1.3,Men
+Nairobi City,Craft & Related Trades Workers,7.1,Men
+Nairobi City,Plant & Machine Operators,8.6,Men
+Nairobi City,Elementary Occupations,26.3,Men

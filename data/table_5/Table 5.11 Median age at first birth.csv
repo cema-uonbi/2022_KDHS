@@ -1,0 +1,12 @@
+Variable,Women.age.20-49,Women.age.25-49,characteristic
+Urban,a,22.0,residence
+Rural,a,19.9,residence
+No education,19.1,19.0,education
+Primary,18.9,19.0,education
+Secondary,a,21.3,education
+More than secondary,a,24.8,education
+Lowest,19.2,19.1,Wealth quintile
+Second,19.5,19.3,Wealth quintile
+Middle,a,20.1,Wealth quintile
+Fourth,a,21.3,Wealth quintile
+Highest,a,23.0,Wealth quintile

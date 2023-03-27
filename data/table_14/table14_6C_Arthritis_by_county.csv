@@ -1,0 +1,189 @@
+County,Category,Proportion,Participants
+Mombasa,Diagnosed with Arthritis,2.5,Women
+Mombasa,Receiving treatment,NA,Women
+Kwale,Diagnosed with Arthritis,0,Women
+Kwale,Receiving treatment,NA,Women
+Kilifi,Diagnosed with Arthritis,0,Women
+Kilifi,Receiving treatment,NA,Women
+Tana River,Diagnosed with Arthritis,0.5,Women
+Tana River,Receiving treatment,NA,Women
+Lamu,Diagnosed with Arthritis,0.7,Women
+Lamu,Receiving treatment,NA,Women
+Taita/Taveta,Diagnosed with Arthritis,0.8,Women
+Taita/Taveta,Receiving treatment,NA,Women
+Garissa,Diagnosed with Arthritis,1.9,Women
+Garissa,Receiving treatment,NA,Women
+Wajir,Diagnosed with Arthritis,1.2,Women
+Wajir,Receiving treatment,NA,Women
+Mandera,Diagnosed with Arthritis,1.6,Women
+Mandera,Receiving treatment,NA,Women
+Marsabit,Diagnosed with Arthritis,0.5,Women
+Marsabit,Receiving treatment,NA,Women
+Isiolo,Diagnosed with Arthritis,2.3,Women
+Isiolo,Receiving treatment,NA,Women
+Meru,Diagnosed with Arthritis,10.4,Women
+Meru,Receiving treatment,37.9,Women
+Tharaka-Nithi,Diagnosed with Arthritis,11.1,Women
+Tharaka-Nithi,Receiving treatment,45,Women
+Embu,Diagnosed with Arthritis,4.4,Women
+Embu,Receiving treatment,NA,Women
+Kitui,Diagnosed with Arthritis,0.4,Women
+Kitui,Receiving treatment,NA,Women
+Machakos,Diagnosed with Arthritis,0.4,Women
+Machakos,Receiving treatment,NA,Women
+Makueni,Diagnosed with Arthritis,2,Women
+Makueni,Receiving treatment,NA,Women
+Nyandarua,Diagnosed with Arthritis,8.3,Women
+Nyandarua,Receiving treatment,27,Women
+Nyeri,Diagnosed with Arthritis,4.6,Women
+Nyeri,Receiving treatment,NA,Women
+Kirinyaga,Diagnosed with Arthritis,7.2,Women
+Kirinyaga,Receiving treatment,NA,Women
+Murang’a,Diagnosed with Arthritis,3.8,Women
+Murang’a,Receiving treatment,NA,Women
+Kiambu,Diagnosed with Arthritis,2.8,Women
+Kiambu,Receiving treatment,NA,Women
+Turkana,Diagnosed with Arthritis,2.1,Women
+Turkana,Receiving treatment,NA,Women
+West Pokot,Diagnosed with Arthritis,3.3,Women
+West Pokot,Receiving treatment,NA,Women
+Samburu,Diagnosed with Arthritis,1.2,Women
+Samburu,Receiving treatment,NA,Women
+Trans Nzoia,Diagnosed with Arthritis,0.4,Women
+Trans Nzoia,Receiving treatment,NA,Women
+Uasin Gishu,Diagnosed with Arthritis,5.1,Women
+Uasin Gishu,Receiving treatment,NA,Women
+Elgeyo/Marakwet,Diagnosed with Arthritis,0.8,Women
+Elgeyo/Marakwet,Receiving treatment,NA,Women
+Nandi,Diagnosed with Arthritis,2.4,Women
+Nandi,Receiving treatment,NA,Women
+Baringo,Diagnosed with Arthritis,7.2,Women
+Baringo,Receiving treatment,49.7,Women
+Laikipia,Diagnosed with Arthritis,4.4,Women
+Laikipia,Receiving treatment,NA,Women
+Nakuru,Diagnosed with Arthritis,4.3,Women
+Nakuru,Receiving treatment,NA,Women
+Narok,Diagnosed with Arthritis,3.2,Women
+Narok,Receiving treatment,NA,Women
+Kajiado,Diagnosed with Arthritis,2.6,Women
+Kajiado,Receiving treatment,NA,Women
+Kericho,Diagnosed with Arthritis,0.8,Women
+Kericho,Receiving treatment,NA,Women
+Bomet,Diagnosed with Arthritis,1.8,Women
+Bomet,Receiving treatment,NA,Women
+Kakamega,Diagnosed with Arthritis,0.9,Women
+Kakamega,Receiving treatment,NA,Women
+Vihiga,Diagnosed with Arthritis,2.4,Women
+Vihiga,Receiving treatment,NA,Women
+Bungoma,Diagnosed with Arthritis,2.8,Women
+Bungoma,Receiving treatment,NA,Women
+Busia,Diagnosed with Arthritis,0.4,Women
+Busia,Receiving treatment,NA,Women
+Siaya,Diagnosed with Arthritis,2.6,Women
+Siaya,Receiving treatment,NA,Women
+Kisumu,Diagnosed with Arthritis,2,Women
+Kisumu,Receiving treatment,NA,Women
+Homa Bay,Diagnosed with Arthritis,4.5,Women
+Homa Bay,Receiving treatment,NA,Women
+Migori,Diagnosed with Arthritis,1.8,Women
+Migori,Receiving treatment,NA,Women
+Kisii,Diagnosed with Arthritis,2,Women
+Kisii,Receiving treatment,NA,Women
+Nyamira,Diagnosed with Arthritis,1.2,Women
+Nyamira,Receiving treatment,NA,Women
+Nairobi City,Diagnosed with Arthritis,2.6,Women
+Nairobi City,Receiving treatment,NA,Women
+Mombasa,Diagnosed with Arthritis,1.3,Men
+Mombasa,Receiving treatment,NA,Men
+Kwale,Diagnosed with Arthritis,0.5,Men
+Kwale,Receiving treatment,NA,Men
+Kilifi,Diagnosed with Arthritis,1.4,Men
+Kilifi,Receiving treatment,NA,Men
+Tana River,Diagnosed with Arthritis,0.7,Men
+Tana River,Receiving treatment,NA,Men
+Lamu,Diagnosed with Arthritis,0,Men
+Lamu,Receiving treatment,NA,Men
+Taita/Taveta,Diagnosed with Arthritis,0,Men
+Taita/Taveta,Receiving treatment,NA,Men
+Garissa,Diagnosed with Arthritis,0,Men
+Garissa,Receiving treatment,NA,Men
+Wajir,Diagnosed with Arthritis,0,Men
+Wajir,Receiving treatment,NA,Men
+Mandera,Diagnosed with Arthritis,0,Men
+Mandera,Receiving treatment,NA,Men
+Marsabit,Diagnosed with Arthritis,0,Men
+Marsabit,Receiving treatment,NA,Men
+Isiolo,Diagnosed with Arthritis,1.1,Men
+Isiolo,Receiving treatment,NA,Men
+Meru,Diagnosed with Arthritis,10.4,Men
+Meru,Receiving treatment,27.1,Men
+Tharaka-Nithi,Diagnosed with Arthritis,3.2,Men
+Tharaka-Nithi,Receiving treatment,NA,Men
+Embu,Diagnosed with Arthritis,2.2,Men
+Embu,Receiving treatment,NA,Men
+Kitui,Diagnosed with Arthritis,0,Men
+Kitui,Receiving treatment,NA,Men
+Machakos,Diagnosed with Arthritis,0,Men
+Machakos,Receiving treatment,NA,Men
+Makueni,Diagnosed with Arthritis,0.7,Men
+Makueni,Receiving treatment,NA,Men
+Nyandarua,Diagnosed with Arthritis,1.8,Men
+Nyandarua,Receiving treatment,NA,Men
+Nyeri,Diagnosed with Arthritis,3,Men
+Nyeri,Receiving treatment,NA,Men
+Kirinyaga,Diagnosed with Arthritis,1.1,Men
+Kirinyaga,Receiving treatment,NA,Men
+Murang’a,Diagnosed with Arthritis,2.8,Men
+Murang’a,Receiving treatment,NA,Men
+Kiambu,Diagnosed with Arthritis,0.2,Men
+Kiambu,Receiving treatment,NA,Men
+Turkana,Diagnosed with Arthritis,0,Men
+Turkana,Receiving treatment,NA,Men
+West Pokot,Diagnosed with Arthritis,0,Men
+West Pokot,Receiving treatment,NA,Men
+Samburu,Diagnosed with Arthritis,5,Men
+Samburu,Receiving treatment,NA,Men
+Trans Nzoia,Diagnosed with Arthritis,1.5,Men
+Trans Nzoia,Receiving treatment,NA,Men
+Uasin Gishu,Diagnosed with Arthritis,0.5,Men
+Uasin Gishu,Receiving treatment,NA,Men
+Elgeyo/Marakwet,Diagnosed with Arthritis,0,Men
+Elgeyo/Marakwet,Receiving treatment,NA,Men
+Nandi,Diagnosed with Arthritis,0.6,Men
+Nandi,Receiving treatment,NA,Men
+Baringo,Diagnosed with Arthritis,0.7,Men
+Baringo,Receiving treatment,NA,Men
+Laikipia,Diagnosed with Arthritis,3.6,Men
+Laikipia,Receiving treatment,NA,Men
+Nakuru,Diagnosed with Arthritis,1.8,Men
+Nakuru,Receiving treatment,NA,Men
+Narok,Diagnosed with Arthritis,1,Men
+Narok,Receiving treatment,NA,Men
+Kajiado,Diagnosed with Arthritis,1.2,Men
+Kajiado,Receiving treatment,NA,Men
+Kericho,Diagnosed with Arthritis,0,Men
+Kericho,Receiving treatment,NA,Men
+Bomet,Diagnosed with Arthritis,1.9,Men
+Bomet,Receiving treatment,NA,Men
+Kakamega,Diagnosed with Arthritis,0.3,Men
+Kakamega,Receiving treatment,NA,Men
+Vihiga,Diagnosed with Arthritis,0.8,Men
+Vihiga,Receiving treatment,NA,Men
+Bungoma,Diagnosed with Arthritis,0.7,Men
+Bungoma,Receiving treatment,NA,Men
+Busia,Diagnosed with Arthritis,0.4,Men
+Busia,Receiving treatment,NA,Men
+Siaya,Diagnosed with Arthritis,0,Men
+Siaya,Receiving treatment,NA,Men
+Kisumu,Diagnosed with Arthritis,0.3,Men
+Kisumu,Receiving treatment,NA,Men
+Homa Bay,Diagnosed with Arthritis,1.9,Men
+Homa Bay,Receiving treatment,NA,Men
+Migori,Diagnosed with Arthritis,0.8,Men
+Migori,Receiving treatment,NA,Men
+Kisii,Diagnosed with Arthritis,0.3,Men
+Kisii,Receiving treatment,NA,Men
+Nyamira,Diagnosed with Arthritis,0,Men
+Nyamira,Receiving treatment,NA,Men
+Nairobi City,Diagnosed with Arthritis,0,Men
+Nairobi City,Receiving treatment,NA,Men

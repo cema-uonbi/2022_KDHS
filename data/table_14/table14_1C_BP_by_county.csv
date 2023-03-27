@@ -1,0 +1,189 @@
+County,Category,Proportion,Participants
+Mombasa,Diagnosed with HBP/Hypertension,10.7,Women
+Mombasa,Taking meds to control BP,40,Women
+Kwale,Diagnosed with HBP/Hypertension,4.4,Women
+Kwale,Taking meds to control BP,NA,Women
+Kilifi,Diagnosed with HBP/Hypertension,6.3,Women
+Kilifi,Taking meds to control BP,37.9,Women
+Tana River,Diagnosed with HBP/Hypertension,3.6,Women
+Tana River,Taking meds to control BP,NA,Women
+Lamu,Diagnosed with HBP/Hypertension,10.2,Women
+Lamu,Taking meds to control BP,46.9,Women
+Taita/Taveta,Diagnosed with HBP/Hypertension,18.1,Women
+Taita/Taveta,Taking meds to control BP,12.9,Women
+Garissa,Diagnosed with HBP/Hypertension,2.3,Women
+Garissa,Taking meds to control BP,NA,Women
+Wajir,Diagnosed with HBP/Hypertension,5.9,Women
+Wajir,Taking meds to control BP,NA,Women
+Mandera,Diagnosed with HBP/Hypertension,2.9,Women
+Mandera,Taking meds to control BP,NA,Women
+Marsabit,Diagnosed with HBP/Hypertension,2.8,Women
+Marsabit,Taking meds to control BP,NA,Women
+Isiolo,Diagnosed with HBP/Hypertension,5.3,Women
+Isiolo,Taking meds to control BP,NA,Women
+Meru,Diagnosed with HBP/Hypertension,11,Women
+Meru,Taking meds to control BP,24.3,Women
+Tharaka-Nithi,Diagnosed with HBP/Hypertension,14.7,Women
+Tharaka-Nithi,Taking meds to control BP,22.7,Women
+Embu,Diagnosed with HBP/Hypertension,10.2,Women
+Embu,Taking meds to control BP,40.5,Women
+Kitui,Diagnosed with HBP/Hypertension,4.3,Women
+Kitui,Taking meds to control BP,NA,Women
+Machakos,Diagnosed with HBP/Hypertension,11.1,Women
+Machakos,Taking meds to control BP,26.9,Women
+Makueni,Diagnosed with HBP/Hypertension,3.7,Women
+Makueni,Taking meds to control BP,NA,Women
+Nyandarua,Diagnosed with HBP/Hypertension,11.7,Women
+Nyandarua,Taking meds to control BP,21.9,Women
+Nyeri,Diagnosed with HBP/Hypertension,14.3,Women
+Nyeri,Taking meds to control BP,26.6,Women
+Kirinyaga,Diagnosed with HBP/Hypertension,20,Women
+Kirinyaga,Taking meds to control BP,16.7,Women
+Murang’a,Diagnosed with HBP/Hypertension,11.6,Women
+Murang’a,Taking meds to control BP,28.5,Women
+Kiambu,Diagnosed with HBP/Hypertension,7.2,Women
+Kiambu,Taking meds to control BP,20.5,Women
+Turkana,Diagnosed with HBP/Hypertension,3.3,Women
+Turkana,Taking meds to control BP,NA,Women
+West Pokot,Diagnosed with HBP/Hypertension,2.6,Women
+West Pokot,Taking meds to control BP,NA,Women
+Samburu,Diagnosed with HBP/Hypertension,1.7,Women
+Samburu,Taking meds to control BP,NA,Women
+Trans Nzoia,Diagnosed with HBP/Hypertension,8.3,Women
+Trans Nzoia,Taking meds to control BP,29.4,Women
+Uasin Gishu,Diagnosed with HBP/Hypertension,11.3,Women
+Uasin Gishu,Taking meds to control BP,23.8,Women
+Elgeyo/Marakwet,Diagnosed with HBP/Hypertension,7.6,Women
+Elgeyo/Marakwet,Taking meds to control BP,NA,Women
+Nandi,Diagnosed with HBP/Hypertension,5.1,Women
+Nandi,Taking meds to control BP,NA,Women
+Baringo,Diagnosed with HBP/Hypertension,8.3,Women
+Baringo,Taking meds to control BP,25.8,Women
+Laikipia,Diagnosed with HBP/Hypertension,15.6,Women
+Laikipia,Taking meds to control BP,33.6,Women
+Nakuru,Diagnosed with HBP/Hypertension,8.6,Women
+Nakuru,Taking meds to control BP,23.3,Women
+Narok,Diagnosed with HBP/Hypertension,5,Women
+Narok,Taking meds to control BP,NA,Women
+Kajiado,Diagnosed with HBP/Hypertension,13.1,Women
+Kajiado,Taking meds to control BP,30.6,Women
+Kericho,Diagnosed with HBP/Hypertension,7.1,Women
+Kericho,Taking meds to control BP,39.7,Women
+Bomet,Diagnosed with HBP/Hypertension,7.3,Women
+Bomet,Taking meds to control BP,18.5,Women
+Kakamega,Diagnosed with HBP/Hypertension,8.6,Women
+Kakamega,Taking meds to control BP,30.5,Women
+Vihiga,Diagnosed with HBP/Hypertension,7.5,Women
+Vihiga,Taking meds to control BP,16.9,Women
+Bungoma,Diagnosed with HBP/Hypertension,9.8,Women
+Bungoma,Taking meds to control BP,50.3,Women
+Busia,Diagnosed with HBP/Hypertension,3.4,Women
+Busia,Taking meds to control BP,NA,Women
+Siaya,Diagnosed with HBP/Hypertension,3.4,Women
+Siaya,Taking meds to control BP,NA,Women
+Kisumu,Diagnosed with HBP/Hypertension,8.9,Women
+Kisumu,Taking meds to control BP,26.3,Women
+Homa Bay,Diagnosed with HBP/Hypertension,10.3,Women
+Homa Bay,Taking meds to control BP,28.2,Women
+Migori,Diagnosed with HBP/Hypertension,7.2,Women
+Migori,Taking meds to control BP,58.9,Women
+Kisii,Diagnosed with HBP/Hypertension,3.6,Women
+Kisii,Taking meds to control BP,NA,Women
+Nyamira,Diagnosed with HBP/Hypertension,6.1,Women
+Nyamira,Taking meds to control BP,NA,Women
+Nairobi City,Diagnosed with HBP/Hypertension,10.7,Women
+Nairobi City,Taking meds to control BP,41.6,Women
+Mombasa,Diagnosed with HBP/Hypertension,3.6,Men
+Mombasa,Taking meds to control BP,NA,Men
+Kwale,Diagnosed with HBP/Hypertension,1.6,Men
+Kwale,Taking meds to control BP,NA,Men
+Kilifi,Diagnosed with HBP/Hypertension,3.7,Men
+Kilifi,Taking meds to control BP,NA,Men
+Tana River,Diagnosed with HBP/Hypertension,3.8,Men
+Tana River,Taking meds to control BP,NA,Men
+Lamu,Diagnosed with HBP/Hypertension,3.9,Men
+Lamu,Taking meds to control BP,NA,Men
+Taita/Taveta,Diagnosed with HBP/Hypertension,4.6,Men
+Taita/Taveta,Taking meds to control BP,NA,Men
+Garissa,Diagnosed with HBP/Hypertension,1.5,Men
+Garissa,Taking meds to control BP,NA,Men
+Wajir,Diagnosed with HBP/Hypertension,2,Men
+Wajir,Taking meds to control BP,NA,Men
+Mandera,Diagnosed with HBP/Hypertension,0.8,Men
+Mandera,Taking meds to control BP,NA,Men
+Marsabit,Diagnosed with HBP/Hypertension,2.5,Men
+Marsabit,Taking meds to control BP,NA,Men
+Isiolo,Diagnosed with HBP/Hypertension,2.5,Men
+Isiolo,Taking meds to control BP,NA,Men
+Meru,Diagnosed with HBP/Hypertension,4.4,Men
+Meru,Taking meds to control BP,NA,Men
+Tharaka-Nithi,Diagnosed with HBP/Hypertension,4.4,Men
+Tharaka-Nithi,Taking meds to control BP,NA,Men
+Embu,Diagnosed with HBP/Hypertension,5.9,Men
+Embu,Taking meds to control BP,NA,Men
+Kitui,Diagnosed with HBP/Hypertension,0.7,Men
+Kitui,Taking meds to control BP,NA,Men
+Machakos,Diagnosed with HBP/Hypertension,1.2,Men
+Machakos,Taking meds to control BP,NA,Men
+Makueni,Diagnosed with HBP/Hypertension,0.7,Men
+Makueni,Taking meds to control BP,NA,Men
+Nyandarua,Diagnosed with HBP/Hypertension,5.4,Men
+Nyandarua,Taking meds to control BP,NA,Men
+Nyeri,Diagnosed with HBP/Hypertension,5,Men
+Nyeri,Taking meds to control BP,NA,Men
+Kirinyaga,Diagnosed with HBP/Hypertension,1.9,Men
+Kirinyaga,Taking meds to control BP,NA,Men
+Murang’a,Diagnosed with HBP/Hypertension,3.1,Men
+Murang’a,Taking meds to control BP,NA,Men
+Kiambu,Diagnosed with HBP/Hypertension,3.1,Men
+Kiambu,Taking meds to control BP,NA,Men
+Turkana,Diagnosed with HBP/Hypertension,4.4,Men
+Turkana,Taking meds to control BP,NA,Men
+West Pokot,Diagnosed with HBP/Hypertension,1,Men
+West Pokot,Taking meds to control BP,NA,Men
+Samburu,Diagnosed with HBP/Hypertension,4.7,Men
+Samburu,Taking meds to control BP,NA,Men
+Trans Nzoia,Diagnosed with HBP/Hypertension,1.4,Men
+Trans Nzoia,Taking meds to control BP,NA,Men
+Uasin Gishu,Diagnosed with HBP/Hypertension,2.8,Men
+Uasin Gishu,Taking meds to control BP,NA,Men
+Elgeyo/Marakwet,Diagnosed with HBP/Hypertension,0.6,Men
+Elgeyo/Marakwet,Taking meds to control BP,NA,Men
+Nandi,Diagnosed with HBP/Hypertension,2.7,Men
+Nandi,Taking meds to control BP,NA,Men
+Baringo,Diagnosed with HBP/Hypertension,4,Men
+Baringo,Taking meds to control BP,NA,Men
+Laikipia,Diagnosed with HBP/Hypertension,4.4,Men
+Laikipia,Taking meds to control BP,NA,Men
+Nakuru,Diagnosed with HBP/Hypertension,1.2,Men
+Nakuru,Taking meds to control BP,NA,Men
+Narok,Diagnosed with HBP/Hypertension,3,Men
+Narok,Taking meds to control BP,NA,Men
+Kajiado,Diagnosed with HBP/Hypertension,2.5,Men
+Kajiado,Taking meds to control BP,NA,Men
+Kericho,Diagnosed with HBP/Hypertension,2.2,Men
+Kericho,Taking meds to control BP,NA,Men
+Bomet,Diagnosed with HBP/Hypertension,1.2,Men
+Bomet,Taking meds to control BP,NA,Men
+Kakamega,Diagnosed with HBP/Hypertension,2.1,Men
+Kakamega,Taking meds to control BP,NA,Men
+Vihiga,Diagnosed with HBP/Hypertension,5,Men
+Vihiga,Taking meds to control BP,NA,Men
+Bungoma,Diagnosed with HBP/Hypertension,2.6,Men
+Bungoma,Taking meds to control BP,NA,Men
+Busia,Diagnosed with HBP/Hypertension,3,Men
+Busia,Taking meds to control BP,NA,Men
+Siaya,Diagnosed with HBP/Hypertension,2.2,Men
+Siaya,Taking meds to control BP,NA,Men
+Kisumu,Diagnosed with HBP/Hypertension,2.1,Men
+Kisumu,Taking meds to control BP,NA,Men
+Homa Bay,Diagnosed with HBP/Hypertension,5.8,Men
+Homa Bay,Taking meds to control BP,NA,Men
+Migori,Diagnosed with HBP/Hypertension,3.8,Men
+Migori,Taking meds to control BP,NA,Men
+Kisii,Diagnosed with HBP/Hypertension,1.9,Men
+Kisii,Taking meds to control BP,NA,Men
+Nyamira,Diagnosed with HBP/Hypertension,3.9,Men
+Nyamira,Taking meds to control BP,NA,Men
+Nairobi City,Diagnosed with HBP/Hypertension,4.3,Men
+Nairobi City,Taking meds to control BP,NA,Men

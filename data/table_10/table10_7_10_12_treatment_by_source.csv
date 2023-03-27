@@ -1,0 +1,19 @@
+Source of Treatment,Category,Proportion,Condition
+Public sector,Sought treatment,62.7,ARI
+Private medical sector (non-NGO),Sought treatment,37.5,ARI
+Other private sector,Sought treatment,1.0,ARI
+Public sector,Sought treatment,59.4,Diarrhea
+Public sector,Received ORS,58.9,Diarrhea
+Public sector,Given Zinc,60.2,Diarrhea
+Private medical sector (non-NGO),Sought treatment,36.5,Diarrhea
+Private medical sector (non-NGO),Received ORS,27.1,Diarrhea
+Private medical sector (non-NGO),Given Zinc,29.2,Diarrhea
+Private medical sector (NGO),Sought treatment,0.5,Diarrhea
+Private medical sector (NGO),Received ORS,0.6,Diarrhea
+Private medical sector (NGO),Given Zinc,0.8,Diarrhea
+Other private sector,Sought treatment,2.3,Diarrhea
+Other private sector,Received ORS,0.6,Diarrhea
+Other private sector,Given Zinc,0.4,Diarrhea
+Other,Sought treatment,0.8,Diarrhea
+Other,Received ORS,0.5,Diarrhea
+Other,Given Zinc,0.2,Diarrhea

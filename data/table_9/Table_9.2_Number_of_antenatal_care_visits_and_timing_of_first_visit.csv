@@ -1,0 +1,37 @@
+"","Characteristic","None","1","4-7","8+","Variable","Type","<4","4-6","7+"
+"1","<20","2.7","4.4","55.0","2.2","Age_at_birth","Number_of_ANC_visits",NA,NA,NA
+"2","20-34","1.5","2.3","64.2","4.5","Age_at_birth","Number_of_ANC_visits",NA,NA,NA
+"3","35-49","4.0","3.3","56.6","3.4","Age_at_birth","Number_of_ANC_visits",NA,NA,NA
+"4","<20",NA,NA,NA,NA,"Age_at_birth","Timing_of_ANC_visits","25.1","57.5","14.5"
+"5","20-34",NA,NA,NA,NA,"Age_at_birth","Timing_of_ANC_visits","30.2","60.5","7.8"
+"6","35-49",NA,NA,NA,NA,"Age_at_birth","Timing_of_ANC_visits","23.0","60.4","12.5"
+"7","1","1.2","2.4","65.8","4.8","Birth_order","Number_of_ANC_visits",NA,NA,NA
+"8","2-3","0.9","1.9","64.7","4.4","Birth_order","Number_of_ANC_visits",NA,NA,NA
+"9","4-5","3.2","2.7","57.3","3.0","Birth_order","Number_of_ANC_visits",NA,NA,NA
+"10","6+","6.4","7.0","47.8","2.1","Birth_order","Number_of_ANC_visits",NA,NA,NA
+"11","1",NA,NA,NA,NA,"Birth_order","Timing_of_ANC_visits","32.8","57.5","8.4"
+"12","2-3",NA,NA,NA,NA,"Birth_order","Timing_of_ANC_visits","30.5","60.8","7.8"
+"13","4-5",NA,NA,NA,NA,"Birth_order","Timing_of_ANC_visits","23.5","62.1","11.1"
+"14","6+",NA,NA,NA,NA,"Birth_order","Timing_of_ANC_visits","17.5","61.0","15.0"
+"15","Urban","1.1","1.6","68.5","5.5","Residence","Number_of_ANC_visits",NA,NA,NA
+"16","Rural","2.4","3.3","58.3","3.2","Residence","Number_of_ANC_visits",NA,NA,NA
+"17","Urban",NA,NA,NA,NA,"Residence","Timing_of_ANC_visits","32.8","59.7","6.4"
+"18","Rural",NA,NA,NA,NA,"Residence","Timing_of_ANC_visits","26.3","60.3","10.9"
+"19","No education","9.0","5.5","47.5","1.6","Education","Number_of_ANC_visits",NA,NA,NA
+"20","Primary","2.1","3.6","56.2","3.5","Education","Number_of_ANC_visits",NA,NA,NA
+"21","Secondary","0.8","2.1","64.4","3.6","Education","Number_of_ANC_visits",NA,NA,NA
+"22","More than secondary","0.4","0.7","75.9","7.3","Education","Number_of_ANC_visits",NA,NA,NA
+"23","No education",NA,NA,NA,NA,"Education","Timing_of_ANC_visits","18.4","62.7","9.6"
+"24","Primary",NA,NA,NA,NA,"Education","Timing_of_ANC_visits","24.0","61.5","12.4"
+"25","Secondary",NA,NA,NA,NA,"Education","Timing_of_ANC_visits","26.9","63.0","9.2"
+"26","More than secondary",NA,NA,NA,NA,"Education","Timing_of_ANC_visits","46.5","50.0","3.1"
+"27","Lowest","4.5","5.0","51.6","2.3","Wealth","Number_of_ANC_visits",NA,NA,NA
+"28","Second","2.0","3.5","56.2","3.3","Wealth","Number_of_ANC_visits",NA,NA,NA
+"29","Middle","1.6","2.0","62.0","3.2","Wealth","Number_of_ANC_visits",NA,NA,NA
+"30","Fourth","1.2","2.1","66.3","3.4","Wealth","Number_of_ANC_visits",NA,NA,NA
+"31","Highest","0.3","0.6","74.1","8.0","Wealth","Number_of_ANC_visits",NA,NA,NA
+"32","Lowest",NA,NA,NA,NA,"Wealth","Number_of_ANC_visits","20.8","63.3","11.4"
+"33","Second",NA,NA,NA,NA,"Wealth","Number_of_ANC_visits","26.2","59.7","12.0"
+"34","Middle",NA,NA,NA,NA,"Wealth","Number_of_ANC_visits","26.8","61.1","10.4"
+"35","Fourth",NA,NA,NA,NA,"Wealth","Number_of_ANC_visits","27.2","61.8","9.8"
+"36","Highest",NA,NA,NA,NA,"Wealth","Number_of_ANC_visits","42.3","54.3","3.1"

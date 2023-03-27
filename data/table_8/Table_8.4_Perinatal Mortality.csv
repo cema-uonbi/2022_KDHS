@@ -1,0 +1,21 @@
+characteristic,number_still_births,number_neonatal_deaths,rate_still_birth,rate_neonatal_deaths,perinatal_mortality_rate,pregnancies_28_weeks,ratio_still_neonatal,variable
+<20,29,50,12.3,22.0,33.9,"2,328",0.6,age
+20-29,112,154,11.4,15.8,27.1,"9,817",0.7,age
+30-39,108,83,21.6,16.9,38.0,"5,008",1.3,age
+40-49,19,13,33.0,23.0,55.2,591,1.5,age
+First pregnancy,56,97,11.1,19.5,30.3,"5,038",0.6,pregnancy
+<15,47,66,16.8,24.1,40.5,"2,799",0.7,pregnancy
+15-26,47,44,15.8,15.3,30.9,"2,949",1.1,pregnancy
+27-38,24,23,11.4,11.3,22.5,"2,082",1.0,pregnancy
+39+,95,69,19.5,14.5,33.6,"4,876",1.4,pregnancy
+Urban,107,113,16.1,17.3,33.1,"6,640",0.9,residence
+Rural,161,187,14.5,17.1,31.3,"11,104",0.9,residence
+No education,33,31,18.2,17.4,35.4,"1,829",1.1,residence
+Primary,111,128,16.5,19.3,35.5,"6,741",0.9,residence
+Secondary,82,97,13.7,16.4,29.8,"5,998",0.8,residence
+More than secondary,42,44,13.1,13.9,26.8,"3,176",1.0,residence
+Lowest,64,65,16.0,16.6,32.3,"3,983",1.0,wealth
+Second,38,48,11.9,15.2,27.0,"3,183",0.8,wealth
+Middle,52,60,16.6,19.7,36.0,"3,123",0.9,wealth
+Fourth,57,71,16.0,20.0,35.6,"3,597",0.8,wealth
+Highest,57,56,14.8,14.7,29.3,"3,858",1.0,wealth

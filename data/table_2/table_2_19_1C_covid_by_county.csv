@@ -1,0 +1,189 @@
+County,Category,Proportion,Participants
+Mombasa,Tested,39.6,Households
+Mombasa,Vaccinated,52.2,Households
+Kwale,Tested,29.7,Households
+Kwale,Vaccinated,32.7,Households
+Kilifi,Tested,12.3,Households
+Kilifi,Vaccinated,37.8,Households
+Tana River,Tested,9.2,Households
+Tana River,Vaccinated,14.5,Households
+Lamu,Tested,19.5,Households
+Lamu,Vaccinated,36.3,Households
+Taita/Taveta,Tested,20.6,Households
+Taita/Taveta,Vaccinated,69.4,Households
+Garissa,Tested,15.5,Households
+Garissa,Vaccinated,17.9,Households
+Wajir,Tested,7.6,Households
+Wajir,Vaccinated,36.9,Households
+Mandera,Tested,7.9,Households
+Mandera,Vaccinated,29.4,Households
+Marsabit,Tested,17.9,Households
+Marsabit,Vaccinated,23.0,Households
+Isiolo,Tested,21.6,Households
+Isiolo,Vaccinated,24.3,Households
+Meru,Tested,10.1,Households
+Meru,Vaccinated,69.4,Households
+Tharaka-Nithi,Tested,21.9,Households
+Tharaka-Nithi,Vaccinated,62.5,Households
+Embu,Tested,15.1,Households
+Embu,Vaccinated,70.1,Households
+Kitui,Tested,33.4,Households
+Kitui,Vaccinated,43.2,Households
+Machakos,Tested,17.6,Households
+Machakos,Vaccinated,66.1,Households
+Makueni,Tested,20.7,Households
+Makueni,Vaccinated,64.1,Households
+Nyandarua,Tested,22.4,Households
+Nyandarua,Vaccinated,62.2,Households
+Nyeri,Tested,38.9,Households
+Nyeri,Vaccinated,75.8,Households
+Kirinyaga,Tested,18.5,Households
+Kirinyaga,Vaccinated,76.7,Households
+Murang’a,Tested,23.5,Households
+Murang’a,Vaccinated,67.6,Households
+Kiambu,Tested,33.6,Households
+Kiambu,Vaccinated,67.8,Households
+Turkana,Tested,9.1,Households
+Turkana,Vaccinated,51.0,Households
+West Pokot,Tested,10.0,Households
+West Pokot,Vaccinated,31.9,Households
+Samburu,Tested,27.5,Households
+Samburu,Vaccinated,44.4,Households
+Trans Nzoia,Tested,20.3,Households
+Trans Nzoia,Vaccinated,67.8,Households
+Uasin Gishu,Tested,30.1,Households
+Uasin Gishu,Vaccinated,64.5,Households
+Elgeyo/Marakwet,Tested,9.6,Households
+Elgeyo/Marakwet,Vaccinated,62.6,Households
+Nandi,Tested,22.5,Households
+Nandi,Vaccinated,54.3,Households
+Baringo,Tested,24.7,Households
+Baringo,Vaccinated,61.9,Households
+Laikipia,Tested,20.7,Households
+Laikipia,Vaccinated,69.4,Households
+Nakuru,Tested,26.6,Households
+Nakuru,Vaccinated,65.1,Households
+Narok,Tested,13.7,Households
+Narok,Vaccinated,53.3,Households
+Kajiado,Tested,47.3,Households
+Kajiado,Vaccinated,62.2,Households
+Kericho,Tested,21.9,Households
+Kericho,Vaccinated,71.1,Households
+Bomet,Tested,14.2,Households
+Bomet,Vaccinated,55.7,Households
+Kakamega,Tested,19.4,Households
+Kakamega,Vaccinated,76.8,Households
+Vihiga,Tested,11.7,Households
+Vihiga,Vaccinated,75.7,Households
+Bungoma,Tested,19.8,Households
+Bungoma,Vaccinated,66.4,Households
+Busia,Tested,17.2,Households
+Busia,Vaccinated,69.9,Households
+Siaya,Tested,19.8,Households
+Siaya,Vaccinated,72.5,Households
+Kisumu,Tested,42.0,Households
+Kisumu,Vaccinated,76.3,Households
+Homa Bay,Tested,32.5,Households
+Homa Bay,Vaccinated,71.5,Households
+Migori,Tested,25.2,Households
+Migori,Vaccinated,69.9,Households
+Kisii,Tested,16.4,Households
+Kisii,Vaccinated,62.2,Households
+Nyamira,Tested,17.0,Households
+Nyamira,Vaccinated,64.0,Households
+Nairobi City,Tested,48.4,Households
+Nairobi City,Vaccinated,67.2,Households
+Mombasa,Tested,21.5,Population
+Mombasa,Vaccinated,27.7,Population
+Kwale,Tested,11.5,Population
+Kwale,Vaccinated,11.8,Population
+Kilifi,Tested,4.7,Population
+Kilifi,Vaccinated,14.3,Population
+Tana River,Tested,3.2,Population
+Tana River,Vaccinated,4.9,Population
+Lamu,Tested,7.4,Population
+Lamu,Vaccinated,13.3,Population
+Taita/Taveta,Tested,10.9,Population
+Taita/Taveta,Vaccinated,37.0,Population
+Garissa,Tested,6.6,Population
+Garissa,Vaccinated,5.3,Population
+Wajir,Tested,3.3,Population
+Wajir,Vaccinated,10.6,Population
+Mandera,Tested,2.9,Population
+Mandera,Vaccinated,7.7,Population
+Marsabit,Tested,8.3,Population
+Marsabit,Vaccinated,8.1,Population
+Isiolo,Tested,10.0,Population
+Isiolo,Vaccinated,8.3,Population
+Meru,Tested,4.7,Population
+Meru,Vaccinated,36.4,Population
+Tharaka-Nithi,Tested,11.5,Population
+Tharaka-Nithi,Vaccinated,34.1,Population
+Embu,Tested,7.4,Population
+Embu,Vaccinated,39.2,Population
+Kitui,Tested,13.6,Population
+Kitui,Vaccinated,17.2,Population
+Machakos,Tested,8.9,Population
+Machakos,Vaccinated,35.5,Population
+Makueni,Tested,9.0,Population
+Makueni,Vaccinated,31.5,Population
+Nyandarua,Tested,11.7,Population
+Nyandarua,Vaccinated,33.2,Population
+Nyeri,Tested,23.1,Population
+Nyeri,Vaccinated,49.0,Population
+Kirinyaga,Tested,9.5,Population
+Kirinyaga,Vaccinated,48.7,Population
+Murang’a,Tested,12.9,Population
+Murang’a,Vaccinated,37.2,Population
+Kiambu,Tested,18.3,Population
+Kiambu,Vaccinated,39.5,Population
+Turkana,Tested,3.7,Population
+Turkana,Vaccinated,18.8,Population
+West Pokot,Tested,3.5,Population
+West Pokot,Vaccinated,9.7,Population
+Samburu,Tested,11.4,Population
+Samburu,Vaccinated,16.7,Population
+Trans Nzoia,Tested,7.8,Population
+Trans Nzoia,Vaccinated,30.3,Population
+Uasin Gishu,Tested,13.8,Population
+Uasin Gishu,Vaccinated,34.4,Population
+Elgeyo/Marakwet,Tested,3.8,Population
+Elgeyo/Marakwet,Vaccinated,24.0,Population
+Nandi,Tested,9.7,Population
+Nandi,Vaccinated,23.3,Population
+Baringo,Tested,9.6,Population
+Baringo,Vaccinated,24.0,Population
+Laikipia,Tested,9.1,Population
+Laikipia,Vaccinated,38.4,Population
+Nakuru,Tested,13.0,Population
+Nakuru,Vaccinated,35.3,Population
+Narok,Tested,4.7,Population
+Narok,Vaccinated,19.4,Population
+Kajiado,Tested,24.3,Population
+Kajiado,Vaccinated,33.4,Population
+Kericho,Tested,9.5,Population
+Kericho,Vaccinated,35.0,Population
+Bomet,Tested,5.1,Population
+Bomet,Vaccinated,23.4,Population
+Kakamega,Tested,8.5,Population
+Kakamega,Vaccinated,37.9,Population
+Vihiga,Tested,5.4,Population
+Vihiga,Vaccinated,37.4,Population
+Bungoma,Tested,7.2,Population
+Bungoma,Vaccinated,31.9,Population
+Busia,Tested,5.9,Population
+Busia,Vaccinated,31.0,Population
+Siaya,Tested,8.7,Population
+Siaya,Vaccinated,36.9,Population
+Kisumu,Tested,20.8,Population
+Kisumu,Vaccinated,37.6,Population
+Homa Bay,Tested,15.2,Population
+Homa Bay,Vaccinated,30.8,Population
+Migori,Tested,9.9,Population
+Migori,Vaccinated,29.4,Population
+Kisii,Tested,6.5,Population
+Kisii,Vaccinated,28.8,Population
+Nyamira,Tested,8.1,Population
+Nyamira,Vaccinated,29.7,Population
+Nairobi City,Tested,28.8,Population
+Nairobi City,Vaccinated,40.6,Population

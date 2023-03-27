@@ -1,0 +1,12 @@
+Variable,Wanted.fertility.rates,characteristic
+Urban,2.5,residence
+Rural,3.3,residence
+No education,5.9,Education
+Primary,3.2,Education
+Secondary,2.8,Education
+More than secondary,2.4,Education
+Lowest,4.2,wealth
+Second,3.0,wealth
+Middle,2.9,wealth
+Fourth,2.7,wealth
+Highest,2.3,wealth

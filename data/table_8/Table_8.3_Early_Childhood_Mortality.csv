@@ -1,0 +1,22 @@
+Characteristic,neonatal_mortality,post_neonatal_mortality,infant_mortality,child_mortality,under_5_mortality,Variable
+<20,24,12,37,8,45,mother_age
+20-29,23,12,35,9,44,mother_age
+30-39,21,12,33,8,41,mother_age
+40-49,34,9,43,(15),(58),mother_age
+1,24,11,35,5,41,birth_order
+2-3,22,14,36,9,44,birth_order
+4-6,21,10,31,11,41,birth_order
+7+,30,15,44,15,59,birth_order
+<2 years,36,14,50,17,67,birth_interval
+2 years,18,12,30,8,37,birth_interval
+3 years,16,14,30,9,38,birth_interval
+4+ years,21,12,33,8,41,birth_interval
+No education,24,9,33,9,41,education
+Primary,24,14,38,12,49,education
+Secondary,24,11,35,7,42,education
+More than secondary,19,11,30,3,32,education
+Lowest,24,11,36,11,47,education
+Second,22,13,35,11,46,education
+Middle,23,12,35,6,41,education
+Fourth,25,13,37,9,46,education
+Highest,21,12,33,5,37,education

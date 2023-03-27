@@ -1,0 +1,565 @@
+County,Category,Proportion,Schooling level,Ratio
+Mombasa,Male,88.5,Primary,Net Attendance Ratio
+Mombasa,Female,87.7,Primary,Net Attendance Ratio
+Mombasa,Gender Parity Index,0.99,Primary,Net Attendance Ratio
+Kwale,Male,78.9,Primary,Net Attendance Ratio
+Kwale,Female,79.0,Primary,Net Attendance Ratio
+Kwale,Gender Parity Index,1.00,Primary,Net Attendance Ratio
+Kilifi,Male,86.0,Primary,Net Attendance Ratio
+Kilifi,Female,89.3,Primary,Net Attendance Ratio
+Kilifi,Gender Parity Index,1.04,Primary,Net Attendance Ratio
+Tana River,Male,57.2,Primary,Net Attendance Ratio
+Tana River,Female,57.1,Primary,Net Attendance Ratio
+Tana River,Gender Parity Index,1.00,Primary,Net Attendance Ratio
+Lamu,Male,84.4,Primary,Net Attendance Ratio
+Lamu,Female,86.0,Primary,Net Attendance Ratio
+Lamu,Gender Parity Index,1.02,Primary,Net Attendance Ratio
+Taita/Taveta,Male,93.7,Primary,Net Attendance Ratio
+Taita/Taveta,Female,89.1,Primary,Net Attendance Ratio
+Taita/Taveta,Gender Parity Index,0.95,Primary,Net Attendance Ratio
+Garissa,Male,49.0,Primary,Net Attendance Ratio
+Garissa,Female,48.6,Primary,Net Attendance Ratio
+Garissa,Gender Parity Index,0.99,Primary,Net Attendance Ratio
+Wajir,Male,56.4,Primary,Net Attendance Ratio
+Wajir,Female,58.5,Primary,Net Attendance Ratio
+Wajir,Gender Parity Index,1.04,Primary,Net Attendance Ratio
+Mandera,Male,58.3,Primary,Net Attendance Ratio
+Mandera,Female,51.6,Primary,Net Attendance Ratio
+Mandera,Gender Parity Index,0.89,Primary,Net Attendance Ratio
+Marsabit,Male,73.4,Primary,Net Attendance Ratio
+Marsabit,Female,66.8,Primary,Net Attendance Ratio
+Marsabit,Gender Parity Index,0.91,Primary,Net Attendance Ratio
+Isiolo,Male,74.8,Primary,Net Attendance Ratio
+Isiolo,Female,78.7,Primary,Net Attendance Ratio
+Isiolo,Gender Parity Index,1.05,Primary,Net Attendance Ratio
+Meru,Male,85.5,Primary,Net Attendance Ratio
+Meru,Female,89.1,Primary,Net Attendance Ratio
+Meru,Gender Parity Index,1.04,Primary,Net Attendance Ratio
+Tharaka-Nithi,Male,88.1,Primary,Net Attendance Ratio
+Tharaka-Nithi,Female,88.1,Primary,Net Attendance Ratio
+Tharaka-Nithi,Gender Parity Index,1.00,Primary,Net Attendance Ratio
+Embu,Male,92.5,Primary,Net Attendance Ratio
+Embu,Female,92.3,Primary,Net Attendance Ratio
+Embu,Gender Parity Index,1.00,Primary,Net Attendance Ratio
+Kitui,Male,92.1,Primary,Net Attendance Ratio
+Kitui,Female,92.9,Primary,Net Attendance Ratio
+Kitui,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Machakos,Male,93.5,Primary,Net Attendance Ratio
+Machakos,Female,91.8,Primary,Net Attendance Ratio
+Machakos,Gender Parity Index,0.98,Primary,Net Attendance Ratio
+Makueni,Male,92.9,Primary,Net Attendance Ratio
+Makueni,Female,89.9,Primary,Net Attendance Ratio
+Makueni,Gender Parity Index,0.97,Primary,Net Attendance Ratio
+Nyandarua,Male,95.3,Primary,Net Attendance Ratio
+Nyandarua,Female,95.4,Primary,Net Attendance Ratio
+Nyandarua,Gender Parity Index,1.00,Primary,Net Attendance Ratio
+Nyeri,Male,92.5,Primary,Net Attendance Ratio
+Nyeri,Female,91.4,Primary,Net Attendance Ratio
+Nyeri,Gender Parity Index,0.99,Primary,Net Attendance Ratio
+Kirinyaga,Male,91.1,Primary,Net Attendance Ratio
+Kirinyaga,Female,91.9,Primary,Net Attendance Ratio
+Kirinyaga,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Murang’a,Male,93.7,Primary,Net Attendance Ratio
+Murang’a,Female,92.7,Primary,Net Attendance Ratio
+Murang’a,Gender Parity Index,0.99,Primary,Net Attendance Ratio
+Kiambu,Male,92.2,Primary,Net Attendance Ratio
+Kiambu,Female,95.0,Primary,Net Attendance Ratio
+Kiambu,Gender Parity Index,1.03,Primary,Net Attendance Ratio
+Turkana,Male,44.6,Primary,Net Attendance Ratio
+Turkana,Female,43.4,Primary,Net Attendance Ratio
+Turkana,Gender Parity Index,0.97,Primary,Net Attendance Ratio
+West Pokot,Male,63.3,Primary,Net Attendance Ratio
+West Pokot,Female,70.9,Primary,Net Attendance Ratio
+West Pokot,Gender Parity Index,1.12,Primary,Net Attendance Ratio
+Samburu,Male,57.2,Primary,Net Attendance Ratio
+Samburu,Female,60.0,Primary,Net Attendance Ratio
+Samburu,Gender Parity Index,1.05,Primary,Net Attendance Ratio
+Trans Nzoia,Male,89.9,Primary,Net Attendance Ratio
+Trans Nzoia,Female,90.5,Primary,Net Attendance Ratio
+Trans Nzoia,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Uasin Gishu,Male,84.9,Primary,Net Attendance Ratio
+Uasin Gishu,Female,92.0,Primary,Net Attendance Ratio
+Uasin Gishu,Gender Parity Index,1.08,Primary,Net Attendance Ratio
+Elgeyo/Marakwet,Male,87.7,Primary,Net Attendance Ratio
+Elgeyo/Marakwet,Female,90.3,Primary,Net Attendance Ratio
+Elgeyo/Marakwet,Gender Parity Index,1.03,Primary,Net Attendance Ratio
+Nandi,Male,90.7,Primary,Net Attendance Ratio
+Nandi,Female,88.1,Primary,Net Attendance Ratio
+Nandi,Gender Parity Index,0.97,Primary,Net Attendance Ratio
+Baringo,Male,81.2,Primary,Net Attendance Ratio
+Baringo,Female,87.5,Primary,Net Attendance Ratio
+Baringo,Gender Parity Index,1.08,Primary,Net Attendance Ratio
+Laikipia,Male,89.8,Primary,Net Attendance Ratio
+Laikipia,Female,91.6,Primary,Net Attendance Ratio
+Laikipia,Gender Parity Index,1.02,Primary,Net Attendance Ratio
+Nakuru,Male,88.3,Primary,Net Attendance Ratio
+Nakuru,Female,90.5,Primary,Net Attendance Ratio
+Nakuru,Gender Parity Index,1.02,Primary,Net Attendance Ratio
+Narok,Male,80.6,Primary,Net Attendance Ratio
+Narok,Female,81.7,Primary,Net Attendance Ratio
+Narok,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Kajiado,Male,83.8,Primary,Net Attendance Ratio
+Kajiado,Female,80.8,Primary,Net Attendance Ratio
+Kajiado,Gender Parity Index,0.96,Primary,Net Attendance Ratio
+Kericho,Male,91.0,Primary,Net Attendance Ratio
+Kericho,Female,89.9,Primary,Net Attendance Ratio
+Kericho,Gender Parity Index,0.99,Primary,Net Attendance Ratio
+Bomet,Male,91.7,Primary,Net Attendance Ratio
+Bomet,Female,92.7,Primary,Net Attendance Ratio
+Bomet,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Kakamega,Male,90.8,Primary,Net Attendance Ratio
+Kakamega,Female,91.7,Primary,Net Attendance Ratio
+Kakamega,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Vihiga,Male,91.8,Primary,Net Attendance Ratio
+Vihiga,Female,92.4,Primary,Net Attendance Ratio
+Vihiga,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Bungoma,Male,86.5,Primary,Net Attendance Ratio
+Bungoma,Female,92.0,Primary,Net Attendance Ratio
+Bungoma,Gender Parity Index,1.06,Primary,Net Attendance Ratio
+Busia,Male,90.9,Primary,Net Attendance Ratio
+Busia,Female,90.4,Primary,Net Attendance Ratio
+Busia,Gender Parity Index,0.99,Primary,Net Attendance Ratio
+Siaya,Male,91.0,Primary,Net Attendance Ratio
+Siaya,Female,91.1,Primary,Net Attendance Ratio
+Siaya,Gender Parity Index,1.00,Primary,Net Attendance Ratio
+Kisumu,Male,89.9,Primary,Net Attendance Ratio
+Kisumu,Female,91.8,Primary,Net Attendance Ratio
+Kisumu,Gender Parity Index,1.02,Primary,Net Attendance Ratio
+Homa Bay,Male,85.7,Primary,Net Attendance Ratio
+Homa Bay,Female,86.6,Primary,Net Attendance Ratio
+Homa Bay,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Migori,Male,85.7,Primary,Net Attendance Ratio
+Migori,Female,85.4,Primary,Net Attendance Ratio
+Migori,Gender Parity Index,1.00,Primary,Net Attendance Ratio
+Kisii,Male,91.2,Primary,Net Attendance Ratio
+Kisii,Female,92.6,Primary,Net Attendance Ratio
+Kisii,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Nyamira,Male,90.1,Primary,Net Attendance Ratio
+Nyamira,Female,90.6,Primary,Net Attendance Ratio
+Nyamira,Gender Parity Index,1.01,Primary,Net Attendance Ratio
+Nairobi City,Male,87.8,Primary,Net Attendance Ratio
+Nairobi City,Female,93.1,Primary,Net Attendance Ratio
+Nairobi City,Gender Parity Index,1.06,Primary,Net Attendance Ratio
+Mombasa,Male,44.1,Secondary,Net Attendance Ratio
+Mombasa,Female,45.7,Secondary,Net Attendance Ratio
+Mombasa,Gender Parity Index,1.04,Secondary,Net Attendance Ratio
+Kwale,Male,22.0,Secondary,Net Attendance Ratio
+Kwale,Female,26.2,Secondary,Net Attendance Ratio
+Kwale,Gender Parity Index,1.19,Secondary,Net Attendance Ratio
+Kilifi,Male,23.2,Secondary,Net Attendance Ratio
+Kilifi,Female,14.7,Secondary,Net Attendance Ratio
+Kilifi,Gender Parity Index,0.63,Secondary,Net Attendance Ratio
+Tana River,Male,20.0,Secondary,Net Attendance Ratio
+Tana River,Female,13.7,Secondary,Net Attendance Ratio
+Tana River,Gender Parity Index,0.69,Secondary,Net Attendance Ratio
+Lamu,Male,31.5,Secondary,Net Attendance Ratio
+Lamu,Female,35.6,Secondary,Net Attendance Ratio
+Lamu,Gender Parity Index,1.13,Secondary,Net Attendance Ratio
+Taita/Taveta,Male,57.3,Secondary,Net Attendance Ratio
+Taita/Taveta,Female,64.4,Secondary,Net Attendance Ratio
+Taita/Taveta,Gender Parity Index,1.12,Secondary,Net Attendance Ratio
+Garissa,Male,22.5,Secondary,Net Attendance Ratio
+Garissa,Female,19.6,Secondary,Net Attendance Ratio
+Garissa,Gender Parity Index,0.87,Secondary,Net Attendance Ratio
+Wajir,Male,41.1,Secondary,Net Attendance Ratio
+Wajir,Female,35.3,Secondary,Net Attendance Ratio
+Wajir,Gender Parity Index,0.86,Secondary,Net Attendance Ratio
+Mandera,Male,28.7,Secondary,Net Attendance Ratio
+Mandera,Female,19.9,Secondary,Net Attendance Ratio
+Mandera,Gender Parity Index,0.69,Secondary,Net Attendance Ratio
+Marsabit,Male,39.6,Secondary,Net Attendance Ratio
+Marsabit,Female,30.6,Secondary,Net Attendance Ratio
+Marsabit,Gender Parity Index,0.77,Secondary,Net Attendance Ratio
+Isiolo,Male,42.2,Secondary,Net Attendance Ratio
+Isiolo,Female,47.8,Secondary,Net Attendance Ratio
+Isiolo,Gender Parity Index,1.13,Secondary,Net Attendance Ratio
+Meru,Male,45.8,Secondary,Net Attendance Ratio
+Meru,Female,50.3,Secondary,Net Attendance Ratio
+Meru,Gender Parity Index,1.10,Secondary,Net Attendance Ratio
+Tharaka-Nithi,Male,38.4,Secondary,Net Attendance Ratio
+Tharaka-Nithi,Female,50.1,Secondary,Net Attendance Ratio
+Tharaka-Nithi,Gender Parity Index,1.31,Secondary,Net Attendance Ratio
+Embu,Male,58.0,Secondary,Net Attendance Ratio
+Embu,Female,64.8,Secondary,Net Attendance Ratio
+Embu,Gender Parity Index,1.12,Secondary,Net Attendance Ratio
+Kitui,Male,40.8,Secondary,Net Attendance Ratio
+Kitui,Female,51.6,Secondary,Net Attendance Ratio
+Kitui,Gender Parity Index,1.27,Secondary,Net Attendance Ratio
+Machakos,Male,62.6,Secondary,Net Attendance Ratio
+Machakos,Female,76.8,Secondary,Net Attendance Ratio
+Machakos,Gender Parity Index,1.23,Secondary,Net Attendance Ratio
+Makueni,Male,52.0,Secondary,Net Attendance Ratio
+Makueni,Female,56.7,Secondary,Net Attendance Ratio
+Makueni,Gender Parity Index,1.09,Secondary,Net Attendance Ratio
+Nyandarua,Male,60.1,Secondary,Net Attendance Ratio
+Nyandarua,Female,67.5,Secondary,Net Attendance Ratio
+Nyandarua,Gender Parity Index,1.12,Secondary,Net Attendance Ratio
+Nyeri,Male,60.8,Secondary,Net Attendance Ratio
+Nyeri,Female,78.9,Secondary,Net Attendance Ratio
+Nyeri,Gender Parity Index,1.30,Secondary,Net Attendance Ratio
+Kirinyaga,Male,75.6,Secondary,Net Attendance Ratio
+Kirinyaga,Female,70.1,Secondary,Net Attendance Ratio
+Kirinyaga,Gender Parity Index,0.93,Secondary,Net Attendance Ratio
+Murang’a,Male,62.4,Secondary,Net Attendance Ratio
+Murang’a,Female,78.7,Secondary,Net Attendance Ratio
+Murang’a,Gender Parity Index,1.26,Secondary,Net Attendance Ratio
+Kiambu,Male,69.3,Secondary,Net Attendance Ratio
+Kiambu,Female,72.6,Secondary,Net Attendance Ratio
+Kiambu,Gender Parity Index,1.05,Secondary,Net Attendance Ratio
+Turkana,Male,23.7,Secondary,Net Attendance Ratio
+Turkana,Female,17.1,Secondary,Net Attendance Ratio
+Turkana,Gender Parity Index,0.72,Secondary,Net Attendance Ratio
+West Pokot,Male,39.9,Secondary,Net Attendance Ratio
+West Pokot,Female,38.1,Secondary,Net Attendance Ratio
+West Pokot,Gender Parity Index,0.96,Secondary,Net Attendance Ratio
+Samburu,Male,36.7,Secondary,Net Attendance Ratio
+Samburu,Female,27.8,Secondary,Net Attendance Ratio
+Samburu,Gender Parity Index,0.76,Secondary,Net Attendance Ratio
+Trans Nzoia,Male,45.6,Secondary,Net Attendance Ratio
+Trans Nzoia,Female,54.8,Secondary,Net Attendance Ratio
+Trans Nzoia,Gender Parity Index,1.20,Secondary,Net Attendance Ratio
+Uasin Gishu,Male,44.4,Secondary,Net Attendance Ratio
+Uasin Gishu,Female,58.3,Secondary,Net Attendance Ratio
+Uasin Gishu,Gender Parity Index,1.31,Secondary,Net Attendance Ratio
+Elgeyo/Marakwet,Male,46.3,Secondary,Net Attendance Ratio
+Elgeyo/Marakwet,Female,55.6,Secondary,Net Attendance Ratio
+Elgeyo/Marakwet,Gender Parity Index,1.20,Secondary,Net Attendance Ratio
+Nandi,Male,44.4,Secondary,Net Attendance Ratio
+Nandi,Female,42.2,Secondary,Net Attendance Ratio
+Nandi,Gender Parity Index,0.95,Secondary,Net Attendance Ratio
+Baringo,Male,37.7,Secondary,Net Attendance Ratio
+Baringo,Female,44.4,Secondary,Net Attendance Ratio
+Baringo,Gender Parity Index,1.18,Secondary,Net Attendance Ratio
+Laikipia,Male,62.5,Secondary,Net Attendance Ratio
+Laikipia,Female,68.1,Secondary,Net Attendance Ratio
+Laikipia,Gender Parity Index,1.09,Secondary,Net Attendance Ratio
+Nakuru,Male,51.5,Secondary,Net Attendance Ratio
+Nakuru,Female,58.7,Secondary,Net Attendance Ratio
+Nakuru,Gender Parity Index,1.14,Secondary,Net Attendance Ratio
+Narok,Male,16.6,Secondary,Net Attendance Ratio
+Narok,Female,36.0,Secondary,Net Attendance Ratio
+Narok,Gender Parity Index,2.17,Secondary,Net Attendance Ratio
+Kajiado,Male,50.4,Secondary,Net Attendance Ratio
+Kajiado,Female,47.7,Secondary,Net Attendance Ratio
+Kajiado,Gender Parity Index,0.95,Secondary,Net Attendance Ratio
+Kericho,Male,59.4,Secondary,Net Attendance Ratio
+Kericho,Female,71.8,Secondary,Net Attendance Ratio
+Kericho,Gender Parity Index,1.21,Secondary,Net Attendance Ratio
+Bomet,Male,35.7,Secondary,Net Attendance Ratio
+Bomet,Female,52.5,Secondary,Net Attendance Ratio
+Bomet,Gender Parity Index,1.47,Secondary,Net Attendance Ratio
+Kakamega,Male,43.5,Secondary,Net Attendance Ratio
+Kakamega,Female,50.5,Secondary,Net Attendance Ratio
+Kakamega,Gender Parity Index,1.16,Secondary,Net Attendance Ratio
+Vihiga,Male,45.0,Secondary,Net Attendance Ratio
+Vihiga,Female,48.9,Secondary,Net Attendance Ratio
+Vihiga,Gender Parity Index,1.09,Secondary,Net Attendance Ratio
+Bungoma,Male,35.4,Secondary,Net Attendance Ratio
+Bungoma,Female,51.4,Secondary,Net Attendance Ratio
+Bungoma,Gender Parity Index,1.45,Secondary,Net Attendance Ratio
+Busia,Male,35.0,Secondary,Net Attendance Ratio
+Busia,Female,45.7,Secondary,Net Attendance Ratio
+Busia,Gender Parity Index,1.30,Secondary,Net Attendance Ratio
+Siaya,Male,47.0,Secondary,Net Attendance Ratio
+Siaya,Female,67.3,Secondary,Net Attendance Ratio
+Siaya,Gender Parity Index,1.43,Secondary,Net Attendance Ratio
+Kisumu,Male,52.7,Secondary,Net Attendance Ratio
+Kisumu,Female,61.5,Secondary,Net Attendance Ratio
+Kisumu,Gender Parity Index,1.17,Secondary,Net Attendance Ratio
+Homa Bay,Male,40.7,Secondary,Net Attendance Ratio
+Homa Bay,Female,58.9,Secondary,Net Attendance Ratio
+Homa Bay,Gender Parity Index,1.45,Secondary,Net Attendance Ratio
+Migori,Male,33.5,Secondary,Net Attendance Ratio
+Migori,Female,40.1,Secondary,Net Attendance Ratio
+Migori,Gender Parity Index,1.20,Secondary,Net Attendance Ratio
+Kisii,Male,44.8,Secondary,Net Attendance Ratio
+Kisii,Female,59.3,Secondary,Net Attendance Ratio
+Kisii,Gender Parity Index,1.32,Secondary,Net Attendance Ratio
+Nyamira,Male,43.4,Secondary,Net Attendance Ratio
+Nyamira,Female,58.9,Secondary,Net Attendance Ratio
+Nyamira,Gender Parity Index,1.36,Secondary,Net Attendance Ratio
+Nairobi City,Male,60.4,Secondary,Net Attendance Ratio
+Nairobi City,Female,62.6,Secondary,Net Attendance Ratio
+Nairobi City,Gender Parity Index,1.04,Secondary,Net Attendance Ratio
+Mombasa,Male,115.2,Primary,Gross Attendance Ratio
+Mombasa,Female,107.1,Primary,Gross Attendance Ratio
+Mombasa,Gender Parity Index,0.93,Primary,Gross Attendance Ratio
+Kwale,Male,109.6,Primary,Gross Attendance Ratio
+Kwale,Female,104.5,Primary,Gross Attendance Ratio
+Kwale,Gender Parity Index,0.95,Primary,Gross Attendance Ratio
+Kilifi,Male,122.0,Primary,Gross Attendance Ratio
+Kilifi,Female,121.5,Primary,Gross Attendance Ratio
+Kilifi,Gender Parity Index,1.00,Primary,Gross Attendance Ratio
+Tana River,Male,72.5,Primary,Gross Attendance Ratio
+Tana River,Female,71.6,Primary,Gross Attendance Ratio
+Tana River,Gender Parity Index,0.99,Primary,Gross Attendance Ratio
+Lamu,Male,107.4,Primary,Gross Attendance Ratio
+Lamu,Female,106.7,Primary,Gross Attendance Ratio
+Lamu,Gender Parity Index,0.99,Primary,Gross Attendance Ratio
+Taita/Taveta,Male,108.3,Primary,Gross Attendance Ratio
+Taita/Taveta,Female,103.1,Primary,Gross Attendance Ratio
+Taita/Taveta,Gender Parity Index,0.95,Primary,Gross Attendance Ratio
+Garissa,Male,62.6,Primary,Gross Attendance Ratio
+Garissa,Female,66.0,Primary,Gross Attendance Ratio
+Garissa,Gender Parity Index,1.05,Primary,Gross Attendance Ratio
+Wajir,Male,74.7,Primary,Gross Attendance Ratio
+Wajir,Female,74.6,Primary,Gross Attendance Ratio
+Wajir,Gender Parity Index,1.00,Primary,Gross Attendance Ratio
+Mandera,Male,78.9,Primary,Gross Attendance Ratio
+Mandera,Female,65.9,Primary,Gross Attendance Ratio
+Mandera,Gender Parity Index,0.84,Primary,Gross Attendance Ratio
+Marsabit,Male,88.7,Primary,Gross Attendance Ratio
+Marsabit,Female,78.6,Primary,Gross Attendance Ratio
+Marsabit,Gender Parity Index,0.89,Primary,Gross Attendance Ratio
+Isiolo,Male,92.1,Primary,Gross Attendance Ratio
+Isiolo,Female,93.6,Primary,Gross Attendance Ratio
+Isiolo,Gender Parity Index,1.02,Primary,Gross Attendance Ratio
+Meru,Male,112.8,Primary,Gross Attendance Ratio
+Meru,Female,105.1,Primary,Gross Attendance Ratio
+Meru,Gender Parity Index,0.93,Primary,Gross Attendance Ratio
+Tharaka-Nithi,Male,114.6,Primary,Gross Attendance Ratio
+Tharaka-Nithi,Female,104.9,Primary,Gross Attendance Ratio
+Tharaka-Nithi,Gender Parity Index,0.92,Primary,Gross Attendance Ratio
+Embu,Male,112.5,Primary,Gross Attendance Ratio
+Embu,Female,105.1,Primary,Gross Attendance Ratio
+Embu,Gender Parity Index,0.93,Primary,Gross Attendance Ratio
+Kitui,Male,118.3,Primary,Gross Attendance Ratio
+Kitui,Female,117.3,Primary,Gross Attendance Ratio
+Kitui,Gender Parity Index,0.99,Primary,Gross Attendance Ratio
+Machakos,Male,115.4,Primary,Gross Attendance Ratio
+Machakos,Female,103.9,Primary,Gross Attendance Ratio
+Machakos,Gender Parity Index,0.90,Primary,Gross Attendance Ratio
+Makueni,Male,114.4,Primary,Gross Attendance Ratio
+Makueni,Female,116.1,Primary,Gross Attendance Ratio
+Makueni,Gender Parity Index,1.01,Primary,Gross Attendance Ratio
+Nyandarua,Male,118.4,Primary,Gross Attendance Ratio
+Nyandarua,Female,112.1,Primary,Gross Attendance Ratio
+Nyandarua,Gender Parity Index,0.95,Primary,Gross Attendance Ratio
+Nyeri,Male,118.2,Primary,Gross Attendance Ratio
+Nyeri,Female,104.7,Primary,Gross Attendance Ratio
+Nyeri,Gender Parity Index,0.89,Primary,Gross Attendance Ratio
+Kirinyaga,Male,104.7,Primary,Gross Attendance Ratio
+Kirinyaga,Female,106.4,Primary,Gross Attendance Ratio
+Kirinyaga,Gender Parity Index,1.02,Primary,Gross Attendance Ratio
+Murang’a,Male,108.9,Primary,Gross Attendance Ratio
+Murang’a,Female,102.3,Primary,Gross Attendance Ratio
+Murang’a,Gender Parity Index,0.94,Primary,Gross Attendance Ratio
+Kiambu,Male,106.1,Primary,Gross Attendance Ratio
+Kiambu,Female,104.2,Primary,Gross Attendance Ratio
+Kiambu,Gender Parity Index,0.98,Primary,Gross Attendance Ratio
+Turkana,Male,60.1,Primary,Gross Attendance Ratio
+Turkana,Female,54.4,Primary,Gross Attendance Ratio
+Turkana,Gender Parity Index,0.91,Primary,Gross Attendance Ratio
+West Pokot,Male,77.9,Primary,Gross Attendance Ratio
+West Pokot,Female,86.7,Primary,Gross Attendance Ratio
+West Pokot,Gender Parity Index,1.11,Primary,Gross Attendance Ratio
+Samburu,Male,70.1,Primary,Gross Attendance Ratio
+Samburu,Female,70.6,Primary,Gross Attendance Ratio
+Samburu,Gender Parity Index,1.01,Primary,Gross Attendance Ratio
+Trans Nzoia,Male,112.0,Primary,Gross Attendance Ratio
+Trans Nzoia,Female,108.1,Primary,Gross Attendance Ratio
+Trans Nzoia,Gender Parity Index,0.97,Primary,Gross Attendance Ratio
+Uasin Gishu,Male,107.0,Primary,Gross Attendance Ratio
+Uasin Gishu,Female,109.5,Primary,Gross Attendance Ratio
+Uasin Gishu,Gender Parity Index,1.02,Primary,Gross Attendance Ratio
+Elgeyo/Marakwet,Male,112.4,Primary,Gross Attendance Ratio
+Elgeyo/Marakwet,Female,108.8,Primary,Gross Attendance Ratio
+Elgeyo/Marakwet,Gender Parity Index,0.97,Primary,Gross Attendance Ratio
+Nandi,Male,116.7,Primary,Gross Attendance Ratio
+Nandi,Female,112.6,Primary,Gross Attendance Ratio
+Nandi,Gender Parity Index,0.97,Primary,Gross Attendance Ratio
+Baringo,Male,100.4,Primary,Gross Attendance Ratio
+Baringo,Female,113.3,Primary,Gross Attendance Ratio
+Baringo,Gender Parity Index,1.13,Primary,Gross Attendance Ratio
+Laikipia,Male,106.4,Primary,Gross Attendance Ratio
+Laikipia,Female,106.1,Primary,Gross Attendance Ratio
+Laikipia,Gender Parity Index,1.00,Primary,Gross Attendance Ratio
+Nakuru,Male,111.1,Primary,Gross Attendance Ratio
+Nakuru,Female,106.4,Primary,Gross Attendance Ratio
+Nakuru,Gender Parity Index,0.96,Primary,Gross Attendance Ratio
+Narok,Male,107.9,Primary,Gross Attendance Ratio
+Narok,Female,102.5,Primary,Gross Attendance Ratio
+Narok,Gender Parity Index,0.95,Primary,Gross Attendance Ratio
+Kajiado,Male,104.4,Primary,Gross Attendance Ratio
+Kajiado,Female,99.2,Primary,Gross Attendance Ratio
+Kajiado,Gender Parity Index,0.95,Primary,Gross Attendance Ratio
+Kericho,Male,108.7,Primary,Gross Attendance Ratio
+Kericho,Female,104.7,Primary,Gross Attendance Ratio
+Kericho,Gender Parity Index,0.96,Primary,Gross Attendance Ratio
+Bomet,Male,125.3,Primary,Gross Attendance Ratio
+Bomet,Female,116.8,Primary,Gross Attendance Ratio
+Bomet,Gender Parity Index,0.93,Primary,Gross Attendance Ratio
+Kakamega,Male,123.3,Primary,Gross Attendance Ratio
+Kakamega,Female,115.1,Primary,Gross Attendance Ratio
+Kakamega,Gender Parity Index,0.93,Primary,Gross Attendance Ratio
+Vihiga,Male,120.7,Primary,Gross Attendance Ratio
+Vihiga,Female,117.8,Primary,Gross Attendance Ratio
+Vihiga,Gender Parity Index,0.98,Primary,Gross Attendance Ratio
+Bungoma,Male,116.1,Primary,Gross Attendance Ratio
+Bungoma,Female,114.5,Primary,Gross Attendance Ratio
+Bungoma,Gender Parity Index,0.99,Primary,Gross Attendance Ratio
+Busia,Male,124.0,Primary,Gross Attendance Ratio
+Busia,Female,111.5,Primary,Gross Attendance Ratio
+Busia,Gender Parity Index,0.90,Primary,Gross Attendance Ratio
+Siaya,Male,117.2,Primary,Gross Attendance Ratio
+Siaya,Female,108.4,Primary,Gross Attendance Ratio
+Siaya,Gender Parity Index,0.92,Primary,Gross Attendance Ratio
+Kisumu,Male,107.3,Primary,Gross Attendance Ratio
+Kisumu,Female,110.8,Primary,Gross Attendance Ratio
+Kisumu,Gender Parity Index,1.03,Primary,Gross Attendance Ratio
+Homa Bay,Male,111.5,Primary,Gross Attendance Ratio
+Homa Bay,Female,100.7,Primary,Gross Attendance Ratio
+Homa Bay,Gender Parity Index,0.90,Primary,Gross Attendance Ratio
+Migori,Male,115.7,Primary,Gross Attendance Ratio
+Migori,Female,106.5,Primary,Gross Attendance Ratio
+Migori,Gender Parity Index,0.92,Primary,Gross Attendance Ratio
+Kisii,Male,117.5,Primary,Gross Attendance Ratio
+Kisii,Female,108.8,Primary,Gross Attendance Ratio
+Kisii,Gender Parity Index,0.93,Primary,Gross Attendance Ratio
+Nyamira,Male,117.4,Primary,Gross Attendance Ratio
+Nyamira,Female,109.7,Primary,Gross Attendance Ratio
+Nyamira,Gender Parity Index,0.93,Primary,Gross Attendance Ratio
+Nairobi City,Male,100.1,Primary,Gross Attendance Ratio
+Nairobi City,Female,102.7,Primary,Gross Attendance Ratio
+Nairobi City,Gender Parity Index,1.03,Primary,Gross Attendance Ratio
+Mombasa,Male,82.7,Secondary,Gross Attendance Ratio
+Mombasa,Female,75.8,Secondary,Gross Attendance Ratio
+Mombasa,Gender Parity Index,0.92,Secondary,Gross Attendance Ratio
+Kwale,Male,48.6,Secondary,Gross Attendance Ratio
+Kwale,Female,43.4,Secondary,Gross Attendance Ratio
+Kwale,Gender Parity Index,0.89,Secondary,Gross Attendance Ratio
+Kilifi,Male,69.0,Secondary,Gross Attendance Ratio
+Kilifi,Female,46.6,Secondary,Gross Attendance Ratio
+Kilifi,Gender Parity Index,0.68,Secondary,Gross Attendance Ratio
+Tana River,Male,41.6,Secondary,Gross Attendance Ratio
+Tana River,Female,25.3,Secondary,Gross Attendance Ratio
+Tana River,Gender Parity Index,0.61,Secondary,Gross Attendance Ratio
+Lamu,Male,62.4,Secondary,Gross Attendance Ratio
+Lamu,Female,58.7,Secondary,Gross Attendance Ratio
+Lamu,Gender Parity Index,0.94,Secondary,Gross Attendance Ratio
+Taita/Taveta,Male,81.7,Secondary,Gross Attendance Ratio
+Taita/Taveta,Female,103.9,Secondary,Gross Attendance Ratio
+Taita/Taveta,Gender Parity Index,1.27,Secondary,Gross Attendance Ratio
+Garissa,Male,51.8,Secondary,Gross Attendance Ratio
+Garissa,Female,34.7,Secondary,Gross Attendance Ratio
+Garissa,Gender Parity Index,0.67,Secondary,Gross Attendance Ratio
+Wajir,Male,76.4,Secondary,Gross Attendance Ratio
+Wajir,Female,60.7,Secondary,Gross Attendance Ratio
+Wajir,Gender Parity Index,0.79,Secondary,Gross Attendance Ratio
+Mandera,Male,51.5,Secondary,Gross Attendance Ratio
+Mandera,Female,36.6,Secondary,Gross Attendance Ratio
+Mandera,Gender Parity Index,0.71,Secondary,Gross Attendance Ratio
+Marsabit,Male,62.9,Secondary,Gross Attendance Ratio
+Marsabit,Female,71.2,Secondary,Gross Attendance Ratio
+Marsabit,Gender Parity Index,1.13,Secondary,Gross Attendance Ratio
+Isiolo,Male,70.5,Secondary,Gross Attendance Ratio
+Isiolo,Female,81.6,Secondary,Gross Attendance Ratio
+Isiolo,Gender Parity Index,1.16,Secondary,Gross Attendance Ratio
+Meru,Male,77.8,Secondary,Gross Attendance Ratio
+Meru,Female,78.7,Secondary,Gross Attendance Ratio
+Meru,Gender Parity Index,1.01,Secondary,Gross Attendance Ratio
+Tharaka-Nithi,Male,80.4,Secondary,Gross Attendance Ratio
+Tharaka-Nithi,Female,82.5,Secondary,Gross Attendance Ratio
+Tharaka-Nithi,Gender Parity Index,1.03,Secondary,Gross Attendance Ratio
+Embu,Male,85.8,Secondary,Gross Attendance Ratio
+Embu,Female,127.3,Secondary,Gross Attendance Ratio
+Embu,Gender Parity Index,1.48,Secondary,Gross Attendance Ratio
+Kitui,Male,72.8,Secondary,Gross Attendance Ratio
+Kitui,Female,93.7,Secondary,Gross Attendance Ratio
+Kitui,Gender Parity Index,1.29,Secondary,Gross Attendance Ratio
+Machakos,Male,101.8,Secondary,Gross Attendance Ratio
+Machakos,Female,115.9,Secondary,Gross Attendance Ratio
+Machakos,Gender Parity Index,1.14,Secondary,Gross Attendance Ratio
+Makueni,Male,97.2,Secondary,Gross Attendance Ratio
+Makueni,Female,90.1,Secondary,Gross Attendance Ratio
+Makueni,Gender Parity Index,0.93,Secondary,Gross Attendance Ratio
+Nyandarua,Male,75.6,Secondary,Gross Attendance Ratio
+Nyandarua,Female,86.1,Secondary,Gross Attendance Ratio
+Nyandarua,Gender Parity Index,1.14,Secondary,Gross Attendance Ratio
+Nyeri,Male,88.6,Secondary,Gross Attendance Ratio
+Nyeri,Female,99.0,Secondary,Gross Attendance Ratio
+Nyeri,Gender Parity Index,1.12,Secondary,Gross Attendance Ratio
+Kirinyaga,Male,123.1,Secondary,Gross Attendance Ratio
+Kirinyaga,Female,101.2,Secondary,Gross Attendance Ratio
+Kirinyaga,Gender Parity Index,0.82,Secondary,Gross Attendance Ratio
+Murang’a,Male,100.5,Secondary,Gross Attendance Ratio
+Murang’a,Female,105.7,Secondary,Gross Attendance Ratio
+Murang’a,Gender Parity Index,1.05,Secondary,Gross Attendance Ratio
+Kiambu,Male,92.4,Secondary,Gross Attendance Ratio
+Kiambu,Female,106.2,Secondary,Gross Attendance Ratio
+Kiambu,Gender Parity Index,1.15,Secondary,Gross Attendance Ratio
+Turkana,Male,45.9,Secondary,Gross Attendance Ratio
+Turkana,Female,38.0,Secondary,Gross Attendance Ratio
+Turkana,Gender Parity Index,0.83,Secondary,Gross Attendance Ratio
+West Pokot,Male,78.3,Secondary,Gross Attendance Ratio
+West Pokot,Female,63.4,Secondary,Gross Attendance Ratio
+West Pokot,Gender Parity Index,0.81,Secondary,Gross Attendance Ratio
+Samburu,Male,60.7,Secondary,Gross Attendance Ratio
+Samburu,Female,35.7,Secondary,Gross Attendance Ratio
+Samburu,Gender Parity Index,0.59,Secondary,Gross Attendance Ratio
+Trans Nzoia,Male,78.4,Secondary,Gross Attendance Ratio
+Trans Nzoia,Female,86.8,Secondary,Gross Attendance Ratio
+Trans Nzoia,Gender Parity Index,1.11,Secondary,Gross Attendance Ratio
+Uasin Gishu,Male,80.9,Secondary,Gross Attendance Ratio
+Uasin Gishu,Female,84.7,Secondary,Gross Attendance Ratio
+Uasin Gishu,Gender Parity Index,1.05,Secondary,Gross Attendance Ratio
+Elgeyo/Marakwet,Male,90.8,Secondary,Gross Attendance Ratio
+Elgeyo/Marakwet,Female,98.5,Secondary,Gross Attendance Ratio
+Elgeyo/Marakwet,Gender Parity Index,1.08,Secondary,Gross Attendance Ratio
+Nandi,Male,86.4,Secondary,Gross Attendance Ratio
+Nandi,Female,91.0,Secondary,Gross Attendance Ratio
+Nandi,Gender Parity Index,1.05,Secondary,Gross Attendance Ratio
+Baringo,Male,84.5,Secondary,Gross Attendance Ratio
+Baringo,Female,66.6,Secondary,Gross Attendance Ratio
+Baringo,Gender Parity Index,0.79,Secondary,Gross Attendance Ratio
+Laikipia,Male,91.5,Secondary,Gross Attendance Ratio
+Laikipia,Female,88.6,Secondary,Gross Attendance Ratio
+Laikipia,Gender Parity Index,0.97,Secondary,Gross Attendance Ratio
+Nakuru,Male,92.9,Secondary,Gross Attendance Ratio
+Nakuru,Female,103.8,Secondary,Gross Attendance Ratio
+Nakuru,Gender Parity Index,1.12,Secondary,Gross Attendance Ratio
+Narok,Male,42.0,Secondary,Gross Attendance Ratio
+Narok,Female,51.1,Secondary,Gross Attendance Ratio
+Narok,Gender Parity Index,1.22,Secondary,Gross Attendance Ratio
+Kajiado,Male,85.4,Secondary,Gross Attendance Ratio
+Kajiado,Female,68.9,Secondary,Gross Attendance Ratio
+Kajiado,Gender Parity Index,0.81,Secondary,Gross Attendance Ratio
+Kericho,Male,110.4,Secondary,Gross Attendance Ratio
+Kericho,Female,107.7,Secondary,Gross Attendance Ratio
+Kericho,Gender Parity Index,0.98,Secondary,Gross Attendance Ratio
+Bomet,Male,90.7,Secondary,Gross Attendance Ratio
+Bomet,Female,87.7,Secondary,Gross Attendance Ratio
+Bomet,Gender Parity Index,0.97,Secondary,Gross Attendance Ratio
+Kakamega,Male,75.5,Secondary,Gross Attendance Ratio
+Kakamega,Female,79.8,Secondary,Gross Attendance Ratio
+Kakamega,Gender Parity Index,1.06,Secondary,Gross Attendance Ratio
+Vihiga,Male,75.1,Secondary,Gross Attendance Ratio
+Vihiga,Female,79.4,Secondary,Gross Attendance Ratio
+Vihiga,Gender Parity Index,1.06,Secondary,Gross Attendance Ratio
+Bungoma,Male,81.6,Secondary,Gross Attendance Ratio
+Bungoma,Female,78.5,Secondary,Gross Attendance Ratio
+Bungoma,Gender Parity Index,0.96,Secondary,Gross Attendance Ratio
+Busia,Male,74.9,Secondary,Gross Attendance Ratio
+Busia,Female,89.3,Secondary,Gross Attendance Ratio
+Busia,Gender Parity Index,1.19,Secondary,Gross Attendance Ratio
+Siaya,Male,78.4,Secondary,Gross Attendance Ratio
+Siaya,Female,102.3,Secondary,Gross Attendance Ratio
+Siaya,Gender Parity Index,1.30,Secondary,Gross Attendance Ratio
+Kisumu,Male,93.9,Secondary,Gross Attendance Ratio
+Kisumu,Female,91.7,Secondary,Gross Attendance Ratio
+Kisumu,Gender Parity Index,0.98,Secondary,Gross Attendance Ratio
+Homa Bay,Male,76.9,Secondary,Gross Attendance Ratio
+Homa Bay,Female,94.1,Secondary,Gross Attendance Ratio
+Homa Bay,Gender Parity Index,1.22,Secondary,Gross Attendance Ratio
+Migori,Male,48.4,Secondary,Gross Attendance Ratio
+Migori,Female,62.2,Secondary,Gross Attendance Ratio
+Migori,Gender Parity Index,1.28,Secondary,Gross Attendance Ratio
+Kisii,Male,76.1,Secondary,Gross Attendance Ratio
+Kisii,Female,81.6,Secondary,Gross Attendance Ratio
+Kisii,Gender Parity Index,1.07,Secondary,Gross Attendance Ratio
+Nyamira,Male,72.8,Secondary,Gross Attendance Ratio
+Nyamira,Female,98.8,Secondary,Gross Attendance Ratio
+Nyamira,Gender Parity Index,1.36,Secondary,Gross Attendance Ratio
+Nairobi City,Male,98.7,Secondary,Gross Attendance Ratio
+Nairobi City,Female,112.3,Secondary,Gross Attendance Ratio
+Nairobi City,Gender Parity Index,1.14,Secondary,Gross Attendance Ratio

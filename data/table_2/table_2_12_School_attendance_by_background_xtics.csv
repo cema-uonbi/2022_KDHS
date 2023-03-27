@@ -1,0 +1,85 @@
+Value,Category,Proportion,Schooling level,Ratio,Background characteristics
+Urban,Male,87.6,Primary,Net Attendance Ratio,Residence
+Urban,Female,90.1,Primary,Net Attendance Ratio,Residence
+Urban,Gender Parity Index,1.03,Primary,Net Attendance Ratio,Residence
+Rural,Male,84.7,Primary,Net Attendance Ratio,Residence
+Rural,Female,85.8,Primary,Net Attendance Ratio,Residence
+Rural,Gender Parity Index,1.01,Primary,Net Attendance Ratio,Residence
+Urban,Male,56.5,Secondary,Net Attendance Ratio,Residence
+Urban,Female,59.7,Secondary,Net Attendance Ratio,Residence
+Urban,Gender Parity Index,1.06,Secondary,Net Attendance Ratio,Residence
+Rural,Male,42.2,Secondary,Net Attendance Ratio,Residence
+Rural,Female,50.2,Secondary,Net Attendance Ratio,Residence
+Rural,Gender Parity Index,1.19,Secondary,Net Attendance Ratio,Residence
+Urban,Male,104.2,Primary,Gross Attendance Ratio,Residence
+Urban,Female,103.6,Primary,Gross Attendance Ratio,Residence
+Urban,Gender Parity Index,0.99,Primary,Gross Attendance Ratio,Residence
+Rural,Male,110.3,Primary,Gross Attendance Ratio,Residence
+Rural,Female,105.3,Primary,Gross Attendance Ratio,Residence
+Rural,Gender Parity Index,0.95,Primary,Gross Attendance Ratio,Residence
+Urban,Male,94.6,Secondary,Gross Attendance Ratio,Residence
+Urban,Female,95.0,Secondary,Gross Attendance Ratio,Residence
+Urban,Gender Parity Index,1.00,Secondary,Gross Attendance Ratio,Residence
+Rural,Male,76.5,Secondary,Gross Attendance Ratio,Residence
+Rural,Female,80.6,Secondary,Gross Attendance Ratio,Residence
+Rural,Gender Parity Index,1.05,Secondary,Gross Attendance Ratio,Residence
+Lowest,Male,74.5,Primary,Net Attendance Ratio,Wealth quintile
+Lowest,Female,75.0,Primary,Net Attendance Ratio,Wealth quintile
+Lowest,Gender Parity Index,1.01,Primary,Net Attendance Ratio,Wealth quintile
+Second,Male,88.7,Primary,Net Attendance Ratio,Wealth quintile
+Second,Female,89.6,Primary,Net Attendance Ratio,Wealth quintile
+Second,Gender Parity Index,1.01,Primary,Net Attendance Ratio,Wealth quintile
+Middle,Male,89.5,Primary,Net Attendance Ratio,Wealth quintile
+Middle,Female,90.9,Primary,Net Attendance Ratio,Wealth quintile
+Middle,Gender Parity Index,1.02,Primary,Net Attendance Ratio,Wealth quintile
+Fourth,Male,89.0,Primary,Net Attendance Ratio,Wealth quintile
+Fourth,Female,91.1,Primary,Net Attendance Ratio,Wealth quintile
+Fourth,Gender Parity Index,1.02,Primary,Net Attendance Ratio,Wealth quintile
+Highest,Male,90.2,Primary,Net Attendance Ratio,Wealth quintile
+Highest,Female,92.6,Primary,Net Attendance Ratio,Wealth quintile
+Highest,Gender Parity Index,1.03,Primary,Net Attendance Ratio,Wealth quintile
+Lowest,Male,23.4,Secondary,Net Attendance Ratio,Wealth quintile
+Lowest,Female,30.6,Secondary,Net Attendance Ratio,Wealth quintile
+Lowest,Gender Parity Index,1.31,Secondary,Net Attendance Ratio,Wealth quintile
+Second,Male,42.3,Secondary,Net Attendance Ratio,Wealth quintile
+Second,Female,50.4,Secondary,Net Attendance Ratio,Wealth quintile
+Second,Gender Parity Index,1.19,Secondary,Net Attendance Ratio,Wealth quintile
+Middle,Male,49.7,Secondary,Net Attendance Ratio,Wealth quintile
+Middle,Female,59.6,Secondary,Net Attendance Ratio,Wealth quintile
+Middle,Gender Parity Index,1.20,Secondary,Net Attendance Ratio,Wealth quintile
+Fourth,Male,59.3,Secondary,Net Attendance Ratio,Wealth quintile
+Fourth,Female,62.4,Secondary,Net Attendance Ratio,Wealth quintile
+Fourth,Gender Parity Index,1.05,Secondary,Net Attendance Ratio,Wealth quintile
+Highest,Male,71.0,Secondary,Net Attendance Ratio,Wealth quintile
+Highest,Female,68.1,Secondary,Net Attendance Ratio,Wealth quintile
+Highest,Gender Parity Index,0.96,Secondary,Net Attendance Ratio,Wealth quintile
+Lowest,Male,102.2,Primary,Gross Attendance Ratio,Wealth quintile
+Lowest,Female,96.9,Primary,Gross Attendance Ratio,Wealth quintile
+Lowest,Gender Parity Index,0.95,Primary,Gross Attendance Ratio,Wealth quintile
+Second,Male,116.1,Primary,Gross Attendance Ratio,Wealth quintile
+Second,Female,110.8,Primary,Gross Attendance Ratio,Wealth quintile
+Second,Gender Parity Index,0.95,Primary,Gross Attendance Ratio,Wealth quintile
+Middle,Male,114.8,Primary,Gross Attendance Ratio,Wealth quintile
+Middle,Female,108.0,Primary,Gross Attendance Ratio,Wealth quintile
+Middle,Gender Parity Index,0.94,Primary,Gross Attendance Ratio,Wealth quintile
+Fourth,Male,106.8,Primary,Gross Attendance Ratio,Wealth quintile
+Fourth,Female,105.9,Primary,Gross Attendance Ratio,Wealth quintile
+Fourth,Gender Parity Index,0.99,Primary,Gross Attendance Ratio,Wealth quintile
+Highest,Male,102.2,Primary,Gross Attendance Ratio,Wealth quintile
+Highest,Female,102.9,Primary,Gross Attendance Ratio,Wealth quintile
+Highest,Gender Parity Index,1.01,Primary,Gross Attendance Ratio,Wealth quintile
+Lowest,Male,48.3,Secondary,Gross Attendance Ratio,Wealth quintile
+Lowest,Female,52.5,Secondary,Gross Attendance Ratio,Wealth quintile
+Lowest,Gender Parity Index,1.09,Secondary,Gross Attendance Ratio,Wealth quintile
+Second,Male,79.2,Secondary,Gross Attendance Ratio,Wealth quintile
+Second,Female,80.1,Secondary,Gross Attendance Ratio,Wealth quintile
+Second,Gender Parity Index,1.01,Secondary,Gross Attendance Ratio,Wealth quintile
+Middle,Male,88.4,Secondary,Gross Attendance Ratio,Wealth quintile
+Middle,Female,94.6,Secondary,Gross Attendance Ratio,Wealth quintile
+Middle,Gender Parity Index,1.07,Secondary,Gross Attendance Ratio,Wealth quintile
+Fourth,Male,98.3,Secondary,Gross Attendance Ratio,Wealth quintile
+Fourth,Female,99.9,Secondary,Gross Attendance Ratio,Wealth quintile
+Fourth,Gender Parity Index,1.02,Secondary,Gross Attendance Ratio,Wealth quintile
+Highest,Male,111.1,Secondary,Gross Attendance Ratio,Wealth quintile
+Highest,Female,105.9,Secondary,Gross Attendance Ratio,Wealth quintile
+Highest,Gender Parity Index,0.95,Secondary,Gross Attendance Ratio,Wealth quintile

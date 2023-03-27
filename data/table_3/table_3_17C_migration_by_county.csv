@@ -1,0 +1,565 @@
+County,Reason For Migration,Proportion,Participants
+Mombasa,Employment,50.3,Women
+Mombasa,Education/training,14.2,Women
+Mombasa,Marriage formation,16.3,Women
+Mombasa,Family reasons,16.5,Women
+Mombasa,Forced displacment,0.9,Women
+Mombasa,Other,1.9,Women
+Kwale,Employment,23.7,Women
+Kwale,Education/training,4.5,Women
+Kwale,Marriage formation,54.2,Women
+Kwale,Family reasons,17.6,Women
+Kwale,Forced displacment,0.0,Women
+Kwale,Other,0.0,Women
+Kilifi,Employment,30.6,Women
+Kilifi,Education/training,3.9,Women
+Kilifi,Marriage formation,50.2,Women
+Kilifi,Family reasons,13.4,Women
+Kilifi,Forced displacment,1.6,Women
+Kilifi,Other,0.2,Women
+Tana River,Employment,55.8,Women
+Tana River,Education/training,1.4,Women
+Tana River,Marriage formation,20.4,Women
+Tana River,Family reasons,19.8,Women
+Tana River,Forced displacment,2.6,Women
+Tana River,Other,0.0,Women
+Lamu,Employment,35.9,Women
+Lamu,Education/training,2.3,Women
+Lamu,Marriage formation,26.5,Women
+Lamu,Family reasons,28.7,Women
+Lamu,Forced displacment,2.4,Women
+Lamu,Other,4.3,Women
+Taita/Taveta,Employment,29.0,Women
+Taita/Taveta,Education/training,3.9,Women
+Taita/Taveta,Marriage formation,31.0,Women
+Taita/Taveta,Family reasons,34.1,Women
+Taita/Taveta,Forced displacment,0.0,Women
+Taita/Taveta,Other,2.0,Women
+Garissa,Employment,49.8,Women
+Garissa,Education/training,5.9,Women
+Garissa,Marriage formation,17.0,Women
+Garissa,Family reasons,24.1,Women
+Garissa,Forced displacment,0.8,Women
+Garissa,Other,2.4,Women
+Wajir,Employment,18.8,Women
+Wajir,Education/training,7.6,Women
+Wajir,Marriage formation,48.9,Women
+Wajir,Family reasons,21.9,Women
+Wajir,Forced displacment,2.2,Women
+Wajir,Other,0.6,Women
+Mandera,Employment,29.3,Women
+Mandera,Education/training,11.3,Women
+Mandera,Marriage formation,33.8,Women
+Mandera,Family reasons,15.9,Women
+Mandera,Forced displacment,9.7,Women
+Mandera,Other,0.0,Women
+Marsabit,Employment,*,Women
+Marsabit,Education/training,*,Women
+Marsabit,Marriage formation,*,Women
+Marsabit,Family reasons,*,Women
+Marsabit,Forced displacment,*,Women
+Marsabit,Other,*,Women
+Isiolo,Employment,46.5,Women
+Isiolo,Education/training,7.5,Women
+Isiolo,Marriage formation,20.3,Women
+Isiolo,Family reasons,22.2,Women
+Isiolo,Forced displacment,1.3,Women
+Isiolo,Other,2.2,Women
+Meru,Employment,24.9,Women
+Meru,Education/training,2.5,Women
+Meru,Marriage formation,49.5,Women
+Meru,Family reasons,20.1,Women
+Meru,Forced displacment,0.2,Women
+Meru,Other,2.8,Women
+Tharaka-Nithi,Employment,15.8,Women
+Tharaka-Nithi,Education/training,5.2,Women
+Tharaka-Nithi,Marriage formation,58.8,Women
+Tharaka-Nithi,Family reasons,18.1,Women
+Tharaka-Nithi,Forced displacment,0.7,Women
+Tharaka-Nithi,Other,1.4,Women
+Embu,Employment,26.0,Women
+Embu,Education/training,3.1,Women
+Embu,Marriage formation,44.2,Women
+Embu,Family reasons,25.9,Women
+Embu,Forced displacment,0.0,Women
+Embu,Other,0.8,Women
+Kitui,Employment,12.6,Women
+Kitui,Education/training,8.5,Women
+Kitui,Marriage formation,56.8,Women
+Kitui,Family reasons,21.9,Women
+Kitui,Forced displacment,0.0,Women
+Kitui,Other,0.2,Women
+Machakos,Employment,26.1,Women
+Machakos,Education/training,6.9,Women
+Machakos,Marriage formation,38.5,Women
+Machakos,Family reasons,22.4,Women
+Machakos,Forced displacment,0.0,Women
+Machakos,Other,6.3,Women
+Makueni,Employment,24.3,Women
+Makueni,Education/training,5.9,Women
+Makueni,Marriage formation,52.7,Women
+Makueni,Family reasons,14.9,Women
+Makueni,Forced displacment,0.3,Women
+Makueni,Other,1.9,Women
+Nyandarua,Employment,35.5,Women
+Nyandarua,Education/training,1.1,Women
+Nyandarua,Marriage formation,31.9,Women
+Nyandarua,Family reasons,23.1,Women
+Nyandarua,Forced displacment,6.3,Women
+Nyandarua,Other,2.1,Women
+Nyeri,Employment,35.8,Women
+Nyeri,Education/training,16.5,Women
+Nyeri,Marriage formation,23.3,Women
+Nyeri,Family reasons,22.0,Women
+Nyeri,Forced displacment,0.3,Women
+Nyeri,Other,2.0,Women
+Kirinyaga,Employment,33.2,Women
+Kirinyaga,Education/training,0.7,Women
+Kirinyaga,Marriage formation,30.5,Women
+Kirinyaga,Family reasons,32.6,Women
+Kirinyaga,Forced displacment,0.4,Women
+Kirinyaga,Other,2.5,Women
+Murang’a,Employment,31.9,Women
+Murang’a,Education/training,3.7,Women
+Murang’a,Marriage formation,33.4,Women
+Murang’a,Family reasons,26.2,Women
+Murang’a,Forced displacment,2.1,Women
+Murang’a,Other,2.7,Women
+Kiambu,Employment,39.9,Women
+Kiambu,Education/training,9.9,Women
+Kiambu,Marriage formation,19.9,Women
+Kiambu,Family reasons,22.8,Women
+Kiambu,Forced displacment,0.2,Women
+Kiambu,Other,7.3,Women
+Turkana,Employment,31.9,Women
+Turkana,Education/training,6.0,Women
+Turkana,Marriage formation,38.3,Women
+Turkana,Family reasons,21.1,Women
+Turkana,Forced displacment,2.4,Women
+Turkana,Other,0.3,Women
+West Pokot,Employment,44.8,Women
+West Pokot,Education/training,4.7,Women
+West Pokot,Marriage formation,36.4,Women
+West Pokot,Family reasons,13.7,Women
+West Pokot,Forced displacment,0.3,Women
+West Pokot,Other,0.0,Women
+Samburu,Employment,21.0,Women
+Samburu,Education/training,2.5,Women
+Samburu,Marriage formation,39.5,Women
+Samburu,Family reasons,28.1,Women
+Samburu,Forced displacment,7.5,Women
+Samburu,Other,1.2,Women
+Trans Nzoia,Employment,37.7,Women
+Trans Nzoia,Education/training,4.9,Women
+Trans Nzoia,Marriage formation,23.5,Women
+Trans Nzoia,Family reasons,28.6,Women
+Trans Nzoia,Forced displacment,1.9,Women
+Trans Nzoia,Other,3.4,Women
+Uasin Gishu,Employment,30.2,Women
+Uasin Gishu,Education/training,14.8,Women
+Uasin Gishu,Marriage formation,22.7,Women
+Uasin Gishu,Family reasons,30.9,Women
+Uasin Gishu,Forced displacment,1.2,Women
+Uasin Gishu,Other,0.4,Women
+Elgeyo/Marakwet,Employment,25.1,Women
+Elgeyo/Marakwet,Education/training,5.4,Women
+Elgeyo/Marakwet,Marriage formation,40.0,Women
+Elgeyo/Marakwet,Family reasons,27.2,Women
+Elgeyo/Marakwet,Forced displacment,2.1,Women
+Elgeyo/Marakwet,Other,0.2,Women
+Nandi,Employment,24.1,Women
+Nandi,Education/training,13.3,Women
+Nandi,Marriage formation,44.2,Women
+Nandi,Family reasons,15.9,Women
+Nandi,Forced displacment,1.7,Women
+Nandi,Other,0.8,Women
+Baringo,Employment,30.1,Women
+Baringo,Education/training,2.7,Women
+Baringo,Marriage formation,54.7,Women
+Baringo,Family reasons,12.1,Women
+Baringo,Forced displacment,0.4,Women
+Baringo,Other,0.0,Women
+Laikipia,Employment,35.5,Women
+Laikipia,Education/training,5.5,Women
+Laikipia,Marriage formation,20.0,Women
+Laikipia,Family reasons,30.6,Women
+Laikipia,Forced displacment,6.7,Women
+Laikipia,Other,1.7,Women
+Nakuru,Employment,42.1,Women
+Nakuru,Education/training,8.1,Women
+Nakuru,Marriage formation,22.0,Women
+Nakuru,Family reasons,24.2,Women
+Nakuru,Forced displacment,2.7,Women
+Nakuru,Other,0.9,Women
+Narok,Employment,31.4,Women
+Narok,Education/training,4.4,Women
+Narok,Marriage formation,46.8,Women
+Narok,Family reasons,14.7,Women
+Narok,Forced displacment,2.0,Women
+Narok,Other,0.7,Women
+Kajiado,Employment,50.5,Women
+Kajiado,Education/training,4.0,Women
+Kajiado,Marriage formation,9.9,Women
+Kajiado,Family reasons,33.2,Women
+Kajiado,Forced displacment,0.9,Women
+Kajiado,Other,1.6,Women
+Kericho,Employment,21.9,Women
+Kericho,Education/training,9.3,Women
+Kericho,Marriage formation,62.1,Women
+Kericho,Family reasons,5.6,Women
+Kericho,Forced displacment,0.0,Women
+Kericho,Other,1.1,Women
+Bomet,Employment,20.4,Women
+Bomet,Education/training,3.7,Women
+Bomet,Marriage formation,60.3,Women
+Bomet,Family reasons,14.8,Women
+Bomet,Forced displacment,0.4,Women
+Bomet,Other,0.4,Women
+Kakamega,Employment,11.5,Women
+Kakamega,Education/training,4.5,Women
+Kakamega,Marriage formation,57.5,Women
+Kakamega,Family reasons,23.3,Women
+Kakamega,Forced displacment,0.4,Women
+Kakamega,Other,2.9,Women
+Vihiga,Employment,16.0,Women
+Vihiga,Education/training,6.9,Women
+Vihiga,Marriage formation,34.1,Women
+Vihiga,Family reasons,35.7,Women
+Vihiga,Forced displacment,0.1,Women
+Vihiga,Other,7.1,Women
+Bungoma,Employment,16.8,Women
+Bungoma,Education/training,4.9,Women
+Bungoma,Marriage formation,47.0,Women
+Bungoma,Family reasons,29.5,Women
+Bungoma,Forced displacment,1.5,Women
+Bungoma,Other,0.3,Women
+Busia,Employment,14.6,Women
+Busia,Education/training,1.7,Women
+Busia,Marriage formation,57.4,Women
+Busia,Family reasons,24.9,Women
+Busia,Forced displacment,0.8,Women
+Busia,Other,0.5,Women
+Siaya,Employment,11.4,Women
+Siaya,Education/training,8.7,Women
+Siaya,Marriage formation,59.5,Women
+Siaya,Family reasons,20.1,Women
+Siaya,Forced displacment,0.3,Women
+Siaya,Other,0.0,Women
+Kisumu,Employment,27.5,Women
+Kisumu,Education/training,10.1,Women
+Kisumu,Marriage formation,49.2,Women
+Kisumu,Family reasons,11.1,Women
+Kisumu,Forced displacment,0.7,Women
+Kisumu,Other,1.4,Women
+Homa Bay,Employment,11.9,Women
+Homa Bay,Education/training,7.7,Women
+Homa Bay,Marriage formation,40.7,Women
+Homa Bay,Family reasons,37.7,Women
+Homa Bay,Forced displacment,1.2,Women
+Homa Bay,Other,0.8,Women
+Migori,Employment,12.7,Women
+Migori,Education/training,4.3,Women
+Migori,Marriage formation,60.1,Women
+Migori,Family reasons,20.0,Women
+Migori,Forced displacment,0.6,Women
+Migori,Other,2.3,Women
+Kisii,Employment,14.5,Women
+Kisii,Education/training,7.6,Women
+Kisii,Marriage formation,63.1,Women
+Kisii,Family reasons,13.6,Women
+Kisii,Forced displacment,0.4,Women
+Kisii,Other,0.8,Women
+Nyamira,Employment,12.0,Women
+Nyamira,Education/training,2.1,Women
+Nyamira,Marriage formation,59.0,Women
+Nyamira,Family reasons,21.1,Women
+Nyamira,Forced displacment,4.8,Women
+Nyamira,Other,0.9,Women
+Nairobi City,Employment,53.1,Women
+Nairobi City,Education/training,18.6,Women
+Nairobi City,Marriage formation,10.8,Women
+Nairobi City,Family reasons,16.2,Women
+Nairobi City,Forced displacment,0.6,Women
+Nairobi City,Other,0.6,Women
+Mombasa,Employment,66.1,Men
+Mombasa,Education/training,14.7,Men
+Mombasa,Marriage formation,0.0,Men
+Mombasa,Family reasons,18.8,Men
+Mombasa,Forced displacment,0.0,Men
+Mombasa,Other,0.3,Men
+Kwale,Employment,58.9,Men
+Kwale,Education/training,9.2,Men
+Kwale,Marriage formation,0.0,Men
+Kwale,Family reasons,32.0,Men
+Kwale,Forced displacment,0.0,Men
+Kwale,Other,0.0,Men
+Kilifi,Employment,63.7,Men
+Kilifi,Education/training,18.7,Men
+Kilifi,Marriage formation,0.0,Men
+Kilifi,Family reasons,16.4,Men
+Kilifi,Forced displacment,0.0,Men
+Kilifi,Other,1.2,Men
+Tana River,Employment,80.5,Men
+Tana River,Education/training,3.1,Men
+Tana River,Marriage formation,0.0,Men
+Tana River,Family reasons,16.4,Men
+Tana River,Forced displacment,0.0,Men
+Tana River,Other,0.0,Men
+Lamu,Employment,61.0,Men
+Lamu,Education/training,6.3,Men
+Lamu,Marriage formation,0.8,Men
+Lamu,Family reasons,31.9,Men
+Lamu,Forced displacment,0.0,Men
+Lamu,Other,0.0,Men
+Taita/Taveta,Employment,56.9,Men
+Taita/Taveta,Education/training,5.3,Men
+Taita/Taveta,Marriage formation,0.0,Men
+Taita/Taveta,Family reasons,32.3,Men
+Taita/Taveta,Forced displacment,1.5,Men
+Taita/Taveta,Other,3.9,Men
+Garissa,Employment,86.9,Men
+Garissa,Education/training,6.1,Men
+Garissa,Marriage formation,0.0,Men
+Garissa,Family reasons,7.0,Men
+Garissa,Forced displacment,0.0,Men
+Garissa,Other,0.0,Men
+Wajir,Employment,29.9,Men
+Wajir,Education/training,22.5,Men
+Wajir,Marriage formation,0.4,Men
+Wajir,Family reasons,31.5,Men
+Wajir,Forced displacment,10.5,Men
+Wajir,Other,5.2,Men
+Mandera,Employment,*,Men
+Mandera,Education/training,*,Men
+Mandera,Marriage formation,*,Men
+Mandera,Family reasons,*,Men
+Mandera,Forced displacment,*,Men
+Mandera,Other,*,Men
+Marsabit,Employment,*,Men
+Marsabit,Education/training,*,Men
+Marsabit,Marriage formation,*,Men
+Marsabit,Family reasons,*,Men
+Marsabit,Forced displacment,*,Men
+Marsabit,Other,*,Men
+Isiolo,Employment,69.8,Men
+Isiolo,Education/training,10.8,Men
+Isiolo,Marriage formation,0.9,Men
+Isiolo,Family reasons,16.8,Men
+Isiolo,Forced displacment,1.7,Men
+Isiolo,Other,0.0,Men
+Meru,Employment,55.1,Men
+Meru,Education/training,14.8,Men
+Meru,Marriage formation,0.0,Men
+Meru,Family reasons,30.1,Men
+Meru,Forced displacment,0.0,Men
+Meru,Other,0.0,Men
+Tharaka-Nithi,Employment,43.2,Men
+Tharaka-Nithi,Education/training,17.6,Men
+Tharaka-Nithi,Marriage formation,0.0,Men
+Tharaka-Nithi,Family reasons,37.2,Men
+Tharaka-Nithi,Forced displacment,0.0,Men
+Tharaka-Nithi,Other,2.0,Men
+Embu,Employment,60.3,Men
+Embu,Education/training,2.7,Men
+Embu,Marriage formation,2.6,Men
+Embu,Family reasons,34.4,Men
+Embu,Forced displacment,0.0,Men
+Embu,Other,0.0,Men
+Kitui,Employment,36.3,Men
+Kitui,Education/training,51.7,Men
+Kitui,Marriage formation,0.0,Men
+Kitui,Family reasons,8.8,Men
+Kitui,Forced displacment,0.0,Men
+Kitui,Other,3.3,Men
+Machakos,Employment,50.4,Men
+Machakos,Education/training,15.6,Men
+Machakos,Marriage formation,0.7,Men
+Machakos,Family reasons,31.9,Men
+Machakos,Forced displacment,0.8,Men
+Machakos,Other,0.6,Men
+Makueni,Employment,52.4,Men
+Makueni,Education/training,20.5,Men
+Makueni,Marriage formation,0.0,Men
+Makueni,Family reasons,25.4,Men
+Makueni,Forced displacment,0.0,Men
+Makueni,Other,1.7,Men
+Nyandarua,Employment,36.3,Men
+Nyandarua,Education/training,8.5,Men
+Nyandarua,Marriage formation,1.6,Men
+Nyandarua,Family reasons,39.3,Men
+Nyandarua,Forced displacment,14.2,Men
+Nyandarua,Other,0.0,Men
+Nyeri,Employment,60.3,Men
+Nyeri,Education/training,10.7,Men
+Nyeri,Marriage formation,0.0,Men
+Nyeri,Family reasons,27.3,Men
+Nyeri,Forced displacment,1.7,Men
+Nyeri,Other,0.0,Men
+Kirinyaga,Employment,76.3,Men
+Kirinyaga,Education/training,2.6,Men
+Kirinyaga,Marriage formation,0.0,Men
+Kirinyaga,Family reasons,21.1,Men
+Kirinyaga,Forced displacment,0.0,Men
+Kirinyaga,Other,0.0,Men
+Murang’a,Employment,68.7,Men
+Murang’a,Education/training,5.7,Men
+Murang’a,Marriage formation,1.3,Men
+Murang’a,Family reasons,17.6,Men
+Murang’a,Forced displacment,1.4,Men
+Murang’a,Other,5.3,Men
+Kiambu,Employment,68.9,Men
+Kiambu,Education/training,11.4,Men
+Kiambu,Marriage formation,0.0,Men
+Kiambu,Family reasons,18.2,Men
+Kiambu,Forced displacment,0.0,Men
+Kiambu,Other,1.6,Men
+Turkana,Employment,69.9,Men
+Turkana,Education/training,17.8,Men
+Turkana,Marriage formation,0.0,Men
+Turkana,Family reasons,12.3,Men
+Turkana,Forced displacment,0.0,Men
+Turkana,Other,0.0,Men
+West Pokot,Employment,84.3,Men
+West Pokot,Education/training,5.5,Men
+West Pokot,Marriage formation,0.0,Men
+West Pokot,Family reasons,9.4,Men
+West Pokot,Forced displacment,0.0,Men
+West Pokot,Other,0.8,Men
+Samburu,Employment,72.2,Men
+Samburu,Education/training,15.9,Men
+Samburu,Marriage formation,0.0,Men
+Samburu,Family reasons,10.3,Men
+Samburu,Forced displacment,0.0,Men
+Samburu,Other,1.6,Men
+Trans Nzoia,Employment,*,Men
+Trans Nzoia,Education/training,*,Men
+Trans Nzoia,Marriage formation,*,Men
+Trans Nzoia,Family reasons,*,Men
+Trans Nzoia,Forced displacment,*,Men
+Trans Nzoia,Other,*,Men
+Uasin Gishu,Employment,48.6,Men
+Uasin Gishu,Education/training,16.5,Men
+Uasin Gishu,Marriage formation,0.0,Men
+Uasin Gishu,Family reasons,34.1,Men
+Uasin Gishu,Forced displacment,0.8,Men
+Uasin Gishu,Other,0.0,Men
+Elgeyo/Marakwet,Employment,74.4,Men
+Elgeyo/Marakwet,Education/training,9.5,Men
+Elgeyo/Marakwet,Marriage formation,0.0,Men
+Elgeyo/Marakwet,Family reasons,16.1,Men
+Elgeyo/Marakwet,Forced displacment,0.0,Men
+Elgeyo/Marakwet,Other,0.0,Men
+Nandi,Employment,41.4,Men
+Nandi,Education/training,29.0,Men
+Nandi,Marriage formation,2.4,Men
+Nandi,Family reasons,24.7,Men
+Nandi,Forced displacment,2.5,Men
+Nandi,Other,0.0,Men
+Baringo,Employment,85.6,Men
+Baringo,Education/training,7.9,Men
+Baringo,Marriage formation,0.0,Men
+Baringo,Family reasons,6.5,Men
+Baringo,Forced displacment,0.0,Men
+Baringo,Other,0.0,Men
+Laikipia,Employment,52.9,Men
+Laikipia,Education/training,10.2,Men
+Laikipia,Marriage formation,0.6,Men
+Laikipia,Family reasons,31.9,Men
+Laikipia,Forced displacment,2.1,Men
+Laikipia,Other,2.2,Men
+Nakuru,Employment,56.4,Men
+Nakuru,Education/training,10.3,Men
+Nakuru,Marriage formation,0.0,Men
+Nakuru,Family reasons,28.1,Men
+Nakuru,Forced displacment,4.4,Men
+Nakuru,Other,0.8,Men
+Narok,Employment,78.2,Men
+Narok,Education/training,7.4,Men
+Narok,Marriage formation,0.6,Men
+Narok,Family reasons,13.9,Men
+Narok,Forced displacment,0.0,Men
+Narok,Other,0.0,Men
+Kajiado,Employment,70.2,Men
+Kajiado,Education/training,3.2,Men
+Kajiado,Marriage formation,0.0,Men
+Kajiado,Family reasons,10.8,Men
+Kajiado,Forced displacment,0.0,Men
+Kajiado,Other,15.8,Men
+Kericho,Employment,87.7,Men
+Kericho,Education/training,6.2,Men
+Kericho,Marriage formation,0.0,Men
+Kericho,Family reasons,6.1,Men
+Kericho,Forced displacment,0.0,Men
+Kericho,Other,0.0,Men
+Bomet,Employment,61.6,Men
+Bomet,Education/training,25.7,Men
+Bomet,Marriage formation,0.0,Men
+Bomet,Family reasons,9.7,Men
+Bomet,Forced displacment,2.9,Men
+Bomet,Other,0.0,Men
+Kakamega,Employment,58.7,Men
+Kakamega,Education/training,13.0,Men
+Kakamega,Marriage formation,0.0,Men
+Kakamega,Family reasons,21.8,Men
+Kakamega,Forced displacment,0.0,Men
+Kakamega,Other,6.4,Men
+Vihiga,Employment,44.4,Men
+Vihiga,Education/training,11.7,Men
+Vihiga,Marriage formation,0.0,Men
+Vihiga,Family reasons,43.8,Men
+Vihiga,Forced displacment,0.0,Men
+Vihiga,Other,0.0,Men
+Bungoma,Employment,38.1,Men
+Bungoma,Education/training,6.9,Men
+Bungoma,Marriage formation,0.0,Men
+Bungoma,Family reasons,53.0,Men
+Bungoma,Forced displacment,2.0,Men
+Bungoma,Other,0.0,Men
+Busia,Employment,39.9,Men
+Busia,Education/training,7.6,Men
+Busia,Marriage formation,0.0,Men
+Busia,Family reasons,52.0,Men
+Busia,Forced displacment,0.5,Men
+Busia,Other,0.0,Men
+Siaya,Employment,35.5,Men
+Siaya,Education/training,10.7,Men
+Siaya,Marriage formation,0.0,Men
+Siaya,Family reasons,51.8,Men
+Siaya,Forced displacment,0.5,Men
+Siaya,Other,1.6,Men
+Kisumu,Employment,79.1,Men
+Kisumu,Education/training,4.1,Men
+Kisumu,Marriage formation,0.0,Men
+Kisumu,Family reasons,16.8,Men
+Kisumu,Forced displacment,0.0,Men
+Kisumu,Other,0.0,Men
+Homa Bay,Employment,39.2,Men
+Homa Bay,Education/training,13.1,Men
+Homa Bay,Marriage formation,0.0,Men
+Homa Bay,Family reasons,47.7,Men
+Homa Bay,Forced displacment,0.0,Men
+Homa Bay,Other,0.0,Men
+Migori,Employment,24.2,Men
+Migori,Education/training,6.7,Men
+Migori,Marriage formation,1.3,Men
+Migori,Family reasons,63.7,Men
+Migori,Forced displacment,2.0,Men
+Migori,Other,2.1,Men
+Kisii,Employment,23.7,Men
+Kisii,Education/training,21.5,Men
+Kisii,Marriage formation,0.0,Men
+Kisii,Family reasons,53.3,Men
+Kisii,Forced displacment,1.5,Men
+Kisii,Other,0.0,Men
+Nyamira,Employment,44.4,Men
+Nyamira,Education/training,7.9,Men
+Nyamira,Marriage formation,0.0,Men
+Nyamira,Family reasons,47.7,Men
+Nyamira,Forced displacment,0.0,Men
+Nyamira,Other,0.0,Men
+Nairobi City,Employment,66.5,Men
+Nairobi City,Education/training,16.2,Men
+Nairobi City,Marriage formation,0.3,Men
+Nairobi City,Family reasons,10.2,Men
+Nairobi City,Forced displacment,0.7,Men
+Nairobi City,Other,6.2,Men

@@ -1,0 +1,236 @@
+County,Age_category,Category,Proportion
+Mombasa,6-59 months, Iron tablets/syrups last 12 months,43.1
+Mombasa,6-59 months, Micronutrient powders last 12 months,33.2
+Mombasa,6-59 months, Iron supplements last 6 months,44.7
+Mombasa,6-59 months, Vit. A last 6 months,74.5
+Mombasa,12-59 months, Deworming last 6 months,77.4
+Kwale,6-59 months, Iron tablets/syrups last 12 months,53.3
+Kwale,6-59 months, Micronutrient powders last 12 months,57.7
+Kwale,6-59 months, Iron supplements last 6 months,60.3
+Kwale,6-59 months, Vit. A last 6 months,80.0
+Kwale,12-59 months, Deworming last 6 months,67.9
+Kilifi,6-59 months, Iron tablets/syrups last 12 months,8.2
+Kilifi,6-59 months, Micronutrient powders last 12 months,6.9
+Kilifi,6-59 months, Iron supplements last 6 months,9.3
+Kilifi,6-59 months, Vit. A last 6 months,69.7
+Kilifi,12-59 months, Deworming last 6 months,67.1
+Tana River,6-59 months, Iron tablets/syrups last 12 months,12.7
+Tana River,6-59 months, Micronutrient powders last 12 months,11.6
+Tana River,6-59 months, Iron supplements last 6 months,14.9
+Tana River,6-59 months, Vit. A last 6 months,38.3
+Tana River,12-59 months, Deworming last 6 months,42.0
+Lamu,6-59 months, Iron tablets/syrups last 12 months,7.2
+Lamu,6-59 months, Micronutrient powders last 12 months,0.7
+Lamu,6-59 months, Iron supplements last 6 months,7.2
+Lamu,6-59 months, Vit. A last 6 months,54.5
+Lamu,12-59 months, Deworming last 6 months,64.6
+Taita Taveta,6-59 months, Iron tablets/syrups last 12 months,18.5
+Taita Taveta,6-59 months, Micronutrient powders last 12 months,22.3
+Taita Taveta,6-59 months, Iron supplements last 6 months,23.9
+Taita Taveta,6-59 months, Vit. A last 6 months,70.8
+Taita Taveta,12-59 months, Deworming last 6 months,71.4
+Garissa,6-59 months, Iron tablets/syrups last 12 months,51.0
+Garissa,6-59 months, Micronutrient powders last 12 months,44.9
+Garissa,6-59 months, Iron supplements last 6 months,52.0
+Garissa,6-59 months, Vit. A last 6 months,33.9
+Garissa,12-59 months, Deworming last 6 months,26.7
+Wajir,6-59 months, Iron tablets/syrups last 12 months,6.4
+Wajir,6-59 months, Micronutrient powders last 12 months,0.9
+Wajir,6-59 months, Iron supplements last 6 months,6.5
+Wajir,6-59 months, Vit. A last 6 months,33.1
+Wajir,12-59 months, Deworming last 6 months,24.0
+Mandera,6-59 months, Iron tablets/syrups last 12 months,9.0
+Mandera,6-59 months, Micronutrient powders last 12 months,3.7
+Mandera,6-59 months, Iron supplements last 6 months,10.5
+Mandera,6-59 months, Vit. A last 6 months,16.4
+Mandera,12-59 months, Deworming last 6 months,15.2
+Marsabit,6-59 months, Iron tablets/syrups last 12 months,16.3
+Marsabit,6-59 months, Micronutrient powders last 12 months,10.9
+Marsabit,6-59 months, Iron supplements last 6 months,17.1
+Marsabit,6-59 months, Vit. A last 6 months,59.5
+Marsabit,12-59 months, Deworming last 6 months,35.1
+Isiolo,6-59 months, Iron tablets/syrups last 12 months,32.4
+Isiolo,6-59 months, Micronutrient powders last 12 months,27.7
+Isiolo,6-59 months, Iron supplements last 6 months,33.7
+Isiolo,6-59 months, Vit. A last 6 months,52.7
+Isiolo,12-59 months, Deworming last 6 months,41.9
+Meru,6-59 months, Iron tablets/syrups last 12 months,2.9
+Meru,6-59 months, Micronutrient powders last 12 months,2.3
+Meru,6-59 months, Iron supplements last 6 months,4.8
+Meru,6-59 months, Vit. A last 6 months,49.3
+Meru,12-59 months, Deworming last 6 months,57.8
+Tharaka-Nithi,6-59 months, Iron tablets/syrups last 12 months,12.4
+Tharaka-Nithi,6-59 months, Micronutrient powders last 12 months,8.3
+Tharaka-Nithi,6-59 months, Iron supplements last 6 months,14.7
+Tharaka-Nithi,6-59 months, Vit. A last 6 months,74.4
+Tharaka-Nithi,12-59 months, Deworming last 6 months,65.5
+Embu,6-59 months, Iron tablets/syrups last 12 months,48.4
+Embu,6-59 months, Micronutrient powders last 12 months,49.8
+Embu,6-59 months, Iron supplements last 6 months,51.4
+Embu,6-59 months, Vit. A last 6 months,80.2
+Embu,12-59 months, Deworming last 6 months,86.3
+Kitui,6-59 months, Iron tablets/syrups last 12 months,21.0
+Kitui,6-59 months, Micronutrient powders last 12 months,16.7
+Kitui,6-59 months, Iron supplements last 6 months,22.1
+Kitui,6-59 months, Vit. A last 6 months,53.9
+Kitui,12-59 months, Deworming last 6 months,45.7
+Machakos,6-59 months, Iron tablets/syrups last 12 months,13.9
+Machakos,6-59 months, Micronutrient powders last 12 months,15.3
+Machakos,6-59 months, Iron supplements last 6 months,21.4
+Machakos,6-59 months, Vit. A last 6 months,70.6
+Machakos,12-59 months, Deworming last 6 months,71.9
+Makueni,6-59 months, Iron tablets/syrups last 12 months,12.7
+Makueni,6-59 months, Micronutrient powders last 12 months,11.2
+Makueni,6-59 months, Iron supplements last 6 months,14.0
+Makueni,6-59 months, Vit. A last 6 months,50.8
+Makueni,12-59 months, Deworming last 6 months,48.7
+Nyandarua,6-59 months, Iron tablets/syrups last 12 months,9.9
+Nyandarua,6-59 months, Micronutrient powders last 12 months,4.4
+Nyandarua,6-59 months, Iron supplements last 6 months,11.8
+Nyandarua,6-59 months, Vit. A last 6 months,42.7
+Nyandarua,12-59 months, Deworming last 6 months,69.9
+Nyeri,6-59 months, Iron tablets/syrups last 12 months,23.7
+Nyeri,6-59 months, Micronutrient powders last 12 months,5.7
+Nyeri,6-59 months, Iron supplements last 6 months,24.3
+Nyeri,6-59 months, Vit. A last 6 months,73.9
+Nyeri,12-59 months, Deworming last 6 months,85.2
+Kirinyaga,6-59 months, Iron tablets/syrups last 12 months,14.5
+Kirinyaga,6-59 months, Micronutrient powders last 12 months,12.3
+Kirinyaga,6-59 months, Iron supplements last 6 months,21.5
+Kirinyaga,6-59 months, Vit. A last 6 months,70.0
+Kirinyaga,12-59 months, Deworming last 6 months,78.2
+Murang'a,6-59 months, Iron tablets/syrups last 12 months,21.7
+Murang'a,6-59 months, Micronutrient powders last 12 months,20.4
+Murang'a,6-59 months, Iron supplements last 6 months,27.7
+Murang'a,6-59 months, Vit. A last 6 months,78.9
+Murang'a,12-59 months, Deworming last 6 months,80.9
+Kiambu,6-59 months, Iron tablets/syrups last 12 months,18.1
+Kiambu,6-59 months, Micronutrient powders last 12 months,9.3
+Kiambu,6-59 months, Iron supplements last 6 months,20.8
+Kiambu,6-59 months, Vit. A last 6 months,77.4
+Kiambu,12-59 months, Deworming last 6 months,83.2
+Turkana,6-59 months, Iron tablets/syrups last 12 months,26.8
+Turkana,6-59 months, Micronutrient powders last 12 months,15.9
+Turkana,6-59 months, Iron supplements last 6 months,30.0
+Turkana,6-59 months, Vit. A last 6 months,68.1
+Turkana,12-59 months, Deworming last 6 months,63.6
+West Pokot,6-59 months, Iron tablets/syrups last 12 months,36.2
+West Pokot,6-59 months, Micronutrient powders last 12 months,40.5
+West Pokot,6-59 months, Iron supplements last 6 months,43.0
+West Pokot,6-59 months, Vit. A last 6 months,48.3
+West Pokot,12-59 months, Deworming last 6 months,29.0
+Samburu,6-59 months, Iron tablets/syrups last 12 months,4.1
+Samburu,6-59 months, Micronutrient powders last 12 months,1.9
+Samburu,6-59 months, Iron supplements last 6 months,4.3
+Samburu,6-59 months, Vit. A last 6 months,41.2
+Samburu,12-59 months, Deworming last 6 months,34.4
+Trans Nzoia,6-59 months, Iron tablets/syrups last 12 months,32.6
+Trans Nzoia,6-59 months, Micronutrient powders last 12 months,15.6
+Trans Nzoia,6-59 months, Iron supplements last 6 months,34.2
+Trans Nzoia,6-59 months, Vit. A last 6 months,80.1
+Trans Nzoia,12-59 months, Deworming last 6 months,80.2
+Uasin Gishu,6-59 months, Iron tablets/syrups last 12 months,25.1
+Uasin Gishu,6-59 months, Micronutrient powders last 12 months,9.4
+Uasin Gishu,6-59 months, Iron supplements last 6 months,27.6
+Uasin Gishu,6-59 months, Vit. A last 6 months,70.2
+Uasin Gishu,12-59 months, Deworming last 6 months,76.0
+Elgeyo-Marakwet,6-59 months, Iron tablets/syrups last 12 months,32.4
+Elgeyo-Marakwet,6-59 months, Micronutrient powders last 12 months,24.8
+Elgeyo-Marakwet,6-59 months, Iron supplements last 6 months,38.4
+Elgeyo-Marakwet,6-59 months, Vit. A last 6 months,56.4
+Elgeyo-Marakwet,12-59 months, Deworming last 6 months,48.0
+Nandi,6-59 months, Iron tablets/syrups last 12 months,10.0
+Nandi,6-59 months, Micronutrient powders last 12 months,3.1
+Nandi,6-59 months, Iron supplements last 6 months,12.1
+Nandi,6-59 months, Vit. A last 6 months,50.0
+Nandi,12-59 months, Deworming last 6 months,72.6
+Baringo,6-59 months, Iron tablets/syrups last 12 months,10.4
+Baringo,6-59 months, Micronutrient powders last 12 months,16.0
+Baringo,6-59 months, Iron supplements last 6 months,19.5
+Baringo,6-59 months, Vit. A last 6 months,64.8
+Baringo,12-59 months, Deworming last 6 months,61.6
+Laikipia,6-59 months, Iron tablets/syrups last 12 months,1.1
+Laikipia,6-59 months, Micronutrient powders last 12 months,0.7
+Laikipia,6-59 months, Iron supplements last 6 months,1.5
+Laikipia,6-59 months, Vit. A last 6 months,70.6
+Laikipia,12-59 months, Deworming last 6 months,74.7
+Nakuru,6-59 months, Iron tablets/syrups last 12 months,13.0
+Nakuru,6-59 months, Micronutrient powders last 12 months,6.1
+Nakuru,6-59 months, Iron supplements last 6 months,15.0
+Nakuru,6-59 months, Vit. A last 6 months,58.3
+Nakuru,12-59 months, Deworming last 6 months,73.0
+Narok,6-59 months, Iron tablets/syrups last 12 months,3.8
+Narok,6-59 months, Micronutrient powders last 12 months,2.5
+Narok,6-59 months, Iron supplements last 6 months,4.7
+Narok,6-59 months, Vit. A last 6 months,46.2
+Narok,12-59 months, Deworming last 6 months,59.7
+Kajiado,6-59 months, Iron tablets/syrups last 12 months,18.7
+Kajiado,6-59 months, Micronutrient powders last 12 months,7.9
+Kajiado,6-59 months, Iron supplements last 6 months,21.9
+Kajiado,6-59 months, Vit. A last 6 months,60.6
+Kajiado,12-59 months, Deworming last 6 months,58.9
+Kericho,6-59 months, Iron tablets/syrups last 12 months,32.5
+Kericho,6-59 months, Micronutrient powders last 12 months,32.3
+Kericho,6-59 months, Iron supplements last 6 months,34.1
+Kericho,6-59 months, Vit. A last 6 months,77.5
+Kericho,12-59 months, Deworming last 6 months,77.4
+Bomet,6-59 months, Iron tablets/syrups last 12 months,3.2
+Bomet,6-59 months, Micronutrient powders last 12 months,3.8
+Bomet,6-59 months, Iron supplements last 6 months,4.7
+Bomet,6-59 months, Vit. A last 6 months,69.9
+Bomet,12-59 months, Deworming last 6 months,83.2
+Kakamega,6-59 months, Iron tablets/syrups last 12 months,30.0
+Kakamega,6-59 months, Micronutrient powders last 12 months,10.6
+Kakamega,6-59 months, Iron supplements last 6 months,33.8
+Kakamega,6-59 months, Vit. A last 6 months,77.8
+Kakamega,12-59 months, Deworming last 6 months,74.0
+Vihiga,6-59 months, Iron tablets/syrups last 12 months,19.5
+Vihiga,6-59 months, Micronutrient powders last 12 months,10.7
+Vihiga,6-59 months, Iron supplements last 6 months,20.4
+Vihiga,6-59 months, Vit. A last 6 months,59.4
+Vihiga,12-59 months, Deworming last 6 months,77.4
+Bungoma,6-59 months, Iron tablets/syrups last 12 months,27.2
+Bungoma,6-59 months, Micronutrient powders last 12 months,7.5
+Bungoma,6-59 months, Iron supplements last 6 months,28.6
+Bungoma,6-59 months, Vit. A last 6 months,72.9
+Bungoma,12-59 months, Deworming last 6 months,81.5
+Busia,6-59 months, Iron tablets/syrups last 12 months,9.2
+Busia,6-59 months, Micronutrient powders last 12 months,7.2
+Busia,6-59 months, Iron supplements last 6 months,13.0
+Busia,6-59 months, Vit. A last 6 months,54.9
+Busia,12-59 months, Deworming last 6 months,48.1
+Siaya,6-59 months, Iron tablets/syrups last 12 months,35.8
+Siaya,6-59 months, Micronutrient powders last 12 months,28.4
+Siaya,6-59 months, Iron supplements last 6 months,36.1
+Siaya,6-59 months, Vit. A last 6 months,60.3
+Siaya,12-59 months, Deworming last 6 months,48.3
+Kisumu,6-59 months, Iron tablets/syrups last 12 months,15.1
+Kisumu,6-59 months, Micronutrient powders last 12 months,9.4
+Kisumu,6-59 months, Iron supplements last 6 months,17.0
+Kisumu,6-59 months, Vit. A last 6 months,59.1
+Kisumu,12-59 months, Deworming last 6 months,51.3
+Homa Bay,6-59 months, Iron tablets/syrups last 12 months,14.4
+Homa Bay,6-59 months, Micronutrient powders last 12 months,14.3
+Homa Bay,6-59 months, Iron supplements last 6 months,18.1
+Homa Bay,6-59 months, Vit. A last 6 months,67.0
+Homa Bay,12-59 months, Deworming last 6 months,58.2
+Migori,6-59 months, Iron tablets/syrups last 12 months,11.6
+Migori,6-59 months, Micronutrient powders last 12 months,4.2
+Migori,6-59 months, Iron supplements last 6 months,13.2
+Migori,6-59 months, Vit. A last 6 months,54.8
+Migori,12-59 months, Deworming last 6 months,51.0
+Kisii,6-59 months, Iron tablets/syrups last 12 months,28.7
+Kisii,6-59 months, Micronutrient powders last 12 months,13.6
+Kisii,6-59 months, Iron supplements last 6 months,31.1
+Kisii,6-59 months, Vit. A last 6 months,49.0
+Kisii,12-59 months, Deworming last 6 months,51.4
+Nyamira,6-59 months, Iron tablets/syrups last 12 months,7.9
+Nyamira,6-59 months, Micronutrient powders last 12 months,5.2
+Nyamira,6-59 months, Iron supplements last 6 months,10.2
+Nyamira,6-59 months, Vit. A last 6 months,74.5
+Nyamira,12-59 months, Deworming last 6 months,66.9
+Nairobi,6-59 months, Iron tablets/syrups last 12 months,19.8
+Nairobi,6-59 months, Micronutrient powders last 12 months,16.7
+Nairobi,6-59 months, Iron supplements last 6 months,25.5
+Nairobi,6-59 months, Vit. A last 6 months,69.9
+Nairobi,12-59 months, Deworming last 6 months,75.4
