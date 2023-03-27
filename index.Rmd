@@ -1077,10 +1077,11 @@ insurance$`Health Insurance Type` <- fct_relevel(insurance$`Health Insurance Typ
 
 renderPlot({
   if(input$health%in%c("Wealth quintile", "Age", "Residence")){
-    ggplot(insurance[insurance$`Background characteristics`%in%input$health,], aes(x=Value, y=Proportion))+geom_bar(stat = 'identity', position = position_dodge(), fill="#74add1")+#,aes(tooltip=paste0(Coverage, "%"))) +
+    ggplot(insurance[insurance$`Background characteristics`%in%input$health,], aes(x=`Health Insurance Type`, y=Proportion, fill=Value))+geom_bar(stat = 'identity', position = position_dodge())+#,aes(tooltip=paste0(Coverage, "%"))) +
   labs(y="Percent (%)", x="")+
    coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
+      scale_fill_brewer(palette = "Set1")+
    # theme(strip.background =element_rect(fill="darkorange"))+
     geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.5),vjust=0.5, size=4, color="black")}
   #  insurance_map1a<-girafe(ggobj = insurance_map1,width_svg=18, height_svg=9,
