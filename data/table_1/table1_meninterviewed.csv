@@ -1,5 +1,7 @@
-Participant,selection,residence,numbers
-Number of eligible men,Long_questionnaire,rural,"10,418"
-Number of eligible men interviewed,Long_questionnaire,rural,"9,221"
-Number of eligible men,Long_questionnaire,urban,"6,134"
-Number of eligible men interviewed,Long_questionnaire,urban,"5,232"
+Respondents,selection,residence,numbers,Gender
+Number of eligible men,Full questionnaire,Rural,"10,418",Male
+Number of eligible men interviewed,Full questionnaire,Rural,"9,221",Male
+Eligible men response rate2,Full questionnaire,Rural,88.5,Male
+Number of eligible men,Full questionnaire,Urban,"6,134",Male
+Number of eligible men interviewed,Full questionnaire,Urban,"5,232",Male
+Eligible men response rate2,Full questionnaire,Urban,85.3,Male
