@@ -1,17 +1,193 @@
-Reason,IUD,Injectables,Implants,Pill,male_condom,female_condom,emergency_contraception,SDM,rythm,withdrawal,other,all_methods
-Became pregnant while using,3.3,2.6,2.1,5.5,4.1,*,3.0,(1.3),15.2,13.7,5.0,4.0
-Wanted to become pregnant,47.5,26.3,31.0,25.6,20.6,*,15.3,(24.3),29.1,21.3,8.2,26.6
-Husband/partner disapproved,0.0,0.9,1.5,0.3,4.8,*,0.0,(2.7),1.1,0.8,0.5,1.1
-Wanted a more effective method,3.8,9.3,12.7,16.9,17.9,*,12.6,(20.2),20.6,32.8,60.5,14.7
-Changes in menstrual bleeding,5.0,13.3,10.0,4.8,0.6,*,2.1,(0.0),1.1,0.8,3.7,8.6
-Other side effects/health concerns,27.4,25.7,33.0,18.8,5.7,*,19.9,(0.0),1.2,1.2,1.8,22.2
-Lack of access/too far,2.3,3.9,1.6,1.1,0.4,*,0.7,(0.0),0.3,0.0,0.7,2.2
-Cost too much,0.9,1.0,0.2,0.9,0.9,*,1.2,(0.0),0.0,0.0,0.9,0.7
-Inconvenient to use,2.6,2.0,1.2,7.7,3.6,*,7.3,(6.7),1.2,2.6,2.1,3.0
-Up to God/fatalistic,0.0,0.2,0.0,0.1,0.0,*,0.0,(0.0),0.3,0.0,0.0,0.1
-Difficult to get pregnant/menopausal,0.2,0.7,0.5,0.6,0.4,*,0.8,(0.8),1.1,0.4,0.0,0.6
-Infrequent sex/husband away,1.2,10.5,4.4,12.0,35.0,*,30.7,(27.5),20.7,12.4,8.9,11.6
-Marital dissolution/separation,0.0,1.2,0.4,1.3,1.0,*,1.2,(0.0),1.0,3.0,0.7,1.0
-Other,1.3,0.4,0.3,0.3,0.5,*,0.0,(5.6),0.0,1.1,3.4,0.5
-Don't know,2.7,0.4,0.1,0.0,1.4,*,2.8,(0.0),0.0,3.1,0.2,0.5
-Missing,1.8,1.8,1.0,3.9,3.1,*,2.4,(10.8),6.9,6.9,3.5,2.5
+Reason,variable,Proportion
+Became pregnant while using,IUD,3.3
+Became pregnant while using,Injectables,2.6
+Became pregnant while using,Implants,2.1
+Became pregnant while using,Pill,5.5
+Became pregnant while using,male_condom,4.1
+Became pregnant while using,female_condom,NA
+Became pregnant while using,emergency_contraception,3
+Became pregnant while using,SDM,1.3
+Became pregnant while using,rythm,15.2
+Became pregnant while using,withdrawal,13.7
+Became pregnant while using,other,5
+Became pregnant while using,all_methods,4
+Wanted to become pregnant,IUD,47.5
+Wanted to become pregnant,Injectables,26.3
+Wanted to become pregnant,Implants,31
+Wanted to become pregnant,Pill,25.6
+Wanted to become pregnant,male_condom,20.6
+Wanted to become pregnant,female_condom,NA
+Wanted to become pregnant,emergency_contraception,15.3
+Wanted to become pregnant,SDM,24.3
+Wanted to become pregnant,rythm,29.1
+Wanted to become pregnant,withdrawal,21.3
+Wanted to become pregnant,other,8.2
+Wanted to become pregnant,all_methods,26.6
+Husband/partner disapproved,IUD,0
+Husband/partner disapproved,Injectables,0.9
+Husband/partner disapproved,Implants,1.5
+Husband/partner disapproved,Pill,0.3
+Husband/partner disapproved,male_condom,4.8
+Husband/partner disapproved,female_condom,NA
+Husband/partner disapproved,emergency_contraception,0
+Husband/partner disapproved,SDM,2.7
+Husband/partner disapproved,rythm,1.1
+Husband/partner disapproved,withdrawal,0.8
+Husband/partner disapproved,other,0.5
+Husband/partner disapproved,all_methods,1.1
+Wanted a more effective method,IUD,3.8
+Wanted a more effective method,Injectables,9.3
+Wanted a more effective method,Implants,12.7
+Wanted a more effective method,Pill,16.9
+Wanted a more effective method,male_condom,17.9
+Wanted a more effective method,female_condom,NA
+Wanted a more effective method,emergency_contraception,12.6
+Wanted a more effective method,SDM,20.2
+Wanted a more effective method,rythm,20.6
+Wanted a more effective method,withdrawal,32.8
+Wanted a more effective method,other,60.5
+Wanted a more effective method,all_methods,14.7
+Changes in menstrual bleeding,IUD,5
+Changes in menstrual bleeding,Injectables,13.3
+Changes in menstrual bleeding,Implants,10
+Changes in menstrual bleeding,Pill,4.8
+Changes in menstrual bleeding,male_condom,0.6
+Changes in menstrual bleeding,female_condom,NA
+Changes in menstrual bleeding,emergency_contraception,2.1
+Changes in menstrual bleeding,SDM,0
+Changes in menstrual bleeding,rythm,1.1
+Changes in menstrual bleeding,withdrawal,0.8
+Changes in menstrual bleeding,other,3.7
+Changes in menstrual bleeding,all_methods,8.6
+Other side effects/health concerns,IUD,27.4
+Other side effects/health concerns,Injectables,25.7
+Other side effects/health concerns,Implants,33
+Other side effects/health concerns,Pill,18.8
+Other side effects/health concerns,male_condom,5.7
+Other side effects/health concerns,female_condom,NA
+Other side effects/health concerns,emergency_contraception,19.9
+Other side effects/health concerns,SDM,0
+Other side effects/health concerns,rythm,1.2
+Other side effects/health concerns,withdrawal,1.2
+Other side effects/health concerns,other,1.8
+Other side effects/health concerns,all_methods,22.2
+Lack of access/too far,IUD,2.3
+Lack of access/too far,Injectables,3.9
+Lack of access/too far,Implants,1.6
+Lack of access/too far,Pill,1.1
+Lack of access/too far,male_condom,0.4
+Lack of access/too far,female_condom,NA
+Lack of access/too far,emergency_contraception,0.7
+Lack of access/too far,SDM,0
+Lack of access/too far,rythm,0.3
+Lack of access/too far,withdrawal,0
+Lack of access/too far,other,0.7
+Lack of access/too far,all_methods,2.2
+Cost too much,IUD,0.9
+Cost too much,Injectables,1
+Cost too much,Implants,0.2
+Cost too much,Pill,0.9
+Cost too much,male_condom,0.9
+Cost too much,female_condom,NA
+Cost too much,emergency_contraception,1.2
+Cost too much,SDM,0
+Cost too much,rythm,0
+Cost too much,withdrawal,0
+Cost too much,other,0.9
+Cost too much,all_methods,0.7
+Inconvenient to use,IUD,2.6
+Inconvenient to use,Injectables,2
+Inconvenient to use,Implants,1.2
+Inconvenient to use,Pill,7.7
+Inconvenient to use,male_condom,3.6
+Inconvenient to use,female_condom,NA
+Inconvenient to use,emergency_contraception,7.3
+Inconvenient to use,SDM,6.7
+Inconvenient to use,rythm,1.2
+Inconvenient to use,withdrawal,2.6
+Inconvenient to use,other,2.1
+Inconvenient to use,all_methods,3
+Up to God/fatalistic,IUD,0
+Up to God/fatalistic,Injectables,0.2
+Up to God/fatalistic,Implants,0
+Up to God/fatalistic,Pill,0.1
+Up to God/fatalistic,male_condom,0
+Up to God/fatalistic,female_condom,NA
+Up to God/fatalistic,emergency_contraception,0
+Up to God/fatalistic,SDM,0
+Up to God/fatalistic,rythm,0.3
+Up to God/fatalistic,withdrawal,0
+Up to God/fatalistic,other,0
+Up to God/fatalistic,all_methods,0.1
+Difficult to get pregnant/menopausal,IUD,0.2
+Difficult to get pregnant/menopausal,Injectables,0.7
+Difficult to get pregnant/menopausal,Implants,0.5
+Difficult to get pregnant/menopausal,Pill,0.6
+Difficult to get pregnant/menopausal,male_condom,0.4
+Difficult to get pregnant/menopausal,female_condom,NA
+Difficult to get pregnant/menopausal,emergency_contraception,0.8
+Difficult to get pregnant/menopausal,SDM,0.8
+Difficult to get pregnant/menopausal,rythm,1.1
+Difficult to get pregnant/menopausal,withdrawal,0.4
+Difficult to get pregnant/menopausal,other,0
+Difficult to get pregnant/menopausal,all_methods,0.6
+Infrequent sex/husband away,IUD,1.2
+Infrequent sex/husband away,Injectables,10.5
+Infrequent sex/husband away,Implants,4.4
+Infrequent sex/husband away,Pill,12
+Infrequent sex/husband away,male_condom,35
+Infrequent sex/husband away,female_condom,NA
+Infrequent sex/husband away,emergency_contraception,30.7
+Infrequent sex/husband away,SDM,27.5
+Infrequent sex/husband away,rythm,20.7
+Infrequent sex/husband away,withdrawal,12.4
+Infrequent sex/husband away,other,8.9
+Infrequent sex/husband away,all_methods,11.6
+Marital dissolution/separation,IUD,0
+Marital dissolution/separation,Injectables,1.2
+Marital dissolution/separation,Implants,0.4
+Marital dissolution/separation,Pill,1.3
+Marital dissolution/separation,male_condom,1
+Marital dissolution/separation,female_condom,NA
+Marital dissolution/separation,emergency_contraception,1.2
+Marital dissolution/separation,SDM,0
+Marital dissolution/separation,rythm,1
+Marital dissolution/separation,withdrawal,3
+Marital dissolution/separation,other,0.7
+Marital dissolution/separation,all_methods,1
+Other,IUD,1.3
+Other,Injectables,0.4
+Other,Implants,0.3
+Other,Pill,0.3
+Other,male_condom,0.5
+Other,female_condom,NA
+Other,emergency_contraception,0
+Other,SDM,5.6
+Other,rythm,0
+Other,withdrawal,1.1
+Other,other,3.4
+Other,all_methods,0.5
+Don't know,IUD,2.7
+Don't know,Injectables,0.4
+Don't know,Implants,0.1
+Don't know,Pill,0
+Don't know,male_condom,1.4
+Don't know,female_condom,NA
+Don't know,emergency_contraception,2.8
+Don't know,SDM,0
+Don't know,rythm,0
+Don't know,withdrawal,3.1
+Don't know,other,0.2
+Don't know,all_methods,0.5
+Missing,IUD,1.8
+Missing,Injectables,1.8
+Missing,Implants,1
+Missing,Pill,3.9
+Missing,male_condom,3.1
+Missing,female_condom,NA
+Missing,emergency_contraception,2.4
+Missing,SDM,10.8
+Missing,rythm,6.9
+Missing,withdrawal,6.9
+Missing,other,3.5
+Missing,all_methods,2.5

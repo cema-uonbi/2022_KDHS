@@ -1,48 +1,236 @@
-county,neonatal_mortality,post_neonatal_mortality,infant_mortality,child_mortality,under_5_mortality
-Mombasa,32,10,43,8,50
-Kwale,19,4,23,7,30
-Kilifi,24,10,34,6,40
-Tana River,23,14,38,8,45
-Lamu,26,15,41,9,50
-Taita/Taveta,(19),(5),(24),(6),(29)
-Garissa,28,13,41,3,44
-Wajir,37,6,43,15,57
-Mandera,16,4,20,1,21
-Marsabit,4,5,9,6,15
-Isiolo,22,2,24,9,33
-Meru,20,9,29,(6),(35)
-Tharaka-Nithi,(12),(7),(19),(6),(25)
-Embu,24,(11),(36),(8),(44)
-Kitui,13,9,23,4,27
-Machakos,26,8,34,7,41
-Makueni,26,9,35,3,38
-Nyandarua,20,16,36,10,45
-Nyeri,(27),(21),(48),(5),(52)
-Kirinyaga,37,(17),(55),(2),(56)
-Murang’a,36,(7),(43),(5),(47)
-Kiambu,28,7,35,5,40
-Turkana,21,7,29,27,55
-West Pokot,27,11,38,9,46
-Samburu,19,10,29,9,38
-Trans Nzoia,23,14,36,6,42
-Uasin Gishu,17,14,31,6,37
-Elgeyo/Marakwet,27,5,32,1,33
-Nandi,24,9,33,7,39
-Baringo,33,17,50,5,55
-Laikipia,20,23,44,7,50
-Nakuru,25,16,41,10,51
-Narok,16,8,24,2,26
-Kajiado,14,12,25,7,32
-Kericho,17,8,25,7,31
-Bomet,17,9,26,3,28
-Kakamega,16,11,28,18,45
-Vihiga,16,18,34,17,51
-Bungoma,25,15,39,16,55
-Busia,22,12,34,20,53
-Siaya,24,22,45,19,63
-Kisumu,21,19,40,5,45
-Homa Bay,32,11,42,20,61
-Migori,37,16,53,21,73
-Kisii,21,3,24,16,40
-Nyamira,27,4,31,12,42
-Nairobi City,20,20,40,4,44
+county,category,proportion
+Mombasa,neonatal_mortality,32
+Mombasa,post_neonatal_mortality,10
+Mombasa,infant_mortality,43
+Mombasa,child_mortality,8
+Mombasa,under_5_mortality,50
+Kwale,neonatal_mortality,19
+Kwale,post_neonatal_mortality,4
+Kwale,infant_mortality,23
+Kwale,child_mortality,7
+Kwale,under_5_mortality,30
+Kilifi,neonatal_mortality,24
+Kilifi,post_neonatal_mortality,10
+Kilifi,infant_mortality,34
+Kilifi,child_mortality,6
+Kilifi,under_5_mortality,40
+Tana River,neonatal_mortality,23
+Tana River,post_neonatal_mortality,14
+Tana River,infant_mortality,38
+Tana River,child_mortality,8
+Tana River,under_5_mortality,45
+Lamu,neonatal_mortality,26
+Lamu,post_neonatal_mortality,15
+Lamu,infant_mortality,41
+Lamu,child_mortality,9
+Lamu,under_5_mortality,50
+Taita/Taveta,neonatal_mortality,19
+Taita/Taveta,post_neonatal_mortality,5
+Taita/Taveta,infant_mortality,24
+Taita/Taveta,child_mortality,6
+Taita/Taveta,under_5_mortality,29
+Garissa,neonatal_mortality,28
+Garissa,post_neonatal_mortality,13
+Garissa,infant_mortality,41
+Garissa,child_mortality,3
+Garissa,under_5_mortality,44
+Wajir,neonatal_mortality,37
+Wajir,post_neonatal_mortality,6
+Wajir,infant_mortality,43
+Wajir,child_mortality,15
+Wajir,under_5_mortality,57
+Mandera,neonatal_mortality,16
+Mandera,post_neonatal_mortality,4
+Mandera,infant_mortality,20
+Mandera,child_mortality,1
+Mandera,under_5_mortality,21
+Marsabit,neonatal_mortality,4
+Marsabit,post_neonatal_mortality,5
+Marsabit,infant_mortality,9
+Marsabit,child_mortality,6
+Marsabit,under_5_mortality,15
+Isiolo,neonatal_mortality,22
+Isiolo,post_neonatal_mortality,2
+Isiolo,infant_mortality,24
+Isiolo,child_mortality,9
+Isiolo,under_5_mortality,33
+Meru,neonatal_mortality,20
+Meru,post_neonatal_mortality,9
+Meru,infant_mortality,29
+Meru,child_mortality,6
+Meru,under_5_mortality,35
+Tharaka-Nithi,neonatal_mortality,12
+Tharaka-Nithi,post_neonatal_mortality,7
+Tharaka-Nithi,infant_mortality,19
+Tharaka-Nithi,child_mortality,6
+Tharaka-Nithi,under_5_mortality,25
+Embu,neonatal_mortality,24
+Embu,post_neonatal_mortality,11
+Embu,infant_mortality,36
+Embu,child_mortality,8
+Embu,under_5_mortality,44
+Kitui,neonatal_mortality,13
+Kitui,post_neonatal_mortality,9
+Kitui,infant_mortality,23
+Kitui,child_mortality,4
+Kitui,under_5_mortality,27
+Machakos,neonatal_mortality,26
+Machakos,post_neonatal_mortality,8
+Machakos,infant_mortality,34
+Machakos,child_mortality,7
+Machakos,under_5_mortality,41
+Makueni,neonatal_mortality,26
+Makueni,post_neonatal_mortality,9
+Makueni,infant_mortality,35
+Makueni,child_mortality,3
+Makueni,under_5_mortality,38
+Nyandarua,neonatal_mortality,20
+Nyandarua,post_neonatal_mortality,16
+Nyandarua,infant_mortality,36
+Nyandarua,child_mortality,10
+Nyandarua,under_5_mortality,45
+Nyeri,neonatal_mortality,27
+Nyeri,post_neonatal_mortality,21
+Nyeri,infant_mortality,48
+Nyeri,child_mortality,5
+Nyeri,under_5_mortality,52
+Kirinyaga,neonatal_mortality,37
+Kirinyaga,post_neonatal_mortality,17
+Kirinyaga,infant_mortality,55
+Kirinyaga,child_mortality,2
+Kirinyaga,under_5_mortality,56
+Murang’a,neonatal_mortality,36
+Murang’a,post_neonatal_mortality,7
+Murang’a,infant_mortality,43
+Murang’a,child_mortality,5
+Murang’a,under_5_mortality,47
+Kiambu,neonatal_mortality,28
+Kiambu,post_neonatal_mortality,7
+Kiambu,infant_mortality,35
+Kiambu,child_mortality,5
+Kiambu,under_5_mortality,40
+Turkana,neonatal_mortality,21
+Turkana,post_neonatal_mortality,7
+Turkana,infant_mortality,29
+Turkana,child_mortality,27
+Turkana,under_5_mortality,55
+West Pokot,neonatal_mortality,27
+West Pokot,post_neonatal_mortality,11
+West Pokot,infant_mortality,38
+West Pokot,child_mortality,9
+West Pokot,under_5_mortality,46
+Samburu,neonatal_mortality,19
+Samburu,post_neonatal_mortality,10
+Samburu,infant_mortality,29
+Samburu,child_mortality,9
+Samburu,under_5_mortality,38
+Trans Nzoia,neonatal_mortality,23
+Trans Nzoia,post_neonatal_mortality,14
+Trans Nzoia,infant_mortality,36
+Trans Nzoia,child_mortality,6
+Trans Nzoia,under_5_mortality,42
+Uasin Gishu,neonatal_mortality,17
+Uasin Gishu,post_neonatal_mortality,14
+Uasin Gishu,infant_mortality,31
+Uasin Gishu,child_mortality,6
+Uasin Gishu,under_5_mortality,37
+Elgeyo/Marakwet,neonatal_mortality,27
+Elgeyo/Marakwet,post_neonatal_mortality,5
+Elgeyo/Marakwet,infant_mortality,32
+Elgeyo/Marakwet,child_mortality,1
+Elgeyo/Marakwet,under_5_mortality,33
+Nandi,neonatal_mortality,24
+Nandi,post_neonatal_mortality,9
+Nandi,infant_mortality,33
+Nandi,child_mortality,7
+Nandi,under_5_mortality,39
+Baringo,neonatal_mortality,33
+Baringo,post_neonatal_mortality,17
+Baringo,infant_mortality,50
+Baringo,child_mortality,5
+Baringo,under_5_mortality,55
+Laikipia,neonatal_mortality,20
+Laikipia,post_neonatal_mortality,23
+Laikipia,infant_mortality,44
+Laikipia,child_mortality,7
+Laikipia,under_5_mortality,50
+Nakuru,neonatal_mortality,25
+Nakuru,post_neonatal_mortality,16
+Nakuru,infant_mortality,41
+Nakuru,child_mortality,10
+Nakuru,under_5_mortality,51
+Narok,neonatal_mortality,16
+Narok,post_neonatal_mortality,8
+Narok,infant_mortality,24
+Narok,child_mortality,2
+Narok,under_5_mortality,26
+Kajiado,neonatal_mortality,14
+Kajiado,post_neonatal_mortality,12
+Kajiado,infant_mortality,25
+Kajiado,child_mortality,7
+Kajiado,under_5_mortality,32
+Kericho,neonatal_mortality,17
+Kericho,post_neonatal_mortality,8
+Kericho,infant_mortality,25
+Kericho,child_mortality,7
+Kericho,under_5_mortality,31
+Bomet,neonatal_mortality,17
+Bomet,post_neonatal_mortality,9
+Bomet,infant_mortality,26
+Bomet,child_mortality,3
+Bomet,under_5_mortality,28
+Kakamega,neonatal_mortality,16
+Kakamega,post_neonatal_mortality,11
+Kakamega,infant_mortality,28
+Kakamega,child_mortality,18
+Kakamega,under_5_mortality,45
+Vihiga,neonatal_mortality,16
+Vihiga,post_neonatal_mortality,18
+Vihiga,infant_mortality,34
+Vihiga,child_mortality,17
+Vihiga,under_5_mortality,51
+Bungoma,neonatal_mortality,25
+Bungoma,post_neonatal_mortality,15
+Bungoma,infant_mortality,39
+Bungoma,child_mortality,16
+Bungoma,under_5_mortality,55
+Busia,neonatal_mortality,22
+Busia,post_neonatal_mortality,12
+Busia,infant_mortality,34
+Busia,child_mortality,20
+Busia,under_5_mortality,53
+Siaya,neonatal_mortality,24
+Siaya,post_neonatal_mortality,22
+Siaya,infant_mortality,45
+Siaya,child_mortality,19
+Siaya,under_5_mortality,63
+Kisumu,neonatal_mortality,21
+Kisumu,post_neonatal_mortality,19
+Kisumu,infant_mortality,40
+Kisumu,child_mortality,5
+Kisumu,under_5_mortality,45
+Homa Bay,neonatal_mortality,32
+Homa Bay,post_neonatal_mortality,11
+Homa Bay,infant_mortality,42
+Homa Bay,child_mortality,20
+Homa Bay,under_5_mortality,61
+Migori,neonatal_mortality,37
+Migori,post_neonatal_mortality,16
+Migori,infant_mortality,53
+Migori,child_mortality,21
+Migori,under_5_mortality,73
+Kisii,neonatal_mortality,21
+Kisii,post_neonatal_mortality,3
+Kisii,infant_mortality,24
+Kisii,child_mortality,16
+Kisii,under_5_mortality,40
+Nyamira,neonatal_mortality,27
+Nyamira,post_neonatal_mortality,4
+Nyamira,infant_mortality,31
+Nyamira,child_mortality,12
+Nyamira,under_5_mortality,42
+Nairobi City,neonatal_mortality,20
+Nairobi City,post_neonatal_mortality,20
+Nairobi City,infant_mortality,40
+Nairobi City,child_mortality,4
+Nairobi City,under_5_mortality,44

@@ -1,21 +1,141 @@
-characteristic,number_still_births,number_neonatal_deaths,rate_still_birth,rate_neonatal_deaths,perinatal_mortality_rate,pregnancies_28_weeks,ratio_still_neonatal,variable
-<20,29,50,12.3,22.0,33.9,"2,328",0.6,age
-20-29,112,154,11.4,15.8,27.1,"9,817",0.7,age
-30-39,108,83,21.6,16.9,38.0,"5,008",1.3,age
-40-49,19,13,33.0,23.0,55.2,591,1.5,age
-First pregnancy,56,97,11.1,19.5,30.3,"5,038",0.6,pregnancy
-<15,47,66,16.8,24.1,40.5,"2,799",0.7,pregnancy
-15-26,47,44,15.8,15.3,30.9,"2,949",1.1,pregnancy
-27-38,24,23,11.4,11.3,22.5,"2,082",1.0,pregnancy
-39+,95,69,19.5,14.5,33.6,"4,876",1.4,pregnancy
-Urban,107,113,16.1,17.3,33.1,"6,640",0.9,residence
-Rural,161,187,14.5,17.1,31.3,"11,104",0.9,residence
-No education,33,31,18.2,17.4,35.4,"1,829",1.1,residence
-Primary,111,128,16.5,19.3,35.5,"6,741",0.9,residence
-Secondary,82,97,13.7,16.4,29.8,"5,998",0.8,residence
-More than secondary,42,44,13.1,13.9,26.8,"3,176",1.0,residence
-Lowest,64,65,16.0,16.6,32.3,"3,983",1.0,wealth
-Second,38,48,11.9,15.2,27.0,"3,183",0.8,wealth
-Middle,52,60,16.6,19.7,36.0,"3,123",0.9,wealth
-Fourth,57,71,16.0,20.0,35.6,"3,597",0.8,wealth
-Highest,57,56,14.8,14.7,29.3,"3,858",1.0,wealth
+characteristic,variable,category,proportion
+<20,Age,No. still births,29
+<20,Age,No. neonatal dealths,50
+<20,Age,Rate still birth,12.3
+<20,Age,Rate neonatal deaths,22
+<20,Age,Perinatal mortality rate,33.9
+<20,Age,Pregnancies (28 weeks),2328
+<20,Age,Ratio still neonatal,0.6
+20-29,Age,No. still births,112
+20-29,Age,No. neonatal dealths,154
+20-29,Age,Rate still birth,11.4
+20-29,Age,Rate neonatal deaths,15.8
+20-29,Age,Perinatal mortality rate,27.1
+20-29,Age,Pregnancies (28 weeks),9817
+20-29,Age,Ratio still neonatal,0.7
+30-39,Age,No. still births,108
+30-39,Age,No. neonatal dealths,83
+30-39,Age,Rate still birth,21.6
+30-39,Age,Rate neonatal deaths,16.9
+30-39,Age,Perinatal mortality rate,38
+30-39,Age,Pregnancies (28 weeks),5008
+30-39,Age,Ratio still neonatal,1.3
+40-49,Age,No. still births,19
+40-49,Age,No. neonatal dealths,13
+40-49,Age,Rate still birth,33
+40-49,Age,Rate neonatal deaths,23
+40-49,Age,Perinatal mortality rate,55.2
+40-49,Age,Pregnancies (28 weeks),591
+40-49,Age,Ratio still neonatal,1.5
+First pregnancy,Pregnancy,No. still births,56
+First pregnancy,Pregnancy,No. neonatal dealths,97
+First pregnancy,Pregnancy,Rate still birth,11.1
+First pregnancy,Pregnancy,Rate neonatal deaths,19.5
+First pregnancy,Pregnancy,Perinatal mortality rate,30.3
+First pregnancy,Pregnancy,Pregnancies (28 weeks),5038
+First pregnancy,Pregnancy,Ratio still neonatal,0.6
+<15,Pregnancy,No. still births,47
+<15,Pregnancy,No. neonatal dealths,66
+<15,Pregnancy,Rate still birth,16.8
+<15,Pregnancy,Rate neonatal deaths,24.1
+<15,Pregnancy,Perinatal mortality rate,40.5
+<15,Pregnancy,Pregnancies (28 weeks),2799
+<15,Pregnancy,Ratio still neonatal,0.7
+15-26,Pregnancy,No. still births,47
+15-26,Pregnancy,No. neonatal dealths,44
+15-26,Pregnancy,Rate still birth,15.8
+15-26,Pregnancy,Rate neonatal deaths,15.3
+15-26,Pregnancy,Perinatal mortality rate,30.9
+15-26,Pregnancy,Pregnancies (28 weeks),2949
+15-26,Pregnancy,Ratio still neonatal,1.1
+27-38,Pregnancy,No. still births,24
+27-38,Pregnancy,No. neonatal dealths,23
+27-38,Pregnancy,Rate still birth,11.4
+27-38,Pregnancy,Rate neonatal deaths,11.3
+27-38,Pregnancy,Perinatal mortality rate,22.5
+27-38,Pregnancy,Pregnancies (28 weeks),2082
+27-38,Pregnancy,Ratio still neonatal,1
+39+,Pregnancy,No. still births,95
+39+,Pregnancy,No. neonatal dealths,69
+39+,Pregnancy,Rate still birth,19.5
+39+,Pregnancy,Rate neonatal deaths,14.5
+39+,Pregnancy,Perinatal mortality rate,33.6
+39+,Pregnancy,Pregnancies (28 weeks),4876
+39+,Pregnancy,Ratio still neonatal,1.4
+Urban,Residence,No. still births,107
+Urban,Residence,No. neonatal dealths,113
+Urban,Residence,Rate still birth,16.1
+Urban,Residence,Rate neonatal deaths,17.3
+Urban,Residence,Perinatal mortality rate,33.1
+Urban,Residence,Pregnancies (28 weeks),6640
+Urban,Residence,Ratio still neonatal,0.9
+Rural,Residence,No. still births,161
+Rural,Residence,No. neonatal dealths,187
+Rural,Residence,Rate still birth,14.5
+Rural,Residence,Rate neonatal deaths,17.1
+Rural,Residence,Perinatal mortality rate,31.3
+Rural,Residence,Pregnancies (28 weeks),11104
+Rural,Residence,Ratio still neonatal,0.9
+No education,Residence,No. still births,33
+No education,Residence,No. neonatal dealths,31
+No education,Residence,Rate still birth,18.2
+No education,Residence,Rate neonatal deaths,17.4
+No education,Residence,Perinatal mortality rate,35.4
+No education,Residence,Pregnancies (28 weeks),1829
+No education,Residence,Ratio still neonatal,1.1
+Primary,Residence,No. still births,111
+Primary,Residence,No. neonatal dealths,128
+Primary,Residence,Rate still birth,16.5
+Primary,Residence,Rate neonatal deaths,19.3
+Primary,Residence,Perinatal mortality rate,35.5
+Primary,Residence,Pregnancies (28 weeks),6741
+Primary,Residence,Ratio still neonatal,0.9
+Secondary,Residence,No. still births,82
+Secondary,Residence,No. neonatal dealths,97
+Secondary,Residence,Rate still birth,13.7
+Secondary,Residence,Rate neonatal deaths,16.4
+Secondary,Residence,Perinatal mortality rate,29.8
+Secondary,Residence,Pregnancies (28 weeks),5998
+Secondary,Residence,Ratio still neonatal,0.8
+More than secondary,Residence,No. still births,42
+More than secondary,Residence,No. neonatal dealths,44
+More than secondary,Residence,Rate still birth,13.1
+More than secondary,Residence,Rate neonatal deaths,13.9
+More than secondary,Residence,Perinatal mortality rate,26.8
+More than secondary,Residence,Pregnancies (28 weeks),3176
+More than secondary,Residence,Ratio still neonatal,1
+Lowest,Wealth,No. still births,64
+Lowest,Wealth,No. neonatal dealths,65
+Lowest,Wealth,Rate still birth,16
+Lowest,Wealth,Rate neonatal deaths,16.6
+Lowest,Wealth,Perinatal mortality rate,32.3
+Lowest,Wealth,Pregnancies (28 weeks),3983
+Lowest,Wealth,Ratio still neonatal,1
+Second,Wealth,No. still births,38
+Second,Wealth,No. neonatal dealths,48
+Second,Wealth,Rate still birth,11.9
+Second,Wealth,Rate neonatal deaths,15.2
+Second,Wealth,Perinatal mortality rate,27
+Second,Wealth,Pregnancies (28 weeks),3183
+Second,Wealth,Ratio still neonatal,0.8
+Middle,Wealth,No. still births,52
+Middle,Wealth,No. neonatal dealths,60
+Middle,Wealth,Rate still birth,16.6
+Middle,Wealth,Rate neonatal deaths,19.7
+Middle,Wealth,Perinatal mortality rate,36
+Middle,Wealth,Pregnancies (28 weeks),3123
+Middle,Wealth,Ratio still neonatal,0.9
+Fourth,Wealth,No. still births,57
+Fourth,Wealth,No. neonatal dealths,71
+Fourth,Wealth,Rate still birth,16
+Fourth,Wealth,Rate neonatal deaths,20
+Fourth,Wealth,Perinatal mortality rate,35.6
+Fourth,Wealth,Pregnancies (28 weeks),3597
+Fourth,Wealth,Ratio still neonatal,0.8
+Highest,Wealth,No. still births,57
+Highest,Wealth,No. neonatal dealths,56
+Highest,Wealth,Rate still birth,14.8
+Highest,Wealth,Rate neonatal deaths,14.7
+Highest,Wealth,Perinatal mortality rate,29.3
+Highest,Wealth,Pregnancies (28 weeks),3858
+Highest,Wealth,Ratio still neonatal,1

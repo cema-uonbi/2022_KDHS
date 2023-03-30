@@ -1,11 +1,10 @@
 ---
 title: "Kenya DHS 2022"
-runtime: shiny
+#runtime: shiny
 output:
   flexdashboard::flex_dashboard:
     orientation: rows
     vertical_layout: scroll
-
 resource_files:
 - County.cpg
 - County.dbf
@@ -21,6 +20,16 @@ resource_files:
 - shapefiles/County.dbf
 - shapefiles/County.sbx
 - shapefiles/County.cpg
+- shapefiles/County.cpg
+- shapefiles/County.dbf
+- shapefiles/County.prj
+- shapefiles/County.qpj
+- shapefiles/County.sbn
+- shapefiles/County.sbx
+- shapefiles/County.shp
+- shapefiles/County.shx
+- rsconnect/documents/index.Rmd/shinyapps.io/cema/KNBS_DHS2022.dcf
+- data/table_17/table_17.1_Experience_pysical_violence.csv
 ---
 
 ```{=html}
@@ -490,12 +499,17 @@ radioButtons("rta", "",
                ))
 ```
 
-```{r}
+```{r, include=F}
+RTA <- read_csv("data/table_2/table_2_17_RTA_by_background_xtics.csv")
 
+RTA_county <- read_csv("data/table_2/table_2_17_RTA_by_county.csv") %>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
+  mutate(Proportion=as.numeric(Proportion))
+
+RTA_county1 <- full_join(county, RTA_county, by=c("Name"="County")) 
 ```
 
 ```{r}
-RTA <- read_csv("data/table_2/table_2_17_RTA_by_background_xtics.csv")
 
 renderPlot({
   if(input$rta%in%"Residence"){
@@ -515,6 +529,14 @@ renderPlot({
     theme(strip.background =element_rect(fill="darkorange"))+
     geom_text(aes(label=paste0(Proportion, "%")),vjust=0.5,hjust=-0.2, size=4, color="black")  
   }
+  ggplot(RTA_county1)+
+  geom_sf(data=RTA_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf_interactive(aes(fill=Proportion, tooltip=Names),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~Category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Rate per 100,000")+
+  theme(text=element_text(size=14))
  
 }, width=1600, height=700)
 
@@ -570,7 +592,7 @@ renderPlot({if(input$covid%in%"Residence"){
     geom_text(aes(label=paste0(Proportion, "%")), vjust=0.5,hjust=-0.2, size=4, color="black")
   }else{
     ggplot(covid_county3)+
-  geom_sf(data=covid_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(data=covid_county3, aes(geometry=geometry), fill=NA)+
   geom_sf_interactive(aes(fill=Proportion, tooltip=Names),color="grey80", size=0.0)+
   theme_void()+
   facet_wrap(Participants~Category)+
@@ -673,7 +695,19 @@ radioButtons("cash_transfer", "",
                 "National government"="National government",
                 "Religious organizations"="Religious organization",
                 "Charitable organization"="Charitable organization",
-                "Friends, relatives, or neighbours"="Friends, relatives, or neighbours"))
+                "Friends, relatives, or neighbours"="Friends, relatives, or neighbours",
+                "By County"="County"))
+```
+
+```{r, include=F}
+
+cash_transfer_county <- read_csv("data/table_2/table_2_22_2C_cash_transfer_by_county.csv")%>%
+  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
+  mutate(Proportion=as.numeric(Proportion))%>%
+  mutate(Names=paste0(County,", ", Proportion,"%"))
+
+cash_transfer_county1 <- full_join(county, cash_transfer_county, by=c("Name"="County"))
+
 ```
 
 ```{r}
@@ -682,14 +716,24 @@ cash_transfer <- read_csv("data/table_2/table_2_22_1_cash_transfer_by_provider.c
   mutate(Provider1=recode(Provider, "Church, mosque, or any other religious organization"="Religious organization", "NGO. CBO, or other charitable organization"="Charitable organization"))
 
 
-renderPlot({
+renderPlot({if(input$cash_transfer!="County"){
   ggplot(cash_transfer[cash_transfer$Provider1%in%input$cash_transfer,], aes(x=reorder(`Reason For Assistance`,Proportion), y=Proportion))+
   geom_bar(stat = "identity", fill="#74add1")+
   theme_bw()+
   labs( y="Proportion (%)", title="", x="Reason for assistance", fill="")+
   theme(text=element_text(size=12))+
   geom_text(aes(label = lab), nudge_y = 2.0)+
-  coord_flip()
+  coord_flip()}
+  else{
+   ggplot(cash_transfer_county1)+
+  geom_sf(data=cash_transfer_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~`Reason For Assistance`)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion (%)")+
+  theme(text=element_text(size=14)) 
+  }
 }, width=1600, height=700)
 ```
 
@@ -1713,14 +1757,106 @@ ggplot(agespecificfertilityrate, aes(x=Age_category, y=Residenceprop))+geom_col(
 
 ```
 
-### **Total fertility rates**
+### **Total fertility rate**
+
+**Kindly select the characteristics**
 
 ```{r}
+selectInput("tfr1", "",
+            c("Residence"="Residence",
+              "Education attainment"="Education",
+              "Wealth quintile"="Wealth quintile",
+              "By County (2014)" = "2014",
+              "By County (2022)" = "2022"
+            ))
+
+
+fertility_rate <- read_csv("data/table_5/table 5.2fertility_rate.csv") 
+
+tfrbycounty_2014 <- read_csv("data/table_5/Table 5.2_C  Fertility by county.2014.csv") %>% mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo-Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia")) %>%
+  mutate(year="2014")
+
+tfrbycounty_2014 <- full_join(county, tfrbycounty_2014, by=c("Name"="County"))
+
+TFRbycounty.2022 <- read_csv("data/table_5/Table 5.2_C  Fertility by county.2022.csv")%>% 
+   mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo/Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta" )) %>%
+  mutate(year="2022")
+
+TFRbycounty.2022 <- full_join(county, TFRbycounty.2022, by=c("Name"="County"))
+
+
+tfr_county <- rbind(tfrbycounty_2014,TFRbycounty.2022 )
+
+
+renderPlot({if(input$trf1%in%c("2014", "2022")){
+  ggplot(tfr_county[tfr_county$year%in%input$tfr1,], aes(geometry=geometry, fill=Proportion))+
+  theme_void()+
+  facet_wrap(~Category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion (%)")+
+  theme(text=element_text(size=14))}
+  else{
+      ggplot(fertility_rate[fertility_rate$characteristic%in%input$tfr1,],aes(x=category, y=proportion, fill=Variable))+
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 3)+
+  theme_bw()+
+  labs( y="Proportion (%)", title="", x="Wealth quintile", fill="")+
+  scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9"))+
+  theme(text=element_text(size=12))
+  }
+  }, width=1300, height=700)
 
 ```
 
 
+
 ### **Median age at first birth**
+
+**Kindly select the characteristics**
+
+```{r}
+selectInput("median_age", "",
+            c("Residence"="Residence",
+              "Education attainment"="Education",
+              "Wealth quintile"="Wealth quintile",
+              "By County (2014)" = "2014",
+              "By County (2022)" = "2022"
+            ))
+
+
+median_age <- read_csv("data/table_5/Table 5.11 Median age at first birth.csv")
+
+Median.age.first.birth.2014 <- read_csv("data/table_5/Median.age.first.birth.2014.csv") %>%
+  mutate(year="2014")
+
+Median.age.first.birth.2022 <- read_csv("data/table_5/Table_6c Median.age.first.birth.2022.csv") %>% 
+  mutate(year="2022")
+
+median_age_county <- rbind(Median.age.first.birth.2014, Median.age.first.birth.2022)
+tfrbycounty_2014 <- read_csv("data/table_5/Table 5.2_C  Fertility by county.2014.csv") %>% mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo-Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia")) %>%
+  mutate(year="2014")
+
+median_age_county <- full_join(county, median_age_county, by="Name")
+
+
+
+renderPlot({if(input$median_age%in%c("2014", "2022")){
+  ggplot(median_age_county[median_age_county$year%in%input$tfr1,], aes(geometry=geometry, fill=Proportion))+
+  theme_void()+
+  facet_wrap(~category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion (%)")+
+  theme(text=element_text(size=14))}
+  else{
+      ggplot(median_age[median_age$characteristic%in%input$median_age,],aes(x=category, y=proportion, fill=Variable))+
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 3)+
+  theme_bw()+
+  labs( y="Proportion (%)", title="", x="Wealth quintile", fill="")+
+  scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9"))+
+  theme(text=element_text(size=12))
+  }
+  }, width=1300, height=700)
+
+```
 
 ### **Teenage pregnancy**
 
@@ -1879,16 +2015,113 @@ renderPlot({
 
 ### **Ideal number of children**
 
+```{r}
+
+
+children_number <- read_csv("data/table_6/Table 6.3  Ideal number of children by number of living children.csv") %>%
+  pivot_longer(c(2:8), names_to = "category", values_to = "value") %>%
+  mutate(participants=recode(participants, "men"="Men", "men.mean.number"="Men","women"="Women", "women.mean.number"="Women" )) %>%
+  rename(variable=Ideal.number.children) %>%
+  filter(variable%in%c("0", "1", "2", "3", "4", "5", "6+", "All", "Currently married"))
+  
+
+
+renderPlot({
+  ggplot(children_number,aes(x=variable, y=value, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+facet_wrap(~participants)+coord_flip()+
+  labs( y="Percent (%)", title="", x="", fill="")+
+  scale_fill_brewer(palette = "Set1")+
+  theme(text=element_text(size=18, face="bold"))
+}, width=1200, height=800)
+
+```
+
 ### **Mean ideal number of children**
+
+
+```{r}
+
+selectInput("children_mean", "",
+            c("Age" = "Age",
+              "Education" = "Education",
+              "Residence" = "Residence",
+              "Wealth quintile"="Wealth quintile"
+            ))
+
+children_mean <- read_csv("data/table_6/Table 6.4  Mean ideal number of children according to background characteristics.csv") %>%
+  mutate(characteristic=str_to_sentence(characteristic))
+  
+
+
+
+
+renderPlot({
+  ggplot(children_mean[children_mean$characteristic%in%input$children_mean,],aes(x=Variable, y=mean))+
+  geom_bar(position="dodge", stat="identity", fill="cyan3")+
+  theme_bw()+coord_flip()+
+  labs( y="Percent (%)", title="", x="", fill="")+
+  theme(text=element_text(size=18, face="bold"))
+}, width=1200, height=800)
+
+```
+
 
 ### **Fertility planning status**
 
+
+```{r}
+
+selectInput("fertility_planning", "",
+            c("Birth order" = "Birth order",
+              "Mother's age at birth" = "Mother age at birth",
+              "Pregnancy outcome" = "Pregnancy outcome"
+            ))
+
+fertility_planning <- read_csv("data/table_6/Table 6.5 Fertility planning status.csv") %>%
+  mutate(`Fertility plan`=recode(`Fertility plan`, "Wanted.later"="Wanted later", "Wanted.no.more"="Wanted no more", "Wanted.then"="Wanted then"))
+  
+
+
+
+
+renderPlot({
+  ggplot(fertility_planning[fertility_planning$characteristic%in%input$fertility_planning,],aes(x=Variable, y=percent))+
+  geom_bar(position="dodge", stat="identity", fill="cyan3")+
+  theme_bw()+coord_flip()+facet_grid(~`Fertility plan`)+
+  labs( y="Percent (%)", title="", x="", fill="")+
+  theme(text=element_text(size=18, face="bold"))
+}, width=1200, height=800)
+
+```
+
 ### **Wanted fertility rates**
 
+```{r}
 
-# Current use of contraception {data-navmenu="Key Indicators"}
+selectInput("fertility_rates", "",
+            c("Education" = "Education",
+              "Residence" = "Residence",
+              "Wealth quintile" = "Wealth"
+            ))
+
+fertility_rates <- read_csv("data/table_6/Table 6.6  Wanted fertility rates.csv") %>%
+  mutate(characteristic=str_to_sentence(characteristic))
 
 
+
+
+renderPlot({
+  ggplot(fertility_rates[fertility_rates$characteristic%in%input$fertility_rates,],aes(x=Variable, y=Wanted.fertility.rates))+
+  geom_bar(position="dodge", stat="identity", fill="cyan3")+
+  theme_bw()+coord_flip()+
+  labs( y="Percent (%)", title="", x="", fill="")+
+  theme(text=element_text(size=18, face="bold"))
+}, width=1200, height=800)
+
+```
+
+# Family planning {data-navmenu="Key Indicators"}
 
 ## Row {data-width="200"}
 
@@ -1937,230 +2170,241 @@ valueBox(
 )
 ```
 
-## Row {data-width="200"}
+## Column {.tabset .tabset-fade data-height="900"}
 
-### Choose the characteristics to display:
+### **Knowledge of contraceptive methods**
+
+**Choose the characteristics to display:**
 
 ```{r}
 
-radioButtons("family_planning", "",
-              c("Number of Children"="Number of children",
-                "Age"="Age",
+selectInput("knowledge_contraceptives", "",
+              c("All"="All",
+                "Currently married"="Currently married",
+                "Sexually active unmarried"="Sexually active unmarried"))
+```
+
+```{r, include=F}
+# import data
+knowledge_contraceptives <- read_csv("data/table_7/Table_7.1 Knowledge of contraceptive methods.csv")
+
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(knowledge_contraceptives[knowledge_contraceptives$variable%in%input$knowledge_contraceptives,],aes(x=reorder(method, proportion), y=proportion))+
+    facet_grid(~gender)+
+  geom_bar(position="dodge", stat="identity", fill="#74add1")+
+  theme_bw()+coord_flip()+
+  labs( y="Proportion (%)", title="", x="Residence", fill="")+
+  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+
+```
+
+### **Knowledge of fertile period**
+
+**Choose the characteristics to display:**
+
+```{r}
+
+selectInput("knowledge_fertile", "",
+              c("All women"="All women",
+                "Users of rythm method"="Users of rythm method",
+                "Users of SDM"="Users of SDM"))
+```
+
+```{r, include=F}
+# import data
+knowledge_fertile <- read_csv("data/table_7/Table_7.8_Knowledge of Fertile Period.csv")
+
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(knowledge_fertile[knowledge_fertile$variable%in%input$knowledge_fertile,],aes(x=reorder(perceived_fertility_period, Proportion), y=Proportion))+
+  geom_bar(position="dodge", stat="identity", fill="#74add1")+
+  theme_bw()+coord_flip()+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+
+```
+
+### **Reasons for discontinuation**
+
+**Choose the characteristics to display:**
+
+```{r}
+
+selectInput("reasons_discontinuation", "",
+              c("All methods"="All methods",
+                "Emergency contraception"="Emergency contraception",
+                "Female condom"="Female condom",
+                "Implants"="Implants",
+                "Injectables"="Injectables",
+                "IUD"="IUD",
+                "Male condom"="Male condom",
+                "other"="Other",
+                "Pill"="Pill",
+                "Rythm"="Rythm",
+                "SDM"="SDM",
+                "Withdrawal"="Withdrawal"))
+```
+
+```{r, include=F}
+# import data
+reasons_discontinuation <- read_csv("data/table_7/Table_7.14_Reason_for_discontinuation.csv") %>%
+  mutate(variable=recode(variable, "all_methods"="All methods", "emergency_contraception"="Emergency contraception", "female_condom"="Female condom", "male_condom"="Male condom", "other"="Other", "rythm"="Rythm", "withdrawal"="Withdrawal"))
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(reasons_discontinuation[reasons_discontinuation$variable%in%input$reasons_discontinuation,],aes(x=reorder(Reason, Proportion), y=Proportion))+
+  geom_bar(position="dodge", stat="identity", fill="#74add1")+
+  theme_bw()+coord_flip()+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  scale_fill_manual(values = c("#f46d43","#74add1"))+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+
+```
+
+### **Need and demand for family planning**
+
+**Choose the characteristics to display:**
+
+```{r}
+
+selectInput("need_demand", "",
+              c("Age"="Age",
                 "Education"="Education",
                 "Residence"="Residence",
-                "Wealth quintile"="Wealth quintile",
-                "By County"="County"))
+                "Wealth"="Wealth"))
+```
+
+```{r, include=F}
+# import data
+need_demand <- read_csv("data/table_7/Table_7.15.1_2_Need and Demand for family planning.csv") %>%
+  mutate(Proportion=as.numeric(Proportion))
+
+need_demand$Characteristic <- fct_relevel(need_demand$Characteristic, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
 
 ```
 
-### Type of family planning
+
 
 ```{r}
 
-radioButtons("fp_type", "",
-              c("Any method"="Any",
-                "Modern method"="Modern",
-                "Traditional method"="Traditional"))
+renderPlot({ggplot(need_demand[need_demand$variable%in%input$need_demand,],aes(x=Characteristic, y=Proportion, fill=type))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+facet_grid(Category~need)+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  scale_fill_brewer(palette ="Set1")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+
 ```
 
-<br>
-
-## Row {data-height="600"}
-
-<br>
-
-### Visualization
+### **Decision making about family planning**
 
 ```{r}
 
+selectInput("decision_making1a", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Family planning use"="Family planning use",
+                "General"="General",
+                "Number of living children"="Number of living children",
+                "Residence"="Residence",
+                "Wealth"="Wealth"))
+
+# import data
+decision_making1a <- read_csv("data/table_7/Table_7.16_17_decision_making.csv")
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(decision_making1a[decision_making1a$variable%in%input$decision_making1a,],aes(x=reorder(category,proportion), y=proportion))+
+  geom_bar(position="dodge", stat="identity", fill="#74add1")+
+  theme_bw()+coord_flip()+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+```
+
+### **Future use of contraception**
+
+```{r}
+# import data
+future_use_contraception <- read_csv("data/table_7/Table_7.19_Future_Contraception.csv") %>%
+   mutate(category=fct_relevel(category, "0","1","2","3","4+","Total")) 
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(future_use_contraception,aes(x=reorder(intention,proportion), y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+coord_flip()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+```
+
+
+### **Exposure to family planning messages**
+
+```{r}
+
+selectInput("fp_messages", "",
+              c("Age"="Age",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth"="Wealth"))
 
 # import data
 
-# family planning: any
-fpanyusemarriedbynumberofchildrenvisual <- read_csv("data/table_8/table8_fpanyusemarriedbynumberofchildren.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="Number_of_children") %>%
-  rename(Indicator=Number_of_children) %>%
-  mutate(type="Any")
-
-# by age
-fpanyusemarriedunmarriedbyagevisual <- read_csv("data/table_8/table8_fpanyusemarriedunmarriedbyage.csv") %>%
-  mutate(indicator1="Age") %>%
-  rename(Indicator=Age_of_respondent) %>%
-  mutate(type="Any")
-
-# by residence
-fpanyusemarriedunmarriedbyresidencevisual <- read_csv("data/table_8/table8_fpanyusemarriedunmarriedbyresidence.csv") %>%
-  mutate(indicator1="Residence") %>%
-  rename(Indicator=Residence) %>%
-  mutate(type="Any")
-
-# by education
-fpanyusemarriedbyeducationvisual <- read.csv("data/table_8/table8_fpanyusemarriedbyeducation.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="Education") %>%
-  rename(Indicator="Education_status") %>%
-  mutate(type="Any")
-
-# wealth quintile
-fpanyusemarriedbywealthvisual <- read.csv("data/table_8/table8_fpanyusemarriedbywealth.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="Wealth_quintile") %>%
-  rename(Indicator=Wealth_quintile) %>%
-  mutate(type="Any")
-  
-# by county
-fpanyusemarriedbycountyvisuals <- read_csv("data/table_8/table8c_fpanyusemarriedbycounty.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="County") %>%
-  rename(Indicator=County) %>%
-  mutate(type="Any")
-
-# by county: modern
-modernfpusemarriedbycountyvisual <- read_csv("data/table_8/table8c_modernfpusemarriedbycounty.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="County") %>%
-  rename(Indicator=County) %>%
-  mutate(type="Modern")
-
-# by county: traditional
-tradfpusemarriedbycounty <- read_csv("data/table_8/table8_tradfpusemarriedbycounty.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="County") %>%
-  rename(Indicator=County) %>%
-  mutate(type="Traditional")
+fp_messages <-read_csv("data/table_7/Table_7_20_1_2_Exposure to family planning.csv")
+```
 
 
- 
-# modern family planing
-# by number of children
-modernfpusemarriedbynumberofchildren <- read.csv("data/table_8/table8_modernfpusemarriedbynumberofchildren.csv") %>% 
-  mutate(indicator1="Number of children") %>%
-  rename(Indicator=Number_of_children) %>%
-  mutate(type="Modern")
 
-#  by age
-modernfpusemarriedandunmarriedbyagevisual <- read_csv("data/table_8/table8_modernfpusemarriedandunmarriedbyage.csv") %>%   
-  mutate(indicator1="Age") %>%
-  rename(Indicator=Age) %>%
-  mutate(type="Modern")
+```{r}
 
-# by residential
-modernfpusemarriedandunmarriedbyresidencevisual <- read_csv("data/table_8/table8_modernfpusemarriedandunmarriedbyresidence.csv") %>%
-  mutate(indicator1="Residence") %>%
-  rename(Indicator=Residence) %>%
-  mutate(type="Modern")
-
-#by education
-modernfpusemarrieducationvisual <- read_csv("data/table_8/table8_modernfpusemarrieducation.csv") %>%
-  mutate(Education_status = fct_relevel(Education_status, 
-                                        'No education','Primary','Secondary','More than secondary')) %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="Education") %>%
-  rename(Indicator="Education_status") %>%
-  mutate(type="Modern")
-
-# by wealth quintile
-modernfpusemarriedbywealthquintilevisuals <- read_csv("data/table_8/table8_modernfpusemarriedbywealthquintile.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="Wealth_quintile") %>%
-  rename(Indicator="Wealth_quintile") %>%
-  mutate(type="Modern")
-
-# traditional methods
-
-# by number of children
-tradfpusmarriedbynumberofchildrenvisual <- read.csv("data/table_8/table8_tradfpusmarriedbynumberofchildren.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="Number of children") %>%
-  rename(Indicator=Number_of_children) %>%
-  mutate(type="Traditional")
-
-# by age
-tradfpusemarriedandunmarriedbyagevisual <- read_csv("data/table_8/table8_tradfpusemarriedandunmarriedbyage.csv") %>% 
-  mutate(indicator1="Age") %>%
-  rename(Indicator=Age) %>%
-  mutate(type="Traditional")
-
-# by residence
-tradfpusemarriedandunmarriedbyresidencevisual <- read_csv("data/table_8/table8_tradfpusemarriedandunmarriedbyresidence.csv") %>%
-  mutate(indicator1="Residence") %>%
-  rename(Indicator=Residence) %>%
-  mutate(type="Traditional")
-
-# by education
-tradfpusemarriedbyeducationvisual <- read_csv("data/table_8/table8_tradfpusemarriedbyeducation.csv") %>%
-  mutate(Education_status = fct_relevel(Education_status, 
-                                        'No education','Primary','Secondary','More than secondary')) %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="Education") %>%
-  rename(Indicator="Education_status") %>%
-  mutate(type="Traditional")
-
-# by wealth quintile
-tradfpusemarriedbywealthquintilevisual <- read_csv("data/table_8/table8_tradfpusemarriedbywealthquintile.csv") %>%
-  mutate(Marital_status="Married") %>%
-  mutate(indicator1="Wealth_quintile") %>%
-  rename(Indicator="Wealth_quintile") %>%
-  mutate(type="Traditional")
-
-# join the data
-family_planning <- rbind(fpanyusemarriedbynumberofchildrenvisual, fpanyusemarriedunmarriedbyagevisual, fpanyusemarriedunmarriedbyresidencevisual,fpanyusemarriedbyeducationvisual,fpanyusemarriedbywealthvisual, fpanyusemarriedbycountyvisuals, modernfpusemarriedbynumberofchildren, modernfpusemarrieducationvisual, modernfpusemarriedbywealthquintilevisuals, tradfpusmarriedbynumberofchildrenvisual,tradfpusemarriedandunmarriedbyagevisual, tradfpusemarriedbyeducationvisual,tradfpusemarriedbywealthquintilevisual, modernfpusemarriedandunmarriedbyagevisual) %>%
-  mutate(Contraceptive_use=recode(Contraceptive_use, "Any_method"="Any method", "Modern_method"="Modern method", "Traditional_method"="Traditional method")) %>%
-  mutate(indicator1= recode(indicator1, "Number_of_children"="Number of children", "Wealth_quintile"="Wealth quintile")) %>%
-  mutate(Percent=as.numeric(parse_number(Percent)))%>%
-  mutate(Contraceptive_use=recode(Contraceptive_use, "Emergency contraception"="Emergency\ncontraception", "Female condom"="Female\ncondom", "Female sterilization"="Female\nsterilization", "Any method"="Any\nmethod","Male condom"= "Male\ncondom", "Male sterilization"="Male\nsterilization"))
-
-family_planning$Indicator <- fct_relevel(family_planning$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
-
-renderPlot({if(input$family_planning%in%"County"){
-  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  theme_bw() + facet_grid(.~Marital_status)+coord_flip()+geom_text(aes(label=paste0(round(Percent), "%")))+
-    labs(y="Proportion (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
-  #coord_flip() +
-  #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(text=element_text(size=20, face="bold")) +
-  theme(strip.background =element_rect(fill="gray80"))
-}else if(input$family_planning%in%"Residence"){
-  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%"Any",], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
-  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent), "%")), position=position_dodge(0.6), vjust=0.1)+
-  theme_bw() + facet_grid(.~Marital_status)+
-    labs(y="Proportion (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
-  #coord_flip() +
-  #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(text=element_text(size=20, face="bold")) +
-  theme(strip.background =element_rect(fill="gray80"))
-  } else if(input$fp_type%in%"Modern"){
-  ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=reorder(Contraceptive_use,Percent), y=Percent, fill=Indicator)) +
-  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent), "%")), position=position_dodge(0.6), vjust=0.1)+
-  theme_bw() + facet_grid(.~Marital_status)+
-    labs(y="Proportion (%)", x="", fill=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)))+
-  #coord_flip() +
-  #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(text=element_text(size=20, face="bold")) +
-  theme(strip.background =element_rect(fill="gray80"))
-  }
-  else{ ggplot(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,], aes(x=Indicator, y=Percent, fill=Contraceptive_use)) +
-  geom_bar(stat = "identity", position = "dodge") + geom_text(aes(label=paste0(round(Percent),"%")), position=position_dodge(0.6), vjust=-0.2)+
-  theme_bw() + facet_grid(.~Marital_status)+
-    labs(y="Proportion (%)", x=paste0(unique(family_planning[family_planning$indicator1%in%input$family_planning & family_planning$type%in%input$fp_type,]$indicator1)), fill="Type of contraceptive")+
-  #coord_flip() +
-  #theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  #theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(text=element_text(size=20, face="bold")) +
-  theme(strip.background =element_rect(fill="gray80"))
-  }}, width=1400, height=550)
-
-
+renderPlot({ggplot(fp_messages[fp_messages$variable%in%input$fp_messages,],aes(x=Characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+facet_grid(~Gender)+
+  theme_bw()+coord_flip()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
 
 ```
 
-# Family planning {data-navmenu="Key Indicators"}
+# Childhood mortality {data-navmenu="Key Indicators"}
 
 ## Row {data-width="200"}
 
@@ -2171,101 +2415,390 @@ renderPlot({if(input$family_planning%in%"County"){
 ```{r}
 
 valueBox(
-  value = paste("76%"),
-  caption = "is the demand for family planning among married women",
+  value = paste("63%"),
+  caption = "of currently married women are using a contraceptive method",
   color = "black"
 )
-
 ```
 
 ###  {.value-box}
 
 ```{r}
 valueBox(
-  value = paste("14%"),
-  caption = "of married women have an unmet need for family planning",
+  value = paste("70%"),
+  caption = "of the unmarried women use a contraceptive",
   color = "#b15928"
 )
 ```
 
+
+## Column {.tabset .tabset-fade data-height="900"}
+
+
+### **Early childhood mortality rates**
+
+```{r}
+
+selectInput("early_childhood", "",
+              c("Birth interval"="Birth interval",
+                "Birth order"="Birth order",
+                "Education"="Education",
+                "Mother's age"="Mother's age"))
+
+# import data
+
+early_childhood <-read_csv("data/table_8/Table_8.3_Early_Childhood_Mortality.csv")
+
+early_childhood_county <-read_csv("data/table_8/Table_8.3C_County Early Childhood Mortality.csv") 
+early_childhood_county <- full_join(county, early_childhood_county, by=c("Name"="county"))
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(early_childhood[early_childhood$Variable%in%input$early_childhood,],aes(x=Characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+```
+
+### **Ten-year early childhood mortality**
+
+```{r}
+
+selectInput("early_childhood_mortality", "",
+              c("Birth interval"="Birth interval",
+                "Birth order"="Birth order",
+                "Education"="Education",
+                "Mother's age"="Mother's age",
+                "By County"="County"))
+
+# import data
+
+early_childhood_mortality <-read_csv("data/table_8/Table_8.3_Early_Childhood_Mortality.csv")
+
+early_childhood_mortality_county <-read_csv("data/table_8/Table_8.3C_County Early Childhood Mortality.csv") %>%
+  mutate(county=recode(county,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))
+early_childhood_mortality_county <- full_join(county, early_childhood_mortality_county, by=c("Name"="county")) %>%
+  mutate(category=recode(category, "child_mortality"="Child mortality", "infant_mortality"="Infant mortality", "neonatal_mortality"="Neonatal mortality", "post_neonatal_mortality"="Post neonatal mortality", "under_5_mortality"="Under 5 mortality"))
+```
+
+
+
+```{r}
+
+renderPlot({if(input$early_childhood_mortality!="County"){ggplot(early_childhood[early_childhood$Variable%in%input$early_childhood,],aes(x=Characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}
+  else{
+    ggplot(early_childhood_mortality_county, aes(geometry=geometry, fill=proportion))+
+      geom_sf()+theme_void()+
+  facet_wrap(~category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion (%)")+
+  theme(text=element_text(size=14))
+  }}, width=1600, height=700 )
+
+
+```
+
+### **Perinatal mortality**
+
+```{r}
+
+selectInput("perinatal_mortality", "",
+              c("Age"="Age",
+                "Pregnancy"="Pregnancy",
+                "Residence"="Residence",
+                "Wealth"="Wealth",
+                "By County"="County"))
+
+# import data
+
+perinatal_mortality <-read_csv("data/table_8/Table_8.4_Perinatal Mortality.csv") %>%
+  mutate(category=recode(category, "No. neonatal dealths"="No. of neonatal deaths", "No. still births"="No. of still births",  "Rate neonatal deaths"="Rate of neonatal deaths", "Rate still birth"="Rate of still birth", "Ratio still neonatal"="Ratio of still neonatal")) 
+
+perinatal_mortality_county <-read_csv("data/table_8/Table_8.4C_Perinatal Mortality By County.csv") %>%
+  mutate(county=recode(county, "Elgeyo/Marakwet"="Elgeyo Marakwet"))
+
+perinatal_mortality_county <- full_join(county, perinatal_mortality_county, by=c("Name"="county"))
+
+```
+
+
+
+```{r}
+
+renderPlot({if(input$perinatal_mortality!="County"){ggplot(perinatal_mortality[perinatal_mortality$variable%in%input$perinatal_mortality,],aes(x=characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}
+  else{
+    ggplot(perinatal_mortality_county, aes(geometry=geometry, fill=proportion))+
+      geom_sf()+theme_void()+
+  facet_wrap(~category)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion (%)")+
+  theme(text=element_text(size=14))
+  }}, width=1600, height=700 )
+
+
+```
+
+# Mother's health {data-navmenu="Key Indicators"}
+
+## Row {data-width="200"}
+
+<br>
+
+###  {.value-box}
+
+```{r}
+
+valueBox(
+  value = paste("63%"),
+  caption = "of currently married women are using a contraceptive method",
+  color = "black"
+)
+```
+
 ###  {.value-box}
 
 ```{r}
 valueBox(
-  value = paste("82%"),
-  caption = "of married women have satisfied demand for family planning",
-  color = "darkgreen"
+  value = paste("70%"),
+  caption = "of the unmarried women use a contraceptive",
+  color = "#b15928"
 )
 ```
 
-<br>
 
-## Row {data-height="200"}
+## Column {.tabset .tabset-fade data-height="900"}
 
-### Family planning
-
-```{r}
-
-radioButtons("fp_demand", "",
-              c("Total demand"="Total demand",
-                "Met need (all methods)"="Met need (all methods)",
-                "Demand satisfied (all methods)"="Demand satisfied (all methods)",
-                "Unmet need"="Unmet need"))
-
-```
-
-## Column {data-height="600"}
-
-### Spatial visualization
-
-```{r, include=F}
-county <- st_read("shapefiles/County.shp")
-```
+### **Antenatal care**
 
 ```{r}
+
+selectInput("antenatal_care", "",
+              c("Age"="Age",
+                "Birth order"="Birth order",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth"="Wealth"))
+
 # import data
 
-needdemandforfpusemarriedbycountyvisual <- read_csv("data/table_9/table9c_needdemandforfpusemarriedbycounty.csv") %>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  mutate(names1=paste0(County,", ", Percent,"%"))
+antenatal_care <-read_csv("data/table_9/Table_9.1_Antenatal_care.csv") 
+   
 
-# join the data with the shapefile
-needdemandforfpusemarriedbycountyvisual1 <- left_join(county, needdemandforfpusemarriedbycountyvisual, by=c("Name"="County"))
-
-renderGirafe({
-  
-  map3<- ggplot(needdemandforfpusemarriedbycountyvisual1[needdemandforfpusemarriedbycountyvisual1$Family_planning%in%input$fp_demand,])+
-  geom_sf_interactive(aes(fill=Percent, tooltip=names1),color="grey80", size=0.0)+
-  theme_void()+
-  scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
-  labs(x="", y="",fill="Proportion")+
-  theme(text=element_text(size=14))
-  x <- girafe(ggobj = map3,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 4)), width=8, height=7)
-    print(x)})
 
 ```
 
-### Family planning data in descending order
+
 
 ```{r}
 
-renderPlot({
-  ggplot(needdemandforfpusemarriedbycountyvisual1[needdemandforfpusemarriedbycountyvisual1$Family_planning%in%input$fp_demand,], aes(x=reorder(Name, Percent), y=Percent)) +
-geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
-  theme_bw() + coord_flip() +
-  geom_text(aes(label=paste0(round(Percent), "%")), hjust=1.3, size=5, color="white")+
-  coord_flip() + 
-  ylab("Percent (%)") + xlab("County") +
-  facet_grid(~Family_planning) +
-  theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(strip.text.y = element_text(size = 12, colour = "black", face = "bold")) +
-  theme(text=element_text(size=14, face="bold")) +
-  theme(strip.background =element_rect(fill="darkorange")) 
-})
+renderPlot({ggplot(antenatal_care[antenatal_care$Variable%in%input$antenatal_care,],aes(x=Characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+```
+
+### **Number of antenatal care visits and timing of first visit**
+
+```{r}
+
+selectInput("antenatal_care1", "",
+              c("Age at birth"="Age at birth",
+                "Birth order"="Birth order",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth"="Wealth"))
+
+# import data
+
+antenatal_care1 <-read_csv("data/table_9/Table_9.2_Number_of_antenatal_care_visits_and_timing_of_first_visit.csv") 
+  
+   
+
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(antenatal_care1[antenatal_care1$Variable%in%input$antenatal_care1,],aes(x=Characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+```
+
+### **Components of antenatal care**
+
+```{r}
+
+selectInput("anc_components", "",
+              c("Age at birth"="Age at birth",
+                "Birth order"="Birth order",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth"="Wealth"))
+
+# import data
+anc_components <-read_csv("data/table_9/Table_9.3.1_2_Components_of_antenatal_care.csv")
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(anc_components[anc_components$Variable%in%input$anc_components,],aes(x=Characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+facet_grid(~type)+
+  theme_bw()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+```
+
+### **Place of delivery**
+
+```{r}
+
+selectInput("place_delivery", "",
+              c("Antenatal care visits"="Antenatal care visits",
+                "Birth order"="Birth order",
+                "Education"="Education",
+                "Mother's age"="Mother's age",
+                "Residence"="Residence",
+                "Wealth"="Wealth"))
+
+
+# import data
+
+place_delivery <-read_csv("data/table_9/Table_9.7_Place_of_delivery.csv") 
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(place_delivery[place_delivery$Variable%in%input$place_delivery,],aes(x=Characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
+
+```
+
+### **Caesarean section**
+
+```{r}
+
+
+
+
+# import data
+
+c_section <-read_csv("data/table_9/Table_9.8C_cesarean_section_by_county.csv") 
+
+
+c_section <- full_join(county, c_section, by=c("Name"="county"))
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(c_section,aes(geometry=geometry, fill=percentage_delivered_by_cs))+
+  geom_sf()+
+  theme_void()+scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion (%)")+
+  theme(text=element_text(size=14))}, width=1600, height=700 )
+
+
+```
+
+### **Assistance during delivery**
+
+```{r}
+
+selectInput("assist_delivery", "",
+              c("Doctor"="Doctor",
+                "Birth order"="Birth order",
+                "Nurse/midwife"="Nurse/midwife",
+                "Relative/friend/other"="relative/friend/other",
+                "Total percentage delivered by skilled provider"="Total percentage delivered by skilled provider",
+                "TBA"="TBA",
+                "None"="None"))
+
+
+# import data
+
+assist_delivery <-read_csv("data/table_9/Table_9.9C_Assistance_during_delivery_by_county.csv") 
+
+
+assist_delivery <- full_join(county, assist_delivery, by=c("Name"="County"))
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(assist_delivery,aes(geometry=geometry, fill=proportion))+
+  geom_sf()+
+  theme_void()+scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Proportion (%)")+
+  theme(text=element_text(size=14))}, width=1600, height=700 )
+
+
+```
+
+### **Men's involvement in maternal health care**
+
+```{r}
+
+selectInput("mens_involvement", "",
+              c("Children ever fathered"="Children ever fathered",
+                "Father's age"="Father's age",
+                "Education"="Education",
+                "Residence"="Residence",
+                "Wealth"="Wealth"))
+
+
+# import data
+
+mens_involvement <-read_csv("data/table_9/Table_9.18_Men's_involvement_in_maternal_health_care.csv") 
+
+```
+
+
+
+```{r}
+
+renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_involvement,],aes(x=Characteristic, y=proportion, fill=category))+
+  geom_bar(position="dodge", stat="identity")+
+  theme_bw()+scale_fill_brewer(palette = "Set1")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
+  theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
+
 
 ```
 
@@ -4794,7 +5327,7 @@ renderPlot({if(input$safer_sex!="County"){ggplot(T15.10[T15.10$`Background chara
 ```
 
 
-# Gender based violence {data-navmenu="Key Indicators"}
+# Domestic/ Gender violence {data-navmenu="Key Indicators"}
 
 ## Row {data-width="200"}
 
@@ -4823,188 +5356,458 @@ valueBox(
 
 <br>
 
-## Row {data-width="600"}
+## Column {.tabset .tabset-fade data-height="900"}
 
-### Gender based violence characteristics
-
-```{r}
-
-selectInput("violence", "",
-              c("Physical violence"="Physical violence",
-                "Sexual violence"="Sexual violence"))
-```
+### **Experience physical violence**
 
 ```{r}
 
 selectInput("physical_violence", "",
               c("Age"="Age",
                 "Education attainment"="Education",
-                "Marital status"="Marital status",
-                "Wealth quintile"="Wealth quintile"))
+                "Marital status"="Marital Status",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "By County"="County"))
 ```
 
 ```{r, include=F}
-## import data
-# load data
-table29_men<- read.csv('data/table_29/table_29_Men.csv') %>% 
-  mutate(Participants='Men')
-table29_women<- read.csv('data/table_29/table_29_Women.csv',na.strings="na") %>% 
-  mutate(Participants='Women')
-table29C_women<- read.csv('data/table_29/table_29C_Women.csv',na.strings="na") %>% 
-  mutate(Participants='Women')
-table29C_men<- read.csv('data/table_29/Table29C_Men.csv',na.strings="na") %>% 
-  mutate(Participants='Men')
+#import data
+physical_violence <- read_csv('data/table_17/table_17.1_Experience_pysical_violence.csv')%>%
+  mutate(value = as.numeric(value))
+names(physical_violence) <- gsub("\\.", " ", names(physical_violence))
+
+
+physical_violence_county <- read.csv('data/table_17/Table 17.1C Experience of physical violence by any perpetrator according to county.csv') %>%
+  mutate(value = as.numeric(value))
+
+
 county <- st_read("shapefiles/County.shp")
 
-table29 <- dplyr::bind_rows(table29_women)
-table29C <- dplyr::bind_rows(table29C_women) %>%
-  select(-Number)%>%
-  pivot_longer(c(2:5), names_to="experience", values_to="value") 
-  
+physical_violence_county <- full_join(physical_violence_county, county, by = c('County'='Name')) 
 
-genderbasedviolence <- read_csv("data/table_31/table31_sexualviolence.csv") %>%
-  filter(!is.na(Ever)) %>%
-  mutate(indicator=ifelse(Characteristics%in%c("15–19", "20–24", "25–29", "30–39", "40–49"), "Age", ifelse(Characteristics%in%c("Urban", "Rural"), "Residence", ifelse(Characteristics%in%c("Never married", "Never ever had intimate partner", "Ever had intimate partner", "Ever married", "Married/living together", "Divorced/separated/widowed"), "Marital status", ifelse(Characteristics%in%c("Employed for cash", "Employed not for cash", "Not employed"), "Employment", ifelse(Characteristics%in%c("No education", "Primary", "Secondary", "More than secondary"), "Education", "Wealth quintile")))))) %>%
-  filter(!(Characteristics%in%c("Residence", "Marital status", "Employment", "Education2", "Wealth quintile"))) %>%
-  select(-Number_women) %>%
-  pivot_longer(c(Ever, `Last 12 months`), names_to = "indicator1", values_to="values")
-
-genderbasedviolence$Characteristics <- fct_relevel(genderbasedviolence$Characteristics, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
-
-physicalviolence <- table29 %>%
-  rename(Characteristics=Indicator, indicator=Background.characteristic, values=Value, indicator1=Category)%>%
-  select(-Participants) %>%
-  mutate(group="Physical violence")
-# join data
-gbv_data<- rbind(genderbasedviolence%>%mutate(group="Sexual violence"), physicalviolence)
-
-## county data
-genderbasedviolencecounty<- read_csv("data/table_31/table31C_sexualviolencecounty.csv") %>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
-                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(2,3), names_to="experience", values_to="value")%>%
-  select(-Number_women)
-
-physical_violencecounty <- table29C %>%
-  rename(County=Background.characteristic) %>%
-  select(-Participants)
-
-gbvcounty <- rbind(genderbasedviolencecounty, physical_violencecounty)%>%
-   mutate(label=paste0(County, ":", "\n", round(value), "%"))
-  
 ```
 
 ```{r}
 
-renderPlot({
-  ggplot(gbv_data[gbv_data$indicator%in%input$physical_violence & gbv_data$group%in%input$violence,], aes(x=Characteristics,y=values,fill=indicator1)) + 
-  geom_col(position='dodge') + geom_text(aes(label=paste0(round(values),"%")))+
-  labs( y = 'Proportion (%)',x = '',fill='Experience of Violence', title="") +
-      theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
+renderPlot({if(input$physical_violence!="County"){ggplot(physical_violence[physical_violence$`Background characteristics`%in%input$physical_violence,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  facet_grid(~Gender, scales="free") + 
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(physical_violence_county ,aes(fill= abs(value))) +
+  geom_sf()+
+ facet_grid(Gender~variable, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
 
 
 
 ```
 
-<br>
 
-## Column {data-height="600"}
-
-### County data by experience of gender based violence
+### **Person commiting physical violence**
 
 ```{r}
 
-selectInput("physical_violence1", "",
-              c("For Physical violence: Experienced physical violence since age 15"="Percentage.who.have.experienced.physical.violence.since.age.15",
-                "For Physical violence: Experience physical violence often"="Often",
-                "For Physical violence: Experience physical violence sometimes"="Sometimes",
-                "For Physical violence: Experience physical violence often or sometimes"="Often.or.sometimes",
-                "For sexual violence: Ever experienced"="Ever",
-                "For sexual violence: Experienced in the last 12 months"="Last 12 months"), width=600)
+selectInput("viol","",
+            c("Male"="Male",
+            "Female"="Female"))
+
+pers_physical_violence <- read_csv('data/table_17/table_17.2_person_commiting_physical_violence.csv') %>%
+  mutate(value=as.numeric(value))
 
 
-renderGirafe({
-physical_violence <- left_join(county,gbvcounty[gbvcounty$experience%in%input$physical_violence1 ,],by=c("Name"="County")) 
 
-#table29C<-table29C[c(0:47),c(0:7)]
-#men <- full_join(county,table29C_men,by=c("Name"="Background.characteristic")) %>%
-#  mutate(sex="Men")
+renderPlot({ggplot(pers_physical_violence[pers_physical_violence$Gender%in%input$viol,],aes(y=value, x=reorder(Category,value), fill=variable)) +coord_flip()+
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))
+  }, width=1500, height=700)
 
-
-#physical_violence <- rbind(women, men)
-
-  physical_violencemap <-ggplot(physical_violence) + geom_sf_interactive(aes(fill=value, tooltip=label))+
-  theme_void()+scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
-  labs(fill="Proportion")
-   physical_violencemap1 <- girafe(ggobj = physical_violencemap,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 4)))
-    print(physical_violencemap1)
-
-})
 
 
 ```
 
-### County data
 
-<br> <br>
+
+### **Experience violence during pregnancy**
 
 ```{r}
-renderPlot({
-   physical_violence <- left_join(county,gbvcounty[gbvcounty$experience%in%input$physical_violence1 ,],by=c("Name"="County")) 
 
-   ggplot(physical_violence, aes(x = reorder(Name,value),y = value)) + 
-  geom_bar(stat="identity", fill="cyan4") + coord_flip() + theme_bw()+ geom_text(aes(label=paste0(round(value),"%")))+
-  labs(fill="Proportion", x="County", y="Proportion")+theme(text=element_text(size=18, face="bold"))
-},width=800, height=500)
+selectInput("violence_preg", "",
+              c("Age"="Age",
+                "Education attainment"="Education",
+                "Marital status"="Marital status",
+                "Number of living children"="Number of living children",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "By County"="County"))
+```
+
+```{r, include=F}
+#import data
+violence_preg <- read_csv('data/table_17/table 17.3 Experience of violence during pregnancy_longformat.csv')%>%
+  mutate(value = as.numeric(value))
+
+violence_preg$Category <- str_replace_all(violence_preg$Category,c("2-Jan"="1-2","4-Mar"="3-4") )
+violence_preg$Category <- fct_relevel(violence_preg$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
+violence_preg_county <- read_csv('data/table_17/Table 17.3C Experience of violence during pregnancy.csv')
+
+
+
+violence_preg_county <- full_join(county, violence_preg_county, by=c("Name"="County"))
 
 
 ```
 
-# Female genital {.hidden}
+```{r}
 
-## Inputs {.sidebar}
+renderPlot({if(input$violence_preg!="County"){ggplot(violence_preg[violence_preg$`Background characteristics`%in%input$violence_preg,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else if(input$violence_preg%in%"Marital status"){ggplot(violence_preg[violence_preg$`Background characteristics`%in%input$violence_preg,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+coord_flip()+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(violence_preg_county ,aes(fill= abs(value))) +
+  geom_sf()+
+ facet_grid(~variable, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
 
-<br>
 
-[Characteristics of Respondents](#respondents_characteristics)</br>
 
-[Health Insurance Coverage](#health_insurance)</br>
+```
 
-[Disability among the household population](#disability_pop)</br>
 
-[Fertility rates](#fertility)</br>
+### **Experience sexual violence**
 
-[Teenage pregnancy](#teenage_pregnancy)</br>
+```{r}
 
-[Current use of contraception](#contraception_use)</br>
+selectInput("violence_sexual", "",
+              c("Age"="Age",
+                "Education attainment"="Education",
+                "Marital Status"="Marital Status",
+                "Employment"="Employment",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "By County"="County"))
+```
 
-[Family planning need and demand among married women](#family_planning)</br>
+```{r, include=F}
+#import data
+sexual_violence <- read_csv('data/table_17/table_17.4_experience_sexual_violence.csv')
 
-[Maternal care](#maternal_care)</br>
+sexual_violence$Category <- fct_relevel(sexual_violence$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 
-[Vaccinations](#vaccinations)</br>
+experience_sexual_violence_county <- read_csv('data/table_17/Table 17.4C Experience of sexual violence by any perpetrator according to county.csv') %>%
+  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))
 
-[Nutritional status](#nutr_status)</br>
+experience_sexual_violence_county <- full_join(county, experience_sexual_violence_county, by = c('Name'='County')) 
 
-[Insecticide treated nets](#treated_nets)</br>
+```
 
-[Knowledge about HIV prevention methods among young people](#hiv_prev)</br>
+```{r}
 
-[Coverage of prior HIV testing](#hiv_test)</br>
+renderPlot({if(input$violence_sexual%in%c("Age","Education","Employment","Residence","Wealth quintile" )){ggplot(sexual_violence[sexual_violence$`Background characteristics`%in%input$violence_sexual,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+    facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else if(input$violence_sexual%in%"Marital Status"){ggplot(sexual_violence[sexual_violence$`Background characteristics`%in%input$violence_sexual,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+coord_flip()+facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(experience_sexual_violence_county ,aes(fill= abs(value), geometry=geometry)) +
+  geom_sf()+
+ facet_grid(Gender~variable, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
 
-[House ownership](#home_ownership)</br>
 
-[Agricultural land ownership](#agric_land_ownership)</br>
 
-[Non-agricultural land ownership](#nonagric_land_ownership)</br>
+```
 
-[Gender based violence](#physical_violence)</br>
+### **Persons committing sexual violence**
 
-<!-- [Female genital mutilation](#female_genital)</br> -->
+
+```{r, include=F}
+#import data
+sexual_violence1 <- read_csv('data/table_17/table_17.2_person_commiting_physical_violence.csv') %>%
+  mutate(value=as.numeric(value))
+
+
+```
+
+```{r}
+
+renderPlot({ggplot(sexual_violence1,aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+    facet_grid(~Gender)+coord_flip()+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
+
+
+
+```
+
+### **Forms of controlling behaviors and intimate-partner violence**
+
+```{r}
+
+selectInput("controlling", "",
+              c("Controlling behavior"="Controlling behavior",
+                "Economic violence"="Economic violence",
+                "Intimate-partner violence perpetrated by any current/previous spouse/intimate partner"="Intimate-partner violence perpetrated by any current or previous spouse or intimate partner",
+                "Physical violence"="Physical violence",
+                "Psychological/emotional violence"="Psychological/emotional violence",
+                "Sexual violence"="Sexual violence"))
+```
+
+```{r, include=F}
+#import data
+controlling_w <- read_csv('data/table_17/Table_17_9_1_forms_of_controlling_behaviors_and_intimate-partner_violence_women.csv')%>%
+  mutate(Gender="Female")
+
+controlling_m <- read_csv('data/table_17/Table_17_9_2_forms_of_controlling_behaviors_and_intimate-partner_violence_men.csv') %>%
+  mutate(Gender="Male")
+
+controlling <- rbind(controlling_m, controlling_w) %>%
+  mutate(`Background characteristics`=recode(`Background characteristics`, "Intimate-partner violence perpetrated by any current or previous spouse or intimate partner\r\n"="Intimate-partner violence perpetrated by any current or previous spouse or intimate partner")) %>%
+  mutate(value=as.numeric(value)) %>%
+  mutate(`Type of violence experienced`=str_remove(`Type of violence experienced`, ".")) %>%
+  mutate(`Type of violence experienced`=str_remove(`Type of violence experienced`, "."))
+
+
+```
+
+```{r}
+
+renderPlot({ggplot(controlling[controlling$`Background characteristics`%in%input$controlling,],aes(y=value, x=`Type of violence experienced`, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+coord_flip()+
+    facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
+
+
+
+```
+
+### **Violence by any spouse or intimate partner**
+
+```{r}
+
+selectInput("violence_spouse", "",
+              c("Age"="Age",
+                "Education attainment"="Education",
+                "Marital status"="Marital status",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "By County"="County"))
+```
+
+```{r, include=F}
+#import data
+violence_spouse <- read_csv('data/table_17/Table_17_13_violence_by_any_spouse_or_intimate_partner_in_the_last_12_months.csv')%>%
+  mutate(Category=str_remove(Category, ".."))
+
+violence_spouse$Category <- fct_relevel(violence_spouse$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary") 
+
+violence_spouse_county <- read_csv('data/table_17/Table_17_13C_violence_by_any_spouse_or_intimate_partner_in_the_last_12_months_map.csv') %>%
+  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))
+
+violence_spouse_county <- full_join(county, violence_spouse_county, by = c('Name'='County')) 
+
+```
+
+```{r}
+
+renderPlot({if(input$violence_spouse!="County"){ggplot(violence_spouse[violence_spouse$`Background characteristics`%in%input$violence_spouse,],aes(y=value, x=reorder(variable,value), fill=Category)) + coord_flip()+
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+    facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(violence_spouse_county ,aes(fill= abs(value), geometry=geometry)) +
+  geom_sf()+
+ facet_grid(Gender~variable, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
+
+
+
+```
+
+### **Violence by women against their spouse or intimate partner**
+
+```{r}
+
+selectInput("violence_women", "",
+              c("Age"="Age",
+                "Education attainment"="Education",
+                "Employment"="Employment",
+                "Marital status"="Marital status",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "Who have experienced physical intimate-partner violence"="Respondents who have experienced physical intimate-partner violence",
+                "Father beat mother"="Father beat mother",
+                "Husband's education"="Husband's education",
+                "Mother beat father"="Mother beat father",
+                "No. of controlling behaviors displayed by spouse"="Number of controlling behaviors displayed by spouse/intimate partner",
+                "No. of decisions in which he/she participates"="Number of decisions in which he/she participates",
+                "No. of reasons for which wife beating is justified"="Number of reasons for which wife beating is justified",
+                "Respondent afraid of spouse/intimate partner"="Respondent afraid of spouse/intimate partner",
+                "Spousal age difference"="Spousal age difference",
+                "Spousal education difference"="Spousal education difference",
+                "By County"="County"))
+```
+
+```{r, include=F}
+#import data
+T17.15 <- read_csv("data/table_17/table_17_15_Violence_by_respondent_against_their_spouse_intimate_partner_by_respondents_background_characteristics.csv", na = c("na", "", "-")) %>%
+  filter(is.na(value) == FALSE) %>%
+  mutate(Category=gsub("Ever1", "Ever*", gsub("\\.", "", Category)))
+
+T17.16 <- read_csv("data/table_17/table_17_16_Violence_by_respondent_against_their_spouse_by_spouse_characteristics_and_womens_empowerment_indicators.csv", na = c("na", "", "-")) %>%
+  filter(is.na(value) == FALSE) %>%
+  mutate(variable=gsub("Ever", "Ever*", variable)) 
+
+violence_women<- rbind(T17.15, T17.16) %>%
+  mutate(`Background characteristics`=recode(`Background characteristics`, "Number of controlling behaviors\r\ndisplayed by spouse/intimate partner"="Number of controlling behaviors displayed by spouse/intimate partner"))
+
+T17.15C <- read_csv("data/table_17/table_17_15C_Violence_by_respondent_against_their_spouse_intimate_partner_by_respondents_background_characteristics.csv") 
+
+T17.15C <- full_join(county, T17.15C, by=c('Name'='County')) 
+
+```
+
+```{r}
+
+renderPlot({if(input$violence_women!=c("County", "Marital status")){ggplot(violence_women[violence_women$`Background characteristics`%in%input$violence_women,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+    facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else if(input$violence_women%in%"Marital status"){ggplot(sexual_violence[sexual_violence$`Background characteristics`%in%input$violence_women,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+coord_flip()+facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(T17.15C ,aes(fill= abs(value), geometry=geometry)) +
+  geom_sf()+
+ facet_grid(Gender~variable, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
+
+
+
+```
+
+
+### **Help seeking to stop violence**
+
+```{r}
+
+selectInput("violence_stop", "",
+              c("Age"="Age",
+                "Education attainment"="Education",
+                "Marital status"="Marital status",
+                "Employment"="Employment",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "Type of violence experienced"="Type of violence experienced",
+                "By County"="County"))
+```
+
+```{r, include=F}
+#import data
+T17.17 <- read_csv("data/table_17/table_17_17_Help_seeking_to_stop_violence.csv", na = c("na", "", "-", "*")) %>%
+  filter(is.na(value) == FALSE) %>%
+  mutate(variable = str_wrap(variable, width=40))
+T17.17$Category <- fct_relevel(T17.17$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
+T17.17C <- read.csv("data/table_17/table_17_17C_Help_seeking_to_stop_violence.csv", na = "*") 
+ 
+T17.17C <- full_join(county, T17.17C, by = c('Name'='County')) 
+
+```
+
+```{r}
+
+renderPlot({if(input$violence_stop%in%c("Age","Education","Employment","Residence","Wealth quintile","Type of violence experienced" )){ggplot(T17.17[T17.17$`Background characteristics`%in%input$violence_stop,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+    facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else if(input$violence_stop%in%"Marital status"){ggplot(T17.17[T17.17$`Background characteristics`%in%input$violence_stop,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+coord_flip()+facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(T17.17C ,aes(fill= abs(value), geometry=geometry)) +
+  geom_sf()+
+ facet_grid(Gender~variable, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
+
+
+
+```
+
+
+### **Sources for help to stop the violence**
+
+**Select the type of violence to visualize**
+
+```{r}
+
+selectInput("sources_help", "",
+              c("Physical only"="Physical only",
+                "Sexual only"="Sexual only",
+                "Physical or sexual violence"="Physical or sexual violence",
+                "Both physical and sexual"="Both physical and sexual"))
+```
+
+```{r, include=F}
+#import data
+sources_help <- read_csv("data/table_17/table_17_18_Sources_for_help_to_stop_the_violence.csv") 
+
+
+
+```
+
+```{r}
+
+renderPlot({ggplot(sources_help[sources_help$variable%in%input$sources_help,],aes(y=value, x=reorder(Source,value))) +
+  geom_col(position="dodge", fill="#74add1") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+    facet_grid(~Gender)+coord_flip()+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
+
+
+
+```
+
+# Female genital mutilation {data-navmenu="Key Indicators"}
+
 
 ## Row {data-width="200"}
 
@@ -5031,95 +5834,273 @@ valueBox(
 )
 ```
 
-<br>
+## Column {.tabset .tabset-fade data-height="900"}
 
-## Row {data-width="600"}
+### **Knowledge of female circumcision**
 
-### Physical violence characteristics
 
 ```{r}
 
-selectInput("sexual_violence", "",
+selectInput("knowledge_circumcision", "",
               c("Age"="Age",
                 "Education"="Education",
-                "Marital status"="Marital status",
-                "Wealth quintile"="Wealth quintile"))
-
-
-
-renderPlot({
-  ggplot(genderbasedviolence[genderbasedviolence$indicator%in%input$sexual_violence,], aes(x=Characteristics,y=values,fill=indicator1)) + 
-  geom_col(position='dodge') + geom_text(aes(label=paste0(round(values),"%")), position=position_dodge(0.6), vjust=-0.5, hjust=0.2)+
-  labs( y = 'Proportion(%)',x = '',fill='Experience of Violence', title="") +
-      theme_bw() + scale_fill_brewer(palette="Paired") + coord_flip()+ theme(text=element_text(size=20, face="bold")) }, width=1300, height=300)
-
-
+                "Ethnic group"="Ethnic group",
+                "Religion"="Religion",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "By County"="County"))
 ```
 
 ```{r, include=F}
+#import data
+knowledge_circumcision <- read_csv('data/table_18/Table_18_1_Knowledge_of_female_circumcision.csv') %>%
+  mutate(value = as.numeric(value)) 
+knowledge_circumcision$Category <- fct_relevel(knowledge_circumcision$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 
-genderbasedviolencecounty<- read_csv("data/table_31/table31C_sexualviolencecounty.csv") %>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
-                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
-
-genderbasedviolencecounty1 <- left_join(county, genderbasedviolencecounty%>%select(County, Ever)%>%rename(value=Ever), by=c("Name"="County")) %>%
-  mutate(ind="Ever")
-
-genderbasedviolencecounty2 <- left_join(county, genderbasedviolencecounty%>%select(County, `Last 12 months`)%>%rename(value=`Last 12 months`), by=c("Name"="County")) %>%
-  mutate(ind="Last 12 months")
-
-genderbased_datac <- rbind(genderbasedviolencecounty1, genderbasedviolencecounty2) %>%
-   mutate(label=paste0(Name, ":", "\n", round(value), "%"))
-  
-```
-
-## Column {data-height="600"}
-
-### County data by experience of sexual violence
-
-```{r}
-
-selectInput("sexual_violence1", "",
-              c("Ever experineced sexual violence"="Ever",
-                "Experienced in the last 12 months"="Last 12 months"))
+knowledge_circumcision_county <- read_csv('data/table_18/Table_18_1C_Knowledge_of_female_circumcision_map.csv') 
 
 
-renderGirafe({
 
 
-#table29C<-table29C[c(0:47),c(0:7)]
-#men <- full_join(county,table29C_men,by=c("Name"="Background.characteristic")) %>%
-#  mutate(sex="Men")
+knowledge_circumcision_county <- knowledge_circumcision_county %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))
 
 
-#physical_violence <- rbind(women, men)
-
-  sexual_violencemap <-ggplot(genderbased_datac[genderbased_datac$ind%in%input$sexual_violence1,]) + geom_sf_interactive(aes(fill=value, tooltip=label))+
-  theme_void()+scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
-  labs(fill="Proportion")
-   sexual_violencemap1 <- girafe(ggobj = sexual_violencemap,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_zoom(max = 4)))
-    print(sexual_violencemap1)
-
-})
+knowledge_circumcision_county <- full_join(county,knowledge_circumcision_county,  by =c('Name'='County'))
 
 
 ```
 
-### County data
+```{r}
 
-<br> <br>
+renderPlot({if(input$knowledge_circumcision!="County"){ggplot(knowledge_circumcision[knowledge_circumcision$`Background characteristics`%in%input$knowledge_circumcision,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+ coord_flip()+
+    facet_grid(~Gender)+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(knowledge_circumcision_county ,aes(fill= abs(value), geometry=geometry)) +
+  geom_sf()+
+ facet_grid(variable~Gender, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
+
+
+
+```
+
+### **Prevalence of female circumcision**
 
 ```{r}
-renderPlot({
 
-   ggplot(genderbased_datac[genderbased_datac$ind%in%input$sexual_violence1,], aes(x = reorder(Name,value),y = value)) + 
-  geom_bar(stat="identity", fill="#e6550d") + coord_flip() + theme_bw()+ geom_text(aes(label=paste0(round(value),"%")))+
-  labs(fill="Proportion", x="County", y="Proportion")+theme(text=element_text(size=18, face="bold"))
-},width=800, height=500)
+selectInput("prevalence_circumcision", "",
+              c("Age"="Age",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "By County"="County"))
+```
+
+```{r, include=F}
+#import data
+prevalence_circumcision <- read_csv('data/table_18/Table_18_2_Prevalence_of_female_circumcision.csv')
+prevalence_circumcision$Category <- fct_relevel(prevalence_circumcision$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
+prevalence_circumcission_county <- read_csv('data/table_18/Table_18_2C_Prevalence_of_female_circumcision_map.csv') 
+
+
+
+
+prevalence_circumcission_county <- prevalence_circumcission_county %>%
+  mutate(value = as.numeric(value)) %>%
+  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))
+
+
+prevalence_circumcission_county <- full_join(county,prevalence_circumcission_county,  by =c('Name'='County'))
+
+
+```
+
+```{r}
+
+renderPlot({if(input$prevalence_circumcision!="County"){ggplot(prevalence_circumcision[prevalence_circumcision$`Background characteristics`%in%input$prevalence_circumcision,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(prevalence_circumcission_county ,aes(fill= abs(value), geometry=geometry)) +
+  geom_sf()+
+ facet_grid(~variable, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
+
+
+
+```
+
+### **Age at circumcision**
+
+```{r}
+
+selectInput("age_at_circumcision", "",
+              c("Age"="Age",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth quintile",
+                "By County"="County"))
+```
+
+```{r, include=F}
+#import data
+age_at_circumcision <- read_csv('data/table_18/table 18.3 Age at circumcision_longformat.csv')
+age_at_circumcision$Category <- fct_relevel(age_at_circumcision$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
+age_at_circumcission_county <- read_csv('data/table_18/Table 18.3C Age at circumcision by county.csv') 
+
+
+age_at_circumcission_county$variable <- str_replace_all(age_at_circumcission_county$variable, c("9-May"="4-9","14-Oct"="10-14"))
+
+age_at_circumcission_county <- age_at_circumcission_county %>%
+  mutate(value = as.numeric(value), "variable" = fct_relevel(variable, "<5","4-9","10-14","15+","Don't know"))
+
+age_at_circumcission_county <- full_join(county,age_at_circumcission_county,  by =c('Name'='County'))
+
+
+```
+
+```{r}
+
+renderPlot({if(input$age_at_circumcision!="County"){ggplot(age_at_circumcision[age_at_circumcision$`Background characteristics`%in%input$age_at_circumcision,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
+  else{
+    ggplot(age_at_circumcission_county ,aes(fill= abs(value), geometry=geometry)) +
+  geom_sf()+
+ facet_grid(~variable, labeller = label_wrap_gen()) +
+ theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+
+ labs(fill="%") +
+  theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold"))
+  }}, width=1500, height=700)
+
+
+
+```
+
+
+### **Aspects of circumcision among women and girls**
+
+**Choose the characteristics of circumcision below to be able to visualize**
+```{r}
+
+selectInput("aspects_of_circumcision", "",
+              c("Person who performed the circumcision"="Person who performed the circumcision",
+                "Type of circumcision"="Type of circumcision"))
+```
+
+```{r, include=F}
+#import data
+aspects_of_circumcision <- read_csv('data/table_18/table 18.7 _Aspects_of_circumcission.csv') %>%
+  mutate(value=as.numeric(value))
+
+
+
+```
+
+```{r}
+
+renderPlot({ggplot(effect_female_circumcision[effect_female_circumcision$Characteristic%in%input$effect_female_circumcision,],aes(y=value, x=reorder(variable,value), fill=Category)) +coord_flip()+
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
+
+
+
+```
+
+### **Circumcision by age**
+
+
+```{r, include=F}
+#import data
+circumcision_age <- read_csv("data/table_18/working_table_18_2_circumcision_by_age.csv") %>%
+  mutate(value=as.numeric(value)) %>%
+  mutate(Age=recode(Age, ">141"=">14"))
+
+circumcision_age$Age <- fct_relevel(circumcision_age$Age, "<1", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", ">14")
+```
+
+```{r}
+
+renderPlot({ggplot(circumcision_age[!is.na(circumcision_age$Age),],aes(y=value, x=Age, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
+
+
+```
+
+### **Effects of female circumcision**
+
+
+```{r}
+
+selectInput("effect_female_circumcision", "",
+              c("Age at circumcision"="Age at circumcision",
+                "Current Age"="Current Age",
+                "Type of circumcision"="Type of circumcision"))
+```
+
+```{r, include=F}
+#import data
+effect_female_circumcision <- read_csv('data/table_18/table_18.10_Effect_of_female_circumcision_longformart.csv') %>%
+  mutate(value=abs(as.numeric(value)))
+
+
+```
+
+```{r}
+
+renderPlot({ggplot(effect_female_circumcision[effect_female_circumcision$Characteristic%in%input$effect_female_circumcision,],aes(y=value, x=reorder(variable,value), fill=Category)) +coord_flip()+
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
+
+
+
+```
+
+### **Help seeking behavior among circumcised women**
+
+
+```{r}
+
+selectInput("help_seeking_women", "",
+              c("Age"="Age",
+                "Education attainment"="Education",
+                "Residence"="Residence",
+                "Wealth quintile"="Wealth Quintile"))
+```
+
+```{r, include=F}
+#import data
+help_seeking_women <- read_csv('data/table_18/table_18.11_Help_seeking_behaviors_among_circumcised_women_longformart.csv')%>%
+  mutate(value=as.numeric(value))
+help_seeking_women$Category <- fct_relevel(help_seeking_women$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+
+
+```
+
+```{r}
+
+renderPlot({ggplot(help_seeking_women[help_seeking_women$`Background characteristic`%in%input$help_seeking_women,],aes(y=value, x=Category, fill=variable)) +
+  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  theme_bw() +scale_fill_brewer(palette = "Set1")+
+  labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
+
 
 
 ```

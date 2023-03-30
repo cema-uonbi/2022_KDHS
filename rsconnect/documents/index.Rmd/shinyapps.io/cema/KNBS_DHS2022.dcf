@@ -5,10 +5,9 @@ account: cema
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7915828
-bundleId: 7019032
+bundleId: 7025519
 url: https://cema.shinyapps.io/KNBS_DHS2022/
-when: 1680017572.29607
-lastSyncTime: 1680017572.29608
+when: 1680126090.7885
+lastSyncTime: 1680126090.78851
 asMultiple: TRUE
 asStatic: FALSE
-ignoredFiles: dhs2022datatables_AM.Rmd|dhs2022datatables.Rmd|dhs2022visualizations_AM.Rmd

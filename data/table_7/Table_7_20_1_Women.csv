@@ -1,19 +1,199 @@
-Characteristic,radio,television,newspaper,mobile,social_media,poster,billboard,events,friends,internet,none,variable
-15-19,43.7,37.3,16.7,6.4,19.4,28.2,24.7,28.9,68.1,18.6,16.0,age
-20-24,59.2,52.4,21.6,17.8,45.9,42.9,37.2,42.4,84.0,41.7,5.6,age
-25-29,66.3,59.0,22.8,17.9,44.3,43.3,39.4,47.8,84.9,42.0,4.9,age
-30-34,62.3,52.3,20.4,16.2,33.6,42.5,38.6,50.1,85.3,32.5,5.1,age
-35-39,62.3,50.0,18.8,13.4,28.0,45.0,35.8,50.5,83.6,27.2,5.4,age
-40-44,62.2,49.8,22.8,13.5,25.5,45.3,37.2,52.6,82.7,23.9,6.1,age
-45-49,63.1,44.3,17.9,11.0,17.5,40.3,34.7,55.9,80.0,17.6,8.2,age
-Urban,56.9,62.4,24.1,16.1,48.6,43.2,42.2,43.1,82.2,47.1,5.8,residence
-Rural,60.4,40.5,17.4,12.3,20.8,38.6,30.1,46.5,79.9,19.0,8.8,residence
-No education,28.5,13.1,3.1,5.0,4.7,11.6,9.7,43.9,70.0,5.4,22.9,education
-Primary,57.6,38.6,11.8,10.5,12.2,35.9,27.5,46.1,78.5,10.8,9.6,education
-Secondary,62.1,54.6,22.6,15.6,35.3,40.4,37.1,44.2,81.5,32.5,6.2,education
-More than secondary,64.1,70.2,35.9,19.4,72.1,57.6,52.7,45.4,87.1,71.1,2.3,education
-Lowest,44.6,14.4,7.9,7.4,6.0,24.2,18.0,43.5,75.5,5.8,14.7,wealth
-Second,62.5,31.9,15.9,11.5,13.3,37.4,28.2,47.9,80.1,11.6,9.4,wealth
-Middle,65.8,51.3,20.0,15.2,24.3,43.4,34.1,47.5,80.8,22.0,7.0,wealth
-Fourth,61.8,63.0,23.1,16.1,40.0,44.5,41.1,46.1,82.2,36.8,5.6,wealth
-Highest,57.9,69.6,28.0,16.6,59.9,46.9,45.5,41.6,83.5,59.0,4.1,wealth
+Characteristic,variable,category,proportion
+15-19,Age,Radio,43.7
+15-19,Age,Television,37.3
+15-19,Age,Newspaper,16.7
+15-19,Age,Mobile,6.4
+15-19,Age,Social media,19.4
+15-19,Age,Poster,28.2
+15-19,Age,Billboard,24.7
+15-19,Age,Events,28.9
+15-19,Age,Friends,68.1
+15-19,Age,Internet,18.6
+15-19,Age,None,16
+20-24,Age,Radio,59.2
+20-24,Age,Television,52.4
+20-24,Age,Newspaper,21.6
+20-24,Age,Mobile,17.8
+20-24,Age,Social media,45.9
+20-24,Age,Poster,42.9
+20-24,Age,Billboard,37.2
+20-24,Age,Events,42.4
+20-24,Age,Friends,84
+20-24,Age,Internet,41.7
+20-24,Age,None,5.6
+25-29,Age,Radio,66.3
+25-29,Age,Television,59
+25-29,Age,Newspaper,22.8
+25-29,Age,Mobile,17.9
+25-29,Age,Social media,44.3
+25-29,Age,Poster,43.3
+25-29,Age,Billboard,39.4
+25-29,Age,Events,47.8
+25-29,Age,Friends,84.9
+25-29,Age,Internet,42
+25-29,Age,None,4.9
+30-34,Age,Radio,62.3
+30-34,Age,Television,52.3
+30-34,Age,Newspaper,20.4
+30-34,Age,Mobile,16.2
+30-34,Age,Social media,33.6
+30-34,Age,Poster,42.5
+30-34,Age,Billboard,38.6
+30-34,Age,Events,50.1
+30-34,Age,Friends,85.3
+30-34,Age,Internet,32.5
+30-34,Age,None,5.1
+35-39,Age,Radio,62.3
+35-39,Age,Television,50
+35-39,Age,Newspaper,18.8
+35-39,Age,Mobile,13.4
+35-39,Age,Social media,28
+35-39,Age,Poster,45
+35-39,Age,Billboard,35.8
+35-39,Age,Events,50.5
+35-39,Age,Friends,83.6
+35-39,Age,Internet,27.2
+35-39,Age,None,5.4
+40-44,Age,Radio,62.2
+40-44,Age,Television,49.8
+40-44,Age,Newspaper,22.8
+40-44,Age,Mobile,13.5
+40-44,Age,Social media,25.5
+40-44,Age,Poster,45.3
+40-44,Age,Billboard,37.2
+40-44,Age,Events,52.6
+40-44,Age,Friends,82.7
+40-44,Age,Internet,23.9
+40-44,Age,None,6.1
+45-49,Age,Radio,63.1
+45-49,Age,Television,44.3
+45-49,Age,Newspaper,17.9
+45-49,Age,Mobile,11
+45-49,Age,Social media,17.5
+45-49,Age,Poster,40.3
+45-49,Age,Billboard,34.7
+45-49,Age,Events,55.9
+45-49,Age,Friends,80
+45-49,Age,Internet,17.6
+45-49,Age,None,8.2
+Urban,Residence,Radio,56.9
+Urban,Residence,Television,62.4
+Urban,Residence,Newspaper,24.1
+Urban,Residence,Mobile,16.1
+Urban,Residence,Social media,48.6
+Urban,Residence,Poster,43.2
+Urban,Residence,Billboard,42.2
+Urban,Residence,Events,43.1
+Urban,Residence,Friends,82.2
+Urban,Residence,Internet,47.1
+Urban,Residence,None,5.8
+Rural,Residence,Radio,60.4
+Rural,Residence,Television,40.5
+Rural,Residence,Newspaper,17.4
+Rural,Residence,Mobile,12.3
+Rural,Residence,Social media,20.8
+Rural,Residence,Poster,38.6
+Rural,Residence,Billboard,30.1
+Rural,Residence,Events,46.5
+Rural,Residence,Friends,79.9
+Rural,Residence,Internet,19
+Rural,Residence,None,8.8
+No education,Education,Radio,28.5
+No education,Education,Television,13.1
+No education,Education,Newspaper,3.1
+No education,Education,Mobile,5
+No education,Education,Social media,4.7
+No education,Education,Poster,11.6
+No education,Education,Billboard,9.7
+No education,Education,Events,43.9
+No education,Education,Friends,70
+No education,Education,Internet,5.4
+No education,Education,None,22.9
+Primary,Education,Radio,57.6
+Primary,Education,Television,38.6
+Primary,Education,Newspaper,11.8
+Primary,Education,Mobile,10.5
+Primary,Education,Social media,12.2
+Primary,Education,Poster,35.9
+Primary,Education,Billboard,27.5
+Primary,Education,Events,46.1
+Primary,Education,Friends,78.5
+Primary,Education,Internet,10.8
+Primary,Education,None,9.6
+Secondary,Education,Radio,62.1
+Secondary,Education,Television,54.6
+Secondary,Education,Newspaper,22.6
+Secondary,Education,Mobile,15.6
+Secondary,Education,Social media,35.3
+Secondary,Education,Poster,40.4
+Secondary,Education,Billboard,37.1
+Secondary,Education,Events,44.2
+Secondary,Education,Friends,81.5
+Secondary,Education,Internet,32.5
+Secondary,Education,None,6.2
+More than secondary,Education,Radio,64.1
+More than secondary,Education,Television,70.2
+More than secondary,Education,Newspaper,35.9
+More than secondary,Education,Mobile,19.4
+More than secondary,Education,Social media,72.1
+More than secondary,Education,Poster,57.6
+More than secondary,Education,Billboard,52.7
+More than secondary,Education,Events,45.4
+More than secondary,Education,Friends,87.1
+More than secondary,Education,Internet,71.1
+More than secondary,Education,None,2.3
+Lowest,Wealth,Radio,44.6
+Lowest,Wealth,Television,14.4
+Lowest,Wealth,Newspaper,7.9
+Lowest,Wealth,Mobile,7.4
+Lowest,Wealth,Social media,6
+Lowest,Wealth,Poster,24.2
+Lowest,Wealth,Billboard,18
+Lowest,Wealth,Events,43.5
+Lowest,Wealth,Friends,75.5
+Lowest,Wealth,Internet,5.8
+Lowest,Wealth,None,14.7
+Second,Wealth,Radio,62.5
+Second,Wealth,Television,31.9
+Second,Wealth,Newspaper,15.9
+Second,Wealth,Mobile,11.5
+Second,Wealth,Social media,13.3
+Second,Wealth,Poster,37.4
+Second,Wealth,Billboard,28.2
+Second,Wealth,Events,47.9
+Second,Wealth,Friends,80.1
+Second,Wealth,Internet,11.6
+Second,Wealth,None,9.4
+Middle,Wealth,Radio,65.8
+Middle,Wealth,Television,51.3
+Middle,Wealth,Newspaper,20
+Middle,Wealth,Mobile,15.2
+Middle,Wealth,Social media,24.3
+Middle,Wealth,Poster,43.4
+Middle,Wealth,Billboard,34.1
+Middle,Wealth,Events,47.5
+Middle,Wealth,Friends,80.8
+Middle,Wealth,Internet,22
+Middle,Wealth,None,7
+Fourth,Wealth,Radio,61.8
+Fourth,Wealth,Television,63
+Fourth,Wealth,Newspaper,23.1
+Fourth,Wealth,Mobile,16.1
+Fourth,Wealth,Social media,40
+Fourth,Wealth,Poster,44.5
+Fourth,Wealth,Billboard,41.1
+Fourth,Wealth,Events,46.1
+Fourth,Wealth,Friends,82.2
+Fourth,Wealth,Internet,36.8
+Fourth,Wealth,None,5.6
+Highest,Wealth,Radio,57.9
+Highest,Wealth,Television,69.6
+Highest,Wealth,Newspaper,28
+Highest,Wealth,Mobile,16.6
+Highest,Wealth,Social media,59.9
+Highest,Wealth,Poster,46.9
+Highest,Wealth,Billboard,45.5
+Highest,Wealth,Events,41.6
+Highest,Wealth,Friends,83.5
+Highest,Wealth,Internet,59
+Highest,Wealth,None,4.1
