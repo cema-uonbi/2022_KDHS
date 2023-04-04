@@ -78,6 +78,8 @@ p_load(scales)
 p_load(sf)
 p_load(reshape2)
 p_load(cowplot)
+p_load(profvis)
+p_load(data.table)
 
 
 ```
@@ -161,14 +163,12 @@ The numbers are presented by:
 
 ```{r, fig.height=10,fig.height=22}
 
+interviewvisuals <-fread("data/table_1/table1_kdhshouseholdinterviews.csv") 
 
 
-interviewvisuals <-read_csv("data/table_1/table1_kdhshouseholdinterviews.csv") 
+womeninterviews <-fread("data/table_1/table1_womeninterviewed.csv")
 
-
-womeninterviews <-read_csv("data/table_1/table1_womeninterviewed.csv")
-
-meninterviews <-read_csv("data/table_1/table1_meninterviewed.csv") 
+meninterviews <-fread("data/table_1/table1_meninterviewed.csv") 
 
 participantsinterviews <- bind_rows(womeninterviews, meninterviews) %>%
   dplyr::mutate(Participant = recode(Respondents, "Number of eligible women" = "Eligible women","Number of eligible women interviewed" = "Women interviewed", "Number of eligible men" = "Eligible men","Number of eligible men interviewed" = "Men interviewed"))
@@ -2836,12 +2836,11 @@ radioButtons("maternal_care", "",
 ```{r}
 
 ### Mother's age at birth
+
 matcare_motage_1birth <- read_csv("data/table_10/table10_maternalcare_by_motherage_atbirth.csv")%>%
   mutate(lab=paste0(round(proportion),"%")) %>%
   mutate(group="Age at birth") %>%
   rename(indicator=`Mother's age at birth`)
-
-
 
 ### Residence
 matcare_residence <- read_csv("data/table_10/table10_maternalcare_by_residence.csv")%>%
