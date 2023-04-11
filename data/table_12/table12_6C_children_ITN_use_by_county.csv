@@ -8,7 +8,7 @@ Kilifi,Use in households with 1/+ ITN,82.5
 Tana River,Use in all households,65.5
 Tana River,Use in households with 1/+ ITN,84.3
 Lamu,Use in all households,60.9
-Lamu,Use in households with 1/+ ITN,83.0
+Lamu,Use in households with 1/+ ITN,83
 Taita Taveta,Use in all households,83.3
 Taita Taveta,Use in households with 1/+ ITN,90.2
 Garissa,Use in all households,12.8
@@ -22,9 +22,9 @@ Marsabit,Use in households with 1/+ ITN,31.2
 Isiolo,Use in all households,49.2
 Isiolo,Use in households with 1/+ ITN,79.2
 Meru,Use in all households,45.7
-Meru,Use in households with 1/+ ITN,75.0
-Tharaka-Nithi,Use in all households,57.3
-Tharaka-Nithi,Use in households with 1/+ ITN,82.8
+Meru,Use in households with 1/+ ITN,75
+Tharaka Nithi,Use in all households,57.3
+Tharaka Nithi,Use in households with 1/+ ITN,82.8
 Embu,Use in all households,58.2
 Embu,Use in households with 1/+ ITN,85.4
 Kitui,Use in all households,42.3
@@ -34,13 +34,13 @@ Machakos,Use in households with 1/+ ITN,85.5
 Makueni,Use in all households,46.9
 Makueni,Use in households with 1/+ ITN,74.9
 Nyandarua,Use in all households,8.6
-Nyandarua,Use in households with 1/+ ITN,(69.3)
-Nyeri,Use in all households,19.0
+Nyandarua,Use in households with 1/+ ITN,NA
+Nyeri,Use in all households,19
 Nyeri,Use in households with 1/+ ITN,66.6
 Kirinyaga,Use in all households,67.2
 Kirinyaga,Use in households with 1/+ ITN,86.1
-Murang'a,Use in all households,45.1
-Murang'a,Use in households with 1/+ ITN,68.7
+Muranga,Use in all households,45.1
+Muranga,Use in households with 1/+ ITN,68.7
 Kiambu,Use in all households,28.9
 Kiambu,Use in households with 1/+ ITN,70.2
 Turkana,Use in all households,33.3
@@ -50,11 +50,11 @@ West Pokot,Use in households with 1/+ ITN,70.9
 Samburu,Use in all households,9.9
 Samburu,Use in households with 1/+ ITN,51.5
 Trans Nzoia,Use in all households,75.7
-Trans Nzoia,Use in households with 1/+ ITN,84.0
+Trans Nzoia,Use in households with 1/+ ITN,84
 Uasin Gishu,Use in all households,65.8
 Uasin Gishu,Use in households with 1/+ ITN,74.5
-Elgeyo-Marakwet,Use in all households,16.6
-Elgeyo-Marakwet,Use in households with 1/+ ITN,41.3
+Elgeyo Marakwet,Use in all households,16.6
+Elgeyo Marakwet,Use in households with 1/+ ITN,41.3
 Nandi,Use in all households,71.7
 Nandi,Use in households with 1/+ ITN,78.5
 Baringo,Use in all households,53.8
@@ -79,12 +79,12 @@ Bungoma,Use in all households,74.2
 Bungoma,Use in households with 1/+ ITN,77.8
 Busia,Use in all households,83.8
 Busia,Use in households with 1/+ ITN,85.6
-Siaya,Use in all households,77.0
+Siaya,Use in all households,77
 Siaya,Use in households with 1/+ ITN,82.3
 Kisumu,Use in all households,68.9
 Kisumu,Use in households with 1/+ ITN,81.1
 Homa Bay,Use in all households,69.7
-Homa Bay,Use in households with 1/+ ITN,75.0
+Homa Bay,Use in households with 1/+ ITN,75
 Migori,Use in all households,75.5
 Migori,Use in households with 1/+ ITN,81.4
 Kisii,Use in all households,75.4

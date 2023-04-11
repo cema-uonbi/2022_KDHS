@@ -1,15 +1,15 @@
 Characteristic of circumcision,Category,variable,value
-Person who performed the circumcision,Traditional agent,0-4,*
-Person who performed the circumcision,Traditional circumciser,0-4,*
-Person who performed the circumcision,Traditional birth attendant,0-4,*
-Person who performed the circumcision,Other traditional agent,0-4,*
-Person who performed the circumcision,Medical professional,0-4,*
-Person who performed the circumcision,Doctor,0-4,*
-Person who performed the circumcision,Nurse/midwife,0-4,*
-Person who performed the circumcision,Don't know,0-4,*
-Type of circumcision,Sewn closed,0-4,*
-Type of circumcision,Not sewn closed,0-4,*
-Type of circumcision,Don't know,0-4,*
+Person who performed the circumcision,Traditional agent,0-4,NA
+Person who performed the circumcision,Traditional circumciser,0-4,NA
+Person who performed the circumcision,Traditional birth attendant,0-4,NA
+Person who performed the circumcision,Other traditional agent,0-4,NA
+Person who performed the circumcision,Medical professional,0-4,NA
+Person who performed the circumcision,Doctor,0-4,NA
+Person who performed the circumcision,Nurse/midwife,0-4,NA
+Person who performed the circumcision,Don't know,0-4,NA
+Type of circumcision,Sewn closed,0-4,NA
+Type of circumcision,Not sewn closed,0-4,NA
+Type of circumcision,Don't know,0-4,NA
 Person who performed the circumcision,Traditional agent,9-May,92.8
 Person who performed the circumcision,Traditional circumciser,9-May,92.8
 Person who performed the circumcision,Traditional birth attendant,9-May,0

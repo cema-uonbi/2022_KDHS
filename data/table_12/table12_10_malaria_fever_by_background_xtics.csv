@@ -27,10 +27,10 @@ Low risk,Advice/treatment sought,71.7,Endemicity zone
 Low risk,Advice/treatment sought same/next day,48.4,Endemicity zone
 Low risk,Blood taken from finger/heel for testing,23.8,Endemicity zone
 Low risk,Diagnosed by healthcare provider,8.5,Endemicity zone
-No education,Advice/treatment sought,57.0,Mother's education
-No education,Advice/treatment sought same/next day,31.0,Mother's education
-No education,Blood taken from finger/heel for testing,34.0,Mother's education
-No education,Diagnosed by healthcare provider,22.0,Mother's education
+No education,Advice/treatment sought,57,Mother's education
+No education,Advice/treatment sought same/next day,31,Mother's education
+No education,Blood taken from finger/heel for testing,34,Mother's education
+No education,Diagnosed by healthcare provider,22,Mother's education
 Primary,Advice/treatment sought,67.5,Mother's education
 Primary,Advice/treatment sought same/next day,37.3,Mother's education
 Primary,Blood taken from finger/heel for testing,34.6,Mother's education
@@ -40,7 +40,7 @@ Secondary,Advice/treatment sought same/next day,47.4,Mother's education
 Secondary,Blood taken from finger/heel for testing,31.7,Mother's education
 Secondary,Diagnosed by healthcare provider,19.8,Mother's education
 More than secondary,Advice/treatment sought,71.9,Mother's education
-More than secondary,Advice/treatment sought same/next day,47.0,Mother's education
+More than secondary,Advice/treatment sought same/next day,47,Mother's education
 More than secondary,Blood taken from finger/heel for testing,33.9,Mother's education
 More than secondary,Diagnosed by healthcare provider,12.9,Mother's education
 Lowest,Advice/treatment sought,64.3,Wealth quintile

@@ -1,6 +1,6 @@
-Value,Pop. with access to ITN,Background characteristics
+Value,Proportion,Background characteristics
 Urban,36.9,Residence
-Rural,56.0,Residence
+Rural,56,Residence
 Highland epidemic prone,76.2,Endemicity zone
 Lake endemic,76.4,Endemicity zone
 Coast endemic,63.4,Endemicity zone
@@ -9,5 +9,5 @@ Low risk,26.1,Endemicity zone
 Lowest,45.9,Wealth quintile
 Second,60.1,Wealth quintile
 Middle,58.2,Wealth quintile
-Fourth,47.0,Wealth quintile
+Fourth,47,Wealth quintile
 Highest,36.8,Wealth quintile

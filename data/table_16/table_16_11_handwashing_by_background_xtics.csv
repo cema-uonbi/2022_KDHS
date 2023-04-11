@@ -1,50 +1,15 @@
 Value,Category,Proportion,Background characteristics
-Urban,Fixed handwashing place,39.9,Residence
-Urban,Mobile handwashing place,41.5,Residence
-Urban,Water available,91.8,Residence
-Urban,Soap available,82.0,Residence
-Urban,Other cleansing agent available,0.3,Residence
-Urban,Pop. with basic handwashing facility,67.6,Residence
-Urban,Pop. with limited handwashing facility,17.2,Residence
-Rural,Fixed handwashing place,17.0,Residence
-Rural,Mobile handwashing place,49.1,Residence
-Rural,Water available,86.7,Residence
-Rural,Soap available,63.6,Residence
-Rural,Other cleansing agent available,0.9,Residence
-Rural,Pop. with basic handwashing facility,43.0,Residence
-Rural,Pop. with limited handwashing facility,27.0,Residence
-Lowest,Fixed handwashing place,4.1,Wealth quintile
-Lowest,Mobile handwashing place,51.2,Wealth quintile
-Lowest,Water available,82.2,Wealth quintile
-Lowest,Soap available,52.0,Wealth quintile
-Lowest,Other cleansing agent available,2.6,Wealth quintile
-Lowest,Pop. with basic handwashing facility,29.0,Wealth quintile
-Lowest,Pop. with limited handwashing facility,29.4,Wealth quintile
-Second,Fixed handwashing place,9.1,Wealth quintile
-Second,Mobile handwashing place,54.9,Wealth quintile
-Second,Water available,87.3,Wealth quintile
-Second,Soap available,65.8,Wealth quintile
-Second,Other cleansing agent available,0.5,Wealth quintile
-Second,Pop. with basic handwashing facility,43.3,Wealth quintile
-Second,Pop. with limited handwashing facility,25.4,Wealth quintile
-Middle,Fixed handwashing place,18.6,Wealth quintile
-Middle,Mobile handwashing place,51.4,Wealth quintile
-Middle,Water available,86.7,Wealth quintile
-Middle,Soap available,67.1,Wealth quintile
-Middle,Other cleansing agent available,0.3,Wealth quintile
-Middle,Pop. with basic handwashing facility,48.4,Wealth quintile
-Middle,Pop. with limited handwashing facility,26.0,Wealth quintile
-Fourth,Fixed handwashing place,28.4,Wealth quintile
-Fourth,Mobile handwashing place,47.9,Wealth quintile
-Fourth,Water available,89.6,Wealth quintile
-Fourth,Soap available,70.8,Wealth quintile
-Fourth,Other cleansing agent available,0.3,Wealth quintile
-Fourth,Pop. with basic handwashing facility,55.1,Wealth quintile
-Fourth,Pop. with limited handwashing facility,24.5,Wealth quintile
-Highest,Fixed handwashing place,63.4,Wealth quintile
-Highest,Mobile handwashing place,27.6,Wealth quintile
-Highest,Water available,94.1,Wealth quintile
-Highest,Soap available,88.0,Wealth quintile
-Highest,Other cleansing agent available,0.1,Wealth quintile
-Highest,Pop. with basic handwashing facility,80.0,Wealth quintile
-Highest,Pop. with limited handwashing facility,13.5,Wealth quintile
+Urban,Basic,67.6,Residence
+Urban,Limited,17.2,Residence
+Rural,Basic,43,Residence
+Rural,Limited,27,Residence
+Lowest,Basic,29,Wealth quintile
+Lowest,Limited,29.4,Wealth quintile
+Second,Basic,43.3,Wealth quintile
+Second,Limited,25.4,Wealth quintile
+Middle,Basic,48.4,Wealth quintile
+Middle,Limited,26,Wealth quintile
+Fourth,Basic,55.1,Wealth quintile
+Fourth,Limited,24.5,Wealth quintile
+Highest,Basic,80,Wealth quintile
+Highest,Limited,13.5,Wealth quintile

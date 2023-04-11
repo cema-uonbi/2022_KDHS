@@ -1,7 +1,7 @@
 Value,Reason,Proportion,Background characteristics
 Urban,Too hot,8.6,Residence
 Urban,Don't like net,0.8,Residence
-Urban,Don't like smell,1.0,Residence
+Urban,Don't like smell,1,Residence
 Urban,Unable to hang net,5.5,Residence
 Urban,Slept outdoors,0.9,Residence
 Urban,User didn't sleep in household,12.9,Residence
@@ -10,11 +10,11 @@ Urban,Extra net/saving for later,48.9,Residence
 Urban,Net too small,0.4,Residence
 Urban,Net brought bedbugs,0.2,Residence
 Urban,Other,5.4,Residence
-Rural,Too hot,3.0,Residence
+Rural,Too hot,3,Residence
 Rural,Don't like net,0.8,Residence
 Rural,Don't like smell,1.1,Residence
-Rural,Unable to hang net,4.0,Residence
-Rural,Slept outdoors,1.0,Residence
+Rural,Unable to hang net,4,Residence
+Rural,Slept outdoors,1,Residence
 Rural,User didn't sleep in household,11.9,Residence
 Rural,No mosquitoes/malaria,8.7,Residence
 Rural,Extra net/saving for later,62.7,Residence
@@ -39,11 +39,11 @@ Lake endemic,Unable to hang net,4.5,Endemicity zone
 Lake endemic,Slept outdoors,0.6,Endemicity zone
 Lake endemic,User didn't sleep in household,9.8,Endemicity zone
 Lake endemic,No mosquitoes/malaria,1.9,Endemicity zone
-Lake endemic,Extra net/saving for later,72.0,Endemicity zone
+Lake endemic,Extra net/saving for later,72,Endemicity zone
 Lake endemic,Net too small,0.3,Endemicity zone
 Lake endemic,Net brought bedbugs,1.9,Endemicity zone
 Lake endemic,Other,5.8,Endemicity zone
-Coast endemic,Too hot,13.0,Endemicity zone
+Coast endemic,Too hot,13,Endemicity zone
 Coast endemic,Don't like net,0.2,Endemicity zone
 Coast endemic,Don't like smell,0.2,Endemicity zone
 Coast endemic,Unable to hang net,1.6,Endemicity zone
@@ -55,7 +55,7 @@ Coast endemic,Net too small,0.7,Endemicity zone
 Coast endemic,Net brought bedbugs,1.2,Endemicity zone
 Coast endemic,Other,4.7,Endemicity zone
 Seasonal,Too hot,14.9,Endemicity zone
-Seasonal,Don't like net,1.0,Endemicity zone
+Seasonal,Don't like net,1,Endemicity zone
 Seasonal,Don't like smell,1.2,Endemicity zone
 Seasonal,Unable to hang net,6.2,Endemicity zone
 Seasonal,Slept outdoors,2.8,Endemicity zone
@@ -66,10 +66,10 @@ Seasonal,Net too small,0.1,Endemicity zone
 Seasonal,Net brought bedbugs,0.3,Endemicity zone
 Seasonal,Other,8.1,Endemicity zone
 Low risk,Too hot,7.5,Endemicity zone
-Low risk,Don't like net,1.0,Endemicity zone
+Low risk,Don't like net,1,Endemicity zone
 Low risk,Don't like smell,0.8,Endemicity zone
 Low risk,Unable to hang net,5.2,Endemicity zone
-Low risk,Slept outdoors,1.0,Endemicity zone
+Low risk,Slept outdoors,1,Endemicity zone
 Low risk,User didn't sleep in household,17.4,Endemicity zone
 Low risk,No mosquitoes/malaria,29.4,Endemicity zone
 Low risk,Extra net/saving for later,29.4,Endemicity zone
@@ -94,7 +94,7 @@ Second,Unable to hang net,4.4,Wealth quintile
 Second,Slept outdoors,0.7,Wealth quintile
 Second,User didn't sleep in household,8.5,Wealth quintile
 Second,No mosquitoes/malaria,6.1,Wealth quintile
-Second,Extra net/saving for later,68.0,Wealth quintile
+Second,Extra net/saving for later,68,Wealth quintile
 Second,Net too small,0.4,Wealth quintile
 Second,Net brought bedbugs,1.4,Wealth quintile
 Second,Other,5.9,Wealth quintile
@@ -105,12 +105,12 @@ Middle,Unable to hang net,3.3,Wealth quintile
 Middle,Slept outdoors,1.3,Wealth quintile
 Middle,User didn't sleep in household,13.7,Wealth quintile
 Middle,No mosquitoes/malaria,7.9,Wealth quintile
-Middle,Extra net/saving for later,62.0,Wealth quintile
+Middle,Extra net/saving for later,62,Wealth quintile
 Middle,Net too small,0.1,Wealth quintile
 Middle,Net brought bedbugs,0.7,Wealth quintile
 Middle,Other,5.8,Wealth quintile
 Fourth,Too hot,3.8,Wealth quintile
-Fourth,Don't like net,1.0,Wealth quintile
+Fourth,Don't like net,1,Wealth quintile
 Fourth,Don't like smell,0.8,Wealth quintile
 Fourth,Unable to hang net,3.2,Wealth quintile
 Fourth,Slept outdoors,0.6,Wealth quintile
@@ -129,5 +129,5 @@ Highest,User didn't sleep in household,15.9,Wealth quintile
 Highest,No mosquitoes/malaria,18.3,Wealth quintile
 Highest,Extra net/saving for later,46.4,Wealth quintile
 Highest,Net too small,0.5,Wealth quintile
-Highest,Net brought bedbugs,0.0,Wealth quintile
+Highest,Net brought bedbugs,0,Wealth quintile
 Highest,Other,3.7,Wealth quintile

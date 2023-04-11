@@ -75,20 +75,20 @@ Highest,Met need,Wealth,For limiting,30.1,Married women
 15-19,Unmet need,Age,For limiting,0.3,All women
 20-24,Unmet need,Age,For spacing,10.4,All women
 20-24,Unmet need,Age,For limiting,0.9,All women
-25-29,Unmet need,Age,For spacing,8.0,All women
+25-29,Unmet need,Age,For spacing,8,All women
 25-29,Unmet need,Age,For limiting,2.4,All women
 30-34,Unmet need,Age,For spacing,5.7,All women
-30-34,Unmet need,Age,For limiting,6.0,All women
+30-34,Unmet need,Age,For limiting,6,All women
 35-39,Unmet need,Age,For spacing,3.9,All women
 35-39,Unmet need,Age,For limiting,7.3,All women
-40-44,Unmet need,Age,For spacing,2.0,All women
+40-44,Unmet need,Age,For spacing,2,All women
 40-44,Unmet need,Age,For limiting,8.8,All women
 45-49,Unmet need,Age,For spacing,1.6,All women
 45-49,Unmet need,Age,For limiting,8.5,All women
 15-19,Met need,Age,For spacing,12.5,All women
 15-19,Met need,Age,For limiting,0.9,All women
 20-24,Met need,Age,For spacing,37.9,All women
-20-24,Met need,Age,For limiting,7.0,All women
+20-24,Met need,Age,For limiting,7,All women
 25-29,Met need,Age,For spacing,43.1,All women
 25-29,Met need,Age,For limiting,16.7,All women
 30-34,Met need,Age,For spacing,31.4,All women
@@ -116,12 +116,12 @@ Secondary,Unmet need,Education,For limiting,2.8,All women
 More than secondary,Unmet need,Education,For spacing,5.5,All women
 More than secondary,Unmet need,Education,For limiting,2.2,All women
 No education,Met need,Education,For spacing,10.3,All women
-No education,Met need,Education,For limiting,11.0,All women
+No education,Met need,Education,For limiting,11,All women
 Primary,Met need,Education,For spacing,19.1,All women
 Primary,Met need,Education,For limiting,32.8,All women
-Secondary,Met need,Education,For spacing,26.0,All women
+Secondary,Met need,Education,For spacing,26,All women
 Secondary,Met need,Education,For limiting,16.6,All women
-More than secondary,Met need,Education,For spacing,36.0,All women
+More than secondary,Met need,Education,For spacing,36,All women
 More than secondary,Met need,Education,For limiting,17.5,All women
 Lowest,Unmet need,Wealth,For spacing,8.8,All women
 Lowest,Unmet need,Wealth,For limiting,6.4,All women
@@ -148,15 +148,15 @@ Highest,Met need,Wealth,For limiting,20.2,All women
 20-24,Unmet need,Age,For spacing,19.6,Sexually active unmarried
 20-24,Unmet need,Age,For limiting,1.4,Sexually active unmarried
 25-29,Unmet need,Age,For spacing,12.5,Sexually active unmarried
-25-29,Unmet need,Age,For limiting,4.0,Sexually active unmarried
+25-29,Unmet need,Age,For limiting,4,Sexually active unmarried
 30-34,Unmet need,Age,For spacing,3.6,Sexually active unmarried
 30-34,Unmet need,Age,For limiting,12.1,Sexually active unmarried
 35-39,Unmet need,Age,For spacing,0.2,Sexually active unmarried
 35-39,Unmet need,Age,For limiting,2.6,Sexually active unmarried
 40-44,Unmet need,Age,For spacing,5.9,Sexually active unmarried
 40-44,Unmet need,Age,For limiting,12.7,Sexually active unmarried
-45-49,Unmet need,Age,For spacing,(13.0),Sexually active unmarried
-45-49,Unmet need,Age,For limiting,(8.8),Sexually active unmarried
+45-49,Unmet need,Age,For spacing,NA,Sexually active unmarried
+45-49,Unmet need,Age,For limiting,NA,Sexually active unmarried
 15-19,Met need,Age,For spacing,56.1,Sexually active unmarried
 15-19,Met need,Age,For limiting,2.3,Sexually active unmarried
 20-24,Met need,Age,For spacing,65.2,Sexually active unmarried
@@ -169,9 +169,9 @@ Highest,Met need,Wealth,For limiting,20.2,All women
 35-39,Met need,Age,For limiting,63.4,Sexually active unmarried
 40-44,Met need,Age,For spacing,11.2,Sexually active unmarried
 40-44,Met need,Age,For limiting,61.7,Sexually active unmarried
-45-49,Met need,Age,For spacing,(2.2),Sexually active unmarried
-45-49,Met need,Age,For limiting,(44.0),Sexually active unmarried
-Urban,Unmet need,Residence,For spacing,13.0,Sexually active unmarried
+45-49,Met need,Age,For spacing,NA,Sexually active unmarried
+45-49,Met need,Age,For limiting,NA,Sexually active unmarried
+Urban,Unmet need,Residence,For spacing,13,Sexually active unmarried
 Urban,Unmet need,Residence,For limiting,3.7,Sexually active unmarried
 Rural,Unmet need,Residence,For spacing,15.5,Sexually active unmarried
 Rural,Unmet need,Residence,For limiting,6.3,Sexually active unmarried
@@ -179,16 +179,16 @@ Urban,Met need,Residence,For spacing,53.7,Sexually active unmarried
 Urban,Met need,Residence,For limiting,19.4,Sexually active unmarried
 Rural,Met need,Residence,For spacing,39.1,Sexually active unmarried
 Rural,Met need,Residence,For limiting,27.9,Sexually active unmarried
-No education,Unmet need,Education,For spacing,*,Sexually active unmarried
-No education,Unmet need,Education,For limiting,*,Sexually active unmarried
-Primary,Unmet need,Education,For spacing,11.0,Sexually active unmarried
+No education,Unmet need,Education,For spacing,NA,Sexually active unmarried
+No education,Unmet need,Education,For limiting,NA,Sexually active unmarried
+Primary,Unmet need,Education,For spacing,11,Sexually active unmarried
 Primary,Unmet need,Education,For limiting,6.6,Sexually active unmarried
 Secondary,Unmet need,Education,For spacing,17.9,Sexually active unmarried
 Secondary,Unmet need,Education,For limiting,6.4,Sexually active unmarried
 More than secondary,Unmet need,Education,For spacing,13.2,Sexually active unmarried
 More than secondary,Unmet need,Education,For limiting,2.4,Sexually active unmarried
-No education,Met need,Education,For spacing,*,Sexually active unmarried
-No education,Met need,Education,For limiting,*,Sexually active unmarried
+No education,Met need,Education,For spacing,NA,Sexually active unmarried
+No education,Met need,Education,For limiting,NA,Sexually active unmarried
 Primary,Met need,Education,For spacing,24.6,Sexually active unmarried
 Primary,Met need,Education,For limiting,41.5,Sexually active unmarried
 Secondary,Met need,Education,For spacing,48.5,Sexually active unmarried
@@ -202,16 +202,16 @@ Second,Unmet need,Wealth,For limiting,6.5,Sexually active unmarried
 Middle,Unmet need,Wealth,For spacing,14.2,Sexually active unmarried
 Middle,Unmet need,Wealth,For limiting,5.3,Sexually active unmarried
 Fourth,Unmet need,Wealth,For spacing,13.1,Sexually active unmarried
-Fourth,Unmet need,Wealth,For limiting,7.0,Sexually active unmarried
+Fourth,Unmet need,Wealth,For limiting,7,Sexually active unmarried
 Highest,Unmet need,Wealth,For spacing,11.7,Sexually active unmarried
 Highest,Unmet need,Wealth,For limiting,2.3,Sexually active unmarried
 Lowest,Met need,Wealth,For spacing,33.7,Sexually active unmarried
 Lowest,Met need,Wealth,For limiting,24.2,Sexually active unmarried
 Second,Met need,Wealth,For spacing,39.9,Sexually active unmarried
-Second,Met need,Wealth,For limiting,25.0,Sexually active unmarried
+Second,Met need,Wealth,For limiting,25,Sexually active unmarried
 Middle,Met need,Wealth,For spacing,34.7,Sexually active unmarried
 Middle,Met need,Wealth,For limiting,34.9,Sexually active unmarried
 Fourth,Met need,Wealth,For spacing,50.5,Sexually active unmarried
-Fourth,Met need,Wealth,For limiting,19.0,Sexually active unmarried
+Fourth,Met need,Wealth,For limiting,19,Sexually active unmarried
 Highest,Met need,Wealth,For spacing,57.2,Sexually active unmarried
 Highest,Met need,Wealth,For limiting,19.6,Sexually active unmarried

@@ -139,26 +139,44 @@ Seen,"Fully vaccinated
 Seen,"Fully vaccinated
 (national schedule)",69.1,CountyFullyVaccinated12,Card
 Seen,No vaccinations,0,CountyFullyVaccinated12,Card
-Not seen or no longer has card,BCG,94.6,CountyFullyVaccinated12,Card
-Not seen or no longer has card,DPT1,94.3,CountyFullyVaccinated12,Card
-Not seen or no longer has card,DPT2,83.6,CountyFullyVaccinated12,Card
-Not seen or no longer has card,DPT3,72,CountyFullyVaccinated12,Card
-Not seen or no longer has card,OPV0,84.2,CountyFullyVaccinated12,Card
-Not seen or no longer has card,OPV1,90.8,CountyFullyVaccinated12,Card
-Not seen or no longer has card,OPV2,83.8,CountyFullyVaccinated12,Card
-Not seen or no longer has card,OPV3,25.9,CountyFullyVaccinated12,Card
-Not seen or no longer has card,IPV,93.7,CountyFullyVaccinated12,Card
-Not seen or no longer has card,Pneumococcal1,94.2,CountyFullyVaccinated12,Card
-Not seen or no longer has card,Pneumococcal2,92.3,CountyFullyVaccinated12,Card
-Not seen or no longer has card,Pneumococcal3,83.7,CountyFullyVaccinated12,Card
-Not seen or no longer has card,Rotavirus1,91.5,CountyFullyVaccinated12,Card
-Not seen or no longer has card,Rotavirus2,86.6,CountyFullyVaccinated12,Card
-Not seen or no longer has card,MR1,88.1,CountyFullyVaccinated12,Card
-Not seen or no longer has card,"Fully vaccinated
+"Not seen or 
+ no longer has card",BCG,94.6,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",DPT1,94.3,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",DPT2,83.6,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",DPT3,72,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",OPV0,84.2,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",OPV1,90.8,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",OPV2,83.8,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",OPV3,25.9,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",IPV,93.7,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",Pneumococcal1,94.2,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",Pneumococcal2,92.3,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",Pneumococcal3,83.7,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",Rotavirus1,91.5,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",Rotavirus2,86.6,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",MR1,88.1,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card","Fully vaccinated
 (basic antigens)",60.9,CountyFullyVaccinated12,Card
-Not seen or no longer has card,"Fully vaccinated
+"Not seen or 
+ no longer has card","Fully vaccinated
 (national schedule)",13.4,CountyFullyVaccinated12,Card
-Not seen or no longer has card,No vaccinations,4.3,CountyFullyVaccinated12,Card
+"Not seen or 
+ no longer has card",No vaccinations,4.3,CountyFullyVaccinated12,Card
 Never had card,BCG,33.9,CountyFullyVaccinated12,Card
 Never had card,DPT1,37.6,CountyFullyVaccinated12,Card
 Never had card,DPT2,29.5,CountyFullyVaccinated12,Card
@@ -239,26 +257,44 @@ Secondary,"Fully vaccinated
 Secondary,"Fully vaccinated
 (national schedule)",60.6,CountyFullyVaccinated12,Education
 Secondary,No vaccinations,1.8,CountyFullyVaccinated12,Education
-More than secondary,BCG,98.6,CountyFullyVaccinated12,Education
-More than secondary,DPT1,98.5,CountyFullyVaccinated12,Education
-More than secondary,DPT2,96.4,CountyFullyVaccinated12,Education
-More than secondary,DPT3,92.6,CountyFullyVaccinated12,Education
-More than secondary,OPV0,93.6,CountyFullyVaccinated12,Education
-More than secondary,OPV1,98.1,CountyFullyVaccinated12,Education
-More than secondary,OPV2,96.4,CountyFullyVaccinated12,Education
-More than secondary,OPV3,81,CountyFullyVaccinated12,Education
-More than secondary,IPV,88.4,CountyFullyVaccinated12,Education
-More than secondary,Pneumococcal1,97.6,CountyFullyVaccinated12,Education
-More than secondary,Pneumococcal2,97.4,CountyFullyVaccinated12,Education
-More than secondary,Pneumococcal3,95.8,CountyFullyVaccinated12,Education
-More than secondary,Rotavirus1,97,CountyFullyVaccinated12,Education
-More than secondary,Rotavirus2,94.7,CountyFullyVaccinated12,Education
-More than secondary,MR1,93,CountyFullyVaccinated12,Education
-More than secondary,"Fully vaccinated
+"More than
+ secondary",BCG,98.6,CountyFullyVaccinated12,Education
+"More than
+ secondary",DPT1,98.5,CountyFullyVaccinated12,Education
+"More than
+ secondary",DPT2,96.4,CountyFullyVaccinated12,Education
+"More than
+ secondary",DPT3,92.6,CountyFullyVaccinated12,Education
+"More than
+ secondary",OPV0,93.6,CountyFullyVaccinated12,Education
+"More than
+ secondary",OPV1,98.1,CountyFullyVaccinated12,Education
+"More than
+ secondary",OPV2,96.4,CountyFullyVaccinated12,Education
+"More than
+ secondary",OPV3,81,CountyFullyVaccinated12,Education
+"More than
+ secondary",IPV,88.4,CountyFullyVaccinated12,Education
+"More than
+ secondary",Pneumococcal1,97.6,CountyFullyVaccinated12,Education
+"More than
+ secondary",Pneumococcal2,97.4,CountyFullyVaccinated12,Education
+"More than
+ secondary",Pneumococcal3,95.8,CountyFullyVaccinated12,Education
+"More than
+ secondary",Rotavirus1,97,CountyFullyVaccinated12,Education
+"More than
+ secondary",Rotavirus2,94.7,CountyFullyVaccinated12,Education
+"More than
+ secondary",MR1,93,CountyFullyVaccinated12,Education
+"More than
+ secondary","Fully vaccinated
 (basic antigens)",86.8,CountyFullyVaccinated12,Education
-More than secondary,"Fully vaccinated
+"More than
+ secondary","Fully vaccinated
 (national schedule)",61.7,CountyFullyVaccinated12,Education
-More than secondary,No vaccinations,1.4,CountyFullyVaccinated12,Education
+"More than
+ secondary",No vaccinations,1.4,CountyFullyVaccinated12,Education
 Urban,BCG,97.1,CountyFullyVaccinated12,Residence
 Urban,DPT1,97.3,CountyFullyVaccinated12,Residence
 Urban,DPT2,93.2,CountyFullyVaccinated12,Residence
@@ -420,8 +456,10 @@ Female,"Fully vaccinated
 Seen,MR2,68.8,CountyFullyVaccinated24,Card
 Seen,"Fully vaccinated
 (national schedule)",51.5,CountyFullyVaccinated24,Card
-Not seen or no longer has card,MR2,66.3,CountyFullyVaccinated24,Card
-Not seen or no longer has card,"Fully vaccinated
+"Not seen or 
+ no longer has card",MR2,66.3,CountyFullyVaccinated24,Card
+"Not seen or 
+ no longer has card","Fully vaccinated
 (national schedule)",16.2,CountyFullyVaccinated24,Card
 Never had card,MR2,18.4,CountyFullyVaccinated24,Card
 Never had card,"Fully vaccinated
@@ -435,8 +473,10 @@ Primary,"Fully vaccinated
 Secondary,MR2,72.6,CountyFullyVaccinated24,Education
 Secondary,"Fully vaccinated
 (national schedule)",42.6,CountyFullyVaccinated24,Education
-More than secondary,MR2,81.7,CountyFullyVaccinated24,Education
-More than secondary,"Fully vaccinated
+"More than
+ secondary",MR2,81.7,CountyFullyVaccinated24,Education
+"More than
+ secondary","Fully vaccinated
 (national schedule)",47.1,CountyFullyVaccinated24,Education
 Male,MR2,69.7,CountyFullyVaccinated24,Gender
 Male,"Fully vaccinated

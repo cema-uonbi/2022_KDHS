@@ -78,6 +78,7 @@ p_load(scales)
 p_load(sf)
 p_load(reshape2)
 p_load(cowplot)
+p_load(data.table)
 
 
 ```
@@ -143,7 +144,7 @@ valueBox(
 ##### Choose the category to display:
 
 ```{r}
-radioButtons("quest", "",
+selectInput("quest", "",
              c("Households"="All",
                "Participants: Men (15-54 years)"="Male",
                "Participants: Women (15-49 years)"="Female",
@@ -163,24 +164,9 @@ The numbers are presented by:
 
 
 
-interviewvisuals <-read_csv("data/table_1/table1_kdhshouseholdinterviews.csv") 
+totalinterviewvisuals <-fread("data/table_1/table1_kdhshouseholdinterviews1.csv") 
 
 
-womeninterviews <-read_csv("data/table_1/table1_womeninterviewed.csv")
-
-meninterviews <-read_csv("data/table_1/table1_meninterviewed.csv") 
-
-participantsinterviews <- bind_rows(womeninterviews, meninterviews) %>%
-  dplyr::mutate(Participant = recode(Respondents, "Number of eligible women" = "Eligible women","Number of eligible women interviewed" = "Women interviewed", "Number of eligible men" = "Eligible men","Number of eligible men interviewed" = "Men interviewed"))
-
-# join the two datasets
-totalinterviewvisuals <- rbind(interviewvisuals ,participantsinterviews)  %>%
-  mutate(selection=recode(selection, "Long questionnaire"="Full questionnaires", "Long_questionnaire"="Full questionnaires", "All_households"="All households",
-                          "Short_questionnaire"="Short questionnaire", "Short questionanaire"="Short questionnaire")) %>%
-  mutate(Participant=ifelse(Respondents%in%c("Eligible men response rate2","Eligible women response rate2","Household response rate1" ), "Response Rate", Participant)) %>%
-  mutate(Respondents=recode(Respondents, "Eligible men response rate2"="Eligible men", "Eligible women response rate2"="Eligible women", "Household response rate1"="Household")) 
-
-totalinterviewvisuals$Respondents <- fct_relevel(totalinterviewvisuals$Respondents,"Number of eligible men interviewed", "Number of eligible women interviewed", "Number of eligible men", "Number of eligible women")
 renderPlot({if(input$quest%in%"Response Rate"){
   ggplot(totalinterviewvisuals[totalinterviewvisuals$Participant%in%"Response Rate",], aes(x=Respondents, y=numbers)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") + #"#53A7DC"
@@ -247,7 +233,7 @@ value = paste("26%"),
 **Choose the characteristics to display:**
 
 ```{r}
-radioButtons("housing", "",
+selectInput("housing", "",
               c("Electricity"="Electricity", 
                 "Flooring material"="Flooring material", 
                 "Rooms for sleeping"="Rooms for sleeping",
@@ -255,10 +241,7 @@ radioButtons("housing", "",
 ```
 
 ```{r}
-housing <- read_csv("data/table_2/table2_1_Housing_by_xtics.csv") %>%
-  filter(!Category%in%"Total")
-
-
+housing <- fread("data/table_2/table2_1_Housing_by_xtics.csv")
 
 renderPlot({
     ggplot(housing[housing$Characteristics%in%input$housing,], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+facet_grid(.~Participants)+#,aes(tooltip=paste0(Coverage, "%"))) +
@@ -280,17 +263,14 @@ renderPlot({
 **Choose the characteristics to display:**
 
 ```{r}
-radioButtons("cooking", "",
+selectInput("cooking", "",
               c("Cooking place"="Cooking place", 
                 "Cooking technology"="Cooking technology", 
                 "Cooking fuel"="Cooking fuel"))
 ```
 
 ```{r }
-cooking <- read_csv("data/table_2/table2_2_Cooking_by_xtics.csv") %>%
-  filter(!Category%in%"Total")
-
-
+cooking <- fread("data/table_2/table2_2_Cooking_by_xtics.csv")
 
 
 renderPlot({
@@ -299,7 +279,7 @@ renderPlot({
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
-    geom_text(aes(label=paste0(Proportion, "%"), position=position_dodge(0.6),vjust=0.5,hjust=-0.2, size=4, color="black"))
+    geom_text(aes(label=paste0(Proportion, "%")), position=position_dodge(0.6),vjust=0.5,hjust=-0.2, size=4, color="black")
  
 }, width=1600, height=700)
 
@@ -313,7 +293,7 @@ renderPlot({
 **Choose the characteristics to display:**
 
 ```{r}
-radioButtons("possessions", "",
+selectInput("possessions", "",
               c("Assets"="Assets", 
                 "Household effects"="Household effects", 
                 "Means of transportation"="Means of transportation"))
@@ -321,9 +301,7 @@ radioButtons("possessions", "",
 
 ```{r}
 
-hh_possession <- read_csv("data/table_2/table2_5_HH_possession.csv") %>%
-  filter(!Category%in%"Total")
-
+hh_possession <- fread("data/table_2/table2_5_HH_possession.csv")
 
 
 
@@ -350,7 +328,7 @@ Birth registration of children \<5 years
 **Choose the characteristics to display:**
 
 ```{r}
-radioButtons("birth_reg", "",
+selectInput("birth_reg", "",
               c("Age"="Age", 
                 "Residence"="Residence", 
                 "Sex"="Sex",
@@ -359,24 +337,22 @@ radioButtons("birth_reg", "",
 ```
 
 ```{r, include=F}
-birth_reg_county <- read_csv("data/table_2/table2_10C_Birth_registration_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+birth_reg_county <- fread("data/table_2/table2_10C_Birth_registration_by_county.csv")
+
 county <- st_read("shapefiles/County.shp")
+
 birth_reg_county1 <- full_join(county, birth_reg_county, by=c("Name"="County"))
 
-birth_reg_county1$Proportion <- as.numeric(birth_reg_county1$Proportion)
+
 
 ```
 
 ```{r}
 
-birth_reg <- read_csv("data/table_2/table2_10_Birth_registration_by_background_xtics.csv") %>%
-  filter(!Category%in%"Total")
+birth_reg <- fread("data/table_2/table2_10_Birth_registration_by_background_xtics.csv")
 
-birth_reg$Value <- fct_relevel(birth_reg$Value, "<1", "1-4", "Female", "Male", "Rural", "Urban", "Lowest", "Second", "Middle", "Fourth", "Highest")
-
+birth_reg$Value<- fct_relevel(birth_reg$Value, 
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 
 renderGirafe({
@@ -419,17 +395,16 @@ renderGirafe({
 **Choose the characteristics to display:**
 
 ```{r}
-radioButtons("school_attendance", "",
+selectInput("school_attendance", "",
               c("Residence"="Residence", 
                 "Wealth quintile"="Wealth quintile",
                 "County"="County"))
 ```
 
 ```{r, include=F}
-school_att_county <- read_csv("data/table_2/table_2_12C_School_attendance_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+school_att_county <- fread("data/table_2/table_2_12C_School_attendance_by_county.csv") %>%
+  filter(!(Category%in%"Gender Parity Index"))
+
 county <- st_read("shapefiles/County.shp")
 school_att_county1 <- full_join(county, school_att_county, by=c("Name"="County"))
 
@@ -438,15 +413,10 @@ school_att_county1 <- full_join(county, school_att_county, by=c("Name"="County")
 
 ```{r}
 
-school_attendance <- read_csv("data/table_2/table_2_12_School_attendance_by_background_xtics.csv") %>%
-  filter(!Category%in%"Total") %>%
-  filter(Ratio%in%"Net Attendance Ratio")%>%
-  filter(!Category%in%"Gender Parity Index")
-  
+school_attendance <- fread("data/table_2/table_2_12_School_attendance_by_background_xtics.csv") 
 
-school_attendance$Value <- fct_relevel(school_attendance$Value, "Rural", "Urban", "Lowest", "Second", "Middle", "Fourth", "Highest")
-
-
+school_attendance$Value<- fct_relevel(school_attendance$Value, 
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderGirafe({
   if(input$school_attendance!="County"){
@@ -472,11 +442,11 @@ renderGirafe({
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14))
-    birth_reg_map1a<-girafe(ggobj = birth_reg_map,width_svg=10, height_svg=8,
+    school_att_map1a<-girafe(ggobj = school_att_map,width_svg=10, height_svg=8,
                    options = list(
                     # opts_sizing(rescale = TRUE),
                      opts_zoom(max = 4)))
-  print(birth_reg_map1a, justify="left")}
+  print(school_att_map1a, justify="left")}
  
 })
 
@@ -492,7 +462,7 @@ Deaths and injuries from road traffic accidents
 **Choose the characteristics to display:**
 
 ```{r}
-radioButtons("rta", "",
+selectInput("rta", "",
               c("Residence"="Residence", 
                 "Wealth quintile"="Wealth quintile",
                 "County"="County"
@@ -500,10 +470,11 @@ radioButtons("rta", "",
 ```
 
 ```{r, include=F}
-RTA <- read_csv("data/table_2/table_2_17_RTA_by_background_xtics.csv")
+RTA <- fread("data/table_2/table_2_17_RTA_by_background_xtics.csv")
 
-RTA_county <- read_csv("data/table_2/table_2_17_RTA_by_county.csv") %>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
+RTA$Value<- fct_relevel(RTA$Value, 
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
+RTA_county <- fread("data/table_2/table_2_17_RTA_by_county.csv") %>%
   mutate(Proportion=as.numeric(Proportion))
 
 RTA_county1 <- full_join(county, RTA_county, by=c("Name"="County")) 
@@ -531,8 +502,7 @@ renderPlot({
   }
   else{
   ggplot(RTA_county1)+
-  geom_sf_interactive(data=RTA_county1, aes(geometry=geometry), aes(fill=Proportion, tooltip=paste0(Name, "-", Proportion)),color="grey80", size=0.0)+
-  geom_sf_interactive()+
+  geom_sf(data=RTA_county1, aes(geometry=geometry, fill=Proportion))+
   theme_void()+
   facet_wrap(~Category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
@@ -548,7 +518,7 @@ renderPlot({
 **Choose the characteristics to display:**
 
 ```{r}
-radioButtons("covid", "",
+selectInput("covid", "",
               c("Residence"="Residence", 
                 "Wealth quintile"="Wealth quintile",
                 "County"="County"
@@ -556,11 +526,7 @@ radioButtons("covid", "",
 ```
 
 ```{r, include=F}
-covid_county <- read_csv("data/table_2/table_2_19_1C_covid_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
-
+covid_county <- fread("data/table_2/table_2_19_1C_covid_by_county.csv")
 
 covid_county1 <- full_join(county, covid_county%>%filter(Participants%in%"Households")%>%distinct(), by=c("Name"="County")) %>%
   mutate(Participants="Households")
@@ -568,13 +534,15 @@ covid_county2 <- full_join(county, covid_county%>%filter(Participants%in%"Popula
   mutate(Participants="Population")
 
 covid_county3 <- rbind(covid_county1, covid_county2)
+
 ```
 
 ```{r}
 
-covid <- read_csv("data/table_2/table_2_19_1_covid_by_background_xtics.csv")
+covid <- fread("data/table_2/table_2_19_1_covid_by_background_xtics.csv")
 
-covid$Value <- fct_relevel(covid$Value, "Lowest", "Second", "Middle", "Fourth", "Highest", "Rural", "Urban")
+covid$Value<- fct_relevel(covid$Value, 
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 renderPlot({if(input$covid%in%"Residence"){
     ggplot(covid[covid$`Background characteristics`%in%input$covid,], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+facet_grid(.~Participants)+
     #,aes(tooltip=paste0(Coverage, "%"))) +
@@ -617,7 +585,7 @@ renderPlot({if(input$covid%in%"Residence"){
 **Choose the characteristics to display:**
 
 ```{r}
-radioButtons("health", "",
+selectInput("health", "",
               c("Age in Years"="Age", 
                 "Residence"="Residence", 
                 "Wealth quintile"="Wealth quintile"))
@@ -625,10 +593,7 @@ radioButtons("health", "",
 
 ```{r, include=F}
 
-insurance_county <- read_csv("data/table_2/table_2_20C_insurance_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+insurance_county <- fread("data/table_2/table_2_20C_insurance_by_county.csv")
 
 insurance_county1 <- full_join(county, insurance_county, by=c("Name"="County"))
 
@@ -638,12 +603,10 @@ insurance_county1 <- full_join(county, insurance_county, by=c("Name"="County"))
 
 ```{r, fig.width=16 }
 # health insurance data by age
-insurance <- read_csv("data/table_2/table_2_20_insurance_by_background_xtics.csv")
+insurance <- fread("data/table_2/table_2_20_insurance_by_background_xtics.csv")
 
-
-insurance$Value <- fct_relevel(insurance$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
-
-insurance$`Health Insurance Type` <- fct_relevel(insurance$`Health Insurance Type`,"Any", "NHIF", "Private/commercial", "Community-based", "Other", "None/Don't know")
+insurance$Value<- fct_relevel(insurance$Value, 
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({
   if(input$health%in%c("Wealth quintile", "Age", "Residence")){
@@ -690,7 +653,7 @@ renderPlot({
 **Choose the provider to display:**
 
 ```{r}
-radioButtons("cash_transfer", "",
+selectInput("cash_transfer", "",
               c( 
                 "County government"="County government", 
                 "National government"="National government",
@@ -702,20 +665,14 @@ radioButtons("cash_transfer", "",
 
 ```{r, include=F}
 
-cash_transfer_county <- read_csv("data/table_2/table_2_22_2C_cash_transfer_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+cash_transfer_county <- fread("data/table_2/table_2_22_2C_cash_transfer_by_county.csv")
 
 cash_transfer_county1 <- full_join(county, cash_transfer_county, by=c("Name"="County"))
 
 ```
 
 ```{r}
-cash_transfer <- read_csv("data/table_2/table_2_22_1_cash_transfer_by_provider.csv")%>%
-  mutate(lab = str_c(Proportion,"%")) %>%
-  mutate(Provider1=recode(Provider, "Church, mosque, or any other religious organization"="Religious organization", "NGO. CBO, or other charitable organization"="Charitable organization"))
-
+cash_transfer <- fread("data/table_2/table_2_22_1_cash_transfer_by_provider.csv")
 
 renderPlot({if(input$cash_transfer!="County"){
   ggplot(cash_transfer[cash_transfer$Provider1%in%input$cash_transfer,], aes(x=reorder(`Reason For Assistance`,Proportion), y=Proportion))+
@@ -796,72 +753,15 @@ selectInput("char", "",
 
 ```{r, include=F}
 
-respondentsbyage <- read_csv("data/table_2/table2_ageparticipants.csv")%>%
-  mutate(Indicator="Age")%>%
-  rename(Grouping=Age)
-
-# reported health status data
-healthstatus <- read_csv("data/table_2/table2_selfreport_healthstatus.csv") %>%
-  mutate(Health_status = fct_relevel(Health_status, 
-            "Very bad","Bad","Moderate","Good","Very good"))%>%
-  mutate(Indicator="Health_Status")%>%
-  rename(Grouping=Health_status)
-
-# religion
-religionrespondents <- read_csv("data/table_2/table2_religionparticipants.csv") %>%
-  mutate(Religion = fct_relevel(Religion, "Other","No religion", "Muslim","Catholic","Protestant/other Christian")) %>%
-  mutate(Indicator="Religion") %>%
-  rename(Grouping=Religion)
-
-# Marital status
-maritalstatusrespondents <- read_csv("data/table_2/table2_maritalstatusparticipants.csv") %>%
-  mutate(Marital_status = fct_relevel(Marital_status, "Widowed","Living together", "Divorced/separated","Never married","Married")) %>% 
-  mutate(Indicator="Marital_Status") %>%
-  rename(Grouping=Marital_status)
-
-# Place of residence 
-residentrespondents <- read_csv("data/table_2/table2_residenceparticipants.csv") %>%
-  mutate(Residence = fct_relevel(Residence, "Urban", "Rural")) %>%
-  mutate(Indicator="Residence") %>%
-  rename(Grouping=Residence)
-
-# Education status
-educationrespondents <- read_csv("data/table_2/table2_educationstatusparticipants.csv")  %>%
-  mutate(Education_status = fct_relevel(Education_status, "Vocational", "More than secondary","Secondary", "Primary", "No education")) %>%
-  mutate(Indicator="Education_Status") %>%
-  rename(Grouping=Education_status)
-
-# Wealth quintile
-economicstatusrespondents <- read_csv("data/table_2/table2_economicstatus15_49.csv")  %>%
-  mutate(Wealth_quintile = fct_relevel(Wealth_quintile, "Lowest", "Second","Middle", "Fourth", "Highest")) %>%
-  mutate(Indicator="Wealth_Quintile") %>%
-  rename(Grouping=Wealth_quintile)
-
-# By county
-countyrespondents <- read_csv("data/table_2/table2_participantsbycounty.csv") %>%
-  arrange(desc(Weighted_percent)) %>%
-  mutate(Indicator="County") %>%
-  rename(Grouping=County)
+respondentsdata <- fread("data/table_2/table2_respondentsdata.csv")
 
 
-  
-# join the datasets with participants characteristics
-
-respondentsdata <- rbind(respondentsbyage, healthstatus, religionrespondents, maritalstatusrespondents, residentrespondents, educationrespondents, economicstatusrespondents, countyrespondents) %>%
-  mutate(Indicator1=Indicator) %>%
-  mutate(Indicator1=recode(Indicator1, "Education_Status"="Education Status", "Health_Status"="Health Status", "Marital_Status"="Marital Status", "Wealth_Quintile"="Wealth Quintile")) %>%
-  mutate(label=ifelse(Weighted_percent<0.5, "<1%", paste0(round(Weighted_percent),"%")))
-
-respondentsdata$Grouping <- fct_relevel(respondentsdata$Grouping, "Lowest", "Second", "Middle", "Fourth", "Highest", #wealth quintile
-                                        'No education','Primary','Secondary','More than secondary', 'Vocational', #Education
-                                        "Protestant/other Christian","Catholic", "Muslim","No religion","Other", #Religion
-                                        "Very good","Good","Moderate","Bad","Very bad", #Reported health status
-                                        "Married","Never married","Divorced/separated","Living together","Widowed") #Marital status
-
+respondentsdata$Grouping<- fct_relevel(respondentsdata$Grouping, 
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 ## county data
 
 ### men
-men_background_xtics_county <- read_csv("data/table_2/table2C_men_backgroundxtics_by_county.csv") %>%
+men_background_xtics_county <- fread("data/table_2/table2C_men_backgroundxtics_by_county.csv") %>%
   mutate(group="Men")
 
 county <- st_read("shapefiles/County.shp")%>%
@@ -873,7 +773,7 @@ men_background_xtics_county1 <- full_join(county, men_background_xtics_county, b
   mutate(names=paste0(County,", ", weighted_perc,"%"))
 
 ### women
-women_background_xtics_county <- read_csv("data/table_2/table2C_women_backgroundxtics_by_county.csv") %>%
+women_background_xtics_county <- fread("data/table_2/table2C_women_backgroundxtics_by_county.csv") %>%
   mutate(group="Women")
 
 women_background_xtics_county1 <- full_join(county, women_background_xtics_county, by="County")%>%
@@ -883,8 +783,6 @@ background_characteristics_map <- rbind(women_background_xtics_county1, men_back
 ```
 
 ```{r}
-
-
 
 renderGirafe({
   if (input$char%in%c("Wealth_Quintile", "Age")){
@@ -986,7 +884,7 @@ renderGirafe({
 ### **Occupation**
 
 ```{r}
-radioButtons("occupation", "",
+selectInput("occupation", "",
               c("Age in Years"="Age",
                 "Highest Education"="Education",
                 "Marital Status"="Marital Status",
@@ -997,10 +895,8 @@ radioButtons("occupation", "",
 ```
 
 ```{r, include=F}
-occupation_county <- read_csv("data/table_3/table3_7C_occupation_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+occupation_county <- fread("data/table_3/table3_7C_occupation_by_county.csv")
+
 county <- st_read("shapefiles/County.shp")
 occupation_county1 <- full_join(county, occupation_county%>%filter(Participants%in%"Women"), by=c("Name"="County")) %>%
   mutate(Participants="Women")
@@ -1011,9 +907,10 @@ occupation_county3 <- rbind(occupation_county1, occupation_county2)
 
 ```{r}
 
-occupation <- read_csv("data/table_3/table3_7_occupation_by_background_xtics.csv") %>%
-  mutate(`Background characteristics`=recode(`Background characteristics`, "50-54"="Age"))
+occupation <- fread("data/table_3/table3_7_occupation_by_background_xtics.csv") 
 
+occupation$Value<- fct_relevel(occupation$Value, 
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({if(input$occupation!="County"){
   ggplot(occupation[occupation$`Background characteristics`%in%input$occupation,],aes(x=Value, y=Proportion, fill=Category))+
@@ -1030,7 +927,7 @@ renderPlot({if(input$occupation!="County"){
   geom_sf(data=occupation_county3, aes(geometry=geometry), fill=NA)+
   geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
   theme_void()+
-  facet_wrap(Participants~`Category`, nrow=2)+
+  facet_wrap(Participants~`Category`, nrow=3)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14))
@@ -1043,7 +940,7 @@ renderPlot({if(input$occupation!="County"){
 **Choose characteristics to display**
 
 ```{r}
-radioButtons("employment", "",
+selectInput("employment", "",
               c("Continuity of Employment"="Continuity of Employment",
                 "Type of Earnings"="Type of Earnings",
                 "Type of Employer"="Type of Employer"))
@@ -1051,7 +948,7 @@ radioButtons("employment", "",
 
 ```{r}
 
-employment <- read_csv("data/table_3/table3_8_employment_by_background_xtics.csv") 
+employment <-fread("data/table_3/table3_8_employment_by_background_xtics.csv") 
 
 
 renderPlot({
@@ -1061,9 +958,9 @@ renderPlot({
   labs( y="Proportion (%)", title="", x="Type of Earnings", fill="Type of Employment")+
   geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
-  theme(text=element_text(size=12))+
+  theme(text=element_text(size=16))+
   coord_flip()
-},width=1600, height=700)
+},width=1500, height=700)
 ```
 
 ### **Reason for migration**
@@ -1071,7 +968,7 @@ renderPlot({
 **Choose the characteristics to display**
 
 ```{r}
-radioButtons("migration", "",
+selectInput("migration", "",
               c("Age in Years"="Age", 
                 "Residence"="Residence", 
                 "Wealth quintile"="Wealth quintile",
@@ -1080,10 +977,7 @@ radioButtons("migration", "",
 ```
 
 ```{r, include=F}
-migration_county <- read_csv("data/table_3/table_3_17C_migration_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+migration_county <- fread("data/table_3/table_3_17C_migration_by_county.csv")
 
 county <- st_read("shapefiles/County.shp")
 
@@ -1097,7 +991,10 @@ migration_county3 <-rbind(migration_county1, migration_county2)
 
 
 ```{r}
-migration <- read_csv("data/table_3/table_3_17_migration_by_background_xtics.csv")
+migration <- fread("data/table_3/table_3_17_migration_by_background_xtics.csv")
+
+migration$Value<- fct_relevel(migration$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({if(input$migration!="County"){
   ggplot(migration[migration$`Background characteristics`%in%input$migration,],aes(x=Value, y=Proportion, fill=`Reason For Migration`))+
@@ -1108,7 +1005,7 @@ renderPlot({if(input$migration!="County"){
   scale_fill_brewer(palette = "Set1")+
   #scale_fill_manual(values = c("#f46d43","#74add1"))+
   geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+  
-  theme(text=element_text(size=12))+
+  theme(text=element_text(size=14))+
   coord_flip()}
   else{
     ggplot(migration_county3)+
@@ -1120,7 +1017,7 @@ renderPlot({if(input$migration!="County"){
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14))
   }
-},width=1600, height=700)
+},width=1500, height=600)
 ```
 
 # Water, Sanitation and Hygiene {data-navmenu="Key Indicators"}
@@ -1161,13 +1058,12 @@ valueBox(
 
 ```{r}
 
-water_collector <- read_csv("data/table_16/table_16_3_water_collection_by_background_xtics.csv")
+water_collector <- fread("data/table_16/table_16_3_water_collection_by_background_xtics.csv")
 
-water_collector_county <- read_csv("data/table_16/table_16_3C_water_collection_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+water_collector$Value<- fct_relevel(water_collector$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
+water_collector_county <- fread("data/table_16/table_16_3C_water_collection_by_county.csv")
 
 water_collector_county1 <- full_join(county, water_collector_county, by=c("Name"="County"))
 
@@ -1182,7 +1078,7 @@ renderPlot({if(input$collector!="County"){
   ggplot(water_collector[water_collector$`Background characteristics`%in%input$collector,],aes(x=Value, y=Proportion, fill=Category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+coord_flip()+
-  labs( y="Proportion (%)", title="", x="Reason for migration", fill="Age")+
+  labs( y="Percent (%)", title="", x="", fill="Age")+
   scale_fill_brewer(palette = "Set1")+
   #scale_fill_manual(values = c("#f46d43","#74add1"))+
   geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+  
@@ -1193,7 +1089,7 @@ renderPlot({if(input$collector!="County"){
   geom_sf(data=water_collector_county1, fill=NA)+
   geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
   theme_void()+
-  facet_grid(~Category)+
+  facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14, face = "bold"))
@@ -1205,13 +1101,12 @@ renderPlot({if(input$collector!="County"){
 
 ```{r}
 
-water_treat <- read_csv("data/table_16/table_16_5_water_treatment_by_background_xtics.csv")
+water_treat <- fread("data/table_16/table_16_5_water_treatment_by_background_xtics.csv")
 
-water_treat_county <- read_csv("data/table_16/table_16_5C_water_treatment_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+water_treat$Value <- fct_relevel(water_treat$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
+water_treat_county <- fread("data/table_16/table_16_5C_water_treatment_by_county.csv")
 
 water_treat_county1 <- full_join(county, water_treat_county, by=c("Name"="County"))
 
@@ -1237,7 +1132,7 @@ renderPlot({if(input$water_treat!="County"){
   geom_sf(data=water_treat_county1, fill=NA)+
   geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
   theme_void()+
-  facet_grid(~Category)+
+  facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14, face = "bold"))
@@ -1249,13 +1144,13 @@ renderPlot({if(input$water_treat!="County"){
 
 ```{r}
 
-excreta_mgmnt <- read_csv("data/table_16/table_16_9_excreta_management_by_background_xtics.csv")
+excreta_mgmnt <- fread("data/table_16/table_16_9_excreta_management_by_background_xtics.csv")
 
-excreta_mgmnt_county <- read_csv("data/table_16/table_16_9C_excreta_management_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
-# 
+excreta_mgmnt$Value<- fct_relevel(excreta_mgmnt$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+excreta_mgmnt_county <- fread("data/table_16/table_16_9C_excreta_management_by_county.csv")
+ 
 excreta_mgmnt_county1 <- full_join(county, excreta_mgmnt_county, by=c("Name"="County"))
 
 selectInput("excreta_mgmnt", "",
@@ -1279,7 +1174,7 @@ renderPlot({if(input$excreta_mgmnt!="County"){
   geom_sf(data=excreta_mgmnt_county1, fill=NA)+
   geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
   theme_void()+
-  facet_grid(~Category)+
+  facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14, face = "bold"))
@@ -1291,14 +1186,15 @@ renderPlot({if(input$excreta_mgmnt!="County"){
 
 ```{r}
 
-child_stool_disp <- read_csv("data/table_16/table_16_10_stool_disposal_by_background_xtics.csv")
+child_stool_disp <- fread("data/table_16/table_16_10_stool_disposal_by_background_xtics.csv")
 
-child_stool_disp_county <- read_csv("data/table_16/table_16_10C_stool_disposal_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
- 
- child_stool_disp_county1 <- full_join(county, child_stool_disp_county, by=c("Name"="County"))
+
+child_stool_disp$Value <- fct_relevel(child_stool_disp$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+child_stool_disp_county <- fread("data/table_16/table_16_10C_stool_disposal_by_county.csv")
+
+child_stool_disp_county1 <- full_join(county, child_stool_disp_county, by=c("Name"="County"))
 
 selectInput("child_stool_disp", "",
              c("Age"= "Age",
@@ -1324,7 +1220,7 @@ renderPlot({if(input$child_stool_disp!="County"){
   geom_sf(data=child_stool_disp_county1, fill=NA)+
   geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
   theme_void()+
-  facet_grid(~Category)+
+  facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14, face = "bold"))
@@ -1336,16 +1232,12 @@ renderPlot({if(input$child_stool_disp!="County"){
 
 ```{r}
 
-handwashing <- read_csv("data/table_16/table_16_11_handwashing_by_background_xtics.csv")%>%
-  filter(Category%in%c("Pop. with basic handwashing facility","Pop. with limited handwashing facility"))%>%
-  mutate(Category=recode(Category, "Pop. with basic handwashing facility"="Basic","Pop. with limited handwashing facility"="Limited"))
+handwashing <- fread("data/table_16/table_16_11_handwashing_by_background_xtics.csv")
 
-handwashing$Value <- fct_relevel(handwashing$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
+handwashing$Value <- fct_relevel(handwashing$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-handwashing_county <- read_csv("data/table_16/table_16_11C_handwashing_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+handwashing_county <- fread("data/table_16/table_16_11C_handwashing_by_county.csv")
  
 handwashing_county1 <- full_join(county, handwashing_county, by=c("Name"="County"))
 
@@ -1369,7 +1261,7 @@ renderPlot({if(input$handwashing!="County"){
   geom_sf(data=handwashing_county1, fill=NA)+
   geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
   theme_void()+
-  facet_grid(~Category)+
+  facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14, face = "bold"))
@@ -1416,32 +1308,7 @@ valueBox(
 
 ```{r}
 
-marriage_registration <- read_csv("data/table_4/table4_marriage.registration.by.county.2022.csv")%>% 
-  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo/Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta" )) %>%
-  pivot_longer(contains("civil.registration"), names_to="category", values_to="Value") %>%
-  mutate(category=recode(category, "civil.registration"="Registred by civil authority", "civil.registration.certificate"="Registred by civil authority with certificate")) %>%
-  mutate(Participants="All") %>%
-  mutate(type="Marriage registration")
-
-
-age_first_marriage <- read_csv( "data/table_4/Table 4.5C Median age at first marriage.county.csv")%>% 
-  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo/Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta" )) %>%
-  mutate_at(vars(contains("men")), funs(as.numeric(.)))%>%
-  pivot_longer(contains("men"), names_to="category", values_to="Value") %>%
-  mutate(Participants=ifelse(category%in%c("women.20_49", "women.25_49"), "Women", "Men"))%>%
-  mutate(category=recode(category, "women.20_49"="Women (20-49 yrs)", "women.25_49"="Women (25-49 yrs)", "men.25_54"="Men (25-54 yrs)", "men.35_54"="Men (35-54 yrs)")) %>%
-  mutate(type="Age first marriage")
-
-age_first_sex <- read_csv( "data/table_4/age.first.sex.by.county.2022.csv")%>% 
-  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo/Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta" ))%>%
-  mutate_at(vars(contains("men")), funs(as.numeric(.)))%>%
-  pivot_longer(contains("men"), names_to="category", values_to="Value") %>%
-  mutate(Participants=ifelse(category%in%c("women.20_49", "women.25_49"), "Women", "Men"))%>%
-  mutate(category=recode(category, "women.20_49"="Women (20-49 yrs)", "women.25_49"="Women (25-49 yrs)", "men.25_54"="Men (25-54 yrs)", "men.35_54"="Men (35-54 yrs)")) %>%
-  mutate(type="Age first sexual intercourse")
-
-
-marriage_data <- rbind(marriage_registration, age_first_marriage, age_first_sex)
+marriage_data <- fread("data/table_4/marriage_data.csv")
 
 marriage_data1 <- full_join(county, marriage_data, by=c("Name"="County"))
 
@@ -1460,7 +1327,7 @@ renderGirafe({
   theme_void() +
   theme(text =element_text(size=18, face="bold"))+
     scale_fill_gradient2(na.value = "white")
-  marriage_map2<-girafe(ggobj =  marriage_data_map, width_svg=18, height_svg=9,
+  marriage_map2<-girafe(ggobj =  marriage_data_map, width_svg=18, height_svg=12,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
                      opts_selection(css = "fill:orange;", type = "multiple"),
@@ -1516,7 +1383,7 @@ valueBox(
 
 ```{r}
 
-radioButtons("disability", "",
+selectInput("disability", "",
               c("Summary"="All",
                 "Age category (in years)"="Age_category", 
                 "Marital Status (15-49years)"="Marital_status", 
@@ -1528,7 +1395,7 @@ radioButtons("disability", "",
 ### Choose a disability domain:
 
 ```{r }
-radioButtons("disability_domain", "",
+selectInput("disability_domain", "",
               c("All domains"="All",
                 "Seeing"="Seeing", 
                 "Hearing"="Hearing", 
@@ -1547,41 +1414,10 @@ radioButtons("disability_domain", "",
 
 ## import data 
   
-disabilitybyage <- read_csv("data/table_4/table4_disabilitybyage.csv")%>%
-    mutate(Indicator1="Age_category") %>%
-  rename(Indicator=Age_category)
+disabilitydata <- fread("data/table_4/table4_disabilitydata.csv")
 
-disabilitybymaritalstatus <- read_csv("data/table_4/table4_disabilitybymaritalstatus.csv")%>%
-  rename(Indicator="Marital_status")%>%
-    mutate(Indicator1="Marital_status") 
-
-disabilitybyresidence <- read_csv("data/table_4/table4_disabilitybyresidence.csv")%>%
-  rename(Indicator="Residence")%>%
-    mutate(Indicator1="Residence") 
-
-disabilitybyeducationstatus <- read_csv("data/table_4/table4_disabilitybyeducationstatus.csv")%>%
-  rename(Indicator="Education_status")%>%
-    mutate(Indicator1="Education_status") 
-
-disabilitybywealthquintile <- read_csv("data/table_4/table4_disabilitybywealthquintile.csv") %>%
-  rename(Indicator="Wealth_quintile")%>%
-    mutate(Indicator1="Wealth_quintile") 
-
-
-disabilitydata <- rbind(disabilitybyage, disabilitybymaritalstatus, disabilitybyresidence, disabilitybyeducationstatus, disabilitybywealthquintile) %>%
-  pivot_longer(c(No_difficulty, SomeDifficulty, A_lot_of_difficulty, Cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all, A_lot_of_difficulty_cannot_do_at_all_more_than_one_domain, Seeing, Hearing,Communicating, Remembering_concentrating, Walking_ClimbingSteps, WashingAllOver_dressing), names_to="difficulty", values_to="difficultyprop") %>%
-  filter(difficulty%in%c("A_lot_of_difficulty","SomeDifficulty", "Cannot_do_at_all", "Seeing", "Hearing","Communicating", "Remembering_concentrating", "Walking_ClimbingSteps", "WashingAllOver_dressing"))%>%
-  mutate(difficulty=recode(difficulty, "A_lot_of_difficulty"="Alot of difficulty", "SomeDifficulty"="Some Difficulty","Cannot_do_at_all"="Cannot do at all", "Remembering_concetrating"="Remembering/Concentrating", "Walking_ClimbingSteps"="Walking/Climbing steps","WashingAllOver_dressing"="Washing all over/Dressing"  ))%>%
-  mutate(difficulty=fct_relevel(difficulty, "Some Difficulty", "Alot of difficulty", "Cannot do at all")) %>%
-  mutate(Indicator2 =recode(Indicator1, "Age_category"="Age category", "Education_status"="Education status", "Marital_status"="Marital status", "Residence"="Residence", "Wealth_quintile"="Wealth quintile", "All"="Summary")) %>%
-  mutate(difficultyprop=as.numeric(difficultyprop))%>%
-  mutate(label=ifelse(difficultyprop<0.5, "<1%", paste0(round(difficultyprop),"%")))%>%
-  mutate(Indicator=recode(Indicator, "Divorced/separated"= "Divorced or \nseparated", "Married/living together"="Married or \nliving together", "Not asked/missing"="Not asked or\nmissing"))
-
-disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest",
-                                        "50+","15-49","5-14",
-                                        "Married","Never married","Divorced or \nseparated","Married or \nliving together","Widowed",
-                                        "No education",'Primary','Secondary','More than secondary', 'Vocational')
+disabilitydata$Indicator <- fct_relevel(disabilitydata$Indicator, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
  renderPlot({if(input$disability%in%"All"){
   ggplot(data=disabilitydata[disabilitydata$Indicator1==input$disability & disabilitydata$difficulty%in%c("Some Difficulty", "Alot of difficulty", "Cannot do at all"),], aes(x=difficulty, y=difficultyprop, )) + 
@@ -1712,12 +1548,7 @@ valueBox(
 
 ```{r, fig.width=14.8, fig.height=8}
 
-agespecificfertilityrate <- read_csv( "data/table_5/table5_agespecificfertilityrate.csv") %>%
-  pivot_longer(c(Urban, Rural, Total), names_to="Residence", values_to="Residenceprop")%>%
-  filter(Residence!="Total")%>%
-  mutate(Residenceprop=recode(Residenceprop, "[0]"="0", "[2]"="2", "[3]"="3", "[7]"="7")) %>%
-  mutate(Residenceprop=as.numeric(Residenceprop))
-
+agespecificfertilityrate <- fread( "data/table_5/table5_agespecificfertilityrate.csv")
 
 ggplot(agespecificfertilityrate, aes(x=Age_category, y=Residenceprop))+geom_col(fill="cyan4")+facet_grid(Residence~.)+geom_text(aes(label=paste0(Residenceprop)), vjust=-0.5, color="black")+
     theme_bw()+labs(x="Age category", y="Rate per 1,000 women")+theme(text=element_text(size=20, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))
@@ -1740,25 +1571,26 @@ selectInput("tfr1", "",
             ))
 
 
-fertility_rate <- read_csv("data/table_5/table 5.2fertility_rate.csv") 
+fertility_rate <- fread("data/table_5/table 5.2fertility_rate.csv") 
 
-tfrbycounty_2014 <- read_csv("data/table_5/Table 5.2_C  Fertility by county.2014.csv") %>% mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo-Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia")) %>%
-  mutate(year="2014")
+fertility_rate$category <- fct_relevel(fertility_rate$category, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+tfrbycounty_2014 <- fread("data/table_5/Table 5.2_C  Fertility by county.2014.csv") 
 
 tfrbycounty_2014 <- full_join(county, tfrbycounty_2014, by=c("Name"="County"))
 
-TFRbycounty.2022 <- read_csv("data/table_5/Table 5.2_C  Fertility by county.2022.csv")%>% 
-   mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo/Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta" )) %>%
-  mutate(year="2022")
+TFRbycounty.2022 <- fread("data/table_5/Table 5.2_C  Fertility by county.2022.csv")
 
 TFRbycounty.2022 <- full_join(county, TFRbycounty.2022, by=c("Name"="County"))
 
 
-tfr_county <- rbind(tfrbycounty_2014,TFRbycounty.2022 )
+tfr_county <- rbind(tfrbycounty_2014,TFRbycounty.2022 ) 
 
 
-renderPlot({if(input$trf1%in%c("2014", "2022")){
+renderPlot({if(input$tfr1%in%c("2014", "2022")){
   ggplot(tfr_county[tfr_county$year%in%input$tfr1,], aes(geometry=geometry, fill=Proportion))+
+    geom_sf_interactive(aes(tooltip=Proportion))+
   theme_void()+
   facet_wrap(~Category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
@@ -1766,8 +1598,10 @@ renderPlot({if(input$trf1%in%c("2014", "2022")){
   theme(text=element_text(size=14))}
   else{
       ggplot(fertility_rate[fertility_rate$characteristic%in%input$tfr1,],aes(x=category, y=proportion, fill=Variable))+
-  geom_dotplot(binaxis='y', stackdir='center', binwidth = 3)+
+      #geom_point(size=5)+
+  geom_dotplot(binaxis='y', stackdir='center', dotsize  = 3)+
   theme_bw()+
+      geom_text(aes(label=paste0(proportion, "%")))+
   labs( y="Proportion (%)", title="", x="Wealth quintile", fill="")+
   scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9"))+
   theme(text=element_text(size=12))
@@ -1792,24 +1626,19 @@ selectInput("median_age", "",
             ))
 
 
-median_age <- read_csv("data/table_5/Table 5.11 Median age at first birth.csv")
+median_age <- fread("data/table_5/Table 5.11 Median age at first birth.csv")
 
-Median.age.first.birth.2014 <- read_csv("data/table_5/Median.age.first.birth.2014.csv") %>%
-  mutate(year="2014")
+median_age$Variable<- fct_relevel(median_age$Variable, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-Median.age.first.birth.2022 <- read_csv("data/table_5/Table_6c Median.age.first.birth.2022.csv") %>% 
-  mutate(year="2022")
-
-median_age_county <- rbind(Median.age.first.birth.2014, Median.age.first.birth.2022)
-tfrbycounty_2014 <- read_csv("data/table_5/Table 5.2_C  Fertility by county.2014.csv") %>% mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Murang’a"="Muranga", "Elgeyo-Marakwet"="Elgeyo Marakwet","Trans-Nzoia"="Trans Nzoia")) %>%
-  mutate(year="2014")
+median_age_county <- fread("data/table_5/Table_6c Median.age.first.birth.csv") 
 
 median_age_county <- full_join(county, median_age_county, by="Name")
 
 
 
 renderPlot({if(input$median_age%in%c("2014", "2022")){
-  ggplot(median_age_county[median_age_county$year%in%input$tfr1,], aes(geometry=geometry, fill=Proportion))+
+  ggplot(median_age_county[median_age_county$year%in%input$median_age,], aes(geometry=geometry, fill=Proportion))+
   theme_void()+
   facet_wrap(~category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
@@ -1817,11 +1646,12 @@ renderPlot({if(input$median_age%in%c("2014", "2022")){
   theme(text=element_text(size=14))}
   else{
       ggplot(median_age[median_age$characteristic%in%input$median_age,],aes(x=category, y=proportion, fill=Variable))+
-  geom_dotplot(binaxis='y', stackdir='center', binwidth = 3)+
+  geom_dotplot(binaxis='y', stackdir='center', dotsize  = 3)+
   theme_bw()+
+  geom_text(aes(label=paste0(proportion, " %")))+
   labs( y="Proportion (%)", title="", x="Wealth quintile", fill="")+
-  scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9"))+
-  theme(text=element_text(size=12))
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=14))
   }
   }, width=1300, height=700)
 
@@ -1845,58 +1675,15 @@ selectInput("teenage", "",
             "By County: Pregnancy loss"="Pregnancy loss"
             ))
 
-### Age
-teen_preg_age <- read_csv("data/table_6/table6_teenpregnancybyage.csv")%>%
-  pivot_longer(cols = c(Ever_pregnant, Live_birth, Pregnancy_loss, Currently_pregnant), names_to = "classification", values_to = "proportion")%>%
-  #mutate(classification=recode(classification,"Ever_pregnant"="% of teenagers who\n have ever been pregnant","Live_birth"="% of teenagers who\n have ever had a live birth"))%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  mutate(group="Age") %>%
-  select(-Count) %>%
-  rename(indicator=Age)
-  
+### teen pregnancy
+teen_preg <- fread("data/table_6/table6_teenpregnancy.csv") 
+teen_preg$indicator <- fct_relevel(teen_preg$indicator, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
+teenpregnancybycountyvisual <- fread("data/table_6/table6_teenpregnancybycounty.csv") 
 
-### Residence
-teen_preg_residence <- read_csv("data/table_6/table6_teenpregbyresidence.csv")%>%
-  pivot_longer(cols = c(Ever_pregnant, Live_birth, Pregnancy_loss, Currently_pregnant), names_to = "classification", values_to = "proportion")%>%
-  #mutate(classification=recode(classification,"Ever_pregnant"="% of teenagers who\n have ever been pregnant","Live_birth"="% of teenagers who\n have ever had a live birth"))%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  mutate(group="Residence") %>%
-  select(-Count) %>%
-  rename(indicator=Residence)
-  
-  
-
-### Education
-teen_preg_edu <- read_csv("data/table_6/table6_teenpregnancybyeducationstatus.csv") %>%
-  pivot_longer(cols = c(Ever_pregnant, Live_birth, Pregnancy_loss, Currently_pregnant), names_to = "classification", values_to = "proportion")%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  mutate(group="Education") %>%
-  select(-Count) %>%
-  rename(indicator=Education_status)
-  
-
-
-### Wealth quintile
-teen_preg_wealth <- read_csv("data/table_6/table6_teenpregnancybywealthquintile.csv")%>%
-  pivot_longer(cols = c(Ever_pregnant, Live_birth, Pregnancy_loss, Currently_pregnant), names_to = "classification", values_to = "proportion")%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  mutate(group="Wealth quintile") %>%
-  select(-Count) %>%
-  rename(indicator=Wealth_quintile)
-
-teen_preg <- rbind(teen_preg_age, teen_preg_edu, teen_preg_residence, teen_preg_wealth) %>%
-  mutate(classification = recode(classification, "Currently_pregnant"="Currently pregnant", "Ever_pregnant"="Ever pregnant", "Live_birth"="Live birth", "Pregnancy_loss"="Pregnancy loss"))
-
-teen_preg$indicator <- fct_relevel(teen_preg$indicator, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
-
-
-
-teenpregnancybycountyvisual <- read_csv("data/table_6/table6_teenpregnancybycounty.csv") %>%
-  pivot_longer(cols = Live_birth:Ever_pregnant, names_to = "Pregnancy", values_to = "Percent") %>%
-  mutate(Pregnancy=recode(Pregnancy, "Currently_pregnant"="Currently pregnant", "Ever_pregnant"="Ever pregnant", "Live_birth"="Live birth", "Pregnancy_loss"="Pregnancy loss"))%>%
-  mutate(label=ifelse(Percent<0.5, "<1%", paste0(round(Percent),"%")))
-
+teen_preg$indicator <- fct_relevel(teen_preg$indicator, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({if(input$teenage%in%"Wealth quintile"){
   ggplot(teen_preg[teen_preg$group%in%input$teenage,], aes(x=indicator, y=proportion, fill=classification)) + 
@@ -1965,15 +1752,12 @@ renderPlot({if(input$teenage%in%"Wealth quintile"){
 
 
 
-fertility_preferences <- read_csv("data/table_7/table7_fertilitypreferences.csv")%>%
-  filter(!`Number of children`%in%"V9")%>%
-  mutate(Desire_children=recode(Desire_children, "Have another later3"="Have another later", "Have another soon2"="Have another soon", "Sterilized4"="Sterilized"))
-fertility_preferences$Desire_children <- gsub("[[:digit:]]", "",fertility_preferences$Desire_children)
-
+fertility_preferences <- fread("data/table_7/table7_fertilitypreferences.csv") 
 
 renderPlot({
   ggplot(fertility_preferences,aes(x=`Number of children`, y=Percent))+
   geom_bar(position="dodge", stat="identity", fill="cyan4")+
+    geom_text(aes(label=paste0(Percent, " %")))+
   theme_bw()+facet_wrap(~Desire_children)+
   labs( y="Percent (%)", title="", x="Number of children", fill="")+
   scale_fill_brewer(palette = "Set1")+
@@ -1987,17 +1771,12 @@ renderPlot({
 ```{r}
 
 
-children_number <- read_csv("data/table_6/Table 6.3  Ideal number of children by number of living children.csv") %>%
-  pivot_longer(c(2:8), names_to = "category", values_to = "value") %>%
-  mutate(participants=recode(participants, "men"="Men", "men.mean.number"="Men","women"="Women", "women.mean.number"="Women" )) %>%
-  rename(variable=Ideal.number.children) %>%
-  filter(variable%in%c("0", "1", "2", "3", "4", "5", "6+", "All", "Currently married"))
-  
-
+children_number <- fread("data/table_6/Table 6.3  Ideal number of children by number of living children.csv") 
 
 renderPlot({
   ggplot(children_number,aes(x=variable, y=value, fill=category))+
   geom_bar(position="dodge", stat="identity")+
+    geom_text(aes(label=paste0(value, " %")), position = position_dodge(0.5))+
   theme_bw()+facet_wrap(~participants)+coord_flip()+
   labs( y="Percent (%)", title="", x="", fill="")+
   scale_fill_brewer(palette = "Set1")+
@@ -2018,12 +1797,10 @@ selectInput("children_mean", "",
               "Wealth quintile"="Wealth quintile"
             ))
 
-children_mean <- read_csv("data/table_6/Table 6.4  Mean ideal number of children according to background characteristics.csv") %>%
-  mutate(characteristic=str_to_sentence(characteristic))
-  
+children_mean <- fread("data/table_6/Table 6.4  Mean ideal number of children according to background characteristics.csv") 
 
-
-
+children_mean$Variable <- fct_relevel(children_mean$Variable, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({
   ggplot(children_mean[children_mean$characteristic%in%input$children_mean,],aes(x=Variable, y=mean))+
@@ -2047,17 +1824,13 @@ selectInput("fertility_planning", "",
               "Pregnancy outcome" = "Pregnancy outcome"
             ))
 
-fertility_planning <- read_csv("data/table_6/Table 6.5 Fertility planning status.csv") %>%
-  mutate(`Fertility plan`=recode(`Fertility plan`, "Wanted.later"="Wanted later", "Wanted.no.more"="Wanted no more", "Wanted.then"="Wanted then"))
-  
-
-
+fertility_planning <- fread("data/table_6/Table 6.5 Fertility planning status.csv")
 
 
 renderPlot({
   ggplot(fertility_planning[fertility_planning$characteristic%in%input$fertility_planning,],aes(x=Variable, y=percent))+
   geom_bar(position="dodge", stat="identity", fill="cyan3")+
-  theme_bw()+coord_flip()+facet_grid(~`Fertility plan`)+
+  theme_bw()+facet_grid(~`Fertility plan`)+
   labs( y="Percent (%)", title="", x="", fill="")+
   theme(text=element_text(size=18, face="bold"))
 }, width=1200, height=800)
@@ -2074,10 +1847,11 @@ selectInput("fertility_rates", "",
               "Wealth quintile" = "Wealth"
             ))
 
-fertility_rates <- read_csv("data/table_6/Table 6.6  Wanted fertility rates.csv") %>%
-  mutate(characteristic=str_to_sentence(characteristic))
+fertility_rates <- fread("data/table_6/Table 6.6  Wanted fertility rates.csv") 
 
 
+fertility_rates$Variable <- fct_relevel(fertility_rates$Variable, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 
 renderPlot({
@@ -2155,7 +1929,7 @@ selectInput("knowledge_contraceptives", "",
 
 ```{r, include=F}
 # import data
-knowledge_contraceptives <- read_csv("data/table_7/Table_7.1 Knowledge of contraceptive methods.csv")
+knowledge_contraceptives <- fread("data/table_7/Table_7.1 Knowledge of contraceptive methods.csv")
 
 
 ```
@@ -2167,8 +1941,9 @@ knowledge_contraceptives <- read_csv("data/table_7/Table_7.1 Knowledge of contra
 renderPlot({ggplot(knowledge_contraceptives[knowledge_contraceptives$variable%in%input$knowledge_contraceptives,],aes(x=reorder(method, proportion), y=proportion))+
     facet_grid(~gender)+
   geom_bar(position="dodge", stat="identity", fill="#74add1")+
+    geom_text(aes(label=paste0(proportion, " %")))+
   theme_bw()+coord_flip()+
-  labs( y="Proportion (%)", title="", x="Residence", fill="")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2190,7 +1965,7 @@ selectInput("knowledge_fertile", "",
 
 ```{r, include=F}
 # import data
-knowledge_fertile <- read_csv("data/table_7/Table_7.8_Knowledge of Fertile Period.csv")
+knowledge_fertile <- fread("data/table_7/Table_7.8_Knowledge of Fertile Period.csv")
 
 
 ```
@@ -2202,6 +1977,7 @@ knowledge_fertile <- read_csv("data/table_7/Table_7.8_Knowledge of Fertile Perio
 renderPlot({ggplot(knowledge_fertile[knowledge_fertile$variable%in%input$knowledge_fertile,],aes(x=reorder(perceived_fertility_period, Proportion), y=Proportion))+
   geom_bar(position="dodge", stat="identity", fill="#74add1")+
   theme_bw()+coord_flip()+
+    geom_text(aes(label=paste0(Proportion, " %")))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
@@ -2233,9 +2009,7 @@ selectInput("reasons_discontinuation", "",
 
 ```{r, include=F}
 # import data
-reasons_discontinuation <- read_csv("data/table_7/Table_7.14_Reason_for_discontinuation.csv") %>%
-  mutate(variable=recode(variable, "all_methods"="All methods", "emergency_contraception"="Emergency contraception", "female_condom"="Female condom", "male_condom"="Male condom", "other"="Other", "rythm"="Rythm", "withdrawal"="Withdrawal"))
-
+reasons_discontinuation <- fread("data/table_7/Table_7.14_Reason_for_discontinuation.csv") 
 ```
 
 
@@ -2245,6 +2019,7 @@ reasons_discontinuation <- read_csv("data/table_7/Table_7.14_Reason_for_disconti
 renderPlot({ggplot(reasons_discontinuation[reasons_discontinuation$variable%in%input$reasons_discontinuation,],aes(x=reorder(Reason, Proportion), y=Proportion))+
   geom_bar(position="dodge", stat="identity", fill="#74add1")+
   theme_bw()+coord_flip()+
+    geom_text(aes(label=paste0(Proportion, " %")))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
@@ -2268,10 +2043,7 @@ selectInput("need_demand", "",
 
 ```{r, include=F}
 # import data
-need_demand <- read_csv("data/table_7/Table_7.15.1_2_Need and Demand for family planning.csv") %>%
-  mutate(Proportion=as.numeric(Proportion))
-
-need_demand$Characteristic <- fct_relevel(need_demand$Characteristic, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+need_demand <- fread("data/table_7/Table_7.15.1_2_Need and Demand for family planning.csv") 
 
 
 ```
@@ -2283,6 +2055,7 @@ need_demand$Characteristic <- fct_relevel(need_demand$Characteristic, "Lowest", 
 renderPlot({ggplot(need_demand[need_demand$variable%in%input$need_demand,],aes(x=Characteristic, y=Proportion, fill=type))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+facet_grid(Category~need)+
+    geom_text(aes(label=paste0(proportion, " %")), position = position_dodge(0.5))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_brewer(palette ="Set1")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
@@ -2305,7 +2078,7 @@ selectInput("decision_making1a", "",
                 "Wealth"="Wealth"))
 
 # import data
-decision_making1a <- read_csv("data/table_7/Table_7.16_17_decision_making.csv")
+decision_making1a <- fread("data/table_7/Table_7.16_17_decision_making.csv")
 
 ```
 
@@ -2315,6 +2088,7 @@ decision_making1a <- read_csv("data/table_7/Table_7.16_17_decision_making.csv")
 
 renderPlot({ggplot(decision_making1a[decision_making1a$variable%in%input$decision_making1a,],aes(x=reorder(category,proportion), y=proportion))+
   geom_bar(position="dodge", stat="identity", fill="#74add1")+
+    geom_text(aes(label=paste0(proportion, " %")))+
   theme_bw()+coord_flip()+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
@@ -2326,8 +2100,7 @@ renderPlot({ggplot(decision_making1a[decision_making1a$variable%in%input$decisio
 
 ```{r}
 # import data
-future_use_contraception <- read_csv("data/table_7/Table_7.19_Future_Contraception.csv") %>%
-   mutate(category=fct_relevel(category, "0","1","2","3","4+","Total")) 
+future_use_contraception <- fread("data/table_7/Table_7.19_Future_Contraception.csv")
 
 ```
 
@@ -2338,6 +2111,7 @@ future_use_contraception <- read_csv("data/table_7/Table_7.19_Future_Contracepti
 renderPlot({ggplot(future_use_contraception,aes(x=reorder(intention,proportion), y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+coord_flip()+scale_fill_brewer(palette = "Set1")+
+    geom_text(aes(label=paste0(proportion, " %")), position=position_dodge(0.5))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2357,7 +2131,7 @@ selectInput("fp_messages", "",
 
 # import data
 
-fp_messages <-read_csv("data/table_7/Table_7_20_1_2_Exposure to family planning.csv")
+fp_messages <-fread("data/table_7/Table_7_20_1_2_Exposure to family planning.csv")
 ```
 
 
@@ -2366,7 +2140,8 @@ fp_messages <-read_csv("data/table_7/Table_7_20_1_2_Exposure to family planning.
 
 renderPlot({ggplot(fp_messages[fp_messages$variable%in%input$fp_messages,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+facet_grid(~Gender)+
-  theme_bw()+coord_flip()+scale_fill_brewer(palette = "Set1")+
+  theme_bw()+coord_flip()+scale_fill_brewer(palette = "Paired")+
+    geom_text(aes(label=paste0(proportion, " %")))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2416,9 +2191,9 @@ selectInput("early_childhood", "",
 
 # import data
 
-early_childhood <-read_csv("data/table_8/Table_8.3_Early_Childhood_Mortality.csv")
+early_childhood <-fread("data/table_8/Table_8.3_Early_Childhood_Mortality.csv")
 
-early_childhood_county <-read_csv("data/table_8/Table_8.3C_County Early Childhood Mortality.csv") 
+early_childhood_county <-fread("data/table_8/Table_8.3C_County Early Childhood Mortality.csv") 
 early_childhood_county <- full_join(county, early_childhood_county, by=c("Name"="county"))
 ```
 
@@ -2429,6 +2204,7 @@ early_childhood_county <- full_join(county, early_childhood_county, by=c("Name"=
 renderPlot({ggplot(early_childhood[early_childhood$Variable%in%input$early_childhood,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
+    geom_text(aes(label=paste0(proportion,"%")),position=position_dodge(0.8), hjust=1, vjust=0.2)+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2448,12 +2224,12 @@ selectInput("early_childhood_mortality", "",
 
 # import data
 
-early_childhood_mortality <-read_csv("data/table_8/Table_8.3_Early_Childhood_Mortality.csv")
+early_childhood_mortality <-fread("data/table_8/Table_8.3_Early_Childhood_Mortality.csv")
 
-early_childhood_mortality_county <-read_csv("data/table_8/Table_8.3C_County Early Childhood Mortality.csv") %>%
-  mutate(county=recode(county,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Nairobi City"="Nairobi", "Taita/Taveta"="Taita Taveta"))
-early_childhood_mortality_county <- full_join(county, early_childhood_mortality_county, by=c("Name"="county")) %>%
-  mutate(category=recode(category, "child_mortality"="Child mortality", "infant_mortality"="Infant mortality", "neonatal_mortality"="Neonatal mortality", "post_neonatal_mortality"="Post neonatal mortality", "under_5_mortality"="Under 5 mortality"))
+early_childhood_mortality_county <-fread("data/table_8/Table_8.3C_County Early Childhood Mortality.csv")
+
+early_childhood_mortality_county <- full_join(county, early_childhood_mortality_county, by=c("Name"="county")) 
+  
 ```
 
 
@@ -2463,6 +2239,7 @@ early_childhood_mortality_county <- full_join(county, early_childhood_mortality_
 renderPlot({if(input$early_childhood_mortality!="County"){ggplot(early_childhood[early_childhood$Variable%in%input$early_childhood,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
+    geom_text(aes(label=paste0(proportion, "%")))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}
   else{
@@ -2490,11 +2267,10 @@ selectInput("perinatal_mortality", "",
 
 # import data
 
-perinatal_mortality <-read_csv("data/table_8/Table_8.4_Perinatal Mortality.csv") %>%
-  mutate(category=recode(category, "No. neonatal dealths"="No. of neonatal deaths", "No. still births"="No. of still births",  "Rate neonatal deaths"="Rate of neonatal deaths", "Rate still birth"="Rate of still birth", "Ratio still neonatal"="Ratio of still neonatal")) 
+perinatal_mortality <-fread("data/table_8/Table_8.4_Perinatal Mortality.csv") %>%
+  filter(category!="Pregnancies (28 weeks)")
 
-perinatal_mortality_county <-read_csv("data/table_8/Table_8.4C_Perinatal Mortality By County.csv") %>%
-  mutate(county=recode(county, "Elgeyo/Marakwet"="Elgeyo Marakwet"))
+perinatal_mortality_county <-fread("data/table_8/Table_8.4C_Perinatal Mortality By County.csv") 
 
 perinatal_mortality_county <- full_join(county, perinatal_mortality_county, by=c("Name"="county"))
 
@@ -2508,6 +2284,7 @@ renderPlot({if(input$perinatal_mortality!="County"){ggplot(perinatal_mortality[p
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
   labs( y="Proportion (%)", title="", x="", fill="")+
+    geom_text(aes(label=paste0(proportion, "%")), position=position_dodge(0.5))+
   theme(text=element_text(size=16, face="bold"))}
   else{
     ggplot(perinatal_mortality_county, aes(geometry=geometry, fill=proportion))+
@@ -2564,7 +2341,7 @@ selectInput("antenatal_care", "",
 
 # import data
 
-antenatal_care <-read_csv("data/table_9/Table_9.1_Antenatal_care.csv") 
+antenatal_care <-fread("data/table_9/Table_9.1_Antenatal_care.csv") 
    
 
 
@@ -2577,6 +2354,7 @@ antenatal_care <-read_csv("data/table_9/Table_9.1_Antenatal_care.csv")
 renderPlot({ggplot(antenatal_care[antenatal_care$Variable%in%input$antenatal_care,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
+    geom_text(aes(label=paste0(proportion,"%")), position = position_dodge(0.5))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2596,7 +2374,7 @@ selectInput("antenatal_care1", "",
 
 # import data
 
-antenatal_care1 <-read_csv("data/table_9/Table_9.2_Number_of_antenatal_care_visits_and_timing_of_first_visit.csv") 
+antenatal_care1 <-fread("data/table_9/Table_9.2_Number_of_antenatal_care_visits_and_timing_of_first_visit.csv") 
   
    
 
@@ -2610,6 +2388,7 @@ antenatal_care1 <-read_csv("data/table_9/Table_9.2_Number_of_antenatal_care_visi
 renderPlot({ggplot(antenatal_care1[antenatal_care1$Variable%in%input$antenatal_care1,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
+    geom_text(aes(label=paste0(proportion,"%")), position = position_dodge(0.6))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2628,7 +2407,7 @@ selectInput("anc_components", "",
                 "Wealth"="Wealth"))
 
 # import data
-anc_components <-read_csv("data/table_9/Table_9.3.1_2_Components_of_antenatal_care.csv")
+anc_components <-fread("data/table_9/Table_9.3.1_2_Components_of_antenatal_care.csv")
 
 ```
 
@@ -2639,6 +2418,7 @@ anc_components <-read_csv("data/table_9/Table_9.3.1_2_Components_of_antenatal_ca
 renderPlot({ggplot(anc_components[anc_components$Variable%in%input$anc_components,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+facet_grid(~type)+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
+    geom_text(aes(label=paste0(proportion,"%")), position = position_dodge(0.6))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2660,7 +2440,7 @@ selectInput("place_delivery", "",
 
 # import data
 
-place_delivery <-read_csv("data/table_9/Table_9.7_Place_of_delivery.csv") 
+place_delivery <-fread("data/table_9/Table_9.7_Place_of_delivery.csv") 
 
 ```
 
@@ -2671,6 +2451,7 @@ place_delivery <-read_csv("data/table_9/Table_9.7_Place_of_delivery.csv")
 renderPlot({ggplot(place_delivery[place_delivery$Variable%in%input$place_delivery,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
+    geom_text(aes(label=paste0(proportion,"%")), position = position_dodge(0.6))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2686,7 +2467,7 @@ renderPlot({ggplot(place_delivery[place_delivery$Variable%in%input$place_deliver
 
 # import data
 
-c_section <-read_csv("data/table_9/Table_9.8C_cesarean_section_by_county.csv") 
+c_section <-fread("data/table_9/Table_9.8C_cesarean_section_by_county.csv") 
 
 
 c_section <- full_join(county, c_section, by=c("Name"="county"))
@@ -2698,7 +2479,7 @@ c_section <- full_join(county, c_section, by=c("Name"="county"))
 
 renderPlot({ggplot(c_section,aes(geometry=geometry, fill=percentage_delivered_by_cs))+
   geom_sf()+
-  theme_void()+scale_fill_gradient(low = "white", high = "#8c2d04")+
+  theme_void()+scale_fill_gradient(low = "white", high = "#8c2d04", na.value = "white")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14))}, width=1600, height=700 )
 
@@ -2721,7 +2502,7 @@ selectInput("assist_delivery", "",
 
 # import data
 
-assist_delivery <-read_csv("data/table_9/Table_9.9C_Assistance_during_delivery_by_county.csv") 
+assist_delivery <-fread("data/table_9/Table_9.9C_Assistance_during_delivery_by_county.csv") 
 
 
 assist_delivery <- full_join(county, assist_delivery, by=c("Name"="County"))
@@ -2733,7 +2514,7 @@ assist_delivery <- full_join(county, assist_delivery, by=c("Name"="County"))
 
 renderPlot({ggplot(assist_delivery,aes(geometry=geometry, fill=proportion))+
   geom_sf()+
-  theme_void()+scale_fill_gradient(low = "white", high = "#8c2d04")+
+  theme_void()+scale_fill_gradient(low = "white", high = "#8c2d04", na.value = "white")+
   labs(x="", y="",fill="Proportion (%)")+
   theme(text=element_text(size=14))}, width=1600, height=700 )
 
@@ -2754,7 +2535,7 @@ selectInput("mens_involvement", "",
 
 # import data
 
-mens_involvement <-read_csv("data/table_9/Table_9.18_Men's_involvement_in_maternal_health_care.csv") 
+mens_involvement <-fread("data/table_9/Table_9.18_Men's_involvement_in_maternal_health_care.csv") 
 
 ```
 
@@ -2766,6 +2547,7 @@ renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_invo
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
   labs( y="Proportion (%)", title="", x="", fill="")+
+    geom_text(aes(label=paste0(proportion,"%")), position = position_dodge(0.6))+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
 
@@ -2824,7 +2606,7 @@ valueBox(
 
 ```{r}
 
-radioButtons("maternal_care", "",
+selectInput("maternal_care", "",
               c("Antenatal care from a skilled provider"="ANC from a skilled provider",
                 "At least four antenatal care visits"="At least four ANC visits",
                 "Took iron containing supplements during pregnancy"="Took iron supplements", "Most recent live birth was protected against neonatal tetanus"="Neonatal tetanus", "Delivered by a skilled provider"="Skilled delivery","Delivered in a health facility"="Health facility delivery", "Postnatal check during the first 2 days after birth"="Postnatal check"), width=600)
@@ -2834,58 +2616,23 @@ radioButtons("maternal_care", "",
 ### Mother's background characteristics
 
 ```{r}
-
-### Mother's age at birth
-matcare_motage_1birth <- read_csv("data/table_10/table10_maternalcare_by_motherage_atbirth.csv")%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  mutate(group="Age at birth") %>%
-  rename(indicator=`Mother's age at birth`)
-
-
-
-### Residence
-matcare_residence <- read_csv("data/table_10/table10_maternalcare_by_residence.csv")%>%
-  mutate(lab=paste0(round(proportion),"%"))  %>%
-  mutate(group="Residence") %>%
-  rename(indicator=Residence)
-
-
-### Mother's education
-matcare_motedu <- read_csv("data/table_10/table10_maternalcare_by_education.csv")%>%
-  mutate(lab=paste0(round(proportion),"%"))%>%
-  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary"))))  %>%
-  mutate(group="Education") %>%
-  rename(indicator= `Mother's education`)
-
-### Wealth
-matcare_wealth <- read_csv("data/table_10/table10_maternalcare_by_wealth.csv")%>%
-  mutate(lab=paste0(round(proportion),"%"))%>%
-  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest")))) %>%
-  mutate(group="Wealth quintile") %>%
-  rename(indicator= `Wealth quintile`)
-
-selectInput("chrt","",
+selectInput("chrt", "",
             c("Age at birth"="Age at birth",
-              "Education"="Education",
-              "Residence"="Residence",
-              "Wealth quintile"="Wealth quintile"
-              
-            ))
-maternalcare <- rbind(matcare_motage_1birth,matcare_residence, matcare_motedu, matcare_wealth) %>%
-  mutate(category=recode(category, "ANC from skilled provider"="ANC from a skilled provider", 
-                         "At least 4 ANC visits"="At least four ANC visits", 
-                         "Protected against neonatal tetanus"="Neonatal tetanus",
-                         "Delivered by skilled provider"="Skilled delivery", "Delivered in health facility"="Health facility delivery", "PNC 2 days after birth"="Postnatal check"))
+            "Education"="Education",
+            "Residence"="Residence",
+            "Wealth quintile"="Wealth quintile"))
+### Mother's age at birth
+maternalcare <- fread("data/table_10/table10_maternalcare.csv") 
 
-maternalcare$indicator <- fct_relevel(maternalcare$indicator,"Urban", "Rural", "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+maternalcare$indicator <- fct_relevel(maternalcare$indicator, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 
 renderPlot({
   ggplot(maternalcare[maternalcare$category%in%input$maternal_care & maternalcare$group%in%input$chrt,], aes(x=indicator, y=proportion)) + 
-  geom_point(size=4, color="#4292c6")+
+  geom_point(size=6, color="#4292c6")+
   theme_bw()+
   labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
   theme(text=element_text(size=16, face="bold"))+
-  geom_text(aes(label = lab), hjust=0.2, size=4)
+  geom_text(aes(label = lab), hjust=0.3, size=4)
 }, width=700, height=300)
 
 ```
@@ -2898,11 +2645,8 @@ renderPlot({
 # import data
 
 
-maternalcarebycounty <- read_csv("data/table_10/table10c_maternalcarebycounty.csv")%>% 
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  mutate(names1=paste0(County,", ", Percent,"%"))
+maternalcarebycounty <- fread("data/table_10/table10c_maternalcarebycounty.csv")
   
-
 
 # join the data with the shapefile
 maternalcarebycounty1 <- left_join(county, maternalcarebycounty, by=c("Name"="County"))
@@ -2982,8 +2726,7 @@ valueBox(
 
 
 
-vacc_data <- read_csv("data/vaccinations_countydata.csv") %>%
-  rename(indicator2=indicators)
+vacc_data <- fread("data/vaccinations_countydata.csv") 
 
 county <- st_read("shapefiles/County.shp")
 vacc_data1<- full_join(county, vacc_data, by=c("Name"="County"))
@@ -2993,7 +2736,7 @@ vacc_data1<- full_join(county, vacc_data, by=c("Name"="County"))
 
 ```{r}
 # user's input
-radioButtons("vacc", "",
+selectInput("vacc", "",
               c("Fully vaccinated: 12-23 months"="CountyFullyVaccinated12",
                 "Fully vaccinated: 24-35 months"="CountyFullyVaccinated24"))
 
@@ -3024,7 +2767,7 @@ renderGirafe({
 
 ```{r}
 
-radioButtons("vacc_char", "",
+selectInput("vacc_char", "",
               c("Sex"="Gender",
                 "Birth order"="Birth",
                 "Vaccination card"="Card",
@@ -3034,18 +2777,16 @@ radioButtons("vacc_char", "",
 
 
 
-vaccination_data <-read_csv("data/vaccination_data.csv")
+vaccination_data <-fread("data/vaccination_data.csv")
 
-vaccination_data$Vaccines <- fct_relevel(vaccination_data$Vaccines,  "Fully vaccinated\n(national schedule)","Fully vaccinated\n(basic antigens)","No vaccinations","MR2", "MR1","Rotavirus2","Rotavirus1","Pneumococcal3","Pneumococcal2","Pneumococcal1","IPV","OPV3","OPV2","OPV1","OPV0","DPT3","DPT2"  ,"DPT1",  "BCG" )
-
-vaccination_data$Characteristics <- recode(vaccination_data$Characteristics, "Not seen or no longer has card"="Not seen or \n no longer has card", "More than secondary"="More than\n secondary")
-vaccination_data$Characteristics <- fct_relevel(vaccination_data$Characteristics, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education","Primary", "Secondary", "More than\n secondary")
+vaccination_data$Characteristics <- fct_relevel(vaccination_data$Characteristics, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({
   ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & vaccination_data$group%in%input$vacc,],aes(x=Vaccines, y=Percent)) + 
   geom_bar(stat = "identity", position = position_dodge(), fill="cyan4") +
   theme_bw() +facet_grid(.~Characteristics)+
-  geom_text(aes(label=paste0(round(Percent), "%")), size=3, color="black", hjust=0.5)+
+  geom_text(aes(label=paste0(round(Percent), "%")), size=4, color="black", hjust=0.5)+
   scale_fill_brewer(palette = "Set1")+
   coord_flip() + labs(y="Percentage", x="", fill="")+
   theme(strip.text.x = element_text(size = 12, colour = "black", face = "bold")) +
@@ -3053,7 +2794,7 @@ renderPlot({
   theme(axis.title=element_text(size=14, face="bold"), axis.text = element_text(face = "bold", size = 13)) +
   theme(strip.background =element_rect(fill="darkorange")) 
 
-}, width=600, height=550)
+}, width=700, height=600)
 ```
 
 <br>
@@ -3104,32 +2845,11 @@ valueBox(
 
 ```{r}
 ### Age
-treatment_age <- read_csv("data/table_12/table12_childtreatment_by_age.csv") %>%
-  rename(characteristics=Age) %>%
-  mutate(indicator="Age")
-### Sex
-treatment_sex <- read_csv("data/table_12/table12_childtreatment_by_sex.csv") %>%
-  rename(characteristics=Sex) %>%
-  mutate(indicator="Sex")
-### Residence
-treatment_residence <- read_csv("data/table_12/table12_childtreatment_by_residence.csv") %>%
-  rename(characteristics=Residence) %>%
-  mutate(indicator="Residence")
-### Mother's education
-treatment_motedu <- read_csv("data/table_12/table12_childtreatment_by_mothereducation.csv")%>%
-  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary")))) %>%
-  rename(characteristics=`Mother's education`) %>%
-  mutate(indicator="Mother's Education")
-## wealth
-treatment_wealth <- read_csv("data/table_12/table12_childtreatment_by_wealth.csv")%>%
-  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest")))) %>%
-  rename(characteristics=`Wealth quintile`) %>%
-  mutate(indicator="Wealth quintile")
-## treatment data
+treatment <- fread("data/table_12/table12_childtreatment.csv") 
 
-treatment <- rbind(treatment_age, treatment_sex, treatment_residence, treatment_motedu, treatment_wealth)
+treatment$characteristics <- fct_relevel(treatment$characteristics, "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-radioButtons("treat_char", "",
+selectInput("treat_char", "",
               c("Sex"="Sex",
                 "Age"="Age",
                 "Mother's Education"="Mother's Education",
@@ -3137,7 +2857,6 @@ radioButtons("treat_char", "",
                 "Wealth quintile"="Wealth quintile"))
 
 
-treatment$characteristics <- fct_relevel(treatment$characteristics, "<6", "6-11", "12-23", "24-35", "36-47", "48-59", "No education", "Primary", "Secondary", "More than secondary", "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({if (input$treat_char%in%c("Age", "Sex", "Residence")){ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=characteristics, y=sought_treatment, fill=condition))+
   geom_bar(position="dodge", stat="identity")+
@@ -3150,8 +2869,8 @@ renderPlot({if (input$treat_char%in%c("Age", "Sex", "Residence")){ggplot(treatme
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
   theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%" )))+
   labs( y="% for whom treatment was sought", title="", x="Mother's education", fill="Health condition")+scale_fill_brewer(palette="Set1")+
-  theme(text=element_text(size=16))
-  } }, width=1200, height=800)
+  theme(text=element_text(size=16, face="bold"))
+  } }, width=1200, height=700)
 
 ```
 
@@ -3171,10 +2890,7 @@ selectInput("trt_county", "",
               "Diarrhea"="Diarrhea",
               "Fever"="Fever"))
 
-treatment_county <- read_csv("data/table_12/table12C_childtreatment_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
-  
-
+treatment_county <- fread("data/table_12/table12C_childtreatment_by_county.csv")
 
 renderGirafe({
   treatment_county1 <- full_join(county, treatment_county[treatment_county$condition%in%input$trt_county,], by=c("Name"="County"))%>%
@@ -3229,24 +2945,24 @@ renderPlot({
 ### **Source of treatment**
 
 ```{r}
-radioButtons("trtsrc","",
+selectInput("trtsrc","",
              c("ARI"="ARI",
                "Diarrhea"="Diarrhea"))
 ```
 
 
 ```{r}
-treat_source <- read_csv("data/table_10/table10_7_10_12_treatment_by_source.csv") %>%
-  mutate(lab = str_c(Proportion,"%"))
+treat_source <- fread("data/table_10/table10_7_10_12_treatment_by_source.csv") 
 
 renderPlot({
-  ggplot(treat_source[treat_source$Condition%in%input$trtsrc,], aes(x=reorder(`Source of Treatment`,Proportion), y=Proportion))+
-  geom_bar(stat = "identity", fill="#74add1")+
+  ggplot(treat_source[treat_source$Condition%in%input$trtsrc,], aes(x=reorder(`Source of Treatment`,Proportion), y=Proportion, fill=Category))+
+  geom_bar(position="dodge",stat = "identity")+
   theme_bw()+
   labs( y="Proportion (%)", title="", x="Source of Treatment for ARI", fill="")+
-  theme(text=element_text(size=12))+
-  geom_text(aes(label = lab), nudge_y = 2.0)+
-  coord_flip()
+  theme(text=element_text(size=16, face="bold"))+
+  geom_text(aes(label = lab),position=position_dodge(0.5), hjust=0.3)+
+  coord_flip()+
+    scale_fill_brewer(palette = "Set1")
 }, width=1200, height=800)
 ```
 
@@ -3282,7 +2998,7 @@ valueBox(
 ```{r}
 #### Proportion of children aged 24-59 months who are developmentally on track in health, learning, #### & psychosocial wellbeing.
 
-radioButtons("ecd","",
+selectInput("ecd","",
              c("Age"="Age",
                "Sex"="Sex",
                "Residence"="Residence",
@@ -3290,48 +3006,12 @@ radioButtons("ecd","",
                "Mother's education"="Mother's education",
                "Wealth quintile"="Wealth quintile"))
 
-### Age
-ecd_age <- read_csv("data/table_13/table13_ECD_by_age.csv")%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  rename(characteristics=Age) %>%
-  mutate(indicator="Age")
 
-### sex
-ecd_sex <- read_csv("data/table_13/table13_ECD_by_sex.csv")%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  rename(characteristics=Sex) %>%
-  mutate(indicator="Sex")
+ecd <- fread("data/table_13/table13_ECD.csv")
 
-### residence
-ecd_residence <- read_csv("data/table_13/table13_ECD_by_residence.csv")%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  rename(characteristics=Residence) %>%
-  mutate(indicator="Residence")
+ecd$characteristics <- fct_relevel(ecd$characteristics, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-### education attendance
-ecd_edu_attendance <- read_csv("data/table_13/table13_ECD_by_early_education_attendance.csv")%>%
-  mutate(lab=paste0(round(proportion),"%")) %>%
-  rename(characteristics=`Early childhood education attendance`) %>%
-  mutate(indicator="Early childhood education attendance")
-
-### mother's education
-ecd_mot_edu <- read_csv("data/table_13/table13_ECD_by_mother_education.csv")%>%
-  mutate(lab=paste0(round(proportion),"%"))%>%
-  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary")))) %>%
-  rename(characteristics=`Mother's education`) %>%
-  mutate(indicator="Mother's education")
-
-### wealth
-ecd_wealth <- read_csv("data/table_13/table13_ECD_by_wealth.csv")%>%
-  mutate(lab=paste0(round(proportion),"%"))%>%
-  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest")))) %>%
-  rename(characteristics=`Wealth quintile`) %>%
-  mutate(indicator="Wealth quintile")
-  
-ecd <- rbind(ecd_age, ecd_sex, ecd_residence, ecd_edu_attendance, ecd_mot_edu, ecd_wealth)
-
-ecd$characteristics <- fct_relevel(ecd$characteristics, "Attending", "Not attending", "Information not available",
-                                   "No education", "Primary", "Secondary", "More than secondary", "Lowest", "Second", "Middle", "Fourth", "Highest")
 renderPlot({ if(input$ecd%in%c("Age", "Sex", "Residence", "Early childhood education attendance")){
   ggplot(ecd[ecd$indicator%in%input$ecd,],aes(x=characteristics, y=proportion))+
   geom_col(fill="#74add1")+
@@ -3413,37 +3093,12 @@ selectInput("nutr", "",
 ```
 
 ```{r}
-#nut_age <- read_csv("table14_nutr_status_by_age.csv")%>%
 
-nut_sex <- read_csv("data/table_14/table14_nutr_status_by_sex.csv")%>%
-  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
-  mutate(lab = str_c(perc_below2sd,"%"))%>%
-  mutate(Indicator1 ="Sex") %>%
-  rename(Indicator=Sex)
 
-nut_res <- read_csv("data/table_14/table14_nutr_status_by_residence.csv")%>%
-  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
-  mutate(lab = str_c(perc_below2sd,"%"))%>%
-  mutate(Indicator1 ="Residence") %>%
-  rename(Indicator=Residence)
+nut_total <- fread("data/table_14/table14_nutr_status.csv")
 
-nut_motedu <- read_csv("data/table_14/table14_nutr_status_by_mother_edu.csv")%>%
-  mutate(`Mother's education`=as.factor(fct_relevel(`Mother's education`, c("No education", "Primary", "Secondary", "More than secondary"))))%>%
-  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
-  mutate(lab = str_c(perc_below2sd,"%"))%>%
-  mutate(Indicator1 ="Mother_education") %>%
-  rename(Indicator=`Mother's education`)
-
-nut_wealth <- read_csv("data/table_14/table14_nutr_status_by_wealth.csv")%>%
-  mutate(`Wealth quintile`=as.factor(fct_relevel(`Wealth quintile`, c("Lowest", "Second", "Middle", "Fourth", "Highest"))))%>%
-  mutate(measure=ifelse(indicator%in%"HFA","Stunting", ifelse(indicator%in%"WFH","Wasting","Underweight")))%>%
-  mutate(lab = str_c(perc_below2sd,"%"))%>%
-  mutate(Indicator1 ="Wealth_quintile") %>%
-  rename(Indicator=`Wealth quintile`)
-
-nut_total <- rbind(nut_sex,nut_res,nut_motedu,nut_wealth)
-
-nut_total$Indicator <- fct_relevel(nut_total$Indicator, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+nut_total$Indicator <- fct_relevel(nut_total$Indicator, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 
 renderPlot({
   ggplot(nut_total[nut_total$Indicator1%in%input$nutr,], aes(x=Indicator, y=perc_below2sd, fill=measure))+
@@ -3461,7 +3116,7 @@ renderPlot({
 ### **Nutritional status (county-map)**
 
 ```{r}
-radioButtons("nutr2", "",
+selectInput("nutr2", "",
               c("Stunting"="HFA",
                 "Wasting"="WFA",
                 "Underweight"="WFH"))
@@ -3470,9 +3125,7 @@ radioButtons("nutr2", "",
 <br>
 
 ```{r, include=FALSE}
-nutc <- read_csv("data/table_14/table14C_nutr_status_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga",
-                       "Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))
+nutc <- fread("data/table_14/table14C_nutr_status_by_county.csv")
 
 county <- st_read("shapefiles/County.shp")%>%
   mutate(region=ifelse(Name%in%c("Kilifi","Kwale","Lamu", "Mombasa", "Taita Taveta", "Tana River"),"Coast", ifelse(Name%in%c("Garissa", "Mandera", "Wajir"),"North Eastern", ifelse(Name%in%c("Marsabit","Isiolo","Meru","Tharaka Nithi","Embu","Kitui","Machakos","Makueni"),"Eastern", ifelse(Name%in%c("Kiambu", "Kirinyaga","Muranga","Nyandarua", "Nyeri"),"Central", ifelse(Name%in%c("Bungoma",
@@ -3509,7 +3162,7 @@ renderGirafe({
 ### **Nutritional status (county-descending)**
 
 ```{r}
-radioButtons("nutr2a", "",
+selectInput("nutr2a", "",
               c("Stunting"="HFA",
                 "Wasting"="WFA",
                 "Underweight"="WFH"))
@@ -3522,10 +3175,10 @@ radioButtons("nutr2a", "",
 renderPlot({
   ggplot(nutc1[nutc1$indicator%in%input$nutr2a,], aes(x=reorder(County,perc_below2sd), y=perc_below2sd))+
     geom_col(fill="cyan4")+coord_flip()+
-    theme_bw()+ geom_text(aes(label=paste0(round(perc_below2sd),"%")))+
+    theme_bw()+ geom_text(aes(label=paste0(round(perc_below2sd),"%")), hjust=1, color="white")+
     scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
     labs(x="", y="",fill="%")+
-    theme(text=element_text(size=14, face="bold")) 
+    theme(text=element_text(size=15, face="bold")) 
 },width = 1200, height=700)
 ```
 
@@ -3545,10 +3198,8 @@ selectInput("micronutrients", "",
 ```
 
 ```{r, include=F}
-micronutrient_county <- read_csv("data/table_11/table11_12C_micronutrient_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+micronutrient_county <- fread("data/table_11/table11_12C_micronutrient_by_county.csv")
+
 county <- st_read("shapefiles/County.shp")
 micronutrient_county1 <- full_join(county, micronutrient_county, by=c("Name"="County"))
 
@@ -3557,10 +3208,10 @@ micronutrient_county1 <- full_join(county, micronutrient_county, by=c("Name"="Co
 
 
 ```{r}
-micronutrient <- read_csv("data/table_11/table11_12_micronutrient_by_background_xtics.csv")%>%
-  mutate(Proportion=as.numeric(Proportion))
+micronutrient <- fread("data/table_11/table11_12_micronutrient_by_background_xtics.csv")
 
-micronutrient$Value <- fct_relevel(micronutrient$Value, "6-8", "9-11", "12-17", "18-23", "24-35","36-47","48-59", "15-19", "20-29", "30-39", "40-49")
+micronutrient$Value <- fct_relevel(micronutrient$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({if(input$micronutrients%in%c("Age","Mother's age", "Mother's education", "Wealth quintile" )){
   ggplot(micronutrient[micronutrient$`Background characteristics`%in%input$micronutrients,],aes(x=Value, y=Proportion, fill=Category))+
@@ -3569,7 +3220,7 @@ renderPlot({if(input$micronutrients%in%c("Age","Mother's age", "Mother's educati
   labs( y="Proportion (%)", title="", x="", fill="Micronutrient provided")+
   scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9","#2c7bb6"))+
   geom_text(aes(label=paste0(Proportion,"%")))+
-  theme(text=element_text(size=14, face="bold"))}
+  theme(text=element_text(size=16, face="bold"))}
   else if(input$micronutrients%in%"County"){
    ggplot(micronutrient_county1)+
   geom_sf(data=micronutrient_county1, aes(geometry=geometry), fill=NA)+
@@ -3578,7 +3229,7 @@ renderPlot({if(input$micronutrients%in%c("Age","Mother's age", "Mother's educati
   facet_wrap(~Category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
-  theme(text=element_text(size=14)) }
+  theme(text=element_text(size=16)) }
   else{
     ggplot(micronutrient[micronutrient$`Background characteristics`%in%input$micronutrients,],aes(x=Value, y=Proportion, fill=Category))+
   geom_bar(position="dodge", stat="identity")+
@@ -3586,7 +3237,7 @@ renderPlot({if(input$micronutrients%in%c("Age","Mother's age", "Mother's educati
   labs( y="Proportion (%)", title="", x="", fill="Micronutrient provided")+
   scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9","#2c7bb6"))+
   geom_text(aes(label=paste0(Proportion,"%")), position = position_dodge(0.7))+
-  theme(text=element_text(size=14, face = "bold"))
+  theme(text=element_text(size=16, face = "bold"))
   }
 },width=1600, height=700)
 ```
@@ -3605,10 +3256,8 @@ selectInput("mdd", "",
 ```
 
 ```{r, include=F}
-mdd_county <- read_csv("data/table_11/table11_15C_MDD-W_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+mdd_county <- fread("data/table_11/table11_15C_MDD-W_by_county.csv")
+
 county <- st_read("shapefiles/County.shp")
 mdd_county1 <- full_join(county, mdd_county, by=c("Name"="County"))
 
@@ -3616,9 +3265,10 @@ mdd_county1 <- full_join(county, mdd_county, by=c("Name"="County"))
 
 
 ```{r}
-mdd <- read_csv("data/table_11/table11_15_MDD-W_by_background_xtics.csv")%>%
-  mutate(Proportion=as.numeric(Proportion))
+mdd <- fread("data/table_11/table11_15_MDD-W_by_background_xtics.csv")
 
+mdd$Value <- fct_relevel(mdd$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 renderPlot({if(input$mdd%in%c("Age", "Education", "Wealth quintile" )){
   ggplot(mdd[mdd$`Background characteristics`%in%input$mdd,],aes(x=Value, y=Proportion, fill=Category))+
@@ -3627,7 +3277,7 @@ renderPlot({if(input$mdd%in%c("Age", "Education", "Wealth quintile" )){
   labs( y="Proportion (%)", title="", x="Age category (in months)", fill="Micronutrient provided")+
   scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9","#2c7bb6"))+
   geom_text(aes(label=paste0(Proportion,"%")))+
-  theme(text=element_text(size=14, face="bold"))}
+  theme(text=element_text(size=16, face="bold"))}
   else if(input$mdd%in%"County"){
    ggplot(mdd_county1)+
   geom_sf(data=mdd_county1, aes(geometry=geometry), fill=NA)+
@@ -3636,7 +3286,7 @@ renderPlot({if(input$mdd%in%c("Age", "Education", "Wealth quintile" )){
   facet_wrap(~Category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
   labs(x="", y="",fill="Proportion (%)")+
-  theme(text=element_text(size=14)) }
+  theme(text=element_text(size=16)) }
   else{
     ggplot(mdd[mdd$`Background characteristics`%in%input$mdd,],aes(x=Value, y=Proportion, fill=Category))+
   geom_bar(position="dodge", stat="identity")+
@@ -3644,7 +3294,7 @@ renderPlot({if(input$mdd%in%c("Age", "Education", "Wealth quintile" )){
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9","#2c7bb6"))+
   geom_text(aes(label=paste0(Proportion,"%")), position = position_dodge(0.7))+
-  theme(text=element_text(size=14, face="bold"))
+  theme(text=element_text(size=16, face="bold"))
   }
 }, width=1600, height=700)
 ```
@@ -3697,7 +3347,7 @@ valueBox(
 
 ```{r}
 
-radioButtons("itn", "",
+selectInput("itn", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile", "By County"="County"))
@@ -3706,11 +3356,12 @@ radioButtons("itn", "",
 ```{r, include=F}
 # import data
 
-itn_possess <- read_csv("data/table_12/table12_1_ITN_possession_by_background_xtics.csv")
+itn_possess <- fread("data/table_12/table12_1_ITN_possession_by_background_xtics.csv")
 
-itn_possess_county <- read_csv("data/table_12/table12_1C_ITN_possession_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))
+itn_possess$Value<- fct_relevel(itn_possess$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+itn_possess_county <- fread("data/table_12/table12_1C_ITN_possession_by_county.csv")
 
 county <- st_read("shapefiles/County.shp")
 itn_possess_county1 <- full_join(county, itn_possess_county, by=c("Name"="County"))
@@ -3746,7 +3397,7 @@ renderPlot({if(input$itn!="County"){ggplot(itn_possess[itn_possess$`Background c
 
 ```{r}
 
-radioButtons("itn_source", "",
+selectInput("itn_source", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile", "By County"="County"))
@@ -3755,13 +3406,11 @@ radioButtons("itn_source", "",
 ```{r, include=F}
 # import data
 
-itn_source <- read_csv("data/table_12/table12_2_ITN_source_by_background_xtics.csv")
+itn_source <- fread("data/table_12/table12_2_ITN_source_by_background_xtics.csv")
 
-itn_source$Value <- fct_relevel(itn_source$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
-itn_source_county <- read_csv("data/table_12/table12_2C_ITN_source_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))
-
+itn_source$Value <- fct_relevel(itn_source$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+itn_source_county <- fread("data/table_12/table12_2C_ITN_source_by_county.csv")
 
 county <- st_read("shapefiles/County.shp")
 itn_source_county1 <- full_join(county, itn_source_county, by=c("Name"="County"))
@@ -3786,8 +3435,9 @@ renderPlot({
   else{
     ggplot(itn_source[itn_source$`Background characteristics`%in%input$itn_source,],aes(x=reorder(Category,Proportion), y=Proportion, fill=Value))+
   geom_bar(position="dodge", stat="identity")+
-  theme_bw()+
-  labs( y="Proportion (%)", title="", x="Residence", fill="ITN use")+
+  theme_bw()+coord_flip()+
+      geom_text(aes(label=paste0(Proportion,"%")), position = position_dodge(0.6))+
+  labs( y="Proportion (%)", title="", x="", fill="ITN use")+
   scale_fill_brewer(palette = "Set1")+
   theme(text=element_text(size=16, face="bold"))
   }}, width=1600, height=700 )
@@ -3801,7 +3451,7 @@ renderPlot({
 
 ```{r}
 
-radioButtons("itn_access", "",
+selectInput("itn_access", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile", "By County"="County"))
@@ -3810,15 +3460,12 @@ radioButtons("itn_access", "",
 ```{r, include=F}
 # import data
 
-itn_access <- read_csv("data/table_12/table12_3_ITN_access_by_background_xtics.csv") %>%
-  rename(Proportion=`Pop. with access to ITN`)
-itn_access$Value <- fct_relevel(itn_access$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")  
+itn_access <- fread("data/table_12/table12_3_ITN_access_by_background_xtics.csv") 
 
+itn_access$Value<- fct_relevel(itn_access$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-itn_access_county <- read_csv("data/table_12/table12_3C_ITN_access_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  rename(Proportion=`Pop. with access to ITN`)
-
+itn_access_county <- fread("data/table_12/table12_3C_ITN_access_by_county.csv") 
 
 county <- st_read("shapefiles/County.shp")
 itn_access_county1 <- full_join(county, itn_access_county, by=c("Name"="County"))
@@ -3865,7 +3512,7 @@ renderPlot({if(input$itn_access%in%c("Residence", "Endemicity zone")){ggplot(itn
 
 ```{r}
 
-radioButtons("itn_use", "",
+selectInput("itn_use", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile", "By County"="County"))
@@ -3874,15 +3521,15 @@ radioButtons("itn_use", "",
 ```{r, include=F}
 # import data
 
-itn_use <- read_csv("data/table_12/table12_4_ITN_use_by_background_xtics.csv")
-itn_use$Value <- fct_relevel(itn_use$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
+itn_use <- fread("data/table_12/table12_4_ITN_use_by_background_xtics.csv")
 
-itn_use_county <- read_csv("data/table_12/table12_4C_ITN_use_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))
+itn_use$Value <- fct_relevel(itn_use$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
+itn_use_county <- fread("data/table_12/table12_4C_ITN_use_by_county.csv")
 
 county <- st_read("shapefiles/County.shp")
+
 itn_use_county1 <- full_join(county, itn_use_county, by=c("Name"="County"))
 
 ```
@@ -3894,7 +3541,7 @@ itn_use_county1 <- full_join(county, itn_use_county, by=c("Name"="County"))
 renderPlot({if(input$itn_use%in%c("Residence", "Endemicity zone")){ggplot(itn_use[itn_use$`Background characteristics`%in%input$itn_use,],aes(x=Value, y=Proportion, fill=Category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+
-  labs( y="Proportion (%)", title="", x="Residence", fill="Household ITN ownership")+
+  labs( y="Proportion (%)", title="", x="", fill="Household ITN ownership")+
   scale_fill_brewer(palette = "Set1")+
   theme(text=element_text(size=16, face="bold"))}
   else if(input$itn_use%in%"County"){
@@ -3925,7 +3572,7 @@ renderPlot({if(input$itn_use%in%c("Residence", "Endemicity zone")){ggplot(itn_us
 
 ```{r}
 
-radioButtons("itn_itn", "",
+selectInput("itn_itn", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile", "By County"="County"))
@@ -3934,16 +3581,12 @@ radioButtons("itn_itn", "",
 ```{r, include=F}
 # import data
 
-existing_itn_use <- read_csv("data/table_12/table12_5_existing_ITN_use_by_background_xtics.csv") %>%
-  rename(Proportion=`Existing ITNs used last night`)
+existing_itn_use <- fread("data/table_12/table12_5_existing_ITN_use_by_background_xtics.csv") 
 
-existing_itn_use$Value <- fct_relevel(existing_itn_use$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
+existing_itn_use$Value<- fct_relevel(existing_itn_use$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-existing_itn_use_county <- read_csv("data/table_12/table12_5C_existing_ITN_use_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(`Existing ITNs used last night`=as.numeric(`Existing ITNs used last night`))%>%
-  mutate(Names=paste0(County,", ", `Existing ITNs used last night`,"%"))%>%
-  rename(Proportion=`Existing ITNs used last night`)
+existing_itn_use_county <- fread("data/table_12/table12_5C_existing_ITN_use_by_county.csv")
 
 existing_itn_use_county1 <- full_join(county, existing_itn_use_county, by=c("Name"="County"))
 
@@ -3958,7 +3601,7 @@ existing_itn_use_county1 <- full_join(county, existing_itn_use_county, by=c("Nam
 renderPlot({if(input$itn_itn%in%c("Residence", "Endemicity zone")){ggplot(existing_itn_use[existing_itn_use$`Background characteristics`%in%input$itn_itn,],aes(x=Value, y=Proportion))+
   geom_bar(position="dodge", stat="identity", fill="#74add1")+
   theme_bw()+
-  labs( y="Proportion (%)", title="", x="Residence", fill="Household ITN ownership")+
+  labs( y="Proportion (%)", title="", x="", fill="Household ITN ownership")+
   scale_fill_brewer(palette = "Set1")+
     geom_text(aes(label=paste0(Proportion,"%")))+
   theme(text=element_text(size=16, face="bold"))}
@@ -3973,7 +3616,7 @@ renderPlot({if(input$itn_itn%in%c("Residence", "Endemicity zone")){ggplot(existi
   }
   else{
     ggplot(existing_itn_use[existing_itn_use$`Background characteristics`%in%input$itn_itn,],aes(x=Value, y=Proportion))+
-  geom_dotplot(binaxis='y', stackdir='center', binwidth = 4,fill="#74add1")+
+  geom_dotplot(binaxis='y', stackdir='center', binwidth = 2,fill="#74add1")+
   theme_bw()+
   labs( y="Proportion (%)", title="", x="Residence", fill="ITN use")+
   scale_fill_brewer(palette = "Set1")+
@@ -3990,7 +3633,7 @@ renderPlot({if(input$itn_itn%in%c("Residence", "Endemicity zone")){ggplot(existi
 
 ```{r}
 
-radioButtons("nets_children", "",
+selectInput("nets_children", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile", "By County"="County"))
@@ -3998,15 +3641,12 @@ radioButtons("nets_children", "",
 
 ```{r, include=F}
 # import data
-children_itn_use <- read_csv("data/table_12/table12_6_children_ITN_use_by_background_xtics.csv")
+children_itn_use <- fread("data/table_12/table12_6_children_ITN_use_by_background_xtics.csv")
 
+children_itn_use$Value <- fct_relevel(children_itn_use$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-
-children_itn_use$Value <- fct_relevel(children_itn_use$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
-
-children_itn_use_county <- read_csv("data/table_12/table12_6C_children_ITN_use_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))
+children_itn_use_county <- fread("data/table_12/table12_6C_children_ITN_use_by_county.csv")
 
 children_itn_use_county1 <- full_join(county, children_itn_use_county, by=c("Name"="County"))
 
@@ -4054,7 +3694,7 @@ renderPlot({if(input$nets_children%in%c("Residence", "Endemicity zone")){ggplot(
 
 ```{r}
 
-radioButtons("nets_pregnant", "",
+selectInput("nets_pregnant", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile"))
@@ -4062,11 +3702,10 @@ radioButtons("nets_pregnant", "",
 
 ```{r, include=F}
 # import data
-women_itn_use <- read_csv("data/table_12/table12_7_women_ITN_use_by_background_xtics.csv")
+women_itn_use <- fread("data/table_12/table12_7_women_ITN_use_by_background_xtics.csv")
 
-women_itn_use$Value <- fct_relevel(women_itn_use$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
-
-
+women_itn_use$Value<- fct_relevel(women_itn_use$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 ```
 
@@ -4103,7 +3742,7 @@ renderPlot({if(input$nets_pregnant%in%c("Residence", "Endemicity zone")){ggplot(
 
 ```{r}
 
-radioButtons("nets_notuse", "",
+selectInput("nets_notuse", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile", "By County"="County"))
@@ -4111,15 +3750,12 @@ radioButtons("nets_notuse", "",
 
 ```{r, include=F}
 # import data
-reason_itn_not_used <- read_csv("data/table_12/table12_8_reason_itn_not_used_by_background_xtics.csv")
+reason_itn_not_used <- fread("data/table_12/table12_8_reason_itn_not_used_by_background_xtics.csv")
 
+reason_itn_not_used$Value<- fct_relevel(reason_itn_not_used$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-reason_itn_not_used$Value <- fct_relevel(reason_itn_not_used$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
-
-reason_itn_not_used_county <- read_csv("data/table_12/table12_8C_reason_itn_not_used_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+reason_itn_not_used_county <- fread("data/table_12/table12_8C_reason_itn_not_used_by_county.csv")
 
 reason_itn_not_used_county1 <- full_join(county, reason_itn_not_used_county, by=c("Name"="County"))
 
@@ -4167,7 +3803,7 @@ renderPlot({if(input$nets_notuse%in%c("Residence", "Endemicity zone")){ggplot(re
 
 ```{r}
 
-radioButtons("ipt_women", "",
+selectInput("ipt_women", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Wealth quintile"="Wealth quintile", "By County"="County"))
@@ -4175,13 +3811,13 @@ radioButtons("ipt_women", "",
 
 ```{r, include=F}
 # import data
-iptp <- read_csv("data/table_12/table12_9_iptp_by_background_xtics.csv")
+iptp <- fread("data/table_12/table12_9_iptp_by_background_xtics.csv")
 
-iptp$Value <- fct_relevel(iptp$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
+iptp$Value<- fct_relevel(iptp$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-iptp_county <- read_csv("data/table_12/table12_9C_iptp_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))
+
+iptp_county <- fread("data/table_12/table12_9C_iptp_by_county.csv")
 
 iptp_county1 <- full_join(county, iptp_county, by=c("Name"="County"))
 
@@ -4229,7 +3865,7 @@ renderPlot({if(input$ipt_women%in%c("Residence", "Endemicity zone")){ggplot(iptp
 
 ```{r}
 
-radioButtons("mal_fever", "",
+selectInput("mal_fever", "",
               c("Residence"="Residence",
                 "Endemicity zone"="Endemicity zone",
                 "Mother's education"="Mother's education",
@@ -4238,13 +3874,12 @@ radioButtons("mal_fever", "",
 
 ```{r, include=F}
 # import data
-mal_fever <- read_csv("data/table_12/table12_10_malaria_fever_by_background_xtics.csv")
+mal_fever <- fread("data/table_12/table12_10_malaria_fever_by_background_xtics.csv")
 
-mal_fever$Value <- fct_relevel(mal_fever$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
+mal_fever$Value<- fct_relevel(mal_fever$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-mal_fever_county <- read_csv("data/table_12/table12_10C_malaria_fever_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Proportion=as.numeric(Proportion))
+mal_fever_county <- fread("data/table_12/table12_10C_malaria_fever_by_county.csv")
 
 mal_fever_county1 <- full_join(county, mal_fever_county, by=c("Name"="County"))
 
@@ -4293,8 +3928,7 @@ renderPlot({if(input$mal_fever%in%c("Residence", "Endemicity zone")){ggplot(mal_
 
 ```{r, include=F}
 # import data
-mal_treat_source <- read_csv("data/table_12/table12_11_malaria_treat_by_source.csv")%>%
- mutate(lab = str_c(`Proportion`,"%"))
+mal_treat_source <- fread("data/table_12/table12_11_malaria_treat_by_source.csv")
 
 
 ```
@@ -4361,25 +3995,29 @@ selectInput("hiv_kap", "",
 
 # import data
 
-hiv_meds_kap <- read_csv("data/table_13/table13_1_HIV_meds_KAP_by_background_xtics.csv")
+hiv_meds_kap <- fread("data/table_13/table13_1_HIV_meds_KAP_by_background_xtics.csv")
+
+hiv_meds_kap$Value <- fct_relevel(hiv_meds_kap$Value, "No education", "Primary", "Secondary", "More than secondary")
 
 renderPlot({if(input$hiv_kap%in%c("Age", "Education")){
   ggplot(hiv_meds_kap[hiv_meds_kap$`Background characteristics`%in%input$hiv_kap,],aes(x=`Value`, y=Proportion, fill=Category))+
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
   theme_bw()+
   facet_wrap(~Participants)+
-  labs( y="Proportion (%)", title="", x="Age category (in years)", fill="")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9"))+
-  theme(text=element_text(size=16, face="bold"))
+  theme(text=element_text(size=16, face="bold"))+
+    geom_text(aes(label=paste0(Proportion, "%")), position=position_dodge(0.6))
 }
  else{
    ggplot(hiv_meds_kap[hiv_meds_kap$`Background characteristics`%in%input$hiv_kap,],aes(x=`Value`, y=Proportion, fill=Category))+
   geom_bar(position="dodge", stat="identity")+
-  theme_bw()+
+  theme_bw()+coord_flip()+
   facet_wrap(~Participants)+
-  labs( y="Proportion (%)", title="", x="Age category (in years)", fill="")+
+  labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9"))+
-  theme(text=element_text(size=16, face="bold"))
+  theme(text=element_text(size=16, face="bold"))+
+     geom_text(aes(label=paste0(Proportion, "%")), position=position_dodge(0.6))
  } 
 }, width=1600, height=700)
 
@@ -4397,17 +4035,15 @@ selectInput("hiv", "",
 
 # import data
 
-hivc <- read_csv("data/table_23/table23_hiv_count_data.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Elgeyo-Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Murang'a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
-  pivot_longer(c(limit_sex, using_condoms, hivprevention_knowledge), names_to ="indicators", values_to="values" ) %>%
-  mutate(names1=paste0(County,", ", values,"%"))
+hivc <- fread("data/table_23/table23_hiv_count_data.csv")
 
-hivc_men <- full_join(county, hivc[ hivc$Participants%in%"Men_15-24",], by=c("Name"="County"))
-hivc_women <- full_join(county, hivc[ hivc$Participants%in%"Women_15-24",], by=c("Name"="County"))
+hivc_men <- full_join(county, hivc[hivc$Participants%in%"Men_15-24",], by=c("Name"="County"))
+hivc_women <- full_join(county, hivc[hivc$Participants%in%"Women_15-24",], by=c("Name"="County"))
 hivc1 <- rbind(hivc_men, hivc_women) %>%
   mutate(Participants=recode(Participants, "Men_15-24"="Men 15-24", "Women_15-24"="Women 15-24"))
 
 hivc1$Participants <- fct_relevel(hivc1$Participants, "Women 15-24", "Men 15-24")
+
 #visualization
 
 renderGirafe({
@@ -4417,7 +4053,7 @@ renderGirafe({
   theme_void()+facet_grid(.~Participants)+
   scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(x="", y="",fill="Proportion")+
-  theme(text=element_text(size=14))
+  theme(text=element_text(size=16))
   x <- girafe(ggobj = map1,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -4441,16 +4077,10 @@ selectInput("hiv_test", "",
 
 # import data
 
-hiv_testc <- read_csv("data/table_25/table25C .1 and .2_HIV_test_bind.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
-  pivot_longer(c(ever_tested, recieved_results,received_results_last_test, never_tested, not_recieve_results ), names_to ="indicators", values_to="values") %>%
-  mutate(names1=paste0(County,", ", values,"%")) %>%
-  mutate(Participants=str_to_title(Participants))
-
+hiv_testc <- fread("data/table_25/table25C .1 and .2_HIV_test_bind.csv")
 
 hiv_testc1 <- full_join(county, hiv_testc, by=c("Name"="County")) 
 
-hiv_testc1$Participants <- fct_relevel(hiv_testc1$Participants, "Women", "Men")
 #visualization
 
 renderGirafe({
@@ -4518,13 +4148,12 @@ selectInput("bp", "",
 ```{r, include=F}
 # import data
 
-bp <- read_csv("data/table_14/table14_1_BP_by_background_xtics.csv")
+bp <- fread("data/table_14/table14_1_BP_by_background_xtics.csv")
 
-bp$Value <- fct_relevel(bp$Value,"No education", "Primary", "Secondary", "More than secondary","Lowest", "Second", "Middle", "Fourth", "Highest")
+bp$Value <- fct_relevel(bp$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-bp_county <- read_csv("data/table_14/table14_1C_BP_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Taita/Taveta"="Taita Taveta", "Murang’a"="Muranga", "Nairobi City"="Nairobi", "Elgeyo/Marakwet"="Elgeyo Marakwet"))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+bp_county <- fread("data/table_14/table14_1C_BP_by_county.csv")
 
 county <- st_read("shapefiles/County.shp")
 
@@ -4542,7 +4171,7 @@ renderPlot({if(input$bp%in%c("Residence", "Education")){ggplot(bp[bp$`Background
   facet_wrap(.~Participants)+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7))+
+    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7), vjust=0.3)+
   theme(text=element_text(size=16, face="bold"))}
   else if(input$bp%in%"County"){
   ggplot(bp_county1)+
@@ -4584,10 +4213,10 @@ selectInput("bld_sugar", "",
 ```{r, include=F}
 # import data
 
-bld_sugar <- read_csv("data/table_14/table14_2_Blood_Sugar_by_background_xtics.csv")
+bld_sugar <- fread("data/table_14/table14_2_Blood_Sugar_by_background_xtics.csv")
 
-bld_sugar$Value <- fct_relevel(bld_sugar$Value,"No education", "Primary", "Secondary", "More than secondary","Lowest", "Second", "Middle", "Fourth", "Highest")
-
+bld_sugar$Value <- fct_relevel(bld_sugar$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 ```
 
@@ -4601,10 +4230,10 @@ renderPlot({if(input$bld_sugar%in%c("Residence", "Education")){ggplot(bld_sugar[
   facet_wrap(.~Participants)+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7))+
+    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7), vjust=0.2)+
   theme(text=element_text(size=16, face="bold"))}
   else{
-    ggplot(bld_sugar[bld_sugar$`Background characteristics`%in%input$bp,],aes(x=Value, y=Proportion,fill=Category))+
+    ggplot(bld_sugar[bld_sugar$`Background characteristics`%in%input$bld_sugar,],aes(x=Value, y=Proportion,fill=Category))+
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
   theme_bw()+
   labs( y="Proportion (%)", title="", x="", fill="")+
@@ -4633,13 +4262,13 @@ selectInput("depression", "",
 ```{r, include=F}
 # import data
 
-depression <- read_csv("data/table_14/table14_5_Depression_by_background_xtics.csv")
+depression <- fread("data/table_14/table14_5_Depression_by_background_xtics.csv")
 
-depression$Value <- fct_relevel(depression$Value,"No education", "Primary", "Secondary", "More than secondary","Lowest", "Second", "Middle", "Fourth", "Highest")
 
-depression_county <- read_csv("data/table_14/table14_5C_Depression_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Taita/Taveta"="Taita Taveta", "Murang’a"="Muranga", "Nairobi City"="Nairobi", "Elgeyo/Marakwet"="Elgeyo Marakwet"))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+depression$Value<- fct_relevel(depression$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+depression_county <- fread("data/table_14/table14_5C_Depression_by_county.csv")
 
 depression_county1 <- full_join(county, depression_county, by=c("Name"="County"))
 
@@ -4655,7 +4284,7 @@ renderPlot({if(input$depression%in%c("Residence", "Education")){ggplot(depressio
   facet_wrap(.~Participants)+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7))+
+    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7), vjust=0.2)+
   theme(text=element_text(size=16, face="bold"))}
   else if(input$depression%in%"County"){
   ggplot(depression_county1)+
@@ -4697,13 +4326,13 @@ selectInput("arthritis", "",
 ```{r, include=F}
 # import data
 
-arthritis <- read_csv("data/table_14/table14_6_Arthritis_by_background_xtics.csv")
+arthritis <- fread("data/table_14/table14_6_Arthritis_by_background_xtics.csv")
 
-arthritis$Value <- fct_relevel(arthritis$Value,"No education", "Primary", "Secondary", "More than secondary","Lowest", "Second", "Middle", "Fourth", "Highest")
+arthritis$Value<- fct_relevel(arthritis$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-arthritis_county <- read_csv("data/table_14/table14_6C_Arthritis_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Taita/Taveta"="Taita Taveta", "Murang’a"="Muranga", "Nairobi City"="Nairobi", "Elgeyo/Marakwet"="Elgeyo Marakwet"))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+arthritis_county <- fread("data/table_14/table14_6C_Arthritis_by_county.csv")
+
 
 
 arthritis_county1 <- full_join(county, arthritis_county, by=c("Name"="County"))
@@ -4720,7 +4349,7 @@ renderPlot({if(input$arthritis%in%c("Residence", "Education")){ggplot(arthritis[
   facet_wrap(.~Participants)+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7))+
+    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7), vjust=0.2)+
   theme(text=element_text(size=16, face="bold"))}
   else if(input$arthritis%in%"County"){
   ggplot(arthritis_county1)+
@@ -4762,14 +4391,12 @@ selectInput("physical_activity", "",
 ```{r, include=F}
 # import data
 
-physical_activity <- read_csv("data/table_14/table14_7_Physical_activity_by_background_xtics.csv")
+physical_activity <- fread("data/table_14/table14_7_Physical_activity_by_background_xtics.csv")
 
-physical_activity$Value <- fct_relevel(physical_activity$Value,"No education", "Primary", "Secondary", "More than secondary","Lowest", "Second", "Middle", "Fourth", "Highest")
+physical_activity$Value<- fct_relevel(physical_activity$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-physical_activity_county <- read_csv("data/table_14/table14_7C_Physical_activity_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga", "Taita/Taveta"="Taita Taveta", "Murang’a"="Muranga", "Nairobi City"="Nairobi", "Elgeyo/Marakwet"="Elgeyo Marakwet"))%>%
-  mutate(Names=paste0(County,", ", `Activity time`))
-
+physical_activity_county <- fread("data/table_14/table14_7C_Physical_activity_by_county.csv")
 
 physical_activity_county1 <- full_join(county, physical_activity_county, by=c("Name"="County"))
 
@@ -4785,7 +4412,7 @@ renderPlot({if(input$physical_activity%in%c("Residence", "Education")){ggplot(ph
   facet_wrap(.~Participants)+
   labs( y="Minutes", title="", x="", fill="")+
   scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(`Activity time`,"mins")), position=position_dodge(0.7))+
+    geom_text(aes(label=paste0(`Activity time`,"mins")), position=position_dodge(0.7), vjust=0.2)+
   theme(text=element_text(size=16, face="bold"))}
   else if(input$physical_activity%in%"County"){
   ggplot(physical_activity_county1)+
@@ -4827,13 +4454,13 @@ selectInput("breast_cancer", "",
 ```{r, include=F}
 # import data
 
-breast_cancer <- read_csv("data/table_14/table9_19a_Breast_cancer_by_background_xtics.csv")
+breast_cancer <- fread("data/table_14/table9_19a_Breast_cancer_by_background_xtics.csv")
 
-breast_cancer$Value <- fct_relevel(breast_cancer$Value,"No education", "Primary", "Secondary", "More than secondary","Lowest", "Second", "Middle", "Fourth", "Highest")
 
-breast_cancer_county <- read_csv("data/table_14/table9_19Ca_Breast_cancer_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  mutate(Names=paste0(County,", ", Proportion,"%"))
+breast_cancer$Value <- fct_relevel(breast_cancer$Value, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+breast_cancer_county <- fread("data/table_14/table9_19Ca_Breast_cancer_by_county.csv")
 
 breast_cancer_county1 <- full_join(county, breast_cancer_county, by=c("Name"="County"))
 
@@ -4848,7 +4475,7 @@ renderPlot({if(input$breast_cancer%in%c("Residence", "Education")){ggplot(breast
   theme_bw()+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7))+
+    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7), vjust=0.2)+
   theme(text=element_text(size=16, face="bold"))}
   else if(input$breast_cancer%in%"County"){
   ggplot(breast_cancer_county1)+
@@ -4932,9 +4559,7 @@ valueBox(
 ```{r, include=F}
 # import data
 
-T15.1 <- read.csv("data/table_15/table_15_1_employment_and_cash_earnings_of_currently_married_women_and_men.csv", na.strings=c("*")) %>%
-  mutate(variable = gsub("Percentage", "%", gsub("in last 12 months", "(last 12 months)", variable))) 
-
+T15.1 <- fread("data/table_15/table_15_1_employment_and_cash_earnings_of_currently_married_women_and_men.csv")
 
 ```
 
@@ -4945,7 +4570,7 @@ T15.1 <- read.csv("data/table_15/table_15_1_employment_and_cash_earnings_of_curr
 renderPlot({T15.1 %>%
   filter(is.na(value) == FALSE) %>%
   ggplot(aes(y=value, x=Age, fill=variable)) +
-  geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 4) +
+  geom_dotplot(binaxis = "y", stackdir = "center", binwidth = 6) +
     theme_bw()+scale_fill_brewer(palette = "Set1")+geom_text(aes(label=paste0(value,"%")))+
   facet_wrap(~Gender)+ labs(y = "%", x = "Age", fill="")+
     theme(text=element_text(size=16, face="bold")) }, width=1600, height=700 )
@@ -4972,8 +4597,11 @@ selectInput("control", "",
 ```{r, include=F}
 # import data
 
-T15.2.2 <- read_csv("data/table_15/table_15_2_2_control_over_mens_cash_earnings.csv", na=c("*"))
+T15.2.2 <- fread("data/table_15/table_15_2_2_control_over_mens_cash_earnings.csv", na.strings=c("*"))%>%
+  mutate(value=as.numeric(value))
 
+T15.2.2$Category<- fct_relevel(T15.2.2$Category, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 ```
 
@@ -4987,7 +4615,7 @@ renderPlot({if(input$control%in%c("Residence", "Education", "Residence", "Number
   facet_wrap(.~Gender)+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7))+
+    geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=0.2)+
   theme(text=element_text(size=16, face="bold"))}
   else{
     ggplot(T15.2.2[T15.2.2$`Background characteristics`%in%input$control,],aes(x=Category, y=value,fill=variable))+
@@ -5014,16 +4642,11 @@ selectInput("home_own", "",
                 "Agricultural Land Ownership"="Agricultural Land Ownership",
                 "Non-Agricultural Land Ownership"="Non-Agricultural Land Ownership"))
 
-house_land_ownsership <- read_csv('data/table_15/table_15.3.1_&_table_15.3.2_House_and_Land_ownership.csv') %>%
-  mutate(value = as.numeric(value)) %>%
-  mutate(value=abs(value))
-names(house_land_ownsership) <- gsub("\\.", " ", names(house_land_ownsership))
-
-
+house_land_ownsership <- fread('data/table_15/table_15.3.1_&_table_15.3.2_House_and_Land_ownership.csv')
 
 renderPlot({ggplot(house_land_ownsership[house_land_ownsership$`Background characteristics`%in%input$home_own,],aes(y = Category, x=value, fill = variable)) + 
   geom_col(  position = 'dodge')+facet_grid(~Gender)+
-    geom_text(aes(label=paste0(round(value),"%")), position=position_dodge(0.7),vjust=-0.5)+
+    geom_text(aes(label=paste0(round(value),"%")), position=position_dodge(0.7),vjust=-1)+
   scale_fill_brewer(palette = "Set1")+
   theme_bw()+
   labs(x ='Proportion (%)', y ="", fill="")+
@@ -5048,29 +4671,21 @@ selectInput("agric_own", "",
 ```{r, include=F}
 # agricultural land ownership
 
-Agricultural_land_ownsership <- read_csv('data/table_15/table_15.5.1_&_table_15.5.3_Agicultural_Land_ownership.csv') %>%
-  mutate(value = as.numeric(value)) %>%
-  mutate(variable=recode(variable, "Both alone and jointly"="Both alone \nand jointly", "Does not have a title deed"="Does not have \na title deed", "Name is not on title deed"="Name is not \non title deed", "Percentage who do not own agricultural land"="Do not own \nagricultural land"))
-names(Agricultural_land_ownsership) <- gsub("\\.", " ", names(Agricultural_land_ownsership))
+Agricultural_land_ownsership <- fread('data/table_15/table_15.5.1_&_table_15.5.3_Agicultural_Land_ownership.csv') 
 
-Agricultural_land_ownsership$Category <- fct_relevel(Agricultural_land_ownsership$Category, "No education", "Primary", "Secondary", "More than secondary" )
+agricultural_land_ownsership_county <- fread('data/table_15/Table_15.5.1C&15.5.3CAgricultural _and_ownership_county.csv') %>%
+  mutate(variable=recode(variable, "Does.not.have.a.title.deed"="Does not have \na title deed"))
 
-Agricultural_land_ownsership$variable <- fct_relevel(Agricultural_land_ownsership$variable, "Alone", "Jointly", "Both alone \nand jointly", "Name is on title deed","Name is not \non title deed",  "Does not have \na title deed", "Do not own \nagricultural land", "Don't know")
-
-agricultural_land_ownsership_county <- read_csv('data/table_15/Table_15.5.1C&15.5.3CAgricultural _and_ownership_county.csv') %>%
-  mutate(value = as.numeric(value)) %>%
-  mutate(variable=recode(variable, "Both alone and jointly"="Both alone \nand jointly", "Does not have a title deed"="Does not have \na title deed", "Name is not on title deed"="Name is not \non title deed", "Percentage who do not own agricultural land"="Do not own \nagricultural land"))
-names(agricultural_land_ownsership_county) <- gsub("\\.", " ", names(agricultural_land_ownsership_county))
-
+Agricultural_land_ownsership$Category <- fct_relevel(Agricultural_land_ownsership$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 agricultural_land_ownsership_county <- full_join(agricultural_land_ownsership_county, county, by = c('County'='Name')) 
 
-agricultural_land_ownsership_county$variable <- fct_relevel(agricultural_land_ownsership_county$variable, "Alone", "Jointly", "Both alone \nand jointly", "Name is on title deed","Name is not \non title deed",  "Does not have \na title deed", "Do not own \nagricultural land", "Don't know")
 ```
 
 ```{r}
 renderPlot({if(input$agric_own!="County"){ggplot(Agricultural_land_ownsership[Agricultural_land_ownsership$`Background characteristics`%in%input$agric_own,],mapping=aes(y=value, x=Category)) +
-  geom_col(position="dodge",fill="#abd9e9") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  geom_col(position="dodge",fill="#abd9e9") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-1)+
   facet_grid(Gender~variable) + 
   theme_bw() +coord_flip()+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
@@ -5104,25 +4719,16 @@ selectInput("nonagric_own", "",
 ```{r, include=F}
 # agricultural land ownership
 
-non_agricultural_land_ownsership <- read_csv('data/table_15/table_15.5.2_&_table_15.5.4_Longformat.csv') %>%
-  mutate(value = as.numeric(value)) %>%
-  mutate(value=abs(value)) %>%
-  mutate(variable=recode(variable, "Both alone and jointly"="Both alone \nand jointly", "Does not have a title deed"="Does not have \na title deed", "Name is not on title deed"="Name is not \non title deed", "Percentage who do not own agricultural land"="Do not own \nagricultural land"))
+non_agricultural_land_ownsership <- fread('data/table_15/table_15.5.2_&_table_15.5.4_Longformat.csv') 
 
-names(non_agricultural_land_ownsership) <- gsub("\\.", " ", names(non_agricultural_land_ownsership))
+non_agricultural_land_ownsership_county <- fread('data/table_15/Table_15.52C&15.5.3C_ Non_agricultural_land_ownership _county.csv') %>%
+  mutate(variable=recode(variable, "Does not have a title deed"="Does not have \na title deed"))
 
-non_agricultural_land_ownsership$Category <- fct_relevel(non_agricultural_land_ownsership$Category, "No education", "Primary", "Secondary", "More than secondary" )
+non_agricultural_land_ownsership$Category <- fct_relevel(non_agricultural_land_ownsership$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
+non_agricultural_land_ownsership_county <- full_join(non_agricultural_land_ownsership_county, county, by = c('County'='Name')) %>%
+  filter(!is.na(variable))
 
-non_agricultural_land_ownsership$variable <- fct_relevel(non_agricultural_land_ownsership$variable, "Alone", "Jointly", "Both alone \nand jointly", "Name is on title deed","Name is not \non title deed",  "Does not have \na title deed", "Do not own \nagricultural land", "Don't know")
-
-non_agricultural_land_ownsership_county <- read_csv('data/table_15/Table_15.52C&15.5.3C_ Non_agricultural_land_ownership _county.csv') %>%
-  mutate(value = as.numeric(value)) %>%
-  mutate(variable=recode(variable, "Both alone and jointly"="Both alone \nand jointly", "Does.not.have.a.title.deed"="Does not have \na title deed", "Name is not on title deed"="Name is not \non title deed", "Percentage who do not own agricultural land"="Do not own \nagricultural land"))
-names(non_agricultural_land_ownsership_county) <- gsub("\\.", " ", names(non_agricultural_land_ownsership_county))
-
-
-non_agricultural_land_ownsership_county <- full_join(non_agricultural_land_ownsership_county, county, by = c('County'='Name')) 
-non_agricultural_land_ownsership_county$variable <- fct_relevel(non_agricultural_land_ownsership_county$variable, "Alone", "Jointly", "Both alone \nand jointly", "Name is on title deed","Name is not \non title deed",  "Does not have \na title deed", "Do not own \nagricultural land", "Don't know")
 ```
 
 ```{r}
@@ -5158,18 +4764,16 @@ selectInput("mobile", "",
 ```
 
 ```{r, include=F}
-# agricultural land ownership
 
-T15.6.1 <- read_csv("data/table_15/Table_15_6_1_ownership_and_use_of_mobile_phones_and_bank_accounts.csv") %>%
-  mutate(variable = str_wrap(gsub("Percentage", "%", gsub("in the last 12 months", "(last 12 months)", variable)), width=40)) %>%
-  mutate(variable=recode(variable, "% who deposited or withdrew money from\ntheir own account (last 12 months)"="Deposited/ withdrew money \nfrom own account \n(last 12 months)", "% who have and use a bank account"="Have & use a bank account", "% who have and use a bank account\nor used a mobile phone for financial\ntransactions (last 12 months)"="Have & use a bank account\nor used a mobile phone \nfor financial transactions \n(last 12 months)", "% who own a smartphone"="Own a smartphone", "% who own any mobile phone"="Own any mobile phone", "% who used a mobile phone for financial\ntransactions (last 12 months)"="Used a mobile phone for \nfinancial transactions \n(last 12 months)"))
 
-T15.6.1C <- read_csv("data/table_15/Table_15_6_1_ownership_and_use_of_mobile_phones_and_bank_accounts_map.csv") %>%
-   mutate(County = gsub("[[:punct:]]", " ", gsub("'", "", County))) 
+T15.6.1 <- fread("data/table_15/Table_15_6_1_ownership_and_use_of_mobile_phones_and_bank_accounts.csv") 
 
-T15.6.1C <- full_join(county, T15.6.1C, by=c("Name"="County")) %>%
-  mutate(variable=recode(variable, "Percentage who deposited or withdrew money from their own account in the last 12 months"="Deposited/ withdrew money \nfrom own account \n(last 12 months)", "Percentage who have and use a bank account"="Have & use a bank account", "Percentage who have and use a bank account or used a mobile phone for financial transactions in the last 12 months"="Have & use a bank account\nor used a mobile phone \nfor financial transactions \n(last 12 months)", "Percentage who own a smartphone"="Own a smartphone", "Percentage who own any mobile phone"="Own any mobile phone", "Percentage who used a mobile phone for financial transactions in the last 12 months"="Used a mobile phone for \nfinancial transactions \n(last 12 months)"))
+T15.6.1C <- fread("data/table_15/Table_15_6_1_ownership_and_use_of_mobile_phones_and_bank_accounts_map.csv") 
 
+T15.6.1C <- full_join(county, T15.6.1C, by=c("Name"="County")) 
+
+T15.6.1$Category <- fct_relevel(T15.6.1$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 ```
 
 ```{r}
@@ -5210,30 +4814,21 @@ selectInput("decision_making", "",
 # agricultural land ownership
 
 
-T15.8.1 <- read_csv("data/table_15/Table_15_8_1_womens_participation_in_decision_making_by_background_characteristics.csv", na=c("*")) %>%
-  mutate(Gender="Female")
-T15.8.2 <- read_csv("data/table_15/Table_15_8_2_mens_participation_in_decision_making_by_background_characteristics.csv", na=c("*")) %>%
-  mutate(Gender="Male")
+decision_making <- fread("data/table_15/Table_15_8_2_participation_in_decision_making.csv") 
+
+
+decision_making$Category<- fct_relevel(decision_making$Category, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+decision_making_county <- fread("data/table_15/Table_15_8_2C_participation_in_decision_making_map.csv") %>%
+  mutate(variable=recode(variable, "Making major household purchases"="Making major \nhousehold purchases", "Visits to her family or relatives"="Visits to her family \nor relatives"))
+
+decision_making_county1 <- full_join(county, decision_making_county, by=c("Name"="County")) 
   
-
-decision_making <-rbind(T15.8.1, T15.8.2) %>%
-  mutate(variable= recode(variable, "Woman's own health care"="Own's health", "Man's own health"="Own's health", "All three decisions"="All decisions", "Both decisions"="All decisions", "Neither of the two decisions"="None of the decisions", "None of the three decisions"="None of the decisions"))
-w_decision_making_county <- read_csv("data/table_15/Table_15_8_1C_womens_participation_in_decision_making_by_background_characteristics_map.csv") %>%
-  mutate(County = gsub("[[:punct:]]", " ", gsub("'", "", County))) %>%
-  mutate(Gender="Female")
-m_decision_making_county <- read_csv("data/table_15/Table_15_8_2C_mens_participation_in_decision_making_by_background_characteristics_map.csv") %>%
-  mutate(County = gsub("[[:punct:]]", " ", gsub("'", "", County))) %>%
-  mutate(Gender="Male")
-
-decision_making_county <-rbind(w_decision_making_county, m_decision_making_county)
-
-decision_making_county1 <- full_join(county, decision_making_county, by=c("Name"="County")) %>%
-  mutate(variable= recode(variable, "Woman's own health care"="Own's health", "Man's own health"="Own's health", "All three decisions"="All decisions", "Both decisions"="All decisions", "Neither of the two decisions"="None of the decisions", "None of the three decisions"="None of the decisions"))
 ```
 
 ```{r}
-renderPlot({if(input$decision_making!="County"){ggplot(decision_making[decision_making$`Background characteristics`%in%input$decision_making,],aes(y=value, x=Category, fill=variable)) +
-  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+renderPlot({if(input$decision_making!="County"){ggplot(decision_making[decision_making$`Background characteristics`%in%input$decision_making,],aes(y=value, x=Category)) +
+  geom_col(position="dodge", fill="cyan3") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
   facet_grid(Gender~variable, scales="free") + 
   theme_bw() +coord_flip()+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
@@ -5268,15 +4863,18 @@ selectInput("safer_sex", "",
 # agricultural land ownership
 
 
-T15.10 <- read_csv("data/table_15/Table_15_10_attitudes_toward_negotiating_safer_sexual_relations_with_husband.csv") %>%
-    mutate(Category=gsub("\\.", "", Category), variable = str_wrap(variable, width=40))
+T15.10 <- fread("data/table_15/Table_15_10_attitudes_toward_negotiating_safer_sexual_relations_with_husband.csv")
 
-T15.10C <- read_csv("data/table_15/Table_15_10C_attitudes_toward_negotiating_safer_sexual_relations_with_husband_map.csv") %>%
-  mutate(County = gsub("[[:punct:]]", " ", gsub("'", "", County))) 
+
+T15.10$Category<- fct_relevel(T15.10$Category, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+T15.10C <- fread("data/table_15/Table_15_10C_attitudes_toward_negotiating_safer_sexual_relations_with_husband_map.csv") 
 
 
 T15.10C <- full_join(county, T15.10C, by=c("Name"="County")) 
 ```
+
 
 ```{r}
 renderPlot({if(input$safer_sex!="County"){ggplot(T15.10[T15.10$`Background characteristics`%in%input$safer_sex,],aes(y=value, x=Category, fill=variable)) +
@@ -5342,24 +4940,22 @@ selectInput("physical_violence", "",
 
 ```{r, include=F}
 #import data
-physical_violence <- read_csv('data/table_17/table_17.1_Experience_pysical_violence.csv')%>%
-  mutate(value = as.numeric(value))
-names(physical_violence) <- gsub("\\.", " ", names(physical_violence))
+physical_violence <- fread('data/table_17/table_17.1_Experience_pysical_violence.csv')
 
-
-physical_violence_county <- read.csv('data/table_17/Table 17.1C Experience of physical violence by any perpetrator according to county.csv') %>%
-  mutate(value = as.numeric(value))
-
+physical_violence_county <- fread('data/table_17/Table 17.1C Experience of physical violence by any perpetrator according to county.csv')
 
 county <- st_read("shapefiles/County.shp")
 
 physical_violence_county <- full_join(physical_violence_county, county, by = c('County'='Name')) 
 
+physical_violence$Category <- fct_relevel(physical_violence$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
+
 ```
 
 ```{r}
 
-renderPlot({if(input$physical_violence!="County"){ggplot(physical_violence[physical_violence$`Background characteristics`%in%input$physical_violence,],aes(y=value, x=Category, fill=variable)) +
+renderPlot({if(input$physical_violence!="County"){ggplot(physical_violence[physical_violence$`Background characteristics`%in%input$physical_violence,],aes(y=value, x=Category, fill=variable)) + coord_flip()+
   geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
   facet_grid(~Gender, scales="free") + 
   theme_bw() +scale_fill_brewer(palette = "Set1")+
@@ -5386,10 +4982,7 @@ selectInput("viol","",
             c("Male"="Male",
             "Female"="Female"))
 
-pers_physical_violence <- read_csv('data/table_17/table_17.2_person_commiting_physical_violence.csv') %>%
-  mutate(value=as.numeric(value))
-
-
+pers_physical_violence <- fread('data/table_17/table_17.2_person_commiting_physical_violence.csv') 
 
 renderPlot({ggplot(pers_physical_violence[pers_physical_violence$Gender%in%input$viol,],aes(y=value, x=reorder(Category,value), fill=variable)) +coord_flip()+
   geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
@@ -5419,29 +5012,27 @@ selectInput("violence_preg", "",
 
 ```{r, include=F}
 #import data
-violence_preg <- read_csv('data/table_17/table 17.3 Experience of violence during pregnancy_longformat.csv')%>%
-  mutate(value = as.numeric(value))
+violence_preg <- fread('data/table_17/table 17.3 Experience of violence during pregnancy_longformat.csv')
 
-violence_preg$Category <- str_replace_all(violence_preg$Category,c("2-Jan"="1-2","4-Mar"="3-4") )
-violence_preg$Category <- fct_relevel(violence_preg$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
-
-violence_preg_county <- read_csv('data/table_17/Table 17.3C Experience of violence during pregnancy.csv')
+violence_preg_county <- fread('data/table_17/Table 17.3C Experience of violence during pregnancy.csv')
 
 
 
 violence_preg_county <- full_join(county, violence_preg_county, by=c("Name"="County"))
 
+violence_preg$Category <- fct_relevel(violence_preg$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 ```
 
 ```{r}
 
-renderPlot({if(input$violence_preg!="County"){ggplot(violence_preg[violence_preg$`Background characteristics`%in%input$violence_preg,],aes(y=value, x=Category, fill=variable)) +
-  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+renderPlot({if(input$violence_preg!="County"){ggplot(violence_preg[violence_preg$`Background characteristics`%in%input$violence_preg,],aes(y=value, x=Category)) +
+  geom_col(position="dodge", fill="cyan3") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
   theme_bw() +scale_fill_brewer(palette = "Set1")+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
-  else if(input$violence_preg%in%"Marital status"){ggplot(violence_preg[violence_preg$`Background characteristics`%in%input$violence_preg,],aes(y=value, x=Category, fill=variable)) +
-  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  else if(input$violence_preg%in%"Marital status"){ggplot(violence_preg[violence_preg$`Background characteristics`%in%input$violence_preg,],aes(y=value, x=Category, fill=variable)) +coord_flip()+
+  geom_col(position="dodge", fill="cyan3") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
   theme_bw() +scale_fill_brewer(palette = "Set1")+coord_flip()+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
   else{
@@ -5474,14 +5065,14 @@ selectInput("violence_sexual", "",
 
 ```{r, include=F}
 #import data
-sexual_violence <- read_csv('data/table_17/table_17.4_experience_sexual_violence.csv')
+sexual_violence <- fread('data/table_17/table_17.4_experience_sexual_violence.csv')
 
-sexual_violence$Category <- fct_relevel(sexual_violence$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 
-experience_sexual_violence_county <- read_csv('data/table_17/Table 17.4C Experience of sexual violence by any perpetrator according to county.csv') %>%
-  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))
+experience_sexual_violence_county <- fread('data/table_17/Table 17.4C Experience of sexual violence by any perpetrator according to county.csv') 
 
 experience_sexual_violence_county <- full_join(county, experience_sexual_violence_county, by = c('Name'='County')) 
+sexual_violence$Category <- fct_relevel(sexual_violence$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 ```
 
@@ -5514,9 +5105,7 @@ renderPlot({if(input$violence_sexual%in%c("Age","Education","Employment","Reside
 
 ```{r, include=F}
 #import data
-sexual_violence1 <- read_csv('data/table_17/table_17.2_person_commiting_physical_violence.csv') %>%
-  mutate(value=as.numeric(value))
-
+sexual_violence1 <- fread('data/table_17/table_17.2_person_commiting_physical_violence.csv')
 
 ```
 
@@ -5547,19 +5136,7 @@ selectInput("controlling", "",
 
 ```{r, include=F}
 #import data
-controlling_w <- read_csv('data/table_17/Table_17_9_1_forms_of_controlling_behaviors_and_intimate-partner_violence_women.csv')%>%
-  mutate(Gender="Female")
-
-controlling_m <- read_csv('data/table_17/Table_17_9_2_forms_of_controlling_behaviors_and_intimate-partner_violence_men.csv') %>%
-  mutate(Gender="Male")
-
-controlling <- rbind(controlling_m, controlling_w) %>%
-  mutate(`Background characteristics`=recode(`Background characteristics`, "Intimate-partner violence perpetrated by any current or previous spouse or intimate partner\r\n"="Intimate-partner violence perpetrated by any current or previous spouse or intimate partner")) %>%
-  mutate(value=as.numeric(value)) %>%
-  mutate(`Type of violence experienced`=str_remove(`Type of violence experienced`, ".")) %>%
-  mutate(`Type of violence experienced`=str_remove(`Type of violence experienced`, "."))
-
-
+controlling <- fread('data/table_17/Table_17_9_2_forms_of_controlling_behaviors_and_intimate-partner_violence.csv')
 ```
 
 ```{r}
@@ -5589,13 +5166,12 @@ selectInput("violence_spouse", "",
 
 ```{r, include=F}
 #import data
-violence_spouse <- read_csv('data/table_17/Table_17_13_violence_by_any_spouse_or_intimate_partner_in_the_last_12_months.csv')%>%
-  mutate(Category=str_remove(Category, ".."))
+violence_spouse <- fread('data/table_17/Table_17_13_violence_by_any_spouse_or_intimate_partner_in_the_last_12_months.csv')
 
-violence_spouse$Category <- fct_relevel(violence_spouse$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary") 
+violence_spouse$Category <- fct_relevel(violence_spouse$Category, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-violence_spouse_county <- read_csv('data/table_17/Table_17_13C_violence_by_any_spouse_or_intimate_partner_in_the_last_12_months_map.csv') %>%
-  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))
+violence_spouse_county <- fread('data/table_17/Table_17_13C_violence_by_any_spouse_or_intimate_partner_in_the_last_12_months_map.csv') 
 
 violence_spouse_county <- full_join(county, violence_spouse_county, by = c('Name'='County')) 
 
@@ -5647,18 +5223,12 @@ selectInput("violence_women", "",
 
 ```{r, include=F}
 #import data
-T17.15 <- read_csv("data/table_17/table_17_15_Violence_by_respondent_against_their_spouse_intimate_partner_by_respondents_background_characteristics.csv", na = c("na", "", "-")) %>%
-  filter(is.na(value) == FALSE) %>%
-  mutate(Category=gsub("Ever1", "Ever*", gsub("\\.", "", Category)))
+violence_women <- fread("data/table_17/table_17_16_Violence_by_respondent_against_their_spouse.csv") 
 
-T17.16 <- read_csv("data/table_17/table_17_16_Violence_by_respondent_against_their_spouse_by_spouse_characteristics_and_womens_empowerment_indicators.csv", na = c("na", "", "-")) %>%
-  filter(is.na(value) == FALSE) %>%
-  mutate(variable=gsub("Ever", "Ever*", variable)) 
+violence_women$Category <- fct_relevel(violence_women$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
 
-violence_women<- rbind(T17.15, T17.16) %>%
-  mutate(`Background characteristics`=recode(`Background characteristics`, "Number of controlling behaviors\r\ndisplayed by spouse/intimate partner"="Number of controlling behaviors displayed by spouse/intimate partner"))
-
-T17.15C <- read_csv("data/table_17/table_17_15C_Violence_by_respondent_against_their_spouse_intimate_partner_by_respondents_background_characteristics.csv") 
+T17.15C <- fread("data/table_17/table_17_15C_Violence_by_respondent_against_their_spouse_intimate_partner_by_respondents_background_characteristics.csv") 
 
 T17.15C <- full_join(county, T17.15C, by=c('Name'='County')) 
 
@@ -5671,7 +5241,7 @@ renderPlot({if(input$violence_women!=c("County", "Marital status")){ggplot(viole
   theme_bw() +scale_fill_brewer(palette = "Set1")+
     facet_grid(~Gender)+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
-  else if(input$violence_women%in%"Marital status"){ggplot(sexual_violence[sexual_violence$`Background characteristics`%in%input$violence_women,],aes(y=value, x=Category, fill=variable)) +
+  else if(input$violence_women%in%"Marital status"){ggplot(sexual_violence[sexual_violence$`Background characteristics`%in%input$violence_women,],aes(y=value, x=Category, fill=variable)) +coord_flip()+
   geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
   theme_bw() +scale_fill_brewer(palette = "Set1")+coord_flip()+facet_grid(~Gender)+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
@@ -5706,12 +5276,11 @@ selectInput("violence_stop", "",
 
 ```{r, include=F}
 #import data
-T17.17 <- read_csv("data/table_17/table_17_17_Help_seeking_to_stop_violence.csv", na = c("na", "", "-", "*")) %>%
-  filter(is.na(value) == FALSE) %>%
-  mutate(variable = str_wrap(variable, width=40))
-T17.17$Category <- fct_relevel(T17.17$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+T17.17 <- fread("data/table_17/table_17_17_Help_seeking_to_stop_violence.csv") 
+T17.17$Category <- fct_relevel(T17.17$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest") 
 
-T17.17C <- read.csv("data/table_17/table_17_17C_Help_seeking_to_stop_violence.csv", na = "*") 
+T17.17C <- fread("data/table_17/table_17_17C_Help_seeking_to_stop_violence.csv", na = "*") 
  
 T17.17C <- full_join(county, T17.17C, by = c('Name'='County')) 
 
@@ -5757,7 +5326,7 @@ selectInput("sources_help", "",
 
 ```{r, include=F}
 #import data
-sources_help <- read_csv("data/table_17/table_17_18_Sources_for_help_to_stop_the_violence.csv") 
+sources_help <- fread("data/table_17/table_17_18_Sources_for_help_to_stop_the_violence.csv") 
 
 
 
@@ -5766,7 +5335,7 @@ sources_help <- read_csv("data/table_17/table_17_18_Sources_for_help_to_stop_the
 ```{r}
 
 renderPlot({ggplot(sources_help[sources_help$variable%in%input$sources_help,],aes(y=value, x=reorder(Source,value))) +
-  geom_col(position="dodge", fill="#74add1") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+  geom_col(position="dodge", fill="#74add1") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5, hjust=-1)+
   theme_bw() +scale_fill_brewer(palette = "Set1")+
     facet_grid(~Gender)+coord_flip()+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
@@ -5822,18 +5391,14 @@ selectInput("knowledge_circumcision", "",
 
 ```{r, include=F}
 #import data
-knowledge_circumcision <- read_csv('data/table_18/Table_18_1_Knowledge_of_female_circumcision.csv') %>%
-  mutate(value = as.numeric(value)) 
-knowledge_circumcision$Category <- fct_relevel(knowledge_circumcision$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+knowledge_circumcision <- fread('data/table_18/Table_18_1_Knowledge_of_female_circumcision.csv')
 
-knowledge_circumcision_county <- read_csv('data/table_18/Table_18_1C_Knowledge_of_female_circumcision_map.csv') 
+knowledge_circumcision$Category <- fct_relevel(knowledge_circumcision$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest") 
+
+knowledge_circumcision_county <- fread('data/table_18/Table_18_1C_Knowledge_of_female_circumcision_map.csv') 
 
 
-
-
-knowledge_circumcision_county <- knowledge_circumcision_county %>%
-  mutate(value = as.numeric(value)) %>%
-  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))
 
 
 knowledge_circumcision_county <- full_join(county,knowledge_circumcision_county,  by =c('Name'='County'))
@@ -5843,8 +5408,8 @@ knowledge_circumcision_county <- full_join(county,knowledge_circumcision_county,
 
 ```{r}
 
-renderPlot({if(input$knowledge_circumcision!="County"){ggplot(knowledge_circumcision[knowledge_circumcision$`Background characteristics`%in%input$knowledge_circumcision,],aes(y=value, x=Category, fill=variable)) +
-  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+renderPlot({if(input$knowledge_circumcision!="County"){ggplot(knowledge_circumcision[knowledge_circumcision$`Background characteristics`%in%input$knowledge_circumcision,],aes(y=value, x=Category)) +
+  geom_col(position="dodge", fill="cyan3") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
   theme_bw() +scale_fill_brewer(palette = "Set1")+ coord_flip()+
     facet_grid(~Gender)+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
@@ -5874,17 +5439,12 @@ selectInput("prevalence_circumcision", "",
 
 ```{r, include=F}
 #import data
-prevalence_circumcision <- read_csv('data/table_18/Table_18_2_Prevalence_of_female_circumcision.csv')
-prevalence_circumcision$Category <- fct_relevel(prevalence_circumcision$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+prevalence_circumcision <- fread('data/table_18/Table_18_2_Prevalence_of_female_circumcision.csv')
 
-prevalence_circumcission_county <- read_csv('data/table_18/Table_18_2C_Prevalence_of_female_circumcision_map.csv') 
+prevalence_circumcision$Category <- fct_relevel(prevalence_circumcision$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest") 
 
-
-
-
-prevalence_circumcission_county <- prevalence_circumcission_county %>%
-  mutate(value = as.numeric(value)) %>%
-  mutate(County=recode(County, "Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))
+prevalence_circumcission_county <- fread('data/table_18/Table_18_2C_Prevalence_of_female_circumcision_map.csv') 
 
 
 prevalence_circumcission_county <- full_join(county,prevalence_circumcission_county,  by =c('Name'='County'))
@@ -5894,8 +5454,8 @@ prevalence_circumcission_county <- full_join(county,prevalence_circumcission_cou
 
 ```{r}
 
-renderPlot({if(input$prevalence_circumcision!="County"){ggplot(prevalence_circumcision[prevalence_circumcision$`Background characteristics`%in%input$prevalence_circumcision,],aes(y=value, x=Category, fill=variable)) +
-  geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
+renderPlot({if(input$prevalence_circumcision!="County"){ggplot(prevalence_circumcision[prevalence_circumcision$`Background characteristics`%in%input$prevalence_circumcision,],aes(y=value, x=Category)) +
+  geom_col(position="dodge", fill="cyan3") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
   theme_bw() +scale_fill_brewer(palette = "Set1")+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}
   else{
@@ -5924,16 +5484,13 @@ selectInput("age_at_circumcision", "",
 
 ```{r, include=F}
 #import data
-age_at_circumcision <- read_csv('data/table_18/table 18.3 Age at circumcision_longformat.csv')
-age_at_circumcision$Category <- fct_relevel(age_at_circumcision$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+age_at_circumcision <- fread('data/table_18/table 18.3 Age at circumcision_longformat.csv')
 
-age_at_circumcission_county <- read_csv('data/table_18/Table 18.3C Age at circumcision by county.csv') 
+age_at_circumcision$Category <- fct_relevel(age_at_circumcision$Category, "No education", "Primary", "Secondary", "More than secondary",
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest") 
 
+age_at_circumcission_county <- fread('data/table_18/Table 18.3C Age at circumcision by county.csv') 
 
-age_at_circumcission_county$variable <- str_replace_all(age_at_circumcission_county$variable, c("9-May"="4-9","14-Oct"="10-14"))
-
-age_at_circumcission_county <- age_at_circumcission_county %>%
-  mutate(value = as.numeric(value), "variable" = fct_relevel(variable, "<5","4-9","10-14","15+","Don't know"))
 
 age_at_circumcission_county <- full_join(county,age_at_circumcission_county,  by =c('Name'='County'))
 
@@ -5972,16 +5529,14 @@ selectInput("aspects_of_circumcision", "",
 
 ```{r, include=F}
 #import data
-aspects_of_circumcision <- read_csv('data/table_18/table 18.7 _Aspects_of_circumcission.csv') %>%
-  mutate(value=as.numeric(value))
-
+aspects_of_circumcision <- fread('data/table_18/table 18.7 _Aspects_of_circumcission.csv')
 
 
 ```
 
 ```{r}
 
-renderPlot({ggplot(effect_female_circumcision[effect_female_circumcision$Characteristic%in%input$effect_female_circumcision,],aes(y=value, x=reorder(variable,value), fill=Category)) +coord_flip()+
+renderPlot({ggplot(aspects_of_circumcision[aspects_of_circumcision$Characteristic%in%input$aspects_of_circumcision,],aes(y=value, x=reorder(variable,value), fill=Category)) +coord_flip()+
   geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
   theme_bw() +scale_fill_brewer(palette = "Set1")+
   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700)
@@ -5995,11 +5550,8 @@ renderPlot({ggplot(effect_female_circumcision[effect_female_circumcision$Charact
 
 ```{r, include=F}
 #import data
-circumcision_age <- read_csv("data/table_18/working_table_18_2_circumcision_by_age.csv") %>%
-  mutate(value=as.numeric(value)) %>%
-  mutate(Age=recode(Age, ">141"=">14"))
+circumcision_age <- fread("data/table_18/working_table_18_2_circumcision_by_age.csv")
 
-circumcision_age$Age <- fct_relevel(circumcision_age$Age, "<1", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", ">14")
 ```
 
 ```{r}
@@ -6024,10 +5576,8 @@ selectInput("effect_female_circumcision", "",
 ```
 
 ```{r, include=F}
-#import data
-effect_female_circumcision <- read_csv('data/table_18/table_18.10_Effect_of_female_circumcision_longformart.csv') %>%
-  mutate(value=abs(as.numeric(value)))
 
+effect_female_circumcision <- fread('data/table_18/table_18.10_Effect_of_female_circumcision_longformart.csv')
 
 ```
 
@@ -6056,11 +5606,10 @@ selectInput("help_seeking_women", "",
 
 ```{r, include=F}
 #import data
-help_seeking_women <- read_csv('data/table_18/table_18.11_Help_seeking_behaviors_among_circumcised_women_longformart.csv')%>%
-  mutate(value=as.numeric(value))
-help_seeking_women$Category <- fct_relevel(help_seeking_women$Category, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
+help_seeking_women <- fread('data/table_18/table_18.11_Help_seeking_behaviors_among_circumcised_women_longformart.csv')
 
-
+help_seeking_women$Category <- fct_relevel(help_seeking_women$Category, 
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 ```
 
 ```{r}
@@ -6079,168 +5628,44 @@ renderPlot({ggplot(help_seeking_women[help_seeking_women$`Background characteris
 Row {data-height=700}
 -------------------------------------
 
-### Percentage change of trends per county
+### Percentage change of trends per county (comparing 2022 to 2014)
 
 ```{r}
 
-# child nutritional status
-nut_comparison <- read_csv("data/County Comparison Data/nutrition_22_14_combined_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  rename(Proportion=perc_below2sd,
-         Category=measure) %>%
-  select(County, Category, Proportion, year)%>%
-  mutate(type="Child nutritional status")
+selectInput("category1", "",
+             c("Nutrition"="Nutrition",
+               "Malaria"="Malaria",
+               "Child vaccination"="Child vaccination"))
 
-# itn comparison
-itn_comparison <- read_csv("data/County Comparison Data/itn_22_14_combined_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo-Marakwet"="Elgeyo Marakwet","Murang'a"="Muranga"))%>%
-  rename(`Households with >=1 ITN`=perc_atleast_1itn, `Households with >=1 ITN\nper 2 people`=perc_atleast_1itn_2pple)%>%
-  pivot_longer(cols = c(`Households with >=1 ITN`, `Households with >=1 ITN\nper 2 people`), names_to = "Category", values_to = "Proportion")%>%
-  mutate(Proportion=as.numeric(Proportion))%>%
-  select(County, Category, Proportion, year) %>%
-  mutate(type="Household possession of ITNs")
+comparison_data <-fread("data/County Comparison Data/comparison_data_wide.csv")
 
-comparison_data <-rbind(nut_comparison, itn_comparison) %>%
-  group_by(County, Category, type) %>%
-  arrange(desc(year)) %>%
-  mutate(percentage_change=(Proportion-lead(Proportion))/lead(Proportion)*100)%>%
-  mutate(percentage_change=round(percentage_change,1)) %>%
-  ungroup()
 
-comparison_data1 <- comparison_data %>%
-  pivot_longer(c(Proportion, percentage_change), names_to="Prop", values_to="Proportion")%>%
-  filter(!is.na(Proportion)) %>%
-  mutate(Prop=paste0(Prop," (", year, ")")) %>%
-  mutate(Prop=recode(Prop, "percentage_change (2022)"="Percentage change" )) 
+# vacc_comparison <- read_csv("data/County Comparison Data/vaccination_22_14_combined_county.csv")%>%
+#   pivot_longer(cols = c(BCG:FULL_VACCINATION), names_to = "Vaccination", values_to = "Proportion") %>%
+#   rename(County=Name, Category=Vaccination)%>%
+#   arrange(year) %>%
+#   group_by(County, Category)%>%
+#   mutate(Proportion1=round((Proportion-lag(Proportion))/Proportion*100,1))%>%
+#   ungroup() %>%
+#   mutate(type="Vaccination") %>%
+#   pivot_longer(c(Proportion, Proportion1), names_to="P", values_to="Proportion") %>%
+#   filter(!is.na(Proportion)) %>%
+#   mutate(P=recode(P, "Proportion1"="Percentage change")) %>%
+#    mutate(Prop=ifelse(P%in%"Proportion",paste0("Proportion", " (", year,")"), P)) %>%
+#   select(-P)
 
+comparison_data1 <- fread("data/County Comparison Data/comparison_data.csv")
 
 comparison_data2 <- full_join(county, comparison_data1, by=c("Name"="County"))
 
-# fertility rate
-trendstotalfertilityrate <- tribble(~Years, ~Rural, ~Urban, ~Total,
-                                    1989, 7.1, 4.5, 6.7,
-                                    1993, 5.8, 3.4, 5.4,
-                                    1998, 5.2, 3.1, 4.7,
-                                    2003, 5.4, 3.3, 4.9,
-                                    2008, 5.2, 2.9, 4.6,
-                                    2014, 4.5, 3.1, 3.9,
-                                    2022, 3.9, 2.8, 3.4) %>%
-  pivot_longer(!Years, names_to= "Residence", values_to = "Total Fertility Rate") %>%
-  rename(grouping=Residence,
-         Percent=`Total Fertility Rate`) %>%
-  mutate(indicator="fertility")
- 
-# family planning
+# trends over time
+trends_data <- fread("data/trends_per_county.csv")
 
-trendsinfpuse <- tribble(~Years, ~`Total demand`, ~`Unmet need`, ~`Traditional methods:met need`, ~`Modern methods:met need`,
-                                    1993, 68, 35, 6, 27,
-                                    1998, 67, 28, 8, 32,
-                                    2003, 67, 27, 8, 32,
-                                    2008, 71, 26, 6, 39,
-                                    2014, 76, 18, 5, 53,
-                                    2022, 76, 14, 6, 57) %>%
-  pivot_longer(!Years, names_to= "Family planning", values_to = "Percent") %>%
-  rename(grouping=`Family planning`) %>%
-  mutate(indicator="family_planning")
-
-# skilled deliveries
-
-trendsdeliveryassistance <- tribble(~Years, ~Proportion, 
-                                    1989, 52,
-                                    1993, 43,
-                                    1998, 43,
-                                    2003, 41,
-                                    2008, 48,
-                                    2014, 66,
-                                    2022, 89)  %>%
-  mutate(grouping="Delivery") %>%
-  rename(Percent=Proportion) %>%
-  mutate(indicator="delivery")
-
-# Child vaccinations
-
-trendschildvaccinations <- tribble(~Years, ~`Fully vaccinated`, ~`No vaccination`, 
-                                    1989, 44, 39,
-                                    1993, 79, 3,
-                                    1998, 65, 3,
-                                    2003, 57, 7,
-                                    2008, 77, 3,
-                                    2014, 79, 2,
-                                    2022, 80, 2) %>%
-  pivot_longer(!Years, names_to= "Vaccination status", values_to = "Percent") %>%
-  rename(grouping=`Vaccination status`) %>%
-  mutate(indicator="vaccinations")
-
-# Child nutrition
-
-trendschildnutrition <- tribble(~Years, ~Stunting, ~Wasting, ~Overweight,
-                                    1993, 40, 7, 6,
-                                    1998, 38, 7, 6,
-                                    2003, 36, 6, 6,
-                                    2008, 35, 7, 5,
-                                    2014, 26, 4, 4,
-                                    2022, 18, 5, 3) %>%
-  pivot_longer(!Years, names_to= "Nutrition measure", values_to = "Percent") %>%
-   rename(grouping=`Nutrition measure`) %>%
-  mutate(indicator="nutrition")
-
-# exclusive breastfeeding
-
-trendsexclusivebreastfed <- tribble(~Years, ~Proportion, 
-                                    1989, 23,
-                                    1993, 17,
-                                    1998, 13,
-                                    2003, 13,
-                                    2008, 32,
-                                    2014, 61,
-                                    2022, 60) %>%
-  rename(Percent=Proportion) %>%
-  mutate(indicator="breastfeeding",
-         grouping="Exclusive breastfeeding")
- 
-# child mortality
-
-trendschildmortality <- tribble(~Years, ~`Under 5 mortality`, ~`Infant mortality`, ~`Neonatal mortality`,
-                                1989, 90, 61, 28,
-                                    1993, 96, 62, 26,
-                                    1998, 111, 74, 28,
-                                    2003, 115, 77, 33,
-                                    2008, 74, 52, 31,
-                                    2014, 52, 39, 22,
-                                    2022, 41, 32, 21) %>%
-  pivot_longer(!Years, names_to= "Category", values_to = "n_per1000") %>%
-  rename(grouping=Category,
-         Percent=n_per1000) %>%
-  mutate(indicator="mortality")
-  
-# insecticide treated nets
-trendsitn <- tribble(~Years, ~`ITN ownership`, ~`ITN ownership per 2 people`, 
-                                    2008, 56, 27,
-                                    2014, 59, 35,
-                                    2015, 63, 40,
-                                    2020, 49, 29,
-                                    2022, 54, 37) %>%
-  pivot_longer(!Years, names_to= "Category", values_to = "Percent") %>%
-  rename(grouping=Category) %>%
-  mutate(indicator="treated_nets")
-  
-
-# combine data
-trends_data <- rbind(trendstotalfertilityrate, trendsinfpuse, trendsdeliveryassistance, trendschildvaccinations, trendschildnutrition, trendsexclusivebreastfed,trendschildmortality, trendsitn ) %>%
-#  mutate(Years = ifelse(Years%in%1999, 2008, Years)) %>%
- # mutate(Years = ifelse(Years%in%2015, 2014, Years)) %>%
-  filter(!grouping%in%"Total") 
-
-x<-data.frame(comparison_data %>%
-  select(County, Category, percentage_change)%>%
-  distinct()) %>%
-  filter(!is.na(percentage_change)) %>%
-  mutate(cat=ifelse(percentage_change< -50, "[-100 - -50)", ifelse(percentage_change>-49 & percentage_change<0, "[-50 - 0)", ifelse(percentage_change>-1 &percentage_change<50, "[0-50)", ifelse(percentage_change>49 &percentage_change<100, "[50-100)", ">100")))))
-
-x$cat <-fct_relevel(x$cat, "[-100 - -50)", "[-50 - 0)", "[0-50)","[50-100)",">100" )
+comparison_data1a<- fread("data/County Comparison Data/comparison_data_wide1a.csv") %>%
+  mutate(indicator=recode( Category, "Households with >=1 ITN"="Malaria", "Households with >=1 ITN\nper 2 people"="Malaria", "Stunting"="Nutrition", "Underweight"="Nutrition", "Wasting"="Nutrition", "BCG"="Child vaccination", "DPT1"="Child vaccination", "DPT2"="Child vaccination", "DPT3"="Child vaccination", "FULL_VACCINATION"="Child vaccination", "OPV"="Child vaccination", "OPV1"="Child vaccination", "OPV2"="Child vaccination", "OPV3"="Child vaccination"))
 
 renderPlot({
-  ggplot(x, aes(y=County, x=Category, fill=percentage_change))+
+  ggplot(comparison_data1a[comparison_data1a$indicator%in%input$category1,], aes(y=County, x=Category, fill=Proportion))+
   geom_tile()+theme_bw()+
   scale_fill_gradient2()+
     labs(x="Indicator", y="County", fill="% change")+
@@ -6303,6 +5728,9 @@ selectInput("ind_comp", "",
              "Underweight"="Underweight",
              "Households with >=1 insecticide treated net"="Households with >=1 ITN",
              "Households with >=1 insecticide treated net \nper 2 people"="Households with >=1 ITN\nper 2 people"))
+```
+
+```{r}
 
 renderGirafe({
   comp_data1 <-comparison_data2 %>%filter(Category%in%input$ind_comp) 
@@ -6324,28 +5752,29 @@ renderGirafe({
 })
 ```
 
-### Please select an indicator
+### .
 
 ```{r}
-renderGirafe({
+renderPlot({
   comp_data1a <-comparison_data1 %>%filter(Category%in%input$ind_comp)%>%filter(Prop%in%c("Proportion (2022)", "Proportion (2014)")) 
 
-  comp_data1a_map<- ggplot(comp_data1a, aes(x=reorder(County, Proportion), y=Proportion, fill=year)) + 
+  ggplot(comp_data1a, aes(x=reorder(County, Proportion), y=Proportion, fill=factor(year))) + 
   geom_col() +coord_flip()+ facet_grid(~year)+
   theme_bw() + 
+    scale_fill_brewer(palette = "Set1")+
   geom_col_interactive(size = 2.0, aes(tooltip=Proportion)) +
-     
+    geom_text(aes(label=paste0(Prop, "%")), vjust=1)+ 
   labs(x="Counties", y="",fill="") +
   theme(text =element_text(size=18, face="bold"))
-  comp_data1a_map2<-girafe(ggobj =  comp_data1a_map, width_svg=18, height_svg=9,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
-                    # opts_sizing(rescale = TRUE),
-                     opts_zoom(max = 9)),)
-  print( comp_data1a_map2, justify="left")
+  # comp_data1a_map2<-girafe(ggobj =  comp_data1a_map, width_svg=18, height_svg=9,
+  #                  options = list(
+  #                    opts_hover(css = "fill:#666666;cursor:pointer;"),
+  #                    opts_selection(css = "fill:orange;", type = "multiple"),
+  #                   # opts_sizing(rescale = TRUE),
+  #                    opts_zoom(max = 9)),)
+  # print( comp_data1a_map2, justify="left")
   
-})
+}, width = 900, height=700)
 ```
 
 # Compare indicators by county
@@ -6354,96 +5783,8 @@ renderGirafe({
 
 ### datasets
 
+combined_data <-fread("data/combined_data_county.csv")
 
-#nutrition
-nutc <- read_csv("data/table_14/table14C_nutr_status_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(perc_below3sd, perc_below2sd), names_to="indicator1", values_to="values") %>%
-  mutate(indicator1=paste0(indicator,"_",indicator1)) %>%
-  select(County, indicator, indicator1, values)
-
-#Insecticide treated nets
-itnc <- read_csv("data/table_18/table18C_ITN_by_county.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(perc_atleast_1itn,avrg_itn_hh, perc_atleast_1itn_2pple, no_hhs_1person_overnight), names_to="indicator1", values_to="values") %>%
-  mutate(indicator="Insecticide treated nets") %>%
-  select(County, indicator, indicator1, values)
-
-#family planning
-fpc <- read_csv("data/table_8/table8c_fpusemarriedbycounty.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(2:15), names_to="indicator1", values_to="values") %>%
-  mutate(indicator="Family planning") %>%
-  select(County, indicator, indicator1, values)
-
-#teenage pregnancy
-teenpregc <- read_csv("data/table_6/table6_teenpregnancybycounty.csv")%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(2:5), names_to="indicator1", values_to="values") %>%
-  mutate(indicator="Teenage Pregnancy") %>%
-  select(County, indicator, indicator1, values)
-
-#violence
-violencec <- read_csv("data/table_29/table_29C_Women.csv")%>% 
-  rename(County=`Background characteristic`)%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta"))%>%
-  filter(!County%in%c("Total",NA)) %>%
-  pivot_longer(c(2:5), names_to="indicator1", values_to="values") %>%
-  mutate(indicator="Violence") %>%
-  select(County, indicator, indicator1, values)
-
-#maternal care  
-matcarec <- read_csv("data/table_10/table10c_maternalcarebycounty.csv")%>% 
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  rename(indicator1=`Maternal care`,
-         values=Percent) %>%
-  mutate(indicator="Maternal Care") %>%
-  select(County, indicator, indicator1, values)
-
-#vaccination
-
-vacc <-read_csv("data/vacc_data.csv")
-#hiv knowledge
-hivc_men <- read_csv("data/table_23/table23_hiv_count_data.csv")%>% 
-  #rename(County=`NAME_1`)%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(2:4), names_to="indicator1", values_to="values") %>%
-  mutate(indicator="HIV knowledge: Men (15-24)") %>%
-  mutate(indicator1=paste0("men_",indicator1)) %>%
-  select(County, indicator, indicator1, values)
-
-hivc_women <- read_csv("data/table_23/table23_hiv_count_data.csv")%>% 
-  #rename(County=`NAME_1`)%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(2:4), names_to="indicator1", values_to="values") %>%
-  filter(Participants%in%"Women_15-24") %>%
-  mutate(indicator1=paste0("women_",indicator1)) %>%
-  mutate(indicator="HIV knowledge: Women (15-24)") %>%
-  select(County, indicator, indicator1, values) 
-
-#hiv testing
-hiv_testc_men <- read_csv("data/table_25/table25C .1 and .2_HIV_test_bind.csv")%>% 
-  #rename(County=`NAME_1`)%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(2:4, 6,7), names_to="indicator1", values_to="values") %>%
-  filter(Participants%in%"men") %>%
-  mutate(indicator1=paste0("men_",indicator1)) %>%
-  mutate(indicator="HIV testing: Men") %>%
-  select(County, indicator, indicator1, values) 
-
-hiv_testc_women <- read_csv("data/table_25/table25C .1 and .2_HIV_test_bind.csv")%>% 
-  #rename(County=`NAME_1`)%>%
-  mutate(County=recode(County,"Tharaka-Nithi"="Tharaka Nithi", "Elgeyo/Marakwet"="Elgeyo Marakwet","Murang’a"="Muranga","Nairobi City"="Nairobi","Taita/Taveta"="Taita Taveta")) %>%
-  pivot_longer(c(2:4, 6,7), names_to="indicator1", values_to="values") %>%
-  filter(Participants%in%"Women") %>%
-  mutate(indicator1=paste0("women_",indicator1)) %>%
-  mutate(indicator="HIV testing: Women") %>%
-  select(County, indicator, indicator1, values)
-
-## combine datasets
-combined_data <- rbind(nutc, itnc,fpc,teenpregc,
-                              violencec, matcarec, vacc, hivc_men, hivc_women, hiv_testc_men, hiv_testc_women ) %>%
-  mutate(values=as.numeric(parse_number(values))) 
 ```
 
 ## Row {data-width="500"}

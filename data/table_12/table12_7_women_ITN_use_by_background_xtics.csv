@@ -1,8 +1,8 @@
 Value,Category,Proportion,Background characteristics
-Urban,Use in all households,29.0,Residence
+Urban,Use in all households,29,Residence
 Urban,Use in households with 1/+ ITN,70.3,Residence
 Rural,Use in all households,56.7,Residence
-Rural,Use in households with 1/+ ITN,77.0,Residence
+Rural,Use in households with 1/+ ITN,77,Residence
 Highland epidemic prone,Use in all households,64.3,Endemicity zone
 Highland epidemic prone,Use in households with 1/+ ITN,78.2,Endemicity zone
 Lake endemic,Use in all households,75.3,Endemicity zone
@@ -18,8 +18,8 @@ Lowest,Use in households with 1/+ ITN,74.8,Wealth quintile
 Second,Use in all households,59.3,Wealth quintile
 Second,Use in households with 1/+ ITN,73.3,Wealth quintile
 Middle,Use in all households,56.5,Wealth quintile
-Middle,Use in households with 1/+ ITN,82.0,Wealth quintile
-Fourth,Use in all households,41.0,Wealth quintile
+Middle,Use in households with 1/+ ITN,82,Wealth quintile
+Fourth,Use in all households,41,Wealth quintile
 Fourth,Use in households with 1/+ ITN,75.7,Wealth quintile
 Highest,Use in all households,25.4,Wealth quintile
 Highest,Use in households with 1/+ ITN,67.8,Wealth quintile

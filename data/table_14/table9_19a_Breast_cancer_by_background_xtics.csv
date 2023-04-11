@@ -12,7 +12,7 @@ Value,Category,Proportion,Background characteristics
 30-49,"Diagnosed with
  breast cancer",0.1,Age
 30-34,"Aware of self examination
- for breast cancer",50.0,Age
+ for breast cancer",50,Age
 30-34,"Examined
  for breast cancer",16.7,Age
 30-34,"Diagnosed with
@@ -56,7 +56,7 @@ No education,"Diagnosed with
 Primary,"Aware of self examination
  for breast cancer",35.4,Education
 Primary,"Examined
- for breast cancer",12.0,Education
+ for breast cancer",12,Education
 Primary,"Diagnosed with
  breast cancer",0.2,Education
 Secondary,"Aware of self examination
