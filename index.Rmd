@@ -822,7 +822,7 @@ renderGirafe({
   geom_bar(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
   theme_bw() +
         facet_grid(~Participants) +
-  geom_text(aes(label=label), hjust = -0.1, size=4, color="black", face = "bold", label.size=0.7)+
+  geom_text(aes(label=label), hjust = -0.1, size=4, color="black")+
 #  labs(y="Weighted percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
          labs(y="Percent (%)", x="") + 
       #  scale_fill_manual(values=c("cyan4", "red4"))+
