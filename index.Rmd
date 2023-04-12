@@ -96,7 +96,6 @@ p_load(data.table)
 valueBox(
   value = paste("37,911"),
   caption = "Total Number of Households Interviewed)",
-  icon="fa-thumbs-down",
   color = "black"
 )
 ```
@@ -111,9 +110,7 @@ valueBox(
 # )
 valueBox(
   value = paste("32,156"),
-  caption = "Total Number of Women Interviewed",
-  icon="fa-thumbs-up",
-  color = "#b15928"
+  caption = "Total Number of Women Interviewed"
 )
 ```
 
@@ -130,8 +127,7 @@ valueBox(
 valueBox(
   value = paste("14,453"),
   caption = "Total Number of Men Interviewed",
-  color = "darkgreen",
-  icon="fa-thumbs-up"
+  color = "darkgreen"
 )
 ```
 
@@ -141,18 +137,10 @@ valueBox(
 
 ## Column {data-width="600"}
 
-##### Choose the category to display:
 
-```{r}
-selectInput("quest", "",
-             c("Households"="All",
-               "Participants: Men (15-54 years)"="Male",
-               "Participants: Women (15-49 years)"="Female",
-               "Response Rates"="Response Rate"))
+**Choose the category to display:**
 
-```
-
-### **Summary of the households selected, occupied, and interviewed for the 2022 Kenya Demographic and Health Survey**
+**Summary of the households selected, occupied, and interviewed for the 2022 Kenya Demographic and Health Survey**
 
 The numbers are presented by:
 
@@ -161,6 +149,13 @@ The numbers are presented by:
 -   Participants: Men and women
 
 ```{r, fig.height=10,fig.height=22}
+
+selectInput("quest", "",
+             c("Response Rates"="Response Rate",
+               "Households"="All",
+               "Participants: Men (15-54 years)"="Male",
+               "Participants: Women (15-49 years)"="Female"
+               ))
 
 
 
@@ -226,9 +221,81 @@ value = paste("26%"),
 
 ## Column {.tabset .tabset-fade data-height="900"}
 
-### **Housing**
+### **Health Insurance Coverage**
 
 *Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.*
+
+**Choose the characteristics to display:**
+
+```{r}
+selectInput("health", "",
+              c("Age in Years"="Age", 
+                "Residence"="Residence", 
+                "Wealth quintile"="Wealth quintile"))
+```
+
+```{r, include=F}
+
+insurance_county <- fread("data/table_2/table_2_20C_insurance_by_county.csv") 
+
+county <- st_read("shapefiles/County.shp")
+insurance_county1 <- full_join(county, insurance_county, by=c("Name"="County"))
+
+```
+
+
+
+```{r, fig.width=16 }
+# health insurance data by age
+insurance <- fread("data/table_2/table_2_20_insurance_by_background_xtics.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
+
+insurance$Value<- fct_relevel(insurance$Value, 
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
+insurance$`Health Insurance Type` <- fct_relevel(insurance$`Health Insurance Type`, "None/Don't know", "Any", "NHIF", "Community-based", "Private/commercial", "Other")
+
+renderPlot({
+  if(input$health%in%c("Wealth quintile", "Age", "Residence")){
+    ggplot(insurance[insurance$`Background characteristics`%in%input$health,], aes(x=`Health Insurance Type`, y=Proportion, fill=Value))+geom_bar(stat = 'identity', position = position_dodge())+#,aes(tooltip=paste0(Coverage, "%"))) +
+  labs(y="Percent (%)", x="")+ylim(0,100)+
+   coord_flip()+
+    theme_bw()+theme(text=element_text(size=16, face = "bold")) +
+      scale_fill_brewer(palette = "Set1")+
+   # theme(strip.background =element_rect(fill="darkorange"))+
+    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.5),vjust=0.5,hjust=0.2, size=4, color="black")}
+  #  insurance_map1a<-girafe(ggobj = insurance_map1,width_svg=18, height_svg=9,
+  #                 options = list(
+  #                   opts_hover(css = "fill:#666666;cursor:pointer;"),
+  #                   opts_selection(css = "fill:orange;", type = "multiple"),
+                    # opts_sizing(rescale = TRUE),
+   #                  opts_zoom(max = 4)))
+  #print(insurance_map1a)
+  else
+    { 
+  ggplot(insurance_county1)+
+  geom_sf(data=insurance_county1, aes(geometry=geometry), fill=NA)+
+  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
+  theme_void()+
+  facet_wrap(~`Health Insurance Type`)+
+  scale_fill_gradient(low = "white", high = "#8c2d04")+
+  labs(x="", y="",fill="Percent (%)")+
+  theme(text=element_text(size=14))
+  #insurance_map2a<-girafe(ggobj = insurance_map2, width_svg=18, height_svg=9,
+   #                options = list(
+    #                 opts_hover(css = "fill:#666666;cursor:pointer;"),
+     #                opts_selection(css = "fill:orange;", type = "multiple"),
+                  #   opts_sizing(rescale=TRUE),
+      #               opts_zoom(max = 4)))
+ # print(insurance_map2a, justify="left")
+  }
+}, width=1600, height=700)
+
+
+
+```
+
+### **Housing**
+
 
 **Choose the characteristics to display:**
 
@@ -241,11 +308,14 @@ selectInput("housing", "",
 ```
 
 ```{r}
-housing <- fread("data/table_2/table2_1_Housing_by_xtics.csv")
+housing <- fread("data/table_2/table2_1_Housing_by_xtics.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
+
+housing$Value <-fct_relevel(housing$Value, "Never", "Daily", "Weekly", "Less than once a month", "Monthly")
 
 renderPlot({
-    ggplot(housing[housing$Characteristics%in%input$housing,], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+facet_grid(.~Participants)+#,aes(tooltip=paste0(Coverage, "%"))) +
-  labs(y="Percent (%)", x="")+
+    ggplot(housing[housing$Characteristics%in%input$housing & housing$Participants%in%"Household",], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+#,aes(tooltip=paste0(Coverage, "%"))) +
+  labs(y="Percent (%)", x="")+ylim(0,100)+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
@@ -270,12 +340,13 @@ selectInput("cooking", "",
 ```
 
 ```{r }
-cooking <- fread("data/table_2/table2_2_Cooking_by_xtics.csv")
+cooking <- fread("data/table_2/table2_2_Cooking_by_xtics.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 
 renderPlot({
-    ggplot(cooking[cooking$Characteristics%in%input$cooking,], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+facet_grid(.~Participants)+#,aes(tooltip=paste0(Coverage, "%"))) +
-  labs(y="Percent (%)", x="")+
+    ggplot(cooking[cooking$Characteristics%in%input$cooking & cooking$Participants%in%"Household",], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+#,aes(tooltip=paste0(Coverage, "%"))) +
+  labs(y="Percent (%)", x="")+ylim(0,100)+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
@@ -301,14 +372,15 @@ selectInput("possessions", "",
 
 ```{r}
 
-hh_possession <- fread("data/table_2/table2_5_HH_possession.csv")
+hh_possession <- fread("data/table_2/table2_5_HH_possession.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 
 
 renderPlot({
     ggplot(hh_possession[hh_possession$Possessions%in%input$possessions,], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+
     #,aes(tooltip=paste0(Coverage, "%"))) +
-  labs(y="Percent (%)", x="")+
+  labs(y="Percent (%)", x="")+ylim(0,100)+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
@@ -337,7 +409,8 @@ selectInput("birth_reg", "",
 ```
 
 ```{r, include=F}
-birth_reg_county <- fread("data/table_2/table2_10C_Birth_registration_by_county.csv")
+birth_reg_county <- fread("data/table_2/table2_10C_Birth_registration_by_county.csv")%>%
+  mutate(Proportion=as.numeric(Proportion))
 
 county <- st_read("shapefiles/County.shp")
 
@@ -349,7 +422,9 @@ birth_reg_county1 <- full_join(county, birth_reg_county, by=c("Name"="County"))
 
 ```{r}
 
-birth_reg <- fread("data/table_2/table2_10_Birth_registration_by_background_xtics.csv")
+birth_reg <- fread("data/table_2/table2_10_Birth_registration_by_background_xtics.csv")%>%
+  mutate(Proportion=as.numeric(Proportion)) %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 birth_reg$Value<- fct_relevel(birth_reg$Value, 
                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
@@ -375,7 +450,7 @@ renderGirafe({
   theme_void()+
   facet_wrap(~Category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=18))
     birth_reg_map1a<-girafe(ggobj = birth_reg_map,
                    options = list(
@@ -402,7 +477,7 @@ selectInput("school_attendance", "",
 ```
 
 ```{r, include=F}
-school_att_county <- fread("data/table_2/table_2_12C_School_attendance_by_county.csv") %>%
+school_att_county <- fread("data/table_2/table_2_12C_School_attendance_by_county.csv")%>%
   filter(!(Category%in%"Gender Parity Index"))
 
 county <- st_read("shapefiles/County.shp")
@@ -413,7 +488,8 @@ school_att_county1 <- full_join(county, school_att_county, by=c("Name"="County")
 
 ```{r}
 
-school_attendance <- fread("data/table_2/table_2_12_School_attendance_by_background_xtics.csv") 
+school_attendance <- fread("data/table_2/table_2_12_School_attendance_by_background_xtics.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 school_attendance$Value<- fct_relevel(school_attendance$Value, 
                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
@@ -423,7 +499,7 @@ renderGirafe({
     school_att1 <- ggplot(school_attendance[school_attendance$`Background characteristics`%in%input$school_attendance,], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+
       facet_grid(.~`Schooling level`)+
     #,aes(tooltip=paste0(Coverage, "%"))) +
-  labs(y="Percent (%)", x="")+
+  labs(y="Percent (%)", x="")+ ylim(0,100)+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
@@ -435,12 +511,12 @@ renderGirafe({
   print(school_att1a)}
   else{
     school_att_map <- ggplot(school_att_county1)+
-  geom_sf_interactive(data=school_att_county1, aes(geometry=geometry, tooltip=paste0(Proportion, "%")), fill=NA)+
+  geom_sf_interactive(data=school_att_county1, aes(geometry=geometry, tooltip=Names), fill=NA)+
   geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
   theme_void()+
-  facet_wrap(~Category)+
+  facet_wrap(Ratio~Category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14))
     school_att_map1a<-girafe(ggobj = school_att_map,width_svg=10, height_svg=8,
                    options = list(
@@ -470,10 +546,10 @@ selectInput("rta", "",
 ```
 
 ```{r, include=F}
-RTA <- fread("data/table_2/table_2_17_RTA_by_background_xtics.csv")
+RTA <- fread("data/table_2/table_2_17_RTA_by_background_xtics.csv") 
 
-RTA$Value<- fct_relevel(RTA$Value, 
-                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
+RTA$Value<- fct_relevel(RTA$Value, "Lowest", "Second", "Middle", "Fourth", "Highest")
+
 RTA_county <- fread("data/table_2/table_2_17_RTA_by_county.csv") %>%
   mutate(Proportion=as.numeric(Proportion))
 
@@ -484,13 +560,13 @@ RTA_county1 <- full_join(county, RTA_county, by=c("Name"="County"))
 
 renderPlot({
   if(input$rta%in%"Residence"){
-    ggplot(RTA[RTA$`Background characteristics`%in%input$rta,], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+
+    ggplot(RTA[RTA$`Background characteristics`%in%input$rta,], aes(x=Category, y=Proportion, fill=Value))+geom_bar(stat = 'identity', position = position_dodge())+
     #,aes(tooltip=paste0(Coverage, "%"))) +
   labs(y="Rate per 100,000", x="")+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
-    geom_text(aes(label=paste0(Proportion, "%")), position=position_dodge(0.6),vjust=0.5,hjust=-0.2, size=4, color="black")}
+    geom_text(aes(label=Proportion), position=position_dodge(0.6),vjust=0.5,hjust=-0.2, size=4, color="black")}
   else if(input$rta%in%"Wealth quintile"){
   ggplot(RTA[RTA$`Background characteristics`%in%input$rta,], aes(x=Value, y=Proportion, fill=Category))+geom_dotplot(binaxis='y', stackdir='center', binwidth = 60)+
     #,aes(tooltip=paste0(Coverage, "%"))) +
@@ -498,7 +574,7 @@ renderPlot({
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
-    geom_text(aes(label=paste0(Proportion, "%")),vjust=0.5,hjust=-0.2, size=4, color="black")  
+    geom_text(aes(label=Proportion),vjust=0.5,hjust=-0.2, size=4, color="black")  
   }
   else{
   ggplot(RTA_county1)+
@@ -539,12 +615,13 @@ covid_county3 <- rbind(covid_county1, covid_county2)
 
 ```{r}
 
-covid <- fread("data/table_2/table_2_19_1_covid_by_background_xtics.csv")
+covid <- fread("data/table_2/table_2_19_1_covid_by_background_xtics.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 covid$Value<- fct_relevel(covid$Value, 
                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
 renderPlot({if(input$covid%in%"Residence"){
-    ggplot(covid[covid$`Background characteristics`%in%input$covid,], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+facet_grid(.~Participants)+
+    ggplot(covid[covid$`Background characteristics`%in%input$covid & covid$Participants%in%"Households",], aes(x=Value, y=Proportion, fill=Category))+geom_bar(stat = 'identity', position = position_dodge())+facet_grid(.~Participants)+ylim(0,100)+
     #,aes(tooltip=paste0(Coverage, "%"))) +
   labs(y="Percent (%)", x="")+
     scale_fill_brewer(palette = "Set1")+coord_flip()+
@@ -554,7 +631,7 @@ renderPlot({if(input$covid%in%"Residence"){
   else if(input$covid%in%"Wealth quintile"){
     ggplot(covid[covid$`Background characteristics`%in%input$covid,], aes(x=Value, y=Proportion, fill=Category))+geom_dotplot(binaxis='y', stackdir='center', binwidth = 3)+facet_grid(.~Participants)+
     #,aes(tooltip=paste0(Coverage, "%"))) +
-  labs(y="Percent (%)", x="")+
+  labs(y="Percent (%)", x="")+ylim(0,100)+
     scale_fill_brewer(palette = "Set1")+
     theme_bw()+theme(text=element_text(size=16, face = "bold")) +
     theme(strip.background =element_rect(fill="darkorange"))+
@@ -566,7 +643,7 @@ renderPlot({if(input$covid%in%"Residence"){
   theme_void()+
   facet_wrap(Participants~Category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14))
   }
   
@@ -578,75 +655,6 @@ renderPlot({if(input$covid%in%"Residence"){
 
 
 
-### **Health Insurance Coverage**
-
-*Health insurance improves access to quality health care by reducing the costs associated with illness, treatment and care incurred by persons and/or families. The graphics show the percentage of de jure household members with insurance and the type of insurance.*
-
-**Choose the characteristics to display:**
-
-```{r}
-selectInput("health", "",
-              c("Age in Years"="Age", 
-                "Residence"="Residence", 
-                "Wealth quintile"="Wealth quintile"))
-```
-
-```{r, include=F}
-
-insurance_county <- fread("data/table_2/table_2_20C_insurance_by_county.csv")
-
-insurance_county1 <- full_join(county, insurance_county, by=c("Name"="County"))
-
-```
-
-
-
-```{r, fig.width=16 }
-# health insurance data by age
-insurance <- fread("data/table_2/table_2_20_insurance_by_background_xtics.csv")
-
-insurance$Value<- fct_relevel(insurance$Value, 
-                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
-
-renderPlot({
-  if(input$health%in%c("Wealth quintile", "Age", "Residence")){
-    ggplot(insurance[insurance$`Background characteristics`%in%input$health,], aes(x=`Health Insurance Type`, y=Proportion, fill=Value))+geom_bar(stat = 'identity', position = position_dodge())+#,aes(tooltip=paste0(Coverage, "%"))) +
-  labs(y="Percent (%)", x="")+
-   coord_flip()+
-    theme_bw()+theme(text=element_text(size=16, face = "bold")) +
-      scale_fill_brewer(palette = "Set1")+
-   # theme(strip.background =element_rect(fill="darkorange"))+
-    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.5),vjust=0.5,hjust=0.2, size=4, color="black")}
-  #  insurance_map1a<-girafe(ggobj = insurance_map1,width_svg=18, height_svg=9,
-  #                 options = list(
-  #                   opts_hover(css = "fill:#666666;cursor:pointer;"),
-  #                   opts_selection(css = "fill:orange;", type = "multiple"),
-                    # opts_sizing(rescale = TRUE),
-   #                  opts_zoom(max = 4)))
-  #print(insurance_map1a)
-  else
-    { 
-  ggplot(insurance_county1)+
-  geom_sf(data=insurance_county1, aes(geometry=geometry), fill=NA)+
-  geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+
-  theme_void()+
-  facet_wrap(~`Health Insurance Type`)+
-  scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
-  theme(text=element_text(size=14))
-  #insurance_map2a<-girafe(ggobj = insurance_map2, width_svg=18, height_svg=9,
-   #                options = list(
-    #                 opts_hover(css = "fill:#666666;cursor:pointer;"),
-     #                opts_selection(css = "fill:orange;", type = "multiple"),
-                  #   opts_sizing(rescale=TRUE),
-      #               opts_zoom(max = 4)))
- # print(insurance_map2a, justify="left")
-  }
-}, width=1600, height=700)
-
-
-
-```
 
 ### **Cash transfer or social assistance**
 
@@ -672,15 +680,16 @@ cash_transfer_county1 <- full_join(county, cash_transfer_county, by=c("Name"="Co
 ```
 
 ```{r}
-cash_transfer <- fread("data/table_2/table_2_22_1_cash_transfer_by_provider.csv")
+cash_transfer <- fread("data/table_2/table_2_22_1_cash_transfer_by_provider.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 renderPlot({if(input$cash_transfer!="County"){
   ggplot(cash_transfer[cash_transfer$Provider1%in%input$cash_transfer,], aes(x=reorder(`Reason For Assistance`,Proportion), y=Proportion))+
-  geom_bar(stat = "identity", fill="#74add1")+
+  geom_bar(stat = "identity", fill="#74add1")+ ylim(0,100)+
   theme_bw()+
-  labs( y="Proportion (%)", title="", x="Reason for assistance", fill="")+
+  labs( y="Percent (%)", title="", x="Reason for assistance", fill="")+
   theme(text=element_text(size=16))+
-  geom_text(aes(label = lab), nudge_y = 2.0)+
+  geom_text(aes(label = paste0(Proportion,"%")), nudge_y = 2.0)+
   coord_flip()}
   else{
    ggplot(cash_transfer_county1)+
@@ -689,7 +698,7 @@ renderPlot({if(input$cash_transfer!="County"){
   theme_void()+
   facet_wrap(~`Reason For Assistance`)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=16)) 
   }
 }, width=1600, height=600)
@@ -753,11 +762,12 @@ selectInput("char", "",
 
 ```{r, include=F}
 
-respondentsdata <- fread("data/table_2/table2_respondentsdata.csv")
+respondentsdata <- fread("data/table_2/table2_respondentsdata.csv") %>%
+  mutate(Weighted_percent=ifelse(Weighted_percent>0.5, round(Weighted_percent),Weighted_percent))
 
 
 respondentsdata$Grouping<- fct_relevel(respondentsdata$Grouping, 
-                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 ## county data
 
 ### men
@@ -787,12 +797,12 @@ background_characteristics_map <- rbind(women_background_xtics_county1, men_back
 renderGirafe({
   if (input$char%in%c("Wealth_Quintile", "Age")){
   respondents_map1 <- respondentsdata%>%
-    filter(Indicator==input$char)%>%
-    ggplot(aes(x=Grouping, y=Weighted_percent)) + 
-  geom_point(stat = "identity", size= 20, color = "cyan4")+#, aes(tooltip=paste0(Weighted_percent, "%"))) + 
+    filter(Indicator%in%input$char)%>%
+    ggplot(aes(x=Grouping, y=Weighted_percent, color=Participants)) + 
+  geom_point(stat = "identity", size= 20)+#, aes(tooltip=paste0(Weighted_percent, "%"))) + 
   theme_bw() +
-      facet_grid(~Participants) +
-  geom_text(aes(label=label), hjust = 0.7, size=4, color="black", face = "bold")+
+    #  facet_grid(~Participants) +
+  geom_text(aes(label=paste0(Weighted_percent,"%")), hjust = 0.7, size=4, color="black")+scale_color_brewer(palette = "Set1")+ylim(0,100)+
   #labs(y="Percent (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") +
       labs(y="Percent (%)", x="")  +
      # scale_color_manual(values=c("cyan4", "red4"))+
@@ -828,15 +838,15 @@ renderGirafe({
   }  else if(input$char%in%c("Religion", "Marital_Status")){
   respondents_map3 <- respondentsdata%>%
     filter(Indicator==input$char)%>%
-      ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent)) + 
-  geom_bar(stat = "identity", size= 10, fill = "cyan4") + coord_flip()+
-  theme_bw() +
-        facet_grid(~Participants) +
+      ggplot(aes(x=reorder(Grouping,Weighted_percent), y=Weighted_percent, fill=Participants)) + 
+  geom_bar(stat = "identity", size= 10, position="dodge") + coord_flip()+
+  theme_bw() + ylim(0,100)+
+       # facet_grid(~Participants) +
   #labs(y="Percentage (%)",x=paste0(unique(respondentsdata[respondentsdata$Indicator==input$char,]$Indicator1), " of respondents"), fill="Gender") + 
          labs(y="Percent (%)", x="") + 
         scale_fill_manual(values=c("cyan4", "red4"))+
   theme(text=element_text(size=18, face="bold")) + theme(strip.background =element_rect(fill="darkorange"))+
-      geom_text(aes(label=label), position=position_stack(vjust = 0.7), size=4, color="white", face = "bold", label.size=0.7)
+      geom_text(aes(label=label), position=position_stack(vjust = 0.7), size=4, color="white")
    respondents_map3a<-girafe(ggobj = respondents_map3,
                    options = list(
                      opts_hover(css = "fill:#666666;cursor:pointer;"),
@@ -846,7 +856,7 @@ renderGirafe({
   print(respondents_map3a)
   } 
   else if (input$char%in%c("Men", "Women")){
-    background_xtics <- ggplot(background_characteristics_map[background_characteristics_map$group%in%input$char,], aes(fill=weighted_perc))+ geom_sf_interactive(aes(tooltip=names),color="grey80", size=0.0)+
+    background_xtics <- ggplot(background_characteristics_map[background_characteristics_map$group%in%input$char,], aes(fill=weighted_perc))+ geom_sf_interactive(aes(tooltip=names),color="grey80", size=0.0)+ylim(0,100)+
   theme_void()+
   scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
   labs(x="", y="",fill="Percentage")+
@@ -907,19 +917,20 @@ occupation_county3 <- rbind(occupation_county1, occupation_county2)
 
 ```{r}
 
-occupation <- fread("data/table_3/table3_7_occupation_by_background_xtics.csv") 
+occupation <- fread("data/table_3/table3_7_occupation_by_background_xtics.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 occupation$Value<- fct_relevel(occupation$Value, 
-                                   "Lowest", "Second", "Middle", "Fourth", "Highest")
+                                   "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary")
 
 renderPlot({if(input$occupation!="County"){
-  ggplot(occupation[occupation$`Background characteristics`%in%input$occupation,],aes(x=Value, y=Proportion, fill=Category))+
+  ggplot(occupation[occupation$`Background characteristics`%in%input$occupation,],aes(x=Value, y=Proportion, fill=Participants))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+
-  facet_wrap(~Participants)+
-  labs( y="Proportion (%)", title="", x="Occupation", fill="Age")+
+  facet_wrap(~Category)+
+  labs( y="Percent (%)", title="", x="Occupation", fill="")+
   scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.5),  hjust=-0.5, vjust=-0.5)+
+    geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.5),  hjust=-0.5)+ylim(0,100)+
   theme(text=element_text(size=16))+
   coord_flip()}
   else{
@@ -929,7 +940,7 @@ renderPlot({if(input$occupation!="County"){
   theme_void()+
   facet_wrap(Participants~`Category`, nrow=3)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14))
   }
 },width=1500, height=600)
@@ -948,15 +959,16 @@ selectInput("employment", "",
 
 ```{r}
 
-employment <-fread("data/table_3/table3_8_employment_by_background_xtics.csv") 
+employment <-fread("data/table_3/table3_8_employment_by_background_xtics.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 
 renderPlot({
   ggplot(employment[employment$`Employment characteristics`%in%input$employment,],aes(x=reorder(`Value`,Proportion), y=Proportion, fill=`Category`))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+
-  labs( y="Proportion (%)", title="", x="Type of Earnings", fill="Type of Employment")+
-  geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+
+  labs( y="Percent (%)", title="", x="Type of Earnings", fill="Type of Employment")+
+  geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+ylim(0,100)+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=16))+
   coord_flip()
@@ -991,7 +1003,8 @@ migration_county3 <-rbind(migration_county1, migration_county2)
 
 
 ```{r}
-migration <- fread("data/table_3/table_3_17_migration_by_background_xtics.csv")
+migration <- fread("data/table_3/table_3_17_migration_by_background_xtics.csv") %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 migration$Value<- fct_relevel(migration$Value, 
                                     "Lowest", "Second", "Middle", "Fourth", "Highest")
@@ -1001,7 +1014,7 @@ renderPlot({if(input$migration!="County"){
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+
   facet_wrap(~Participants)+coord_flip()+
-  labs( y="Proportion (%)", title="", x="Reason for migration", fill="Age")+
+  labs( y="Percent (%)", title="", x="Reason for migration", fill="Age")+
   scale_fill_brewer(palette = "Set1")+
   #scale_fill_manual(values = c("#f46d43","#74add1"))+
   geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+  
@@ -1014,7 +1027,7 @@ renderPlot({if(input$migration!="County"){
   theme_void()+
   facet_grid(Participants~`Reason For Migration`)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14))
   }
 },width=1500, height=600)
@@ -1091,7 +1104,7 @@ renderPlot({if(input$collector!="County"){
   theme_void()+
   facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14, face = "bold"))
   }
 },width=1600, height=700)
@@ -1121,7 +1134,7 @@ renderPlot({if(input$water_treat!="County"){
   ggplot(water_treat[water_treat$`Background characteristics`%in%input$water_treat,],aes(x=reorder(Category,Proportion), y=Proportion, fill=Value))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+coord_flip()+
-  labs( y="Proportion (%)", title="", x="Reason for migration", fill="")+
+  labs( y="Percent (%)", title="", x="Reason for migration", fill="")+
   scale_fill_brewer(palette = "Set1")+
   #scale_fill_manual(values = c("#f46d43","#74add1"))+
   geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+  
@@ -1134,7 +1147,7 @@ renderPlot({if(input$water_treat!="County"){
   theme_void()+
   facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14, face = "bold"))
   }
 },width=1600, height=700)
@@ -1163,7 +1176,7 @@ renderPlot({if(input$excreta_mgmnt!="County"){
   ggplot(excreta_mgmnt[excreta_mgmnt$`Background characteristics`%in%input$excreta_mgmnt,],aes(x=reorder(Category,Proportion), y=Proportion, fill=Value))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+coord_flip()+
-  labs( y="Proportion (%)", title="", x="Reason for migration", fill="Age")+
+  labs( y="Percent (%)", title="", x="Reason for migration", fill="Age")+
   scale_fill_brewer(palette = "Set1")+
   #scale_fill_manual(values = c("#f46d43","#74add1"))+
   geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+  
@@ -1176,7 +1189,7 @@ renderPlot({if(input$excreta_mgmnt!="County"){
   theme_void()+
   facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14, face = "bold"))
   }
 },width=1600, height=700)
@@ -1209,7 +1222,7 @@ renderPlot({if(input$child_stool_disp!="County"){
   ggplot(child_stool_disp[child_stool_disp$`Background characteristics`%in%input$child_stool_disp,],aes(x=reorder(Category,Proportion), y=Proportion, fill=Value))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+coord_flip()+
-  labs( y="Proportion (%)", title="", x="", fill="Age")+
+  labs( y="Percent (%)", title="", x="", fill="Age")+
   scale_fill_brewer(palette = "Set1")+
   #scale_fill_manual(values = c("#f46d43","#74add1"))+
   geom_text(aes(label=paste0(Proportion,"%")), position=position_dodge(0.7),  hjust=-0.5, vjust=-0.5)+  
@@ -1222,7 +1235,7 @@ renderPlot({if(input$child_stool_disp!="County"){
   theme_void()+
   facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14, face = "bold"))
   }
 },width=1600, height=700)
@@ -1251,7 +1264,7 @@ renderPlot({if(input$handwashing!="County"){
   ggplot(handwashing[handwashing$`Background characteristics`%in%input$handwashing,],aes(x=Value, y=Proportion, fill=Category))+
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 2)+
   theme_bw()+
-  labs( y="Proportion (%)", title="", x="", fill="Age")+
+  labs( y="Percent (%)", title="", x="", fill="Age")+
   scale_fill_brewer(palette = "Set1")+
   #scale_fill_manual(values = c("#f46d43","#74add1"))+
   geom_text(aes(label=paste0(Proportion,"%")),   hjust=-0.5, vjust=-0.5)+  
@@ -1263,7 +1276,7 @@ renderPlot({if(input$handwashing!="County"){
   theme_void()+
   facet_grid(~Category, nrow=2)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14, face = "bold"))
   }
 },width=1600, height=700)
@@ -1314,12 +1327,13 @@ marriage_data1 <- full_join(county, marriage_data, by=c("Name"="County"))
 
 selectInput("marriage", "",
              c("Marriage registration"= "Marriage registration",
-             "Age during first marriage"="Age first marriage",
+             "Age at first marriage"="Age first marriage",
              "Median age at first sexual intercourse"="Age first sexual intercourse"
              ))
 
 renderGirafe({
-  marriage_data1a <-marriage_data1 %>%filter(type%in%input$marriage) 
+  marriage_data1a <-marriage_data1 %>%filter(type%in%input$marriage) %>%
+    filter(!(category%in%c("Women (20-49 yrs)", "Men (25-54 yrs)")))
 
   marriage_data_map<- ggplot(marriage_data1a, aes(fill=Value)) + 
     geom_sf_interactive(aes(tooltip=paste0(Name, " ",Value,"%")))+
@@ -1594,7 +1608,7 @@ renderPlot({if(input$tfr1%in%c("2014", "2022")){
   theme_void()+
   facet_wrap(~Category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14))}
   else{
       ggplot(fertility_rate[fertility_rate$characteristic%in%input$tfr1,],aes(x=category, y=proportion, fill=Variable))+
@@ -1602,7 +1616,7 @@ renderPlot({if(input$tfr1%in%c("2014", "2022")){
   geom_dotplot(binaxis='y', stackdir='center', dotsize  = 3)+
   theme_bw()+
       geom_text(aes(label=paste0(proportion, "%")))+
-  labs( y="Proportion (%)", title="", x="Wealth quintile", fill="")+
+  labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+
   scale_fill_manual(values = c("#d7191c","#fdae61","#ffffbf","#abd9e9"))+
   theme(text=element_text(size=12))
   }
@@ -1642,14 +1656,14 @@ renderPlot({if(input$median_age%in%c("2014", "2022")){
   theme_void()+
   facet_wrap(~category)+
   scale_fill_gradient(low = "white", high = "#8c2d04")+
-  labs(x="", y="",fill="Proportion (%)")+
+  labs(x="", y="",fill="Percent (%)")+
   theme(text=element_text(size=14))}
   else{
       ggplot(median_age[median_age$characteristic%in%input$median_age,],aes(x=category, y=proportion, fill=Variable))+
   geom_dotplot(binaxis='y', stackdir='center', dotsize  = 3)+
   theme_bw()+
   geom_text(aes(label=paste0(proportion, " %")))+
-  labs( y="Proportion (%)", title="", x="Wealth quintile", fill="")+
+  labs( y="Percent (%)", title="", x="", fill="")+
   scale_fill_brewer(palette="Set1")+
   theme(text=element_text(size=14))
   }
@@ -1806,7 +1820,8 @@ renderPlot({
   ggplot(children_mean[children_mean$characteristic%in%input$children_mean,],aes(x=Variable, y=mean))+
   geom_bar(position="dodge", stat="identity", fill="cyan3")+
   theme_bw()+coord_flip()+
-  labs( y="Percent (%)", title="", x="", fill="")+
+    geom_text(aes(label(paste0(proportion, "%"))))+
+  labs( y="Number", title="", x="", fill="")+
   theme(text=element_text(size=18, face="bold"))
 }, width=1200, height=800)
 
@@ -1824,13 +1839,15 @@ selectInput("fertility_planning", "",
               "Pregnancy outcome" = "Pregnancy outcome"
             ))
 
-fertility_planning <- fread("data/table_6/Table 6.5 Fertility planning status.csv")
+fertility_planning <- fread("data/table_6/Table 6.5 Fertility planning status.csv") %>%
+  mutate(percent=as.numeric(percent))
 
 
 renderPlot({
   ggplot(fertility_planning[fertility_planning$characteristic%in%input$fertility_planning,],aes(x=Variable, y=percent))+
   geom_bar(position="dodge", stat="identity", fill="cyan3")+
-  theme_bw()+facet_grid(~`Fertility plan`)+
+  theme_bw()+facet_grid(~`Fertility plan`)+coord_flip()
+    geom_text(aes(label=paste0(percent, "%")))+
   labs( y="Percent (%)", title="", x="", fill="")+
   theme(text=element_text(size=18, face="bold"))
 }, width=1200, height=800)
@@ -1851,7 +1868,7 @@ fertility_rates <- fread("data/table_6/Table 6.6  Wanted fertility rates.csv")
 
 
 fertility_rates$Variable <- fct_relevel(fertility_rates$Variable, 
-                                    "Lowest", "Second", "Middle", "Fourth", "Highest")
+                                    "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary")
 
 
 renderPlot({
@@ -1876,7 +1893,7 @@ renderPlot({
 
 valueBox(
   value = paste("63%"),
-  caption = "of currently married women are using a contraceptive method",
+  caption = "of currently married women are using any contraceptive method",
   color = "black"
 )
 ```
@@ -1886,7 +1903,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("70%"),
-  caption = "of the unmarried women use a contraceptive",
+  caption = "of the unmarried women use any contraceptive",
   color = "#b15928"
 )
 ```
@@ -1929,7 +1946,8 @@ selectInput("knowledge_contraceptives", "",
 
 ```{r, include=F}
 # import data
-knowledge_contraceptives <- fread("data/table_7/Table_7.1 Knowledge of contraceptive methods.csv")
+knowledge_contraceptives <- fread("data/table_7/Table_7.1 Knowledge of contraceptive methods.csv") %>%
+  mutate(proportion=ifelse(proportion>0.5, round(proportion), proportion))
 
 
 ```
@@ -1943,7 +1961,7 @@ renderPlot({ggplot(knowledge_contraceptives[knowledge_contraceptives$variable%in
   geom_bar(position="dodge", stat="identity", fill="#74add1")+
     geom_text(aes(label=paste0(proportion, " %")))+
   theme_bw()+coord_flip()+
-  labs( y="Proportion (%)", title="", x="", fill="")+
+  labs( y="Percent (%)", title="", x="", fill="")+
   scale_fill_manual(values = c("#f46d43","#74add1"))+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -1993,7 +2011,7 @@ renderPlot({ggplot(knowledge_fertile[knowledge_fertile$variable%in%input$knowled
 ```{r}
 
 selectInput("reasons_discontinuation", "",
-              c("All methods"="All methods",
+              c("Any methods"="All methods",
                 "Emergency contraception"="Emergency contraception",
                 "Female condom"="Female condom",
                 "Implants"="Implants",
@@ -2055,7 +2073,7 @@ need_demand <- fread("data/table_7/Table_7.15.1_2_Need and Demand for family pla
 renderPlot({ggplot(need_demand[need_demand$variable%in%input$need_demand,],aes(x=Characteristic, y=Proportion, fill=type))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+facet_grid(Category~need)+
-    geom_text(aes(label=paste0(proportion, " %")), position = position_dodge(0.5))+
+    geom_text(aes(label=paste0(Proportion, " %")), position = position_dodge(0.5))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   scale_fill_brewer(palette ="Set1")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
@@ -2131,7 +2149,8 @@ selectInput("fp_messages", "",
 
 # import data
 
-fp_messages <-fread("data/table_7/Table_7_20_1_2_Exposure to family planning.csv")
+fp_messages <-fread("data/table_7/Table_7_20_1_2_Exposure to family planning.csv") %>%
+  mutate(proportion=ifelse(proportion>0.5, round(proportion), proportion))
 ```
 
 
@@ -2141,7 +2160,7 @@ fp_messages <-fread("data/table_7/Table_7_20_1_2_Exposure to family planning.csv
 renderPlot({ggplot(fp_messages[fp_messages$variable%in%input$fp_messages,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+facet_grid(~Gender)+
   theme_bw()+coord_flip()+scale_fill_brewer(palette = "Paired")+
-    geom_text(aes(label=paste0(proportion, " %")))+
+    geom_text(aes(label=paste0(proportion, " %")), position = position_dodge(0.6))+
   labs( y="Proportion (%)", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
@@ -2204,8 +2223,8 @@ early_childhood_county <- full_join(county, early_childhood_county, by=c("Name"=
 renderPlot({ggplot(early_childhood[early_childhood$Variable%in%input$early_childhood,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(proportion,"%")),position=position_dodge(0.8), hjust=1, vjust=0.2)+
-  labs( y="Proportion (%)", title="", x="", fill="")+
+    geom_text(aes(label=proportion),position=position_dodge(0.8), hjust=1, vjust=0.2)+
+  labs( y="Per 1000", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}, width=1600, height=700 )
 
 
@@ -2239,8 +2258,8 @@ early_childhood_mortality_county <- full_join(county, early_childhood_mortality_
 renderPlot({if(input$early_childhood_mortality!="County"){ggplot(early_childhood[early_childhood$Variable%in%input$early_childhood,],aes(x=Characteristic, y=proportion, fill=category))+
   geom_bar(position="dodge", stat="identity")+
   theme_bw()+scale_fill_brewer(palette = "Set1")+
-    geom_text(aes(label=paste0(proportion, "%")))+
-  labs( y="Proportion (%)", title="", x="", fill="")+
+    geom_text(aes(label=proportion), position=position_dodge(0.6))+
+  labs( y="Per 1000", title="", x="", fill="")+
   theme(text=element_text(size=16, face="bold"))}
   else{
     ggplot(early_childhood_mortality_county, aes(geometry=geometry, fill=proportion))+
@@ -2341,9 +2360,10 @@ selectInput("antenatal_care", "",
 
 # import data
 
-antenatal_care <-fread("data/table_9/Table_9.1_Antenatal_care.csv") 
+antenatal_care <-fread("data/table_9/Table_9.1_Antenatal_care.csv") %>%
+  filter(!(category%in%c("No ANC", "Total percentage")))
    
-
+antenatal_care$Characteristic <- fct_relevel(antenatal_care$Characteristic, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary")
 
 ```
 
@@ -2440,7 +2460,8 @@ selectInput("place_delivery", "",
 
 # import data
 
-place_delivery <-fread("data/table_9/Table_9.7_Place_of_delivery.csv") 
+place_delivery <-fread("data/table_9/Table_9.7_Place_of_delivery.csv") %>%
+  filter(category%in%c("Percentage in facility", "Home"))
 
 ```
 
@@ -2746,10 +2767,10 @@ selectInput("vacc", "",
 renderGirafe({
   
   map3<- ggplot(vacc_data1[vacc_data1$indicator2%in%input$vacc,], aes(fill=values))+
-  geom_sf_interactive(aes(tooltip=paste0(values, "%")),color="grey80", size=0.0)+
+  geom_sf_interactive(aes(tooltip=names1),color="grey80", size=0.0)+
   theme_void()+
   scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
-  labs(x="", y="",fill="Proportion")#+
+  labs(x="", y="",fill="Percent")#+
   #theme(text=element_text(size=14))
   x <- girafe(ggobj = map3, width_svg = 5, height_svg = 5,
                    options = list(
@@ -2777,10 +2798,14 @@ selectInput("vacc_char", "",
 
 
 
-vaccination_data <-fread("data/vaccination_data.csv")
+vaccination_data <-fread("data/vaccination_data.csv") %>%
+  mutate(Vaccines1= ifelse(Vaccines%in%c("Rotavirus1", "Rotavirus2", "Pneumococcal1", "Pneumococcal2", "Pneumococcal3","OPV0", "OPV1", "OPV2", "OPV3", "MR1", "MR2", "IPV", "BCG", "DPT1", "DPT2", "DPT3"), "Vaccines", "Summary"))
 
 vaccination_data$Characteristics <- fct_relevel(vaccination_data$Characteristics, 
                                     "Lowest", "Second", "Middle", "Fourth", "Highest")
+
+vaccination_data$Vaccines <- fct_relevel(vaccination_data$Vaccines, "Rotavirus1", "Rotavirus2", "Pneumococcal1", "Pneumococcal2", "Pneumococcal3","OPV0", "OPV1", "OPV2", "OPV3", "MR1", "MR2", "IPV", "BCG", "DPT1", "DPT2", "DPT3", "Fully vaccinated\n(basic antigens)", "Fully vaccinated\n(national schedule)", "No vaccinations")
+
 
 renderPlot({
   ggplot(vaccination_data[vaccination_data$indicator%in%input$vacc_char & vaccination_data$group%in%input$vacc,],aes(x=Vaccines, y=Percent)) + 
@@ -2822,7 +2847,7 @@ valueBox(
 ```{r}
 valueBox(
   value = paste("70%"),
-  caption = "of children <5 years with fever soought treatment or advice",
+  caption = "of children <5 years with fever sought treatment or advice",
   color = "#b15928"
 )
 ```
@@ -2858,89 +2883,97 @@ selectInput("treat_char", "",
 
 
 
-renderPlot({if (input$treat_char%in%c("Age", "Sex", "Residence")){ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=characteristics, y=sought_treatment, fill=condition))+
+renderPlot({if(input$treat_char%in%c( "Sex", "Residence")){ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=condition, y=sought_treatment, fill=characteristics))+
   geom_bar(position="dodge", stat="identity")+
     geom_text(aes(label=paste0(round(sought_treatment),"%" )), position=position_dodge(0.7), vjust=-0.2)+
   theme_bw()+
-  labs( y="% for whom treatment was sought", title="", x="Age (in months)", fill="Health condition")+
+  labs( y="% for whom treatment was sought", title="", x="", fill="Health condition")+
   scale_fill_brewer(palette="Set1")+
-  theme(text=element_text(size=16))} else{
+  theme(text=element_text(size=16))}
+  else if(input$treat_char%in%c("Age")){ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=condition, y=sought_treatment, fill=characteristics))+
+  geom_bar(position="dodge", stat="identity")+
+    geom_text(aes(label=paste0(round(sought_treatment),"%" )), position=position_dodge(0.7), vjust=-0.2)+
+  theme_bw()+
+  labs( y="% for whom treatment was sought", title="", x="", fill="Health condition")+
+  scale_fill_brewer(palette="Set1")+
+  theme(text=element_text(size=16))}
+  else{
     ggplot(treatment[treatment$indicator%in%input$treat_char,],aes(x=characteristics, y=sought_treatment, fill=condition)) + 
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 4)+
   theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%" )))+
-  labs( y="% for whom treatment was sought", title="", x="Mother's education", fill="Health condition")+scale_fill_brewer(palette="Set1")+
+  labs( y="% for whom treatment was sought", title="", x="", fill="Health condition")+scale_fill_brewer(palette="Set1")+
   theme(text=element_text(size=16, face="bold"))
   } }, width=1200, height=700)
 
 ```
 
 
-### **Treatment conditions**
+<!-- ### **Treatment conditions** -->
 
-```{r, include=F}
+<!-- ```{r, include=F} -->
 
-county <- st_read("shapefiles/County.shp")
+<!-- county <- st_read("shapefiles/County.shp") -->
 
-```
+<!-- ``` -->
 
-```{r}
+<!-- ```{r} -->
 
-selectInput("trt_county", "",
-            c("ARI"="ARI",
-              "Diarrhea"="Diarrhea",
-              "Fever"="Fever"))
+<!-- selectInput("trt_county", "", -->
+<!--             c("ARI"="ARI", -->
+<!--               "Diarrhea"="Diarrhea", -->
+<!--               "Fever"="Fever")) -->
 
-treatment_county <- fread("data/table_12/table12C_childtreatment_by_county.csv")
+<!-- treatment_county <- fread("data/table_12/table12C_childtreatment_by_county.csv") -->
 
-renderGirafe({
-  treatment_county1 <- full_join(county, treatment_county[treatment_county$condition%in%input$trt_county,], by=c("Name"="County"))%>%
-  mutate(names=ifelse(sought_treatment%in%NA, paste0(Name," No value"), paste0(Name,", ", sought_treatment,"%")))
-  treatment_map <- ggplot(treatment_county1, aes(fill=sought_treatment))+
-  #geom_sf(data=treatment_county1, aes(geometry=geometry), fill=NA)+
-  geom_sf_interactive(aes(fill=sought_treatment, tooltip=names),color="grey80", size=0.0)+
-  theme_void()+
-   scale_fill_gradient(low = "#fee6ce", high = "#7f2704", na.value = "white")+
-  labs(x="", y="",fill="% of children for whom\n treatment was sought")+
-  theme(text=element_text(size=14))
-  treatment_map1a <-  ggplot(treatment_county[treatment_county$condition%in%input$trt_county & !is.na(treatment_county$sought_treatment),], aes(x=reorder(County,sought_treatment), y=sought_treatment))+
-    geom_col(fill="cyan4")+coord_flip()+
-    theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%")))+
-    scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
-    labs(x="", y="",fill="%")+
-    theme(text=element_text(size=14, face="bold")) 
+<!-- renderGirafe({ -->
+<!--   treatment_county1 <- full_join(county, treatment_county[treatment_county$condition%in%input$trt_county,], by=c("Name"="County"))%>% -->
+<!--   mutate(names=ifelse(sought_treatment%in%NA, paste0(Name," No value"), paste0(Name,", ", sought_treatment,"%"))) -->
+<!--   treatment_map <- ggplot(treatment_county1, aes(fill=sought_treatment))+ -->
+<!--   #geom_sf(data=treatment_county1, aes(geometry=geometry), fill=NA)+ -->
+<!--   geom_sf_interactive(aes(fill=sought_treatment, tooltip=names),color="grey80", size=0.0)+ -->
+<!--   theme_void()+ -->
+<!--    scale_fill_gradient(low = "#fee6ce", high = "#7f2704", na.value = "white")+ -->
+<!--   labs(x="", y="",fill="% of children for whom\n treatment was sought")+ -->
+<!--   theme(text=element_text(size=14)) -->
+<!--   treatment_map1a <-  ggplot(treatment_county[treatment_county$condition%in%input$trt_county & !is.na(treatment_county$sought_treatment),], aes(x=reorder(County,sought_treatment), y=sought_treatment))+ -->
+<!--     geom_col(fill="cyan4")+coord_flip()+ -->
+<!--     theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%")))+ -->
+<!--     scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+ -->
+<!--     labs(x="", y="",fill="%")+ -->
+<!--     theme(text=element_text(size=14, face="bold"))  -->
 
-  treatment_map2<-girafe(ggobj = treatment_map , width_svg = 5, height_svg = 5,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_sizing(rescale = T),
-                     opts_zoom(max = 4)))
-  treatment_map2b<-girafe(ggobj = treatment_map1a , width_svg = 5, height_svg = 5,
-                   options = list(
-                     opts_hover(css = "fill:#666666;cursor:pointer;"),
-                     opts_selection(css = "fill:orange;", type = "multiple"),
-                     opts_sizing(rescale = T),
-                     opts_zoom(max = 4)))
-  print(treatment_map2)
- # print(treatment_map2b)
-  })
-```
+<!--   treatment_map2<-girafe(ggobj = treatment_map , width_svg = 5, height_svg = 5, -->
+<!--                    options = list( -->
+<!--                      opts_hover(css = "fill:#666666;cursor:pointer;"), -->
+<!--                      opts_selection(css = "fill:orange;", type = "multiple"), -->
+<!--                      opts_sizing(rescale = T), -->
+<!--                      opts_zoom(max = 4))) -->
+<!--   treatment_map2b<-girafe(ggobj = treatment_map1a , width_svg = 5, height_svg = 5, -->
+<!--                    options = list( -->
+<!--                      opts_hover(css = "fill:#666666;cursor:pointer;"), -->
+<!--                      opts_selection(css = "fill:orange;", type = "multiple"), -->
+<!--                      opts_sizing(rescale = T), -->
+<!--                      opts_zoom(max = 4))) -->
+<!--   print(treatment_map2) -->
+<!--  # print(treatment_map2b) -->
+<!--   }) -->
+<!-- ``` -->
 
-#### **Treatment conditions: descending**
+<!-- #### **Treatment conditions: descending** -->
 
-```{r, fig.height=6}
+<!-- ```{r, fig.height=6} -->
 
-  
 
-renderPlot({
-  ggplot(treatment_county[treatment_county$condition%in%input$trt_county & !is.na(treatment_county$sought_treatment),], aes(x=reorder(County,sought_treatment), y=sought_treatment))+
-    geom_col(fill="cyan4")+coord_flip()+
-    theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%")))+
-    scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+
-    labs(x="", y="",fill="%")+
-    theme(text=element_text(size=14, face="bold")) 
-},width = 605, height=550)
-```
+
+<!-- renderPlot({ -->
+<!--   ggplot(treatment_county[treatment_county$condition%in%input$trt_county & !is.na(treatment_county$sought_treatment),], aes(x=reorder(County,sought_treatment), y=sought_treatment))+ -->
+<!--     geom_col(fill="cyan4")+coord_flip()+ -->
+<!--     theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%")))+ -->
+<!--     scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+ -->
+<!--     labs(x="", y="",fill="%")+ -->
+<!--     theme(text=element_text(size=14, face="bold"))  -->
+<!-- },width = 605, height=550) -->
+<!-- ``` -->
 
 ### **Source of treatment**
 
@@ -2952,7 +2985,14 @@ selectInput("trtsrc","",
 
 
 ```{r}
-treat_source <- fread("data/table_10/table10_7_10_12_treatment_by_source.csv") 
+treat_source <- fread("data/table_10/table10_7_10_12_treatment_by_source.csv")%>%
+  mutate(`Source of Treatment`=ifelse(`Source of Treatment`%in%c("Private medical sector (NGO)", "Private medical sector (non-NGO)", "Other private sector"), "Private sector", `Source of Treatment` )) %>%
+  group_by(`Source of Treatment`, Condition, Category) %>%
+  mutate(Proportion=sum(Proportion, na.rm=T)) %>%
+  ungroup() %>%
+  select(-lab) %>%
+  distinct() %>%
+  mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
 
 renderPlot({
   ggplot(treat_source[treat_source$Condition%in%input$trtsrc,], aes(x=reorder(`Source of Treatment`,Proportion), y=Proportion, fill=Category))+
@@ -2960,7 +3000,7 @@ renderPlot({
   theme_bw()+
   labs( y="Proportion (%)", title="", x="Source of Treatment for ARI", fill="")+
   theme(text=element_text(size=16, face="bold"))+
-  geom_text(aes(label = lab),position=position_dodge(0.5), hjust=0.3)+
+  geom_text(aes(label = paste0(Proportion, "%")),position=position_dodge(0.5), hjust=0.3)+
   coord_flip()+
     scale_fill_brewer(palette = "Set1")
 }, width=1200, height=800)
@@ -3007,7 +3047,8 @@ selectInput("ecd","",
                "Wealth quintile"="Wealth quintile"))
 
 
-ecd <- fread("data/table_13/table13_ECD.csv")
+ecd <- fread("data/table_13/table13_ECD.csv") %>%
+  mutate(proportion=ifelse(proportion>0.5, round(proportion), proportion))
 
 ecd$characteristics <- fct_relevel(ecd$characteristics, 
                                     "Lowest", "Second", "Middle", "Fourth", "Highest")
@@ -3018,7 +3059,7 @@ renderPlot({ if(input$ecd%in%c("Age", "Sex", "Residence", "Early childhood educa
   theme_bw()+
   labs( y="Percent (%)", title="", x="", fill="")+
   theme(text=element_text(size=16))+
-  geom_text(aes(label = lab), nudge_y = 0.5, size=5)} else{
+  geom_text(aes(label = paste0(proportion, "%")), nudge_y = 0.5, size=5)} else{
   ggplot(ecd[ecd$indicator%in%input$ecd,], aes(x=characteristics, y=proportion)) + 
   geom_dotplot(binaxis='y', stackdir='center', binwidth = 4, fill="#4292c6")+
   theme_bw()+
@@ -4894,7 +4935,7 @@ renderPlot({if(input$safer_sex!="County"){ggplot(T15.10[T15.10$`Background chara
 ```
 
 
-# Domestic/ Gender violence {data-navmenu="Key Indicators"}
+# Gender based violence {data-navmenu="Key Indicators"}
 
 ## Row {data-width="200"}
 
