@@ -39,28 +39,21 @@ resource_files:
 }
 </style>
 ```
-
-
 # About
 
 ## Column {data-width="400"}
 
 ### Report
 
-
-
 ```{r, fig.width=7.5, fig.height=7.5, fig.align = 'center', fig.cap= "**KNBS and ICF. 2022. Kenya Demographic and Health Survey 2022. Key Indicators Report. Nairobi, Kenya, and Rockville, Maryland, USA: KNBS and ICF.**", }
 knitr::include_graphics("www/front_page_knbs.png")
 ```
-
-
 
 ## <br>
 
 ### About
 
--   The App uses data from the Key Indicators Report of the 2022 Kenya Demographic and Health Survey (2022 KDHS) [Link to the report](https://www.knbs.or.ke/download/2022-kdhs-key-indicators-report/#)
-. The survey was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MoH) and other stakeholders.
+-   The App uses data from the 2022 Kenya Demographic and Health Survey report (2022 KDHS) [Link to the report](https://dhsprogram.com/publications/publication-FR380-DHS-Final-Reports.cfm) . The survey was implemented by the Kenya National Bureau of Statistics (KNBS) in collaboration with the Kenya's Ministry of Health (MoH) and other stakeholders.
 
 -   It provides easy-to-use interface to explore 2022 KDHS data using tools such as choropleth maps, bar plots, trend plots. This is a living app that is continuously developed to include comparisons of the current results with those from Demographic and Health Surveys.
 
@@ -137,7 +130,6 @@ valueBox(
 
 <br>
 
-
 ## Column {data-height="600"}
 
 ```{r}
@@ -177,8 +169,6 @@ renderPlot({if(input$quest%in%"Response Rate"){
 
 
 ```
-
-
 
 <br>
 
@@ -235,8 +225,6 @@ insurance_county1 <- full_join(county, insurance_county, by=c("Name"="County"))
 
 ```
 
-
-
 ```{r }
 # health insurance data by age
 insurance <- fread("data/table_2/table_2_20_insurance_by_background_xtics.csv") %>%
@@ -287,7 +275,6 @@ renderPlot({
 ```
 
 ### **Housing**
-
 
 **Choose the characteristics to display:**
 
@@ -609,7 +596,6 @@ renderPlot({
 
 **Choose the characteristics to display:**
 
-
 ```{r, }
 selectInput("covid", "",
               c("Residence"="Residence", 
@@ -672,9 +658,6 @@ renderPlot({if(input$covid%in%"Residence"){
 
 ```
 
-
-
-
 ### **Provider of cash transfer or social assistance**
 
 **Choose the provider to display:**
@@ -726,10 +709,7 @@ cash_transfer <- fread("data/table_2/table_2_22_1_cash_transfer_by_provider.csv"
 }, width=1600, height=600)
 ```
 
-
 # Respondent characteristics {data-navmenu="Key Indicators"}
-
-
 
 ## Row {data-width="200"}
 
@@ -1026,7 +1006,6 @@ migration_county3 <-rbind(migration_county1, migration_county2)
 
 ```
 
-
 ```{r}
 migration <- fread("data/table_3/table_3_17_migration_by_background_xtics.csv") %>%
   mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))
@@ -1059,7 +1038,6 @@ renderPlot({if(input$migration!="County"){
 ```
 
 # Water, Sanitation and Hygiene {data-navmenu="Key Indicators"}
-
 
 ## Row {data-width="200"}
 
@@ -1324,8 +1302,6 @@ renderPlot({if(input$handwashing!="County"){
 
 # Marriage {data-navmenu="Key Indicators"}
 
-
-
 ## Row {data-width="200"}
 
 <br>
@@ -1393,8 +1369,6 @@ renderGirafe({
   print( marriage_map2, justify="right")
 })
 ```
-
-
 
 # Disability among the household population {data-navmenu="Key Indicators"}
 
@@ -1579,8 +1553,6 @@ valueBox(
 
 <br>
 
-
-
 ## Column {.tabset .tabset-fade data-height="900"}
 
 ### **Background characteristics**
@@ -1654,8 +1626,6 @@ renderPlot({if(input$tfr1%in%c("2014", "2022")){
 
 ```
 
-
-
 ### **Median age at first birth**
 
 **Kindly select the characteristics**
@@ -1704,7 +1674,6 @@ renderPlot({if(input$median_age%in%c("2014", "2022")){
 ```
 
 ### **Teenage pregnancy**
-
 
 **Choose the category to display**
 
@@ -1839,7 +1808,6 @@ renderPlot({
 
 ### **Mean ideal number of children**
 
-
 ```{r}
 
 selectInput("children_mean", "",
@@ -1866,9 +1834,7 @@ renderPlot({
 
 ```
 
-
 ### **Fertility planning status**
-
 
 ```{r}
 
@@ -1995,8 +1961,6 @@ knowledge_contraceptives <- fread("data/table_7/Table_7.1 Knowledge of contracep
 knowledge_contraceptives$method <- fct_relevel(knowledge_contraceptives$method, "Any method", "Any modern method", "Any traditional method")
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(knowledge_contraceptives[knowledge_contraceptives$variable%in%input$knowledge_contraceptives,],aes(x=reorder(method, proportion), y=proportion))+
@@ -2031,8 +1995,6 @@ knowledge_fertile <- fread("data/table_7/Table_7.8_Knowledge of Fertile Period.c
 
 
 ```
-
-
 
 ```{r}
 
@@ -2075,8 +2037,6 @@ reasons_discontinuation <- fread("data/table_7/Table_7.14_Reason_for_discontinua
   mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion)) 
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(reasons_discontinuation[reasons_discontinuation$variable%in%input$reasons_discontinuation,],aes(x=reorder(Reason, Proportion), y=Proportion))+
@@ -2112,8 +2072,6 @@ need_demand <- fread("data/table_7/Table_7.15.1_2_Need and Demand for family pla
 
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(need_demand[need_demand$variable%in%input$need_demand,],aes(x=Characteristic, y=Proportion, fill=type))+
@@ -2147,8 +2105,6 @@ decision_making1a <- fread("data/table_7/Table_7.16_17_decision_making.csv") %>%
 
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(decision_making1a[decision_making1a$variable%in%input$decision_making1a,],aes(x=reorder(category,proportion), y=proportion))+
@@ -2170,8 +2126,6 @@ future_use_contraception <- fread("data/table_7/Table_7.19_Future_Contraception.
 
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(future_use_contraception,aes(x=reorder(intention,proportion), y=proportion, fill=category))+
@@ -2183,7 +2137,6 @@ renderPlot({ggplot(future_use_contraception,aes(x=reorder(intention,proportion),
 
 
 ```
-
 
 ### **Exposure to family planning messages**
 
@@ -2202,8 +2155,6 @@ fp_messages <-fread("data/table_7/Table_7_20_1_2_Exposure to family planning.csv
 
 fp_messages$Characteristic <- fct_relevel(fp_messages$Characteristic, "No education", "Primary", "Secondary", "More than secondary", "Lowest", "Second", "Middle", "Fourth", "Highest")
 ```
-
-
 
 ```{r}
 
@@ -2244,9 +2195,7 @@ valueBox(
 )
 ```
 
-
 ## Column {.tabset .tabset-fade data-height="900"}
-
 
 ### **Early childhood mortality rates**
 
@@ -2269,8 +2218,6 @@ early_childhood$category <- fct_relevel(early_childhood$category, "Neonatal mort
 
 early_childhood_county$category <- fct_relevel(early_childhood_county$category, "Neonatal mortality", "Post neonatal mortality", "Infant mortality", "Child mortality", "Under 5 mortality")
 ```
-
-
 
 ```{r}
 
@@ -2307,7 +2254,6 @@ early_childhood_mortality$category <- fct_relevel(early_childhood_mortality$cate
 
 early_childhood_mortality_county$category <- fct_relevel(early_childhood_mortality_county$category, "Neonatal mortality", "Post neonatal mortality", "Infant mortality", "Child mortality", "Under 5 mortality")
 ```
-
 
 ```{r}
 
@@ -2352,8 +2298,6 @@ perinatal_mortality_county <-fread("data/table_8/Table_8.4C_Perinatal Mortality 
 perinatal_mortality_county <- full_join(county, perinatal_mortality_county, by=c("Name"="county"))
 
 ```
-
-
 
 ```{r}
 
@@ -2402,7 +2346,6 @@ valueBox(
 )
 ```
 
-
 ## Column {.tabset .tabset-fade data-height="900"}
 
 ### **Antenatal care**
@@ -2427,8 +2370,6 @@ antenatal_care$Characteristic <- fct_relevel(antenatal_care$Characteristic, "Low
 
 
 ```
-
-
 
 ```{r}
 
@@ -2463,8 +2404,6 @@ antenatal_care1 <-fread("data/table_9/Table_9.2_Number_of_antenatal_care_visits_
 
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(antenatal_care1[antenatal_care1$Variable%in%input$antenatal_care1,],aes(x=Characteristic, y=proportion, fill=category))+
@@ -2493,8 +2432,6 @@ anc_components <-fread("data/table_9/Table_9.3.1_2_Components_of_antenatal_care.
   mutate(proportion=ifelse(proportion>0.5, round(proportion), proportion)) 
 
 ```
-
-
 
 ```{r}
 
@@ -2529,8 +2466,6 @@ place_delivery <-fread("data/table_9/Table_9.7_Place_of_delivery.csv") %>%
 
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(place_delivery[place_delivery$Variable%in%input$place_delivery,],aes(x=Characteristic, y=proportion, fill=category))+
@@ -2558,8 +2493,6 @@ c_section <-fread("data/table_9/Table_9.8C_cesarean_section_by_county.csv") %>%
 
 c_section <- full_join(county, c_section, by=c("Name"="county"))
 ```
-
-
 
 ```{r}
 
@@ -2595,8 +2528,6 @@ assist_delivery <-fread("data/table_9/Table_9.9C_Assistance_during_delivery_by_c
 assist_delivery <- full_join(county, assist_delivery, by=c("Name"="County"))
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(assist_delivery,aes(geometry=geometry, fill=proportion))+
@@ -2627,8 +2558,6 @@ mens_involvement <-fread("data/table_9/Table_9.18_Men's_involvement_in_maternal_
 
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_involvement,],aes(x=Characteristic, y=proportion, fill=category))+
@@ -2652,23 +2581,37 @@ renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_invo
 <!-- ```{r, } -->
 
 <!-- valueBox( -->
+
 <!--   value = paste("89%"), -->
+
 <!--   caption = "of women who had a live birth \n in the  -->
+
 <!-- 2 years preceding the survey \n were delivered \n by a skilled provider -->
+
 <!-- ", -->
+
 <!--   color = "black" -->
+
 <!-- ) -->
+
 <!-- ``` -->
 
 <!-- ###  {.value-box} -->
 
 <!-- ```{r, } -->
+
 <!-- valueBox( -->
+
 <!--   value = paste("82%"), -->
+
 <!--   caption = "of women who had a live birth \n in the  -->
+
 <!-- 2 years preceding the survey \n delivered \n in a health facility", -->
+
 <!--   color = "#b15928" -->
+
 <!-- ) -->
+
 <!-- ``` -->
 
 <!-- ###  {.value-box} -->
@@ -2676,10 +2619,15 @@ renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_invo
 <!-- ```{r, } -->
 
 <!-- valueBox( -->
+
 <!--   value = paste("66%"), -->
+
 <!--   caption = "of women who had a live birth \n in the  -->
+
 <!-- 2 years preceding the survey \n had 4+ \n ANC visits", -->
+
 <!--   color = "darkgreen" -->
+
 <!-- ) -->
 
 <!-- ``` -->
@@ -2695,8 +2643,11 @@ renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_invo
 <!-- ```{r, } -->
 
 <!-- selectInput("maternal_care", "", -->
+
 <!--               c("Antenatal care from a skilled provider"="ANC from a skilled provider", -->
+
 <!--                 "At least four antenatal care visits"="At least four ANC visits", -->
+
 <!--                 "Took iron containing supplements during pregnancy"="Took iron supplements", "Most recent live birth was protected against neonatal tetanus"="Neonatal tetanus", "Delivered by a skilled provider"="Skilled delivery","Delivered in a health facility"="Health facility delivery", "Postnatal check during the first 2 days after birth"="Postnatal check"), width=600) -->
 
 <!-- ``` -->
@@ -2704,24 +2655,39 @@ renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_invo
 <!-- ### Mother's background characteristics -->
 
 <!-- ```{r} -->
+
 <!-- selectInput("chrt", "", -->
+
 <!--             c("Age at birth"="Age at birth", -->
+
 <!--             "Education"="Education", -->
+
 <!--             "Residence"="Residence", -->
+
 <!--             "Wealth quintile"="Wealth quintile")) -->
+
 <!-- ### Mother's age at birth -->
+
 <!-- maternalcare <- fread("data/table_10/table10_maternalcare.csv") %>% -->
+
 <!--   mutate(proportion=ifelse(proportion>0.5, round(proportion), proportion))  -->
 
 <!-- maternalcare$indicator <- fct_relevel(maternalcare$indicator, "Lowest", "Second", "Middle", "Fourth", "Highest", "No education", "Primary", "Secondary", "More than secondary") -->
 
 <!-- renderPlot({ -->
+
 <!--   ggplot(maternalcare[maternalcare$category%in%input$maternal_care & maternalcare$group%in%input$chrt,], aes(x=indicator, y=proportion)) +  -->
+
 <!--   geom_point(size=6, color="#4292c6")+ -->
+
 <!--   theme_bw()+ -->
+
 <!--   labs( y="Percent (%)", title="", x="Wealth quintile", fill="")+ -->
+
 <!--   theme(text=element_text(size=16, face="bold"))+ -->
+
 <!--   geom_text(aes(label = lab), hjust=0.3, size=4) -->
+
 <!-- }, width=700, height=300) -->
 
 <!-- ``` -->
@@ -2731,32 +2697,47 @@ renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_invo
 <!-- ### Spatial visualization -->
 
 <!-- ```{r, } -->
+
 <!-- # import data -->
 
-
 <!-- maternalcarebycounty <- fread("data/table_10/table10c_maternalcarebycounty.csv") %>% -->
+
 <!--   mutate(Percent=ifelse(Percent>0.5, round(Percent), Percent)) %>% -->
+
 <!--   mutate(names1=paste0(County, ", ",Percent,"%" )) -->
 
-
 <!-- # join the data with the shapefile -->
+
 <!-- maternalcarebycounty1 <- left_join(county, maternalcarebycounty, by=c("Name"="County")) -->
+
 <!-- ``` -->
 
 <!-- ```{r} -->
+
 <!-- renderGirafe({ -->
 
 <!--   map4<- ggplot(maternalcarebycounty1[maternalcarebycounty1$`Maternal care`%in%input$maternal_care,])+ -->
+
 <!--   geom_sf_interactive(aes(fill=Percent, tooltip=names1),color="grey80", size=0.0)+ -->
+
 <!--   theme_void()+ -->
+
 <!--   scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+ -->
+
 <!--   labs(x="", y="",fill="Percent")+ -->
+
 <!--   theme(text=element_text(size=14)) -->
+
 <!--   x <- girafe(ggobj = map4, -->
+
 <!--                    options = list( -->
+
 <!--                      opts_hover(css = "fill:#666666;cursor:pointer;"), -->
+
 <!--                      opts_selection(css = "fill:orange;", type = "multiple"), -->
+
 <!--                      opts_zoom(max = 4)), width=8, height=7) -->
+
 <!--     print(x)}) -->
 
 <!-- ``` -->
@@ -2766,13 +2747,21 @@ renderPlot({ggplot(mens_involvement[mens_involvement$Variable%in%input$mens_invo
 <!-- ```{r} -->
 
 <!-- renderPlot({ -->
+
 <!--   ggplot(maternalcarebycounty1[maternalcarebycounty1$`Maternal care`%in%input$maternal_care,], aes(x=reorder(Name, Percent), y=Percent)) + -->
+
 <!-- geom_point(size=4, position = position_dodge(), color="cyan4") + -->
+
 <!--   theme_bw() + coord_flip() + -->
+
 <!--   geom_text(aes(label=paste0(round(Percent), "%")), hjust=1.3, size=4, color="black")+ -->
+
 <!--   coord_flip() +  -->
+
 <!--   ylab("Percent (%)") + xlab("County") + -->
+
 <!--  # facet_grid(~Family_planning) + -->
+
 <!--   theme(text=element_text(size=14, face="bold")) -->
 
 <!-- }) -->
@@ -2981,7 +2970,6 @@ renderPlot({if(input$treat_char%in%c( "Sex", "Residence")){ggplot(treatment[trea
 
 ```
 
-
 <!-- ### **Treatment conditions** -->
 
 <!-- ```{r, include=F} -->
@@ -2993,60 +2981,99 @@ renderPlot({if(input$treat_char%in%c( "Sex", "Residence")){ggplot(treatment[trea
 <!-- ```{r} -->
 
 <!-- selectInput("trt_county", "", -->
+
 <!--             c("ARI"="ARI", -->
+
 <!--               "Diarrhea"="Diarrhea", -->
+
 <!--               "Fever"="Fever")) -->
 
 <!-- treatment_county <- fread("data/table_12/table12C_childtreatment_by_county.csv") -->
 
 <!-- renderGirafe({ -->
+
 <!--   treatment_county1 <- full_join(county, treatment_county[treatment_county$condition%in%input$trt_county,], by=c("Name"="County"))%>% -->
+
 <!--   mutate(names=ifelse(sought_treatment%in%NA, paste0(Name," No value"), paste0(Name,", ", sought_treatment,"%"))) -->
+
 <!--   treatment_map <- ggplot(treatment_county1, aes(fill=sought_treatment))+ -->
+
 <!--   #geom_sf(data=treatment_county1, aes(geometry=geometry), fill=NA)+ -->
+
 <!--   geom_sf_interactive(aes(fill=sought_treatment, tooltip=names),color="grey80", size=0.0)+ -->
+
 <!--   theme_void()+ -->
+
 <!--    scale_fill_gradient(low = "#fee6ce", high = "#7f2704", na.value = "white")+ -->
+
 <!--   labs(x="", y="",fill="% of children for whom\n treatment was sought")+ -->
+
 <!--   theme(text=element_text(size=14)) -->
+
 <!--   treatment_map1a <-  ggplot(treatment_county[treatment_county$condition%in%input$trt_county & !is.na(treatment_county$sought_treatment),], aes(x=reorder(County,sought_treatment), y=sought_treatment))+ -->
+
 <!--     geom_col(fill="cyan4")+coord_flip()+ -->
+
 <!--     theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%")))+ -->
+
 <!--     scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+ -->
+
 <!--     labs(x="", y="",fill="%")+ -->
+
 <!--     theme(text=element_text(size=14, face="bold"))  -->
 
 <!--   treatment_map2<-girafe(ggobj = treatment_map , width_svg = 5, height_svg = 5, -->
+
 <!--                    options = list( -->
+
 <!--                      opts_hover(css = "fill:#666666;cursor:pointer;"), -->
+
 <!--                      opts_selection(css = "fill:orange;", type = "multiple"), -->
+
 <!--                      opts_sizing(rescale = T), -->
+
 <!--                      opts_zoom(max = 4))) -->
+
 <!--   treatment_map2b<-girafe(ggobj = treatment_map1a , width_svg = 5, height_svg = 5, -->
+
 <!--                    options = list( -->
+
 <!--                      opts_hover(css = "fill:#666666;cursor:pointer;"), -->
+
 <!--                      opts_selection(css = "fill:orange;", type = "multiple"), -->
+
 <!--                      opts_sizing(rescale = T), -->
+
 <!--                      opts_zoom(max = 4))) -->
+
 <!--   print(treatment_map2) -->
+
 <!--  # print(treatment_map2b) -->
+
 <!--   }) -->
+
 <!-- ``` -->
 
 <!-- #### **Treatment conditions: descending** -->
 
 <!-- ```{r, fig.height=6} -->
 
-
-
 <!-- renderPlot({ -->
+
 <!--   ggplot(treatment_county[treatment_county$condition%in%input$trt_county & !is.na(treatment_county$sought_treatment),], aes(x=reorder(County,sought_treatment), y=sought_treatment))+ -->
+
 <!--     geom_col(fill="cyan4")+coord_flip()+ -->
+
 <!--     theme_bw()+ geom_text(aes(label=paste0(round(sought_treatment),"%")))+ -->
+
 <!--     scale_fill_gradient(low = "#fee6ce", high = "#7f2704")+ -->
+
 <!--     labs(x="", y="",fill="%")+ -->
+
 <!--     theme(text=element_text(size=14, face="bold"))  -->
+
 <!-- },width = 605, height=550) -->
+
 <!-- ``` -->
 
 ### **Source of treatment**
@@ -3056,7 +3083,6 @@ selectInput("trtsrc","",
              c("ARI"="ARI",
                "Diarrhea"="Diarrhea"))
 ```
-
 
 ```{r}
 treat_source <- fread("data/table_10/table10_7_10_12_treatment_by_source.csv")%>%
@@ -3100,11 +3126,17 @@ valueBox(
 <!-- ###  {.value-box} -->
 
 <!-- ```{r, } -->
+
 <!-- valueBox( -->
+
 <!--   value = paste("4,797"), -->
+
 <!--   caption = "children 24-59 months were assessed", -->
+
 <!--   color = "#b15928" -->
+
 <!-- ) -->
+
 <!-- ``` -->
 
 ## Row {data-width="600"}
@@ -3228,7 +3260,6 @@ renderPlot({
 
 ```
 
-
 ### **Nutritional status (county-map)**
 
 ```{r, }
@@ -3249,8 +3280,6 @@ county <- st_read("shapefiles/County.shp")%>%
  "Busia","Kakamega","Vihiga"),"Western", ifelse(Name%in%c("Kisumu", "Siaya","Homa Bay","Kisii", "Migori","Nyamira"),"Nyanza", ifelse(Name%in%"Nairobi","Nairobi", "Rift Valley"))))))))%>%
   rename(County=Name)
 ```
-
-
 
 ```{r, fig.height=6}
 
@@ -3299,7 +3328,6 @@ renderPlot({
 },width = 1200, height=700)
 ```
 
-
 ### **Micronutrient supplementation & deworming**
 
 ```{r, }
@@ -3324,7 +3352,6 @@ micronutrient_county1 <- full_join(county, micronutrient_county, by=c("Name"="Co
 
 
 ```
-
 
 ```{r}
 micronutrient <- fread("data/table_11/table11_12_micronutrient_by_background_xtics.csv") %>%
@@ -3364,7 +3391,6 @@ renderPlot({if(input$micronutrients%in%c("Age","Mother's age", "Mother's educati
 
 ### **Women minimum dietary diversity**
 
-
 ```{r, }
 selectInput("mdd", "",
               c("Age in years"="Age",
@@ -3384,7 +3410,6 @@ county <- st_read("shapefiles/County.shp")
 mdd_county1 <- full_join(county, mdd_county, by=c("Name"="County"))
 
 ```
-
 
 ```{r}
 mdd <- fread("data/table_11/table11_15_MDD-W_by_background_xtics.csv")%>%
@@ -3421,8 +3446,6 @@ renderPlot({if(input$mdd%in%c("Age", "Education", "Wealth quintile" )){
   }
 }, width=1600, height=700)
 ```
-
-
 
 # Malaria {data-navmenu="Key Indicators"}
 
@@ -3493,8 +3516,6 @@ itn_possess_county1 <- full_join(county, itn_possess_county, by=c("Name"="County
 
 ```
 
-
-
 ```{r}
 
 renderPlot({if(input$itn!="County"){ggplot(itn_possess[itn_possess$`Background characteristics`%in%input$itn,],aes(x=Value, y=Proportion, fill=Category))+
@@ -3546,8 +3567,6 @@ itn_source_county1 <- full_join(county, itn_source_county, by=c("Name"="County")
 
 ```
 
-
-
 ```{r}
 
 renderPlot({
@@ -3575,7 +3594,6 @@ renderPlot({
 
 ```
 
-
 ### **Access to an insecticide-treated net (ITN)**
 
 ```{r, }
@@ -3602,8 +3620,6 @@ county <- st_read("shapefiles/County.shp")
 itn_access_county1 <- full_join(county, itn_access_county, by=c("Name"="County"))
 
 ```
-
-
 
 ```{r}
 
@@ -3637,11 +3653,7 @@ renderPlot({if(input$itn_access%in%c("Residence", "Endemicity zone")){ggplot(itn
 
 ```
 
-
-
-
 ### **Use of mosquito nets by households**
-
 
 ```{r, }
 
@@ -3668,8 +3680,6 @@ county <- st_read("shapefiles/County.shp")
 itn_use_county1 <- full_join(county, itn_use_county, by=c("Name"="County"))
 
 ```
-
-
 
 ```{r}
 
@@ -3706,70 +3716,95 @@ renderPlot({if(input$itn_use%in%c("Residence", "Endemicity zone")){ggplot(itn_us
 
 <!-- ### **Use of existing ITNs** -->
 
-
 <!-- ```{r, } -->
 
 <!-- selectInput("itn_itn", "", -->
+
 <!--               c("Residence"="Residence", -->
+
 <!--                 "Endemicity zone"="Endemicity zone", -->
+
 <!--                 "Wealth quintile"="Wealth quintile", "By County"="County")) -->
+
 <!-- ``` -->
 
 <!-- ```{r, include=F, } -->
+
 <!-- # import data -->
 
 <!-- existing_itn_use <- fread("data/table_12/table12_5_existing_ITN_use_by_background_xtics.csv") %>% -->
+
 <!--   mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion))  -->
 
 <!-- existing_itn_use$Value<- fct_relevel(existing_itn_use$Value,  -->
+
 <!--                                     "Lowest", "Second", "Middle", "Fourth", "Highest") -->
 
 <!-- existing_itn_use_county <- fread("data/table_12/table12_5C_existing_ITN_use_by_county.csv") %>% -->
+
 <!--   mutate(Proportion=ifelse(Proportion>0.5, round(Proportion), Proportion)) %>% -->
+
 <!--   mutate(Names=paste0(County, ", ", Proportion, "%")) -->
 
 <!-- existing_itn_use_county1 <- full_join(county, existing_itn_use_county, by=c("Name"="County")) -->
 
-
-
 <!-- ``` -->
-
-
 
 <!-- ```{r} -->
 
 <!-- renderPlot({if(input$itn_itn%in%c("Residence", "Endemicity zone")){ggplot(existing_itn_use[existing_itn_use$`Background characteristics`%in%input$itn_itn,],aes(x=Value, y=Proportion))+ -->
+
 <!--   geom_bar(position="dodge", stat="identity", fill="#74add1")+ -->
+
 <!--   theme_bw()+ -->
+
 <!--   labs( y="Percent (%)", title="", x="", fill="Household ITN ownership")+ -->
+
 <!--   scale_fill_brewer(palette = "Set1")+ -->
+
 <!--     geom_text(aes(label=paste0(Proportion)))+ -->
+
 <!--   theme(text=element_text(size=16, face="bold"))} -->
+
 <!--   else if(input$itn_itn%in%"County"){ -->
+
 <!--   ggplot(existing_itn_use_county1)+ -->
+
 <!--   geom_sf(data=existing_itn_use_county1, aes(geometry=geometry), fill=NA)+ -->
+
 <!--   geom_sf(aes(fill=Proportion),color="grey80", size=0.0)+ -->
+
 <!--   theme_void()+ -->
+
 <!--   scale_fill_gradient(low = "white", high = "#8c2d04")+ -->
+
 <!--   labs(x="", y="",fill="Percent (%)")+ -->
+
 <!--   theme(text=element_text(size=16, face="bold")) -->
+
 <!--   } -->
+
 <!--   else{ -->
+
 <!--     ggplot(existing_itn_use[existing_itn_use$`Background characteristics`%in%input$itn_itn,],aes(x=Value, y=Proportion))+ -->
+
 <!--   geom_dotplot(binaxis='y', stackdir='center', binwidth = 2,fill="#74add1")+ -->
+
 <!--   theme_bw()+ -->
+
 <!--   labs( y="Percent (%)", title="", x="Residence", fill="ITN use")+ -->
+
 <!--   scale_fill_brewer(palette = "Set1")+ -->
+
 <!--   geom_text(aes(label=paste0(Proportion)))+ -->
+
 <!--   theme(text=element_text(size=16, face="bold")) -->
+
 <!--   }}, width=1600, height=700 ) -->
-
-
 
 <!-- ``` -->
 
 ### **Use of mosquito nets:children**
-
 
 ```{r, }
 
@@ -3795,8 +3830,6 @@ children_itn_use_county1 <- full_join(county, children_itn_use_county, by=c("Nam
 
 
 ```
-
-
 
 ```{r}
 
@@ -3834,7 +3867,6 @@ renderPlot({if(input$nets_children%in%c("Residence", "Endemicity zone")){ggplot(
 
 ### **Use of mosquito nets:pregnant women**
 
-
 ```{r, }
 
 selectInput("nets_pregnant", "",
@@ -3852,8 +3884,6 @@ women_itn_use$Value<- fct_relevel(women_itn_use$Value,
                                     "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 ```
-
-
 
 ```{r}
 
@@ -3882,8 +3912,6 @@ renderPlot({if(input$nets_pregnant%in%c("Residence", "Endemicity zone")){ggplot(
 
 **Reason why the mosquito net was not used the night before the survey**
 
-
-
 ```{r, }
 
 selectInput("nets_notuse", "",
@@ -3909,8 +3937,6 @@ reason_itn_not_used_county1 <- full_join(county, reason_itn_not_used_county, by=
 
 
 ```
-
-
 
 ```{r}
 
@@ -3947,7 +3973,6 @@ renderPlot({if(input$nets_notuse%in%c("Residence", "Endemicity zone")){ggplot(re
 
 ### **Intermittent Preventive Treatment by women during pregnancy**
 
-
 ```{r, }
 
 selectInput("ipt_women", "",
@@ -3973,8 +3998,6 @@ iptp_county1 <- full_join(county, iptp_county, by=c("Name"="County"))
 
 
 ```
-
-
 
 ```{r}
 
@@ -4009,8 +4032,7 @@ renderPlot({if(input$ipt_women%in%c("Residence", "Endemicity zone")){ggplot(iptp
 
 ```
 
-### **Children with fever & careseeking \n prompt treatment & diagnosis**
-
+### **Children with fever & careseeking** \n prompt treatment & diagnosis
 
 ```{r, }
 
@@ -4036,8 +4058,6 @@ mal_fever_county1 <- full_join(county, mal_fever_county, by=c("Name"="County"))
 
 
 ```
-
-
 
 ```{r}
 
@@ -4074,9 +4094,6 @@ renderPlot({if(input$mal_fever%in%c("Residence", "Endemicity zone")){ggplot(mal_
 
 ### **Source of advice/treatment for children with fever**
 
-
-
-
 ```{r, include=F, }
 # import data
 mal_treat_source <- fread("data/table_12/table12_11_malaria_treat_by_source.csv") %>%
@@ -4092,8 +4109,6 @@ mal_treat_source <- fread("data/table_12/table12_11_malaria_treat_by_source.csv"
 
 ```
 
-
-
 ```{r}
 
 renderPlot({ggplot(mal_treat_source, aes(x=reorder(`Source of Treatment`,`Proportion`), y=`Proportion`))+
@@ -4107,7 +4122,6 @@ renderPlot({ggplot(mal_treat_source, aes(x=reorder(`Source of Treatment`,`Propor
 
 
 ```
-
 
 # TB/HIV {data-navmenu="Key Indicators"}
 
@@ -4296,12 +4310,9 @@ valueBox(
 )
 ```
 
-
 ## Column {.tabset .tabset-fade data-height="900"}
 
 ### **Blood pressure diagnosis and treatment**
-
-
 
 ```{r, }
 
@@ -4331,8 +4342,6 @@ county <- st_read("shapefiles/County.shp")
 bp_county1 <- full_join(county, bp_county, by=c("Name"="County"))
 
 ```
-
-
 
 ```{r}
 
@@ -4371,7 +4380,6 @@ renderPlot({if(input$bp%in%c("Residence", "Education")){ggplot(bp[bp$`Background
 
 ### **Blood sugar diagnosis and treatment**
 
-
 ```{r, }
 
 selectInput("bld_sugar", "",
@@ -4391,8 +4399,6 @@ bld_sugar$Value <- fct_relevel(bld_sugar$Value,
                                     "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 ```
-
-
 
 ```{r}
 
@@ -4420,7 +4426,6 @@ renderPlot({if(input$bld_sugar%in%c("Residence", "Education")){ggplot(bld_sugar[
 ```
 
 ### **Depression diagnosis and treatment**
-
 
 ```{r, }
 
@@ -4450,8 +4455,6 @@ depression_county1 <- full_join(county, depression_county, by=c("Name"="County")
   
 
 ```
-
-
 
 ```{r}
 
@@ -4490,7 +4493,6 @@ renderPlot({if(input$depression%in%c("Residence", "Education")){ggplot(depressio
 
 ### **Arthritis diagnosis and treatment**
 
-
 ```{r, }
 
 selectInput("arthritis", "",
@@ -4518,8 +4520,6 @@ arthritis_county1 <- full_join(county, arthritis_county, by=c("Name"="County")) 
   mutate(Names=paste0(Name, ", ", Proportion, "%"))
 
 ```
-
-
 
 ```{r}
 
@@ -4558,7 +4558,6 @@ renderPlot({if(input$arthritis%in%c("Residence", "Education")){ggplot(arthritis[
 
 ### **Physical activity**
 
-
 ```{r, }
 
 selectInput("physical_activity", "",
@@ -4582,8 +4581,6 @@ physical_activity_county <- fread("data/table_14/table14_7C_Physical_activity_by
 physical_activity_county1 <- full_join(county, physical_activity_county, by=c("Name"="County"))
 
 ```
-
-
 
 ```{r}
 
@@ -4622,7 +4619,6 @@ renderPlot({if(input$physical_activity%in%c("Residence", "Education")){ggplot(ph
 
 ### **Examinations for breast & cervical cancer**
 
-
 ```{r, }
 
 selectInput("breast_cancer", "",
@@ -4649,8 +4645,6 @@ breast_cancer_county <- fread("data/table_14/table9_19Ca_Breast_cancer_by_county
 breast_cancer_county1 <- full_join(county, breast_cancer_county, by=c("Name"="County"))
 
 ```
-
-
 
 ```{r}
 
@@ -4737,9 +4731,6 @@ valueBox(
 
 ### **Employment & cash earnings**
 
-
-
-
 ```{r, include=F, }
 # import data
 
@@ -4749,8 +4740,6 @@ T15.1 <- fread("data/table_15/table_15_1_employment_and_cash_earnings_of_current
   mutate(variable1=ifelse(variable%in%"% employed (last 12 months)", "Employed (last 12 months)", "Type of earning"))
 
 ```
-
-
 
 ```{r}
 
@@ -4766,10 +4755,7 @@ renderPlot({T15.1 %>%
 
 ```
 
-
 ### **Control over men's cash**
-
-
 
 ```{r, }
 
@@ -4792,8 +4778,6 @@ T15.2.2$Category<- fct_relevel(T15.2.2$Category,
                                     "Lowest", "Second", "Middle", "Fourth", "Highest")
 
 ```
-
-
 
 ```{r}
 
@@ -4822,7 +4806,6 @@ renderPlot({if(input$control%in%c("Residence", "Education", "Residence", "Number
 
 ### **House or land ownership**
 
-
 ```{r}
 
 selectInput("home_own", "",
@@ -4844,7 +4827,6 @@ renderPlot({ggplot(house_land_ownsership[house_land_ownsership$`Background chara
 ```
 
 ### **Agricultural land ownership**
-
 
 ```{r, message=F, }
 
@@ -4892,9 +4874,7 @@ renderPlot({if(input$agric_own!="County"){ggplot(Agricultural_land_ownsership[Ag
 
 ```
 
-
 ### **Non-agricultural land ownership**
-
 
 ```{r, message=F, }
 
@@ -4941,9 +4921,7 @@ renderPlot({if(input$nonagric_own!="County"){ggplot(non_agricultural_land_ownser
 
 ```
 
-
 ### **Ownership & use of mobile phones & bank accounts**
-
 
 ```{r, message=F, }
 
@@ -4989,9 +4967,7 @@ renderPlot({if(input$mobile!="County"){ggplot(T15.6.1[T15.6.1$`Background charac
 
 ```
 
-
 ### **Participation in decision making**
-
 
 ```{r, message=F, }
 
@@ -5041,9 +5017,7 @@ renderPlot({if(input$decision_making!="County"){ggplot(decision_making[decision_
 
 ```
 
-
 ### **Attitude towards negotiating safer sexual relations**
-
 
 ```{r, message=F, }
 
@@ -5076,7 +5050,6 @@ T15.10C <- fread("data/table_15/Table_15_10C_attitudes_toward_negotiating_safer_
 T15.10C <- full_join(county, T15.10C, by=c("Name"="County")) 
 ```
 
-
 ```{r}
 renderPlot({if(input$safer_sex!="County"){ggplot(T15.10[T15.10$`Background characteristics`%in%input$safer_sex,],aes(y=value, x=Category, fill=variable)) +
   geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+
@@ -5093,7 +5066,6 @@ renderPlot({if(input$safer_sex!="County"){ggplot(T15.10[T15.10$`Background chara
   }}, width=1500, height=700)
 
 ```
-
 
 # Gender based violence {data-navmenu="Key Indicators"}
 
@@ -5176,7 +5148,6 @@ renderPlot({if(input$physical_violence!="County"){ggplot(physical_violence[physi
 
 ```
 
-
 ### **Person commiting physical violence**
 
 ```{r}
@@ -5197,8 +5168,6 @@ renderPlot({ggplot(pers_physical_violence[pers_physical_violence$Gender%in%input
 
 
 ```
-
-
 
 ### **Experience physical violence during pregnancy**
 
@@ -5254,7 +5223,6 @@ renderPlot({if(input$violence_preg!="County"){ggplot(violence_preg[violence_preg
 
 ```
 
-
 ### **Experience sexual violence**
 
 ```{r, }
@@ -5309,7 +5277,6 @@ renderPlot({if(input$violence_sexual%in%c("Age","Education","Employment","Reside
 ```
 
 ### **Persons committing sexual violence**
-
 
 ```{r, include=F, }
 #import data
@@ -5472,7 +5439,6 @@ renderPlot({if(input$violence_women!=c("County", "Marital status")){ggplot(viole
 
 ```
 
-
 ### **Help seeking to stop violence**
 
 ```{r, }
@@ -5528,7 +5494,6 @@ renderPlot({if(input$violence_stop%in%c("Age","Education","Employment","Residenc
 
 ```
 
-
 ### **Sources for help to stop the violence**
 
 **Select the type of violence to visualize**
@@ -5565,7 +5530,6 @@ renderPlot({ggplot(sources_help[sources_help$variable%in%input$sources_help,],ae
 
 # Female genital mutilation {data-navmenu="Key Indicators"}
 
-
 ## Row {data-width="200"}
 
 <br>
@@ -5595,55 +5559,73 @@ valueBox(
 
 <!-- ### **Knowledge of female circumcision** -->
 
-
 <!-- ```{r, } -->
 
 <!-- selectInput("knowledge_circumcision", "", -->
+
 <!--               c("Age"="Age", -->
+
 <!--                 "Education"="Education", -->
+
 <!--                 "Ethnic group"="Ethnic group", -->
+
 <!--                 "Religion"="Religion", -->
+
 <!--                 "Residence"="Residence", -->
+
 <!--                 "Wealth quintile"="Wealth quintile", -->
+
 <!--                 "By County"="County")) -->
+
 <!-- ``` -->
 
 <!-- ```{r, include=F, } -->
+
 <!-- #import data -->
+
 <!-- knowledge_circumcision <- fread('data/table_18/Table_18_1_Knowledge_of_female_circumcision.csv') %>% -->
+
 <!--   mutate(value=ifelse(value>0.5, round(value), value))  -->
 
 <!-- knowledge_circumcision$Category <- fct_relevel(knowledge_circumcision$Category, "No education", "Primary", "Secondary", "More than secondary", -->
+
 <!--                                    "Lowest", "Second", "Middle", "Fourth", "Highest")  -->
 
 <!-- knowledge_circumcision_county <- fread('data/table_18/Table_18_1C_Knowledge_of_female_circumcision_map.csv') %>% -->
+
 <!--   mutate(value=ifelse(value>0.5, round(value), value))  -->
 
-
-
-
 <!-- knowledge_circumcision_county <- full_join(county,knowledge_circumcision_county,  by =c('Name'='County')) -->
-
 
 <!-- ``` -->
 
 <!-- ```{r} -->
 
 <!-- renderPlot({if(input$knowledge_circumcision!="County"){ggplot(knowledge_circumcision[knowledge_circumcision$`Background characteristics`%in%input$knowledge_circumcision,],aes(y=value, x=Category)) + -->
+
 <!--   geom_col(position="dodge", fill="cyan3") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+ -->
+
 <!--   theme_bw() +scale_fill_brewer(palette = "Set1")+ coord_flip()+ -->
+
 <!--     facet_grid(~Gender)+ -->
+
 <!--   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))} -->
+
 <!--   else{ -->
+
 <!--     ggplot(knowledge_circumcision_county ,aes(fill= abs(value), geometry=geometry)) + -->
+
 <!--   geom_sf()+ -->
+
 <!--  facet_grid(variable~Gender, labeller = label_wrap_gen()) + -->
+
 <!--  theme_void()+scale_fill_gradient(low="#ffffcc", high="#bd0026", na.value = "white")+ -->
+
 <!--  labs(fill="%") + -->
+
 <!--   theme(text=element_text(size=25),axis.title=element_text(size=14,face="bold")) -->
+
 <!--   }}, width=1500, height=700) -->
-
-
 
 <!-- ``` -->
 
@@ -5749,10 +5731,10 @@ renderPlot({if(input$age_at_circumcision!="County"){ggplot(age_at_circumcision[a
 
 ```
 
-
 ### **Aspects of circumcision among women and girls**
 
 **Choose the characteristics of circumcision below to be able to visualize**
+
 ```{r, }
 
 selectInput("aspects_of_circumcision", "",
@@ -5784,27 +5766,31 @@ renderPlot({ggplot(aspects_of_circumcision[aspects_of_circumcision$Characteristi
 
 <!-- ### **Circumcision by age** -->
 
-
 <!-- ```{r, include=F, } -->
+
 <!-- #import data -->
+
 <!-- circumcision_age <- fread("data/table_18/working_table_18_2_circumcision_by_age.csv") %>% -->
+
 <!--   mutate(value=ifelse(value>0.5, round(value), value))  -->
 
 <!-- circumcision_age$Age <- fct_relevel(circumcision_age$Age, "<1", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", ">14") -->
+
 <!-- ``` -->
 
 <!-- ```{r} -->
 
 <!-- renderPlot({ggplot(circumcision_age[!is.na(circumcision_age$Age),],aes(y=value, x=Age, fill=variable)) + -->
-<!--   geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+ -->
-<!--   theme_bw() +scale_fill_brewer(palette = "Set1")+ -->
-<!--   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700) -->
 
+<!--   geom_col(position="dodge") + geom_text(aes(label=paste0(value,"%")), position=position_dodge(0.7), vjust=-0.5)+ -->
+
+<!--   theme_bw() +scale_fill_brewer(palette = "Set1")+ -->
+
+<!--   labs( x = "", y="%", fill="")+theme(text=element_text(size=20, face="bold"))}, width=1500, height=700) -->
 
 <!-- ``` -->
 
 ### **Effects of female circumcision**
-
 
 ```{r, }
 
@@ -5834,7 +5820,6 @@ renderPlot({ggplot(effect_female_circumcision[effect_female_circumcision$Charact
 ```
 
 ### **Help seeking behavior among circumcised women**
-
 
 ```{r, }
 
@@ -5867,8 +5852,7 @@ renderPlot({ggplot(help_seeking_women[help_seeking_women$`Background characteris
 
 # Compare trends over time
 
-Row {data-height=700}
--------------------------------------
+## Row {data-height="700"}
 
 ### Percentage change of trends per county (comparing 2022 to 2014)
 
@@ -5918,7 +5902,6 @@ renderPlot({
 
 ```
 
-
 ### Trends over time
 
 ```{r}
@@ -5957,9 +5940,7 @@ renderGirafe({
 
 ```
 
-
-Row {data-height=700}
--------------------------------------
+## Row {data-height="700"}
 
 ### Please select an indicator
 
